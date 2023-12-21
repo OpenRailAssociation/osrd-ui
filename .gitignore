@@ -1,0 +1,8 @@
+# Common
+dist/
+node_modules/
+*.tgz
+
+# Direnv
+.envrc
+.direnv

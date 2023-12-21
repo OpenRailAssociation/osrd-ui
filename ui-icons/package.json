@@ -1,0 +1,31 @@
+{
+  "name": "@osrd-project/ui-icons",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "scripts": {
+    "build-components": "node ./scripts/build.js",
+    "rollup": "rollup -c",
+    "build": "npm run build-components && npm run rollup"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "7.19.1",
+    "@babel/preset-react": "7.18.6",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/react": "^18.0.0",
+    "cheerio": "^1.0.0-rc.12",
+    "rollup": "^4.9.1",
+    "typescript": "^4.8.3",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

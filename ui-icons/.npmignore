@@ -1,0 +1,6 @@
+src/components/template.tsx
+scripts/
+icons/
+src/
+rollup.config.js
+tsconfig.json

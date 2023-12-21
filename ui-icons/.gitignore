@@ -1,0 +1,5 @@
+# Generated components minus the template
+src/components/*.tsx
+!src/components/template.tsx
+src/index.ts
+

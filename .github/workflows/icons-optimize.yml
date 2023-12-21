@@ -1,0 +1,32 @@
+on: 
+  # This workflow will be laucnhed manually and will trigger a new commit
+  # on the branc that is specified.
+  workflow_dispatch:
+
+name: Optimize SVGs on ui-icons
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+          cache: 'pip'
+      - run: pip install -r .github/helpers/ui-icons/requirements.txt
+      - run: for icon in icons/*; do picosvg $icon --output_file $icon; done
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm run svgo
+
+      - uses: EndBug/add-and-commit@v4
+        with:
+          add: 'icons'
+          message: 'Optimize SVGs'
+          author_email: actions@github.com
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
