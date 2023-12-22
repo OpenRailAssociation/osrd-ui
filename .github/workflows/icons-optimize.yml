@@ -15,7 +15,12 @@ jobs:
           python-version: '3.10' 
           cache: 'pip'
       - run: pip install -r .github/helpers/ui-icons/requirements.txt
-      - run: for icon in ui-icons/icons/*; do picosvg $icon --output_file $icon; done
+      - run: |
+          for icon in ui-icons/icons/*; do
+            echo "::group::Optimizing $icon"
+            picosvg $icon --output_file $icon
+            echo "::endgroup::"
+          done
 
       - uses: actions/setup-node@v3
         with:
@@ -27,7 +32,7 @@ jobs:
 
       - uses: EndBug/add-and-commit@v4
         with:
-          add: 'icons'
+          add: 'ui-icons/icons'
           message: 'Optimize SVGs'
           author_email: actions@github.com
         env:

@@ -8,9 +8,16 @@ import { load } from 'cheerio'
 
 // Icons directory path
 const iconsDir = 'icons'
+// Valid variants
 const variantKeywords = [
   'fill'
 ]
+// Valid sizes
+const reversed = {
+  '16': 'sm',
+  '24': 'lg'
+}
+
 
 // Extract name, variant and size from file name
 const extractMetadataFromFilename = (fileName) => {
@@ -78,7 +85,7 @@ const validateSvgAndExtractPath = (svgFilePath, height) => {
 
 // Read all SVG files and generate components for each
 const svgFiles = readdirSync(iconsDir).filter(file => file.endsWith('.svg'))
-const componentTemplate = readFileSync(join('.', 'src', 'components', 'template.tsx'), 'utf8')
+const componentTemplate = readFileSync(join('.', 'src', 'components', '_template.tsx'), 'utf8')
 
 // Generate representation of all icons
 const representation = svgFiles
@@ -101,6 +108,16 @@ if (existsSync(indexFile)) {
   unlinkSync(indexFile)
 }
 
+// Generate sizes file
+const sizesFile = join('.', 'src', 'sizes.ts')
+const sizes = Object.entries(reversed)
+  .reduce((acc, [key, value]) => {
+    acc[value] = parseInt(key);
+    return acc;
+  }, {});
+const sizesContent = `export default ${JSON.stringify(sizes)}`
+writeFileSync(sizesFile, sizesContent)
+
 // Generate components
 for (const [name, currentData] of Object.entries(representation)) {
   const supportedVariants = Object.keys(currentData)
@@ -108,7 +125,11 @@ for (const [name, currentData] of Object.entries(representation)) {
   const definitions = supportedVariants
     .map(variant => {
       const supportedSizes = Object.keys(currentData[variant])
-      const sizeStr = supportedSizes.map(word => `${word}`).join(' | ')
+      const sizeStr = supportedSizes
+        .map(word => reversed[`${word}`])
+        .map(word => `'${word}'`)
+        .join(' | ')
+
       return [
         `IconReplaceName${variant}Props`,
         `interface IconReplaceName${variant}Props {size: ${sizeStr}, variant: '${variant}'}`
