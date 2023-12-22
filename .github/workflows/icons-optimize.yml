@@ -15,13 +15,15 @@ jobs:
           python-version: '3.10' 
           cache: 'pip'
       - run: pip install -r .github/helpers/ui-icons/requirements.txt
-      - run: for icon in icons/*; do picosvg $icon --output_file $icon; done
+      - run: for icon in ui-icons/icons/*; do picosvg $icon --output_file $icon; done
 
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install
-      - run: npm run svgo
+      - run: |
+          cd ui-icons
+          npm install
+          npm run svgo
 
       - uses: EndBug/add-and-commit@v4
         with:
