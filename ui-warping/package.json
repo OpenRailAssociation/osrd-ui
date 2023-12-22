@@ -1,0 +1,44 @@
+{
+  "name": "@osrd-project/ui-warping",
+  "version": "1.0.0",
+  "description": "A React component to display MapLibre maps warped along a given path.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts,.tsx --ignore-path .gitignore --fix",
+    "format": "prettier --write --parser typescript '**/*.{ts,tsx}'",
+    "build": "tsc && vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osrd-project/osrd-ui.git"
+  },
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/osrd-project/osrd-ui/issues"
+  },
+  "homepage": "https://github.com/osrd-project/osrd-ui#readme",
+  "devDependencies": {
+    "@types/react": "^18.2.45",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.15",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vite-plugin-dts": "^3.6.4"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}
