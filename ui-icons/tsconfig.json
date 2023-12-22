@@ -26,6 +26,6 @@
     "node_modules",
     "build",
     "dist",
-    "src/components/template.tsx"
+    "src/components/_template.tsx"
   ]
 }
