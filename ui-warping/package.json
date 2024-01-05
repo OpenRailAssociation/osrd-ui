@@ -12,7 +12,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts,.tsx --ignore-path .gitignore --fix",
     "format": "prettier --write --parser typescript '**/*.{ts,tsx}'",
-    "build": "tsc && vite build"
+    "build": "tsc && vite build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "repository": {
     "type": "git",
@@ -23,8 +25,47 @@
     "url": "https://github.com/osrd-project/osrd-ui/issues"
   },
   "homepage": "https://github.com/osrd-project/osrd-ui#readme",
+  "dependencies": {
+    "@turf/along": "^6.5.0",
+    "@turf/bbox": "^6.5.0",
+    "@turf/bbox-clip": "^6.5.0",
+    "@turf/bearing": "^6.5.0",
+    "@turf/bezier-spline": "^6.5.0",
+    "@turf/boolean-intersects": "^6.5.0",
+    "@turf/boolean-point-in-polygon": "^6.5.0",
+    "@turf/center": "^6.5.0",
+    "@turf/combine": "^6.5.0",
+    "@turf/destination": "^6.5.0",
+    "@turf/distance": "^6.5.0",
+    "@turf/explode": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
+    "@turf/length": "^6.5.0",
+    "@turf/line-intersect": "^6.5.0",
+    "@turf/line-slice": "^6.5.0",
+    "@turf/line-slice-along": "^6.5.0",
+    "@turf/line-split": "^6.5.0",
+    "@turf/nearest-point": "^6.5.0",
+    "@turf/nearest-point-on-line": "^6.5.0",
+    "@turf/simplify": "^6.5.0",
+    "@turf/transform-translate": "^6.5.0",
+    "lodash": "^4.17.21",
+    "maplibre-gl": "^3.6.2",
+    "react-map-gl": "^7.1.7"
+  },
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.7",
+    "@storybook/addon-interactions": "^7.6.7",
+    "@storybook/addon-links": "^7.6.7",
+    "@storybook/addon-mdx-gfm": "^7.6.7",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/blocks": "^7.6.7",
+    "@storybook/react": "^7.6.7",
+    "@storybook/react-vite": "^7.6.7",
+    "@storybook/test": "^7.6.7",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "eslint": "^8.56.0",
@@ -33,12 +74,15 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.15",
+    "geojson": "^0.5.0",
     "prettier": "^3.1.1",
+    "storybook": "^7.6.7",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vite-plugin-dts": "^3.6.4"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
