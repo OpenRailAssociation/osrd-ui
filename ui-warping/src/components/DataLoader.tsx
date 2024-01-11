@@ -24,7 +24,8 @@ const DataLoader: FC<{
   mapStyle?: string | StyleSpecification;
   onDataLoaded: (sourcesData: Record<string, FeatureCollection>) => void;
   sources: SourceDefinition[];
-}> = ({ bbox, mapStyle, onDataLoaded, sources }) => {
+  timeout?: number;
+}> = ({ bbox, mapStyle, onDataLoaded, sources, timeout }) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const [state, setState] = useState<'idle' | 'render' | 'loaded'>('idle');
 
@@ -49,10 +50,12 @@ const DataLoader: FC<{
         const sourcesData: Record<string, FeatureCollection> = {};
         sources.forEach(({ id: sourceId, layers }) => {
           let features: Feature[] = [];
-          layers.forEach(({ id: layerId }) => {
-            features = features.concat(
-              m.querySourceFeatures(layerId, { sourceLayer: layerId }).map(simplifyFeature),
-            );
+          layers.forEach(({ 'source-layer': sourceLayer }) => {
+            const layerFeatures = m
+              .querySourceFeatures(sourceId, { sourceLayer })
+              .map(simplifyFeature);
+
+            features = features.concat(layerFeatures);
           });
           sourcesData[sourceId] = featureCollection(
             uniqBy(features, (f) => f.id || `generated-${++incrementalID}`),
@@ -64,15 +67,24 @@ const DataLoader: FC<{
         console.log('  - Features: ', featuresCount);
 
         // Finalize:
+        clean();
         onDataLoaded(sourcesData);
         setState('loaded');
       };
 
+      let timeoutId: number | null = null;
+      if (timeout) {
+        timeoutId = window.setTimeout(querySources, timeout);
+      }
+
+      const clean = () => {
+        m.off('idle', querySources);
+        if (timeoutId !== null) window.clearTimeout(timeoutId);
+      };
+
       m.on('idle', querySources);
 
-      return () => {
-        m.off('idle', querySources);
-      };
+      return clean;
     }
 
     return undefined;
@@ -81,8 +93,8 @@ const DataLoader: FC<{
   return state !== 'loaded'
     ? createPortal(
         <div
-          className="position-absolute"
           style={{
+            position: 'fixed',
             bottom: '110%',
             height: 1200,
             width: 1200,

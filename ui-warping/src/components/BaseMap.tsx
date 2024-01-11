@@ -5,7 +5,7 @@ import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import { Feature, LineString } from 'geojson';
 import { omit } from 'lodash';
 import { FC, useEffect, useMemo, useState } from 'react';
-import ReactMapGL, { Layer, LayerProps, LineLayer, MapRef, Source } from "react-map-gl/maplibre";
+import ReactMapGL, { Layer, LayerProps, LineLayer, MapRef, Source } from 'react-map-gl/maplibre';
 
 import { SourceDefinition } from '../core/types.ts';
 
@@ -33,6 +33,7 @@ const BaseMap: FC<{
 
   return (
     <ReactMapGL ref={setMapRef} mapStyle={mapStyle} style={{ width: '100%', height: '100%' }}>
+      <Layer type="background" paint={{ 'background-color': 'white' }} />
       {sources.map(({ id, url, layers }) => (
         <Source key={id} id={id} type="vector" url={url}>
           {layers.map(({ id: layerId, ...layerProps }) => (
