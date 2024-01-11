@@ -4,7 +4,7 @@ import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import { Feature, FeatureCollection, LineString } from 'geojson';
 import { omit } from 'lodash';
 import { FC, PropsWithChildren, useEffect, useMemo, useState } from 'react';
-import ReactMapGL, { Layer, LayerProps, LineLayer, MapRef, Source } from "react-map-gl/maplibre";
+import ReactMapGL, { Layer, LayerProps, LineLayer, MapRef, Source } from 'react-map-gl/maplibre';
 
 import { SourceDefinition } from '../core/types.ts';
 
@@ -58,7 +58,6 @@ const TransformedDataMap: FC<
       style={{ width: '100%', height: '100%' }}
     >
       <Layer type="background" paint={{ 'background-color': backgroundColor }} />
-      {children}
       {sources.map((source) => (
         <Source
           key={source.id}
@@ -76,6 +75,7 @@ const TransformedDataMap: FC<
           <Layer {...(omit(pathLayer, 'source-layer') as LayerProps)} />
         </Source>
       )}
+      {children}
     </ReactMapGL>
   );
 };
