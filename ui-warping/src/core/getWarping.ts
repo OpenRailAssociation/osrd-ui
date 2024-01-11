@@ -53,7 +53,7 @@ export default function getWarping(warpPath: Feature<LineString>) {
   // as input, clips it to the grid contour polygon, and projects it the
   // regular grid:
   return {
-    warpedBBox: bbox(warped) as BBox2d,
+    warpedPathBBox: bbox(warped) as BBox2d,
     transform: <T extends Geometry | Feature | FeatureCollection>(f: T): T | null =>
       clipAndProjectGeoJSON(f, projection, zone),
   };
