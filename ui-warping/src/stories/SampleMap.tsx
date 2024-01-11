@@ -1,7 +1,8 @@
+import { featureCollection } from '@turf/helpers';
 import { Feature, LineString } from 'geojson';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { FC } from 'react';
-import { LineLayer } from 'react-map-gl/maplibre';
+import { FC, useMemo } from 'react';
+import { Layer, LineLayer, Source } from 'react-map-gl/maplibre';
 
 import BaseMap from '../components/BaseMap';
 import Loader from '../components/Loader.tsx';
@@ -22,12 +23,13 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
   },
 };
 
-const BaseCase: FC = () => {
+const SampleMap: FC = () => {
   const pathState = useAsyncMemo(
-    () => fetch('/nantes-angers.json').then((res) => res.json() as Promise<Feature<LineString>>),
+    () => fetch('/nantes-marseille.json').then((res) => res.json() as Promise<Feature<LineString>>),
     [],
   );
   const path = getAsyncMemoData(pathState);
+  const pathCollection = useMemo(() => featureCollection(path ? [path] : []), [path]);
 
   if (!path) return <Loader />;
 
@@ -43,12 +45,19 @@ const BaseCase: FC = () => {
       }}
     >
       <div style={{ margin: '1em', flexGrow: 1, background: 'lightgrey' }}>
-        <BaseMap
-          path={path}
-          pathLayer={PATH_LAYER}
-          sources={SOURCES}
-          mapStyle={OSM_BASE_MAP_STYLE}
-        />
+        <BaseMap path={path} sources={SOURCES} mapStyle={OSM_BASE_MAP_STYLE}>
+          <Source type="geojson" data={pathCollection}>
+            <Layer
+              id="path-layer"
+              source="path"
+              type="line"
+              paint={{
+                'line-width': 1,
+                'line-color': 'blue',
+              }}
+            />
+          </Source>
+        </BaseMap>
       </div>
       <div style={{ margin: '1em', flexGrow: 1, background: 'lightgrey' }}>
         <WarpedMap
@@ -62,4 +71,4 @@ const BaseCase: FC = () => {
   );
 };
 
-export default BaseCase;
+export default SampleMap;

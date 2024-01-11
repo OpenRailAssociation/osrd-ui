@@ -1,29 +1,27 @@
 import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
-import { featureCollection } from '@turf/helpers';
 import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import { Feature, LineString } from 'geojson';
-import { omit } from 'lodash';
-import { FC, useEffect, useMemo, useState } from 'react';
-import ReactMapGL, { Layer, LayerProps, LineLayer, MapRef, Source } from 'react-map-gl/maplibre';
+import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import ReactMapGL, { Layer, LayerProps, MapRef, Source } from 'react-map-gl/maplibre';
 
 import { SourceDefinition } from '../core/types.ts';
 
 /**
  * This component is for testing purpose only. It displays data as they appear in the DataLoader component.
  */
-const BaseMap: FC<{
-  path: Feature<LineString>;
-  pathLayer?: Omit<LineLayer, 'source-layer'>;
-  sources: SourceDefinition[];
-  mapStyle?: string | StyleSpecification;
-}> = ({ path, pathLayer, mapStyle, sources }) => {
+const BaseMap: FC<
+  PropsWithChildren<{
+    path: Feature<LineString>;
+    sources: SourceDefinition[];
+    mapStyle?: string | StyleSpecification;
+  }>
+> = ({ path, mapStyle, sources, children }) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
-  const pathCollection = useMemo(() => featureCollection([path]), [path]);
 
   // This effect handles the map initial position:
   useEffect(() => {
-    if (!mapRef) return;
+    if (!mapRef || !path) return;
 
     setTimeout(() => {
       mapRef.fitBounds(bbox(path) as BBox2d, { animate: false });
@@ -41,11 +39,7 @@ const BaseMap: FC<{
           ))}
         </Source>
       ))}
-      {pathLayer && (
-        <Source type="geojson" data={pathCollection}>
-          <Layer {...(omit(pathLayer, 'source-layer') as LayerProps)} />
-        </Source>
-      )}
+      {children}
     </ReactMapGL>
   );
 };
