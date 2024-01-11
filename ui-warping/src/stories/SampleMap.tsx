@@ -7,9 +7,9 @@ import { Layer, LineLayer, Source } from 'react-map-gl/maplibre';
 import BaseMap from '../components/BaseMap';
 import Loader from '../components/Loader.tsx';
 import WarpedMap from '../components/WarpedMap';
-import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from '../core/osm.ts';
 import { SourceDefinition } from '../core/types.ts';
-import { getAsyncMemoData, useAsyncMemo } from '../core/useAsyncMemo.ts';
+import { useAsyncMemo } from '../core/useAsyncMemo.ts';
+import { DEFAULT_PATH_NAME, OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers.ts';
 
 const SOURCES: SourceDefinition[] = [OSM_SOURCE];
 
@@ -23,18 +23,19 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
   },
 };
 
-const SampleMap: FC = () => {
+const SampleMap: FC<{ path?: string }> = ({ path: pathName = DEFAULT_PATH_NAME }) => {
   const pathState = useAsyncMemo(
-    () => fetch('/nantes-marseille.json').then((res) => res.json() as Promise<Feature<LineString>>),
-    [],
+    () => fetch(`/${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
+    [pathName],
   );
-  const path = getAsyncMemoData(pathState);
+  const path = pathState.type === 'ready' ? pathState.data : null;
   const pathCollection = useMemo(() => featureCollection(path ? [path] : []), [path]);
 
   if (!path) return <Loader />;
 
   return (
     <div
+      key={pathName}
       style={{
         background: 'lightgrey',
         display: 'flex',

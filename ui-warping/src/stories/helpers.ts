@@ -1,7 +1,11 @@
 import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { LayerProps } from 'react-map-gl';
 
-import { SourceDefinition } from './types.ts';
+import { SourceDefinition } from '../core/types.ts';
+
+export const PATH_NAMES = ['nantes-marseille', 'nantes-angers'];
+
+export const DEFAULT_PATH_NAME = PATH_NAMES[0];
 
 export const OSM_URL = 'https://osm.osrd.fr/data/v3.json';
 

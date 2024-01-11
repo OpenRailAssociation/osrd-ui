@@ -6,7 +6,7 @@ import { isNil, mapValues, omitBy } from 'lodash';
 import { ComponentType, FC, PropsWithChildren, useEffect, useState } from 'react';
 import { LineLayer } from 'react-map-gl/maplibre';
 
-import getWarping, { WarpingFunction } from '../core/getWarping';
+import getWarping, { WarpingFunction, WarpingOptions } from '../core/getWarping';
 import { SourceDefinition } from '../core/types.ts';
 import DataLoader from './DataLoader';
 import Loader from './Loader.tsx';
@@ -38,8 +38,17 @@ const WarpedMap: FC<
     sources: SourceDefinition[];
     components?: Partial<Components>;
     mapStyle?: string | StyleSpecification;
+    warpingOptions?: WarpingOptions;
   }>
-> = ({ path, pathLayer, sources, components: partialComponents = {}, mapStyle, children }) => {
+> = ({
+  path,
+  pathLayer,
+  sources,
+  components: partialComponents = {},
+  mapStyle,
+  warpingOptions,
+  children,
+}) => {
   const [state, setState] = useState<
     | { type: 'idle' }
     | { type: 'loading' }
@@ -61,11 +70,11 @@ const WarpedMap: FC<
    */
   useEffect(() => {
     const pathBBox = bbox(path) as BBox2d;
-    const { warpedPathBBox, transform } = getWarping(path);
+    const { warpedPathBBox, transform } = getWarping(path, warpingOptions);
     const warpedPath = transform(path) as typeof path;
 
     setState({ type: 'pathLoaded', path, warpedPath, pathBBox, warpedPathBBox, transform });
-  }, [path]);
+  }, [path, warpingOptions]);
 
   return (
     <>
