@@ -3,7 +3,7 @@ import bbox from '@turf/bbox';
 import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import { Feature, FeatureCollection, LineString } from 'geojson';
 import { isNil, mapValues, omitBy } from 'lodash';
-import { ComponentType, FC, useEffect, useState } from 'react';
+import { ComponentType, FC, PropsWithChildren, useEffect, useState } from 'react';
 import { LineLayer } from 'react-map-gl/maplibre';
 
 import getWarping, { WarpingFunction } from '../core/getWarping';
@@ -31,13 +31,15 @@ const DEFAULT_COMPONENTS: Components = {
  * This component handles loading all data along a given path on various sources, and then displays them on a map (using
  * TransformedDataMap):
  */
-const WarpedMap: FC<{
-  path: Feature<LineString>;
-  pathLayer?: Omit<LineLayer, 'source-layer'>;
-  sources: SourceDefinition[];
-  components?: Partial<Components>;
-  mapStyle?: string | StyleSpecification;
-}> = ({ path, pathLayer, sources, components: partialComponents = {}, mapStyle }) => {
+const WarpedMap: FC<
+  PropsWithChildren<{
+    path: Feature<LineString>;
+    pathLayer?: Omit<LineLayer, 'source-layer'>;
+    sources: SourceDefinition[];
+    components?: Partial<Components>;
+    mapStyle?: string | StyleSpecification;
+  }>
+> = ({ path, pathLayer, sources, components: partialComponents = {}, mapStyle, children }) => {
   const [state, setState] = useState<
     | { type: 'idle' }
     | { type: 'loading' }
@@ -93,7 +95,9 @@ const WarpedMap: FC<{
           transformedData={state.transformedData}
           path={state.warpedPath}
           pathLayer={pathLayer}
-        />
+        >
+          {children}
+        </TransformedDataMap>
       )}
     </>
   );

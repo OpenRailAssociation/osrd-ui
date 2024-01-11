@@ -56,5 +56,9 @@ export default function getWarping(warpPath: Feature<LineString>) {
     warpedPathBBox: bbox(warped) as BBox2d,
     transform: <T extends Geometry | Feature | FeatureCollection>(f: T): T | null =>
       clipAndProjectGeoJSON(f, projection, zone),
+
+    // For testing and demoing purpose only:
+    grid: original,
+    warpedGrid: warped,
   };
 }
