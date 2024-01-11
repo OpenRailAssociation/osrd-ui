@@ -6,10 +6,10 @@ import { Layer, LineLayer, Source } from 'react-map-gl/maplibre';
 import BaseMap from '../components/BaseMap.tsx';
 import Loader from '../components/Loader.tsx';
 import WarpedMap from '../components/WarpedMap.tsx';
-import getWarping from '../core/getWarping.ts';
-import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from '../core/osm.ts';
+import getWarping, { WarpingOptions } from '../core/getWarping.ts';
 import { SourceDefinition } from '../core/types.ts';
-import { getAsyncMemoData, useAsyncMemo } from '../core/useAsyncMemo.ts';
+import { useAsyncMemo } from '../core/useAsyncMemo.ts';
+import { DEFAULT_PATH_NAME, OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers.ts';
 
 const SOURCES: SourceDefinition[] = [OSM_SOURCE];
 
@@ -23,8 +23,14 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
   },
 };
 
-const AlgorithmsShowcase: FC<{ path: Feature<LineString> }> = ({ path }) => {
-  const { grid, warpedGrid } = useMemo(() => getWarping(path), [path]);
+const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: WarpingOptions }> = ({
+  path,
+  warpingOptions,
+}) => {
+  const { grid, warpedGrid } = useMemo(
+    () => getWarping(path, warpingOptions),
+    [path, warpingOptions],
+  );
   const pathCollection = useMemo(() => featureCollection([path]), [path]);
 
   return (
@@ -70,6 +76,7 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString> }> = ({ path }) => {
           pathLayer={PATH_LAYER}
           sources={SOURCES}
           mapStyle={OSM_BASE_MAP_STYLE}
+          warpingOptions={warpingOptions}
         >
           <Source type="geojson" data={warpedGrid}>
             <Layer
@@ -88,16 +95,17 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString> }> = ({ path }) => {
   );
 };
 
-const Algorithms: FC = () => {
+const Algorithms: FC<{ path?: string } & WarpingOptions> = (props) => {
+  const { path: pathName = DEFAULT_PATH_NAME, ...warpingOptions } = props;
   const pathState = useAsyncMemo(
-    () => fetch('/nantes-marseille.json').then((res) => res.json() as Promise<Feature<LineString>>),
-    [],
+    () => fetch(`/${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
+    [pathName],
   );
-  const path = getAsyncMemoData(pathState);
+  const path = pathState.type === 'ready' ? pathState.data : null;
 
   if (!path) return <Loader />;
 
-  return <AlgorithmsShowcase path={path} />;
+  return <AlgorithmsShowcase key={pathName} path={path} warpingOptions={warpingOptions} />;
 };
 
 export default Algorithms;

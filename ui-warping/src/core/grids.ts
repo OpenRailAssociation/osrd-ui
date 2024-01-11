@@ -115,11 +115,11 @@ export function pointsGridToZone(points: PointsGrid): PolygonZone {
  * Using these two grids, it becomes possible to project any point from one grid
  * to the other.
  */
-export function getGrids(line: Feature<LineString>): Grids {
+export function getGrids(line: Feature<LineString>, settings?: { stripsPerSize?: number }): Grids {
+  const stripsPerSide = settings?.stripsPerSize || 3;
+
   const pointsCount = line.geometry.coordinates.length;
   if (pointsCount <= 2) throw new Error('line must have at least 3 points');
-
-  const STRIPS_PER_SIZE = 3;
 
   const totalLength = length(line);
   const step = totalLength / (pointsCount - 1);
@@ -153,7 +153,7 @@ export function getGrids(line: Feature<LineString>): Grids {
     const p0 = flatLine.geometry.coordinates[i];
     const p1 = flatLine.geometry.coordinates[i + 1];
     for (let direction = -1; direction <= 1; direction += 2) {
-      for (let j = 0; j < STRIPS_PER_SIZE; j++) {
+      for (let j = 0; j < stripsPerSide; j++) {
         const p00 = destination(p0, step * j, direction * 90).geometry.coordinates;
         const p01 = destination(p0, step * (j + 1), direction * 90).geometry.coordinates;
         const p10 = destination(p1, step * j, direction * 90).geometry.coordinates;
@@ -183,7 +183,7 @@ export function getGrids(line: Feature<LineString>): Grids {
     const angle = bearing(pP, pN) + 90;
     points[i][0] = p;
     for (let direction = -1; direction <= 1; direction += 2) {
-      for (let j = 1; j <= STRIPS_PER_SIZE; j++) {
+      for (let j = 1; j <= stripsPerSide; j++) {
         points[i][direction * j] = destination(p, step * j * direction, angle).geometry.coordinates;
       }
     }
