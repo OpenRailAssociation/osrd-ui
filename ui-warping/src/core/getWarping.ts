@@ -87,7 +87,7 @@ export default function getWarping(
       clipAndProjectGeoJSON(f, projection, zone),
 
     // For testing and demoing purpose only:
-    grid: original,
+    grid: betterOriginal,
     warpedGrid: warped,
   };
 }

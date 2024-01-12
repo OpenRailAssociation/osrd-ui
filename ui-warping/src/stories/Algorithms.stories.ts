@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { DEFAULT_WARPING_OPTIONS } from '../core/getWarping.ts';
 import Algorithms from './Algorithms.tsx';
-import { DEFAULT_PATH_NAME, PATH_NAMES } from './helpers.ts';
+import { PATH_LONG, PATH_NAMES } from './helpers.ts';
 
 const meta: Meta<typeof Algorithms> = {
   component: Algorithms,
@@ -10,39 +10,84 @@ const meta: Meta<typeof Algorithms> = {
   argTypes: {
     path: {
       name: 'Path',
+      description: 'Which path to warp on',
       options: PATH_NAMES,
-      defaultValue: DEFAULT_PATH_NAME,
+      defaultValue: PATH_LONG,
       control: { type: 'radio' },
     },
     tolerance: {
       name: 'Tolerance',
+      description: 'The tolerance for turf.simplify',
       defaultValue: DEFAULT_WARPING_OPTIONS.tolerance,
       type: 'number',
-    },
-    samplesCount: {
-      name: 'Samples count',
-      defaultValue: DEFAULT_WARPING_OPTIONS.samplesCount,
-      type: 'number',
-    },
-    straightenForce: {
-      name: 'Straighten force',
-      defaultValue: DEFAULT_WARPING_OPTIONS.straightenForce,
-      type: 'number',
-    },
-    straightenIterations: {
-      name: 'Straighten iterations',
-      defaultValue: DEFAULT_WARPING_OPTIONS.straightenIterations,
-      type: 'number',
-    },
-    quadtreeDepth: {
-      name: 'Quadtree depth',
-      defaultValue: DEFAULT_WARPING_OPTIONS.quadtreeDepth,
-      type: 'number',
+      control: {
+        type: 'range',
+        min: 0,
+        max: 1,
+        step: 0.005,
+        defaultValue: DEFAULT_WARPING_OPTIONS.tolerance,
+      },
     },
     stripsPerSide: {
       name: 'Strips per side',
+      description: 'The number of strips on each side of the grid',
       defaultValue: DEFAULT_WARPING_OPTIONS.stripsPerSide,
       type: 'number',
+      control: {
+        type: 'number',
+        min: 1,
+        step: 1,
+        defaultValue: DEFAULT_WARPING_OPTIONS.stripsPerSide,
+      },
+    },
+    samplesCount: {
+      name: 'Samples count',
+      description: 'The number of samples on the grid',
+      defaultValue: DEFAULT_WARPING_OPTIONS.samplesCount,
+      type: 'number',
+      control: {
+        type: 'number',
+        min: 3,
+        step: 1,
+        defaultValue: DEFAULT_WARPING_OPTIONS.samplesCount,
+      },
+    },
+    straightenForce: {
+      name: 'Straighten force',
+      description: 'The strength of the force to strengthen on.',
+      defaultValue: DEFAULT_WARPING_OPTIONS.straightenForce,
+      type: 'number',
+      control: {
+        type: 'range',
+        min: 0,
+        max: 1,
+        step: 0.005,
+        defaultValue: DEFAULT_WARPING_OPTIONS.straightenForce,
+      },
+    },
+    straightenIterations: {
+      name: 'Straighten iterations',
+      description: 'The number of strenghtening iterations.',
+      defaultValue: DEFAULT_WARPING_OPTIONS.straightenIterations,
+      type: 'number',
+      control: {
+        type: 'number',
+        min: 1,
+        step: 1,
+        defaultValue: DEFAULT_WARPING_OPTIONS.straightenIterations,
+      },
+    },
+    quadtreeDepth: {
+      name: 'Quadtree depth',
+      description: 'The maximum depth of the quadtree',
+      defaultValue: DEFAULT_WARPING_OPTIONS.quadtreeDepth,
+      type: 'number',
+      control: {
+        type: 'number',
+        min: 1,
+        step: 1,
+        defaultValue: DEFAULT_WARPING_OPTIONS.quadtreeDepth,
+      },
     },
   },
 };
@@ -50,4 +95,15 @@ const meta: Meta<typeof Algorithms> = {
 export default meta;
 type Story = StoryObj<typeof Algorithms>;
 
-export const Primary: Story = {};
+export const DefaultSettings: Story = {
+  name: 'Default settings',
+  args: {
+    path: PATH_LONG,
+    tolerance: DEFAULT_WARPING_OPTIONS.tolerance,
+    stripsPerSide: DEFAULT_WARPING_OPTIONS.stripsPerSide,
+    samplesCount: DEFAULT_WARPING_OPTIONS.samplesCount,
+    straightenForce: DEFAULT_WARPING_OPTIONS.straightenForce,
+    straightenIterations: DEFAULT_WARPING_OPTIONS.straightenIterations,
+    quadtreeDepth: DEFAULT_WARPING_OPTIONS.quadtreeDepth,
+  },
+};
