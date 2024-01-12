@@ -9,7 +9,7 @@ import Loader from '../components/Loader.tsx';
 import WarpedMap from '../components/WarpedMap';
 import { SourceDefinition } from '../core/types.ts';
 import { useAsyncMemo } from '../core/useAsyncMemo.ts';
-import { DEFAULT_PATH_NAME, OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers.ts';
+import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers.ts';
 
 const SOURCES: SourceDefinition[] = [OSM_SOURCE];
 
@@ -23,7 +23,7 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
   },
 };
 
-const SampleMap: FC<{ path?: string }> = ({ path: pathName = DEFAULT_PATH_NAME }) => {
+const SampleMap: FC<{ path: string }> = ({ path: pathName }) => {
   const pathState = useAsyncMemo(
     () => fetch(`/${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
     [pathName],
@@ -45,7 +45,7 @@ const SampleMap: FC<{ path?: string }> = ({ path: pathName = DEFAULT_PATH_NAME }
         inset: 0,
       }}
     >
-      <div style={{ margin: '1em', flexGrow: 1, background: 'lightgrey' }}>
+      <div style={{ marginRight: '1em', flexGrow: 1 }}>
         <BaseMap path={path} sources={SOURCES} mapStyle={OSM_BASE_MAP_STYLE}>
           <Source type="geojson" data={pathCollection}>
             <Layer
@@ -60,7 +60,7 @@ const SampleMap: FC<{ path?: string }> = ({ path: pathName = DEFAULT_PATH_NAME }
           </Source>
         </BaseMap>
       </div>
-      <div style={{ margin: '1em', flexGrow: 1, background: 'lightgrey' }}>
+      <div style={{ flexGrow: 1 }}>
         <WarpedMap
           path={path}
           pathLayer={PATH_LAYER}

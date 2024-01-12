@@ -9,7 +9,7 @@ import WarpedMap from '../components/WarpedMap.tsx';
 import getWarping, { WarpingOptions } from '../core/getWarping.ts';
 import { SourceDefinition } from '../core/types.ts';
 import { useAsyncMemo } from '../core/useAsyncMemo.ts';
-import { DEFAULT_PATH_NAME, OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers.ts';
+import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers.ts';
 
 const SOURCES: SourceDefinition[] = [OSM_SOURCE];
 
@@ -44,7 +44,7 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
         inset: 0,
       }}
     >
-      <div style={{ margin: '1em', flexGrow: 1, background: 'lightgrey' }}>
+      <div style={{ marginRight: '1em', flexGrow: 1 }}>
         <BaseMap path={path} sources={SOURCES} mapStyle={OSM_BASE_MAP_STYLE}>
           <Source type="geojson" data={pathCollection}>
             <Layer
@@ -70,7 +70,7 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
           </Source>
         </BaseMap>
       </div>
-      <div style={{ margin: '1em', flexGrow: 1, background: 'lightgrey' }}>
+      <div style={{ flexGrow: 1 }}>
         <WarpedMap
           path={path}
           pathLayer={PATH_LAYER}
@@ -95,8 +95,8 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
   );
 };
 
-const Algorithms: FC<{ path?: string } & WarpingOptions> = (props) => {
-  const { path: pathName = DEFAULT_PATH_NAME, ...warpingOptions } = props;
+const Algorithms: FC<{ path: string } & WarpingOptions> = (props) => {
+  const { path: pathName, ...warpingOptions } = props;
   const pathState = useAsyncMemo(
     () => fetch(`/${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
     [pathName],

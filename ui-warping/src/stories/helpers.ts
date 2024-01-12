@@ -3,9 +3,11 @@ import { LayerProps } from 'react-map-gl';
 
 import { SourceDefinition } from '../core/types.ts';
 
-export const PATH_NAMES = ['nantes-marseille', 'nantes-angers'];
-
-export const DEFAULT_PATH_NAME = PATH_NAMES[0];
+export const PATH_SHORT = 'nantes-ancenis';
+export const PATH_MEDIUM = 'nantes-angers';
+export const PATH_LONG = 'nantes-marseille';
+export const PATH_EXTRA_LONG = 'nantes-copenhagen';
+export const PATH_NAMES = [PATH_SHORT, PATH_MEDIUM, PATH_LONG, PATH_EXTRA_LONG];
 
 export const OSM_URL = 'https://osm.osrd.fr/data/v3.json';
 
