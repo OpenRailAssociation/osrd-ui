@@ -1,5 +1,5 @@
 {
-  "name": "@osrd-project/ui-warping",
+  "name": "@osrd-project/ui-warped-map",
   "version": "1.0.0",
   "description": "A React component to display MapLibre maps warped along a given path.",
   "main": "dist/index.cjs.js",
