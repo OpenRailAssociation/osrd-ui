@@ -39,6 +39,7 @@ const WarpedMap: FC<
     components?: Partial<Components>;
     mapStyle?: string | StyleSpecification;
     warpingOptions?: WarpingOptions;
+    log?: boolean;
   }>
 > = ({
   path,
@@ -47,6 +48,7 @@ const WarpedMap: FC<
   components: partialComponents = {},
   mapStyle,
   warpingOptions,
+  log,
   children,
 }) => {
   const [state, setState] = useState<
@@ -58,7 +60,10 @@ const WarpedMap: FC<
       } & PathStatePayload)
     | ({
         type: 'dataLoaded';
-      } & PathStatePayload & { transformedData: Record<string, FeatureCollection> })
+      } & PathStatePayload & {
+          data: Record<string, FeatureCollection>;
+          transformedData: Record<string, FeatureCollection>;
+        })
   >({ type: 'idle' });
   const components: Components = {
     ...DEFAULT_COMPONENTS,
@@ -80,24 +85,26 @@ const WarpedMap: FC<
     <>
       {state.type === 'pathLoaded' && (
         <DataLoader
+          log={log}
           mapStyle={mapStyle}
           bbox={state.pathBBox}
           sources={sources}
           timeout={3000}
           onDataLoaded={(data) => {
-            console.time(TIME_LABEL);
+            if (log) console.time(TIME_LABEL);
             const transformedData = omitBy(
               mapValues(data, (collection) => (collection ? state.transform(collection) : null)),
               isNil,
             ) as typeof data;
-            console.timeEnd(TIME_LABEL);
-            setState({ ...state, transformedData, type: 'dataLoaded' });
+            if (log) console.timeEnd(TIME_LABEL);
+            setState({ ...state, data, transformedData, type: 'dataLoaded' });
           }}
         />
       )}
       {state.type !== 'dataLoaded' && <components.loader />}
       {state.type === 'dataLoaded' && (
         <TransformedDataMap
+          log={log}
           mapStyle={mapStyle}
           bbox={state.warpedPathBBox}
           sources={sources}

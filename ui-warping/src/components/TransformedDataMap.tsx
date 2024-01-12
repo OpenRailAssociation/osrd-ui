@@ -21,6 +21,7 @@ const TransformedDataMap: FC<
     transformedData: Record<string, FeatureCollection>;
     path?: Feature<LineString>;
     pathLayer?: Omit<LineLayer, 'source-layer'>;
+    log?: boolean;
   }>
 > = ({
   bbox,
@@ -30,10 +31,15 @@ const TransformedDataMap: FC<
   backgroundColor = 'white',
   path,
   pathLayer,
+  log,
   children,
 }) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const pathCollection = useMemo(() => featureCollection(path ? [path] : []), [path]);
+  const interactiveLayerIds = useMemo(
+    () => sources.flatMap(({ layers }) => layers.map(({ id }) => id)),
+    [sources],
+  );
 
   // This effect handles the map initial position:
   useEffect(() => {
@@ -50,12 +56,20 @@ const TransformedDataMap: FC<
   return (
     <ReactMapGL
       ref={setMapRef}
-      dragPan
-      doubleClickZoom
-      scrollZoom
-      interactive
       mapStyle={mapStyle}
       style={{ width: '100%', height: '100%' }}
+      interactiveLayerIds={log ? interactiveLayerIds : []}
+      onClick={({ features }) => {
+        if (log)
+          console.log(
+            'Click transformed data map',
+            !features?.length
+              ? null
+              : features.length === 1
+                ? features[0]
+                : featureCollection(features),
+          );
+      }}
     >
       <Layer type="background" paint={{ 'background-color': backgroundColor }} />
       {sources.map((source) => (
@@ -65,9 +79,21 @@ const TransformedDataMap: FC<
           type="geojson"
           data={transformedData[source.id] || featureCollection([])}
         >
-          {source.layers.map((layer) => (
-            <Layer key={layer.id} {...(omit(layer, 'source-layer', 'id') as LayerProps)} />
-          ))}
+          {source.layers.map((layer) => {
+            const sourceLayer = layer['source-layer'];
+            const sourceLayerFilter = ['==', 'sourceLayer', sourceLayer];
+            return (
+              <Layer
+                key={layer.id}
+                {...({
+                  ...omit(layer, 'source-layer'),
+                  filter: layer.filter
+                    ? ['all', layer.filter, sourceLayerFilter]
+                    : sourceLayerFilter,
+                } as LayerProps)}
+              />
+            );
+          })}
         </Source>
       ))}
       {path && pathLayer && (

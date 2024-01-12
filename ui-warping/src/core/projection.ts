@@ -165,6 +165,7 @@ export function clipAndProjectGeoJSON<T extends Geometry | Feature | FeatureColl
 
     if (clippedFeature) {
       const newGeometry = projectGeometry(clippedFeature.geometry, projection);
+
       return newGeometry
         ? ({
             ...clippedFeature,
