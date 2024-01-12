@@ -4,6 +4,7 @@ import bboxClip from '@turf/bbox-clip';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import distance from '@turf/distance';
 import { lineString, point } from '@turf/helpers';
+import intersect from '@turf/intersect';
 import length from '@turf/length';
 import lineIntersect from '@turf/line-intersect';
 import lineSlice from '@turf/line-slice';
@@ -14,6 +15,7 @@ import {
   LineString,
   MultiLineString,
   MultiPoint,
+  MultiPolygon,
   Point,
   Polygon,
   Position,
@@ -138,12 +140,14 @@ export function getPointInTriangle(
  * This helper takes a MapboxGeoJSONFeature (ie a data item extracted from a MapLibre instance through the
  * `querySourceFeatures` method), and returns a proper and clean GeoJSON Feature object.
  */
-export function simplifyFeature(feature: MapGeoJSONFeature): Feature {
+export function simplifyFeature(feature: MapGeoJSONFeature, sourceLayer?: string): Feature {
   return {
     type: 'Feature',
     id: feature.id,
-    properties: { ...feature.properties, sourceLayer: feature.sourceLayer },
-    // eslint-disable-next-line no-underscore-dangle
+    properties: {
+      ...feature.properties,
+      sourceLayer: feature.sourceLayer || feature.properties.sourceLayer || sourceLayer,
+    },
     geometry: feature.geometry || feature._geometry,
   };
 }
@@ -278,14 +282,15 @@ export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone)
 
   if (tree.type === 'Feature') {
     const feature = tree as Feature;
+    const type = feature.geometry.type;
 
-    if (feature.geometry.type === 'LineString' || feature.geometry.type === 'MultiLineString') {
+    if (type === 'LineString' || type === 'MultiLineString') {
       if (zone.type === 'polygon') {
         const clipped = intersectPolygonLine(
           zoneToFeature(zone, true) as Feature<Polygon>,
           feature as Feature<LineString | MultiLineString>,
         );
-        return clipped ? (clipped as T) : null;
+        return clipped ? ({ ...feature, ...clipped } as T) : null;
       }
 
       const clipped = bboxClip(
@@ -297,13 +302,13 @@ export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone)
 
     const polygon = zoneToFeature(zone, true).geometry as Polygon;
 
-    if (feature.geometry.type === 'Point') {
+    if (type === 'Point') {
       return booleanPointInPolygon((feature as Feature<Point>).geometry.coordinates, polygon)
         ? tree
         : null;
     }
 
-    if (feature.geometry.type === 'MultiPoint') {
+    if (type === 'MultiPoint') {
       const res: Feature<MultiPoint> = {
         ...feature,
         geometry: {
@@ -315,6 +320,14 @@ export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone)
       };
 
       return res.geometry.coordinates.length ? (res as T) : null;
+    }
+
+    if (type === 'Polygon' || type === 'MultiPolygon') {
+      const res = intersect(feature as Feature<Polygon | MultiPolygon>, polygon);
+
+      return res && res.geometry.coordinates.length
+        ? ({ ...feature, ...res, properties: feature.properties } as T)
+        : null;
     }
   }
 
