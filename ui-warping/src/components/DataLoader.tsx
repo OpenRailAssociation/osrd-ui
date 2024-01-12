@@ -2,7 +2,6 @@ import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
 import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import { Feature, FeatureCollection } from 'geojson';
-import { uniqBy } from 'lodash';
 import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import ReactMapGL, { Layer, LayerProps, MapRef, Source } from 'react-map-gl/maplibre';
@@ -25,7 +24,8 @@ const DataLoader: FC<{
   onDataLoaded: (sourcesData: Record<string, FeatureCollection>) => void;
   sources: SourceDefinition[];
   timeout?: number;
-}> = ({ bbox, mapStyle, onDataLoaded, sources, timeout }) => {
+  log?: boolean;
+}> = ({ bbox, mapStyle, onDataLoaded, sources, timeout, log }) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const [state, setState] = useState<'idle' | 'render' | 'loaded'>('idle');
 
@@ -34,7 +34,7 @@ const DataLoader: FC<{
 
     mapRef.fitBounds(bbox, { animate: false });
     setTimeout(() => {
-      console.time(TIME_LABEL);
+      if (log) console.time(TIME_LABEL);
       setState('render');
     }, 0);
   }, [mapRef, bbox]);
@@ -47,24 +47,34 @@ const DataLoader: FC<{
         // Retrieve layers data:
         let featuresCount = 0;
         let incrementalID = 1;
+        const ids = new Set();
         const sourcesData: Record<string, FeatureCollection> = {};
         sources.forEach(({ id: sourceId, layers }) => {
-          let features: Feature[] = [];
+          const features: Feature[] = [];
           layers.forEach(({ 'source-layer': sourceLayer }) => {
             const layerFeatures = m
               .querySourceFeatures(sourceId, { sourceLayer })
-              .map(simplifyFeature);
+              .map((f) => simplifyFeature(f, sourceLayer));
 
-            features = features.concat(layerFeatures);
+            for (let i = 0, l = layerFeatures.length; i < l; i++) {
+              const feature = layerFeatures[i];
+              const id = feature.id || 'generated/' + incrementalID++;
+              if (ids.has(id)) {
+                const newId = id + '/dedup/' + incrementalID++;
+                ids.add(newId);
+                features.push({ ...feature, id: newId });
+              } else {
+                ids.add(id);
+                features.push({ ...feature, id });
+              }
+            }
           });
-          sourcesData[sourceId] = featureCollection(
-            uniqBy(features, (f) => f.id || `generated-${++incrementalID}`),
-          );
-          featuresCount += sourcesData[sourceId]?.features.length || 0;
+          sourcesData[sourceId] = featureCollection(features);
+          featuresCount += features.length || 0;
         });
 
-        console.timeEnd(TIME_LABEL);
-        console.log('  - Features: ', featuresCount);
+        if (log) console.timeEnd(TIME_LABEL);
+        if (log) console.log('  - Features: ', featuresCount);
 
         // Finalize:
         clean();

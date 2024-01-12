@@ -72,6 +72,7 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
       </div>
       <div style={{ flexGrow: 1 }}>
         <WarpedMap
+          log
           path={path}
           pathLayer={PATH_LAYER}
           sources={SOURCES}

@@ -62,6 +62,7 @@ const SampleMap: FC<{ path: string }> = ({ path: pathName }) => {
       </div>
       <div style={{ flexGrow: 1 }}>
         <WarpedMap
+          log
           path={path}
           pathLayer={PATH_LAYER}
           sources={SOURCES}
