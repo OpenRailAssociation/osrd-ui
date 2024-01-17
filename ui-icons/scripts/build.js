@@ -24,10 +24,10 @@ const extractMetadataFromFilename = (fileName) => {
   const split = fileName.split('.')[0].split("-")
 
   const size = split.slice(-1)[0]
-  
+
   let variant = "base"
   let name = split.slice(0, -1).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('')
-  
+
   // Check if variant is present
   if (variantKeywords.includes(split.slice(-2)[0])) {
     variant = split.slice(-2)[0]
@@ -97,7 +97,7 @@ const representation = svgFiles
     if (!acc[name][variant]) {
       acc[name][variant] = {}
     }
-    acc[name][variant][size] = 
+    acc[name][variant][size] =
       validateSvgAndExtractPath(join(iconsDir, originalFileName), size)
     return acc
   }, {})
@@ -132,7 +132,7 @@ for (const [name, currentData] of Object.entries(representation)) {
 
       return [
         `IconReplaceName${variant}Props`,
-        `interface IconReplaceName${variant}Props {size: ${sizeStr}, variant: '${variant}'}`
+        `interface IconReplaceName${variant}Props {size: ${sizeStr}, variant: '${variant}', title?: string, color?: string}`
       ]
     })
   const iconPropsContent = definitions.map(([name, content]) => `${content}\n`).join('\n')
@@ -148,11 +148,11 @@ for (const [name, currentData] of Object.entries(representation)) {
     .replace(/IconReplaceName/g, name)
 
   writeFileSync(
-    join('.', 'src', 'components', `${name}.tsx`), 
+    join('.', 'src', 'components', `${name}.tsx`),
     file
   )
   appendFileSync(
     indexFile,
     `export { default as ${name} } from './components/${name}'\n`
-  ) 
+  )
 }
