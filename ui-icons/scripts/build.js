@@ -1,25 +1,29 @@
-/// This script is used to generate the components from the SVG files in the icons directory.
-/// It will generate a file for each icon group (variant, size independant) in the src/components directory.
-/// It will also generate an index.ts file in the src directory to export all the components.
+/**
+ * SVG Icon Component Generator
+ * 
+ * This script automates the process of generating React components from SVG files. It's designed to work with a specific directory structure where SVG files are organized by name, variant, and size.
+ * 
+ * Key functionalities:
+ * - Parses SVG file names to extract metadata (icon name, variant, size).
+ * - Validates SVG files for required attributes (width, height, viewBox) and extracts the SVG path.
+ * - Builds an object representation of all icons from the SVG files.
+ * - Generates a 'sizes.ts' file mapping numeric sizes to their respective designations.
+ * - Creates individual React component files for each icon, ensuring they are properly typed and exportable.
+ * - Updates or creates an index file to export all the generated components for easy import in other parts of a project.
+ * 
+ * It is made to work within the CI/CD pipeline of a project, but can also be run locally using the following command: "npm run build".
+ */
 
 import { readFileSync, readdirSync, existsSync, unlinkSync, writeFileSync, appendFileSync } from 'fs'
 import { join } from 'path'
 import { load } from 'cheerio'
 
-// Icons directory path
+// Define the path to the icons directory and constants for icon variants and sizes
 const iconsDir = 'icons'
-// Valid variants
-const variantKeywords = [
-  'fill'
-]
-// Valid sizes
-const reversed = {
-  '16': 'sm',
-  '24': 'lg'
-}
+const variantKeywords = ['fill']
+const reversed = { '16': 'sm', '24': 'lg' }
 
-
-// Extract name, variant and size from file name
+// Function to extract metadata (name, variant, size) from the SVG file name
 const extractMetadataFromFilename = (fileName) => {
   const split = fileName.split('.')[0].split("-")
 
@@ -37,7 +41,7 @@ const extractMetadataFromFilename = (fileName) => {
   return [name, variant, size, fileName]
 }
 
-// Validate SVG file and extract path
+// Function to validate the SVG file structure and extract the SVG path
 const validateSvgAndExtractPath = (svgFilePath, height) => {
   const svg = readFileSync(svgFilePath, 'utf8')
   const svgElement = load(svg)('svg')
@@ -83,11 +87,11 @@ const validateSvgAndExtractPath = (svgFilePath, height) => {
   return svgPath
 }
 
-// Read all SVG files and generate components for each
+// Read all SVG files from the icons directory and load the component template
 const svgFiles = readdirSync(iconsDir).filter(file => file.endsWith('.svg'))
 const componentTemplate = readFileSync(join('.', 'src', 'components', '_template.tsx'), 'utf8')
 
-// Generate representation of all icons
+// Process each SVG file to build an object representation of the icons
 const representation = svgFiles
   .map(fileName => extractMetadataFromFilename(fileName))
   .reduce((acc, [name, variant, size, originalFileName]) => {
@@ -102,13 +106,13 @@ const representation = svgFiles
     return acc
   }, {})
 
-// Delete existing index file
+// Delete the existing index file if it exists
 const indexFile = join('.', 'src', 'index.ts')
 if (existsSync(indexFile)) {
   unlinkSync(indexFile)
 }
 
-// Generate sizes file
+// Generate a 'sizes.ts' file mapping sizes to their designations
 const sizesFile = join('.', 'src', 'sizes.ts')
 const sizes = Object.entries(reversed)
   .reduce((acc, [key, value]) => {
@@ -118,7 +122,7 @@ const sizes = Object.entries(reversed)
 const sizesContent = `export default ${JSON.stringify(sizes)}`
 writeFileSync(sizesFile, sizesContent)
 
-// Generate components
+// Loop over the representation to generate React component files for each icon
 for (const [name, currentData] of Object.entries(representation)) {
   const supportedVariants = Object.keys(currentData)
 
@@ -147,10 +151,12 @@ for (const [name, currentData] of Object.entries(representation)) {
     .replace('//ReplaceWithTypes', iconPropsContent.concat(`\n${iconPropsExport}`))
     .replace(/IconReplaceName/g, name)
 
+  // Write the component file for the current icon
   writeFileSync(
     join('.', 'src', 'components', `${name}.tsx`),
     file
   )
+  // Append the current icon's export statement to the index file
   appendFileSync(
     indexFile,
     `export { default as ${name} } from './components/${name}'\n`
