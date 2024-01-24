@@ -136,7 +136,7 @@ for (const [name, currentData] of Object.entries(representation)) {
 
       return [
         `IconReplaceName${variant}Props`,
-        `interface IconReplaceName${variant}Props {size: ${sizeStr}, variant: '${variant}', title?: string, color?: string}`
+        `interface IconReplaceName${variant}Props {size?: ${sizeStr}, variant?: '${variant}', title?: string, color?: string}`
       ]
     })
   const iconPropsContent = definitions.map(([name, content]) => `${content}\n`).join('\n')
