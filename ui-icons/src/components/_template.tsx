@@ -6,7 +6,7 @@ const iconData: IconData = {}
 
 //ReplaceWithTypes
 
-const IconReplaceName: IconReplaceNameIcon = ({ variant = 'base', size = 'sm', title }) => {
+const IconReplaceName: React.FC<IconReplaceNameProps> = ({ variant = 'base', size = 'sm', title }) => {
   const currentSize = sizes[size]
   if (!iconData[variant]) {
     throw new Error(`IconReplaceName: variant ${variant} not found.`)
