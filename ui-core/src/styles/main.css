@@ -53,3 +53,7 @@
   src: inline("fonts/IBMPlexMono-SemiBold.ttf") format('truetype');
   font-weight: 600;
 }
+
+body {
+  font-size: 16px;
+}
