@@ -7,12 +7,13 @@ export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
 type InputStatusIconProps = {
   status: status;
   small?: boolean;
+  className?: string;
 };
 
-const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
+const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small, className }) => {
   const size = small ? 'sm' : 'lg';
   return (
-    <span className={cx('status-icon', status)}>
+    <span className={cx('status-icon', className, status)}>
       {status === 'loading' && <Gear size={size} />}
       {status === 'info' && <Info size={size} />}
       {status === 'success' && <CheckCircle variant="fill" size={size} />}

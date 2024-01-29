@@ -31,6 +31,7 @@
     "clean": "rimraf dist",
     "build": "npm run rollup",
     "watch": "NODE_ENV=development rollup -c -w",
+    "test": "vitest run src",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "peerDependencies": {
@@ -42,7 +43,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.37",
+    "postcss": "^8.4.38",
     "postcss-assets": "^6.0.0",
     "postcss-import": "^16.0.0",
     "postcss-preset-env": "^9.5.2",
