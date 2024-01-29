@@ -1,8 +1,10 @@
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
+import dts from 'rollup-plugin-dts'
+import terser from '@rollup/plugin-terser'
 
-const formats = ['esm', 'umd']
+const formats = ['esm']
 
 export default {
   input: 'src/index.ts',
@@ -22,9 +24,10 @@ export default {
       babelHelpers: 'bundled'
     }),
     typescript(),
+    dts(),
   ],
   output: formats.map(format => ({
-    file: `dist/index.${format}.js`,
+    file: `dist/index.${format}.ts`,
     format,
     name: 'osrdicons',
     globals: {
