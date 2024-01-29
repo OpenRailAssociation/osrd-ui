@@ -1,19 +1,9 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import './inputs/fieldWrapper.css';
-@import './inputs/label.css';
-@import './inputs/hint.css';
-@import './inputs/statusMessage.css';
-@import './inputs/input.css';
-@import './inputs/passwordInput.css';
-@import './inputs/tokenInput.css';
+@import './inputs/inputs.css';
 @import './select.css';
 @import './button.css';
-@import './inputs/textArea.css';
-@import './inputs/radioButton.css';
-@import './inputs/radioButton.css';
-@import './inputs/timePicker.css';
 /* REGULAR */
 
 @font-face {
@@ -58,4 +48,8 @@
   font-family: 'IBM Plex Mono', monospace;
   src: inline('fonts/IBMPlexMono-SemiBold.ttf') format('truetype');
   font-weight: 600;
+}
+
+body {
+  font-size: 16px;
 }

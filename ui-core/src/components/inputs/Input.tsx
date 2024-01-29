@@ -31,13 +31,6 @@ const InputAffix: React.FC<InputAffixProps> = ({ value, type, disabled, readOnly
   );
 };
 
-export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
-
-export type statusWithMessage = {
-  status: status;
-  message?: string;
-};
-
 type InputAffixContent = string | React.ReactNode;
 
 type InputAffixContentWithCallback = {
