@@ -1,6 +1,6 @@
 {
   "name": "@osrd-project/ui-icons",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "type": "module",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
