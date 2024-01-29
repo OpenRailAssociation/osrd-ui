@@ -2,6 +2,14 @@ import './styles/main.css';
 
 export { default as Button, ButtonProps } from './components/buttons/Button';
 export { default as Checkbox, CheckboxProps } from './components/inputs/checkbox';
+export {
+  default as CheckboxList,
+  CheckboxListProps,
+} from './components/inputs/checkbox/CheckboxList';
+export {
+  default as CheckboxesTree,
+  CheckboxesTreeProps,
+} from './components/inputs/checkbox/CheckboxesTree';
 export { default as Input, InputProps } from './components/inputs/Input';
 export { default as TokenInput, TokenInputProps } from './components/inputs/TokenInput';
 export { default as PasswordInput, PasswordInputProps } from './components/inputs/PasswordInput';
