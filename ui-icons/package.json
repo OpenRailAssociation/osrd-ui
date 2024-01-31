@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "svgo": "svgo icons --config svgo.config.cjs",
     "build-components": "node ./scripts/build.js",
