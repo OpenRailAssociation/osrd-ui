@@ -162,3 +162,10 @@ for (const [name, currentData] of Object.entries(representation)) {
     `export { default as ${name} } from './components/${name}'\n`
   )
 }
+
+// Add generic icon type
+appendFileSync(
+  indexFile,
+  `export type { GenericIconType } from './types/generic-icon-type'\n`
+)
+
