@@ -23,6 +23,7 @@ export default {
       babelHelpers: 'bundled'
     }),
     typescript(),
+    terser()
   ],
   output: formats.map(format => ({
     file: `dist/index.${format}.js`,
