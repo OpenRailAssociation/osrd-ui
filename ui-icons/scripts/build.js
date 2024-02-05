@@ -166,10 +166,7 @@ for (const [name, currentData] of Object.entries(representation)) {
   )
   typeNames.push(`${name}Icon`)
 }
-
-// Add generic icon type
 appendFileSync(
   indexFile,
-  `export type { GenericIconType } from './types/generic-icon-type'\n`
+  `export type UiIcon = ${typeNames.join(' | ')}\n`
 )
-
