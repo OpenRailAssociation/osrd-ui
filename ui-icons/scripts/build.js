@@ -123,6 +123,7 @@ const sizesContent = `export default ${JSON.stringify(sizes)}`
 writeFileSync(sizesFile, sizesContent)
 
 // Loop over the representation to generate React component files for each icon
+let typeNames = []
 for (const [name, currentData] of Object.entries(representation)) {
   const supportedVariants = Object.keys(currentData)
 
@@ -141,7 +142,8 @@ for (const [name, currentData] of Object.entries(representation)) {
     })
   const iconPropsContent = definitions.map(([name, content]) => `${content}\n`).join('\n')
   const iconsPropsTypeUnion = definitions.map(([name]) => name).join(' | ')
-  const iconPropsExport = `export type IconReplaceNameProps = ${iconsPropsTypeUnion}`
+  const iconPropsExport = `export type IconReplaceNameProps = ${iconsPropsTypeUnion}` + '\n' +
+    'export type IconReplaceNameIcon = React.FC<IconReplaceNameProps>'
 
   let file = componentTemplate
     .replace(
@@ -159,13 +161,12 @@ for (const [name, currentData] of Object.entries(representation)) {
   // Append the current icon's export statement to the index file
   appendFileSync(
     indexFile,
-    `export { default as ${name} } from './components/${name}'\n`
+    `export { ${name} } from './components/${name}'\n` +
+    `import type { ${name}Icon } from './components/${name}'\n`
   )
+  typeNames.push(`${name}Icon`)
 }
-
-// Add generic icon type
 appendFileSync(
   indexFile,
-  `export type { GenericIconType } from './types/generic-icon-type'\n`
+  `export type UiIcon = ${typeNames.join(' | ')}\n`
 )
-
