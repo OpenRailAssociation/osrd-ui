@@ -1,4 +1,7 @@
-import { LIST_VALUES, SIGNAL_BASE_DEFAULT } from "../consts/simulationConsts";
+import {
+  LIST_VALUES,
+  SIGNAL_BASE_DEFAULT,
+} from "../stories/assets/simulationConsts";
 
 // * types from osrd/front/src/modules/simulationResult/consts.ts
 
