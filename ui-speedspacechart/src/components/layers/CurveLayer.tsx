@@ -1,20 +1,20 @@
-import { ConsolidatedPositionSpeedTime } from "../../types/simulationTypes";
+import type { Store } from "../../types/chartTypes";
 import { drawCurve } from "../helpers/drawElements";
 import { useCanvas } from "../hooks";
 
 type CurveLayerProps = {
   width: number;
   height: number;
-  speed: ConsolidatedPositionSpeedTime[];
+  store: Store;
 };
 
-const CurveLayer = ({ width, height, speed }: CurveLayerProps) => {
-  const canvas = useCanvas(drawCurve, width, height, speed);
+const CurveLayer = ({ width, height, store }: CurveLayerProps) => {
+  const canvas = useCanvas(drawCurve, width, height, store);
 
   return (
     <canvas
       id="curve-layer"
-      className="absolute"
+      className="absolute ml-10 mt-2"
       ref={canvas}
       width={width}
       height={height}

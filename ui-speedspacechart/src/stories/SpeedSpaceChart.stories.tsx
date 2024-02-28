@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
 import SpeedSpaceChart, {
-  SpeedSpaceChartProps,
+  type SpeedSpaceChartProps,
 } from "../components/SpeedSpaceChart";
 import OSRD_SAMPLE from "./assets/sampleData";
 
@@ -12,7 +12,7 @@ export default {
 const defaultArgs: SpeedSpaceChartProps = {
   width: 1200,
   height: 400,
-  sample: OSRD_SAMPLE,
+  data: OSRD_SAMPLE,
 };
 
 export const SpeedSpaceChartDefault = {

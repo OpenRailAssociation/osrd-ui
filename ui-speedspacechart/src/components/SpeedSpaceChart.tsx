@@ -1,28 +1,42 @@
 import CurveLayer from "./layers/CurveLayer";
 import FrontInteractivityLayer from "./layers/FrontInteractivityLayer";
-import GridLayer from "./layers/GridLayer";
 import {
-  ConsolidatedPositionSpeedTime,
+  type ConsolidatedPositionSpeedTime,
   OsrdSimulationState,
 } from "../types/simulationTypes";
+import { useState } from "react";
+import type { Store } from "../types/chartTypes";
+import AxisLayerX from "./layers/AxisLayerX";
+import AxisLayerY from "./layers/AxisLayerY";
 
 export type SpeedSpaceChartProps = {
   width: number;
   height: number;
-  sample: OsrdSimulationState;
+  data: OsrdSimulationState;
 };
 
-const SpeedSpaceChart = ({ width, height, sample }: SpeedSpaceChartProps) => {
-  const speed = sample.consolidatedSimulation[0]
-    .speed as ConsolidatedPositionSpeedTime[];
+const SpeedSpaceChart = ({ width, height, data }: SpeedSpaceChartProps) => {
+  const [store, setStore] = useState<Store>({
+    speed: data.consolidatedSimulation[0]
+      .speed as ConsolidatedPositionSpeedTime[],
+    ratio: 1,
+    leftOffset: 0,
+  });
 
   return (
     <div
       className="bg-white"
-      style={{ width: `${width}px`, height: `${height}px` }}>
-      <CurveLayer width={width} height={height} speed={speed} />
-      <GridLayer width={width} height={height} speed={speed} />
-      <FrontInteractivityLayer width={width} height={height} />
+      style={{ width: `${width}px`, height: `${height}px` }}
+      tabIndex={0}>
+      <CurveLayer width={width - 60} height={height - 35} store={store} />
+      <AxisLayerY width={width} height={height} store={store} />
+      <AxisLayerX width={width} height={height} store={store} />
+      <FrontInteractivityLayer
+        width={width - 60}
+        height={height - 35}
+        store={store}
+        setStore={setStore}
+      />
     </div>
   );
 };

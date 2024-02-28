@@ -4,6 +4,9 @@ import "!style-loader!css-loader!postcss-loader!/src/styles/main.css";
 
 const preview: Preview = {
   parameters: {
+    backgrounds: {
+      default: "dark",
+    },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
