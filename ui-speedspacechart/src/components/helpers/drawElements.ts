@@ -217,7 +217,7 @@ export const drawFrame = (
   width: number,
   height: number,
   store: Store,
-  setStore?: React.Dispatch<React.SetStateAction<Store>>
+  setStore: React.Dispatch<React.SetStateAction<Store>>
 ) => {
   clearCanvas(ctx, width, height);
 
@@ -233,5 +233,5 @@ export const drawFrame = (
   >;
 
   // zoom interaction
-  if (setStore) canvas.call(zoomX(store, setStore));
+  canvas.call(zoomX(store, setStore));
 };

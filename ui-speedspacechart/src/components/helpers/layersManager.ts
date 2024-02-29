@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import type { Store } from "../../types/chartTypes";
+import { Store } from "../../types/chartTypes";
 
 export const zoomX = (
   store: Store,
@@ -8,11 +8,11 @@ export const zoomX = (
   d3.zoom().on("zoom", (event) => {
     const ratio = event.transform.k;
     const leftOffset = event.transform.x;
-    setStore(() => ({
+    setStore({
       ...store,
       ratio,
       leftOffset,
-    }));
+    });
   });
 
 export const resetZoom = () =>
