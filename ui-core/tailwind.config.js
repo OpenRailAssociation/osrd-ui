@@ -8,7 +8,10 @@ module.exports = {
     extend: {
       colors: {
         transparent: 'transparent',
-        black: '#000',
+        black: {
+          1:"rgba(0, 0, 0, 0.01)",
+          50: "#94918E"
+        },
         ambientA: {
           5: '#F6F8F9',
           10: '#EFF3F5',
@@ -38,6 +41,7 @@ module.exports = {
           50: '#797671',
           60: '#5C5955',
           70: '#494641',
+          80: '#312E2B',
           90: '#1F1B17',
         } ,
         primary: {
@@ -81,6 +85,9 @@ module.exports = {
           50: '#E8D900',
         },
       },
+      boxShadow:{
+        input: "0px 1px 3px rgba(0, 0, 0, 0.5) inset"
+      }
     },
     fontFamily : {
       sans: ['IBM Plex sans', 'sans-serif'],
