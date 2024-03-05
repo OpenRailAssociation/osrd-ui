@@ -9,7 +9,7 @@ module.exports = {
       colors: {
         transparent: 'transparent',
         black: {
-          1:"rgba(0, 0, 0, 0.01)",
+          100:"#000000",
           50: "#94918E"
         },
         ambientA: {

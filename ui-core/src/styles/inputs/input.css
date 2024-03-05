@@ -1,10 +1,93 @@
-.custom-input::-webkit-inner-spin-button,
-.custom-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+.custom-input {
+  display: flex;
+  flex-direction: column;
+  width: 314px;
+  height: 79px;
 
-.custom-input[type=number] {
-    appearance: none;
-  -moz-appearance: textfield;
+  .label-wrapper {
+    position: relative;
+
+    .required {
+      position:absolute;
+      left: 0;
+      margin: 5px 8px 3px 0;
+      border-radius: 0.5px;
+      /* https://github.com/tailwindlabs/tailwindcss/discussions/5258 */
+      @apply text-info-30;
+    }
+
+    .label {
+      margin-left: 24px;
+      @apply text-grey-80 font-sans font-semibold text-base text-left leading-6;
+    }
+  }
+
+  .hint {
+    margin-left: 25px;
+    @apply text-grey-50 text-sm leading-5;
+  }
+
+  .input-wrapper {
+    margin-left: 24px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+
+    .leading-content {
+      padding: 9px 16px 11px;
+      border: 1px solid;
+      border-radius: 4px 0 0 4px;
+      @apply text-sm text-grey-80 text-left leading-5 border-grey-40;
+    }
+
+    .input {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid;
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.01);
+      @apply border-grey-40 text-grey-40 shadow-input;
+
+      &.with-leading-only {
+        border-width: 1px 0 1px 1px;
+        border-radius: 0 4px 4px 0;
+        width: 96px;
+      }
+
+      &.with-trailing-only {
+        border-width: 1px 1px 1px 0;
+        border-radius: 4px 0 0 4px;
+        width: 96px;
+      }
+
+      &.with-leading-and-trailing {
+        border-width: 1px 0 1px 0;
+        border-radius: 0;
+        width: 96px;
+      }
+    }
+
+    .trailing-content {
+      padding: 9px 16px 11px;
+      border: 1px solid;
+      border-radius: 0 4px 4px 0;
+      @apply text-sm text-grey-80 text-left leading-5 border-grey-40;
+    }
+
+    .checkIndicator {
+      margin:0 3px 0 9px;
+      @apply text-info-30;
+    }
+  }
+
+  .input::-webkit-inner-spin-button,
+  .input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .input[type=number] {
+      appearance: none;
+    -moz-appearance: textfield;
+  }
 }
