@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# OSRD UI-CORE
+This project is the design system for the open source project [OSRD](https://osrd.fr/fr/). It includes a collection of user interface components like buttons, checkboxes, input fields, etc.... These components are made to help with the web application development and keep a consistent design style throughout the project.
 
 ## Available Scripts
 
@@ -39,8 +38,5 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## editor config
+We use Tailwind to make styling easier. To enable VSCode to support Tailwind directives within CSS files, we must complete the three steps outlined [here](https://github.com/tailwindlabs/tailwindcss/discussions/5258#discussioncomment-1979394)
