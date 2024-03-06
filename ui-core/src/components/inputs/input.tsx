@@ -17,33 +17,47 @@ interface InputProps {
 
 //TODO Tag
 //Est ce qu'on veut focus lorsqu'on clique sur prefix/suffixe de l'input ?
-// - utilisation de classnames
-const Input: React.FC<InputProps> = ({ id, label, type, value: initialValue, hint, leadingContent, trailingContent, checkIndicator, required, small }) => {
+// - box shadow de l'input
+// - small leading content input line-height: 16px -> 8px
+// - icon checkIndicator
+// - input number avec les arrows.
+const Input: React.FC<InputProps> = ({ 
+    id,
+    label,
+    type,
+    value: initialValue,
+    hint,
+    leadingContent,
+    trailingContent,
+    checkIndicator,
+    required,
+    small
+}) => {
     const [value, setValue] = useState(initialValue);    
     
-    const d = 'bg-red-50'
     return (
-        <div className={`custom-input ${d}`}>
+        <div className={"custom-input"}>
             <div className="label-wrapper">
                 {required && <span className="required"> <RequiredInput/> </span>}
-                <label className="label" htmlFor={id}>{label}</label>
+                <label className={cx("label", {'small':small})} htmlFor={id}>{label}</label>
             </div>
             {hint && <span className="hint">{hint}</span>}
-            <div className="input-wrapper">
-                {leadingContent && <span className="leading-content">{leadingContent}</span>}
+            <div className={cx("input-wrapper")}>
+                {leadingContent && <span className={cx("leading-content", { "small":small })}>{leadingContent}</span>}
                 <input 
                     className={cx('input', {
                         'with-leading-only': leadingContent && !trailingContent,
                         'with-trailing-only': trailingContent && !leadingContent,
-                        'with-leading-and-trailing': leadingContent && trailingContent
+                        'with-leading-and-trailing': leadingContent && trailingContent,
+                        'small':small
                     })}
                     id={id}
                     type={type}
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                 />
-                {trailingContent && <span className="trailing-content">{trailingContent}</span>}
-                {checkIndicator && <span className="checkIndicator" ><Trophy size={small ? 'sm' : 'lg'}/></span>}
+                {trailingContent && <span className={cx("trailing-content", { "small":small })}>{trailingContent}</span>}
+                {checkIndicator && <span className={cx("checkIndicator", { "small":small })} ><Trophy size={small ? 'sm' : 'lg'}/></span>}
             </div>
         </div>
     )

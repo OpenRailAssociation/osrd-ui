@@ -1,11 +1,10 @@
 .custom-input {
   display: flex;
   flex-direction: column;
-  width: 314px;
-  height: 79px;
 
   .label-wrapper {
     position: relative;
+    margin:10px 11px 0 0;
 
     .required {
       position:absolute;
@@ -18,18 +17,28 @@
 
     .label {
       margin-left: 24px;
-      @apply text-grey-80 font-sans font-semibold text-base text-left leading-6;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 0;
+      text-align: left;
+      @apply text-grey-80 font-sans font-semibold;
+
+      &.small {
+        font-size: 14px;
+        line-height: 20px;
+      }
     }
   }
 
   .hint {
     margin-left: 25px;
+    font-size: 14px;
+    line-height: 20px;
     @apply text-grey-50 text-sm leading-5;
   }
 
   .input-wrapper {
-    margin-left: 24px;
-    margin-bottom: 3px;
+    margin: 7px 0 3px 24px;
     display: flex;
     align-items: center;
 
@@ -37,32 +46,52 @@
       padding: 9px 16px 11px;
       border: 1px solid;
       border-radius: 4px 0 0 4px;
-      @apply text-sm text-grey-80 text-left leading-5 border-grey-40;
+      line-height: 20px;
+      font-size: 14px;
+      text-align: left;
+      @apply text-grey-80 border-grey-40;
+
+      &.small {
+        font-size: 12px;
+        line-height: 8px;
+        border-radius: 3px 0px 0px 3px;
+      }
     }
 
     .input {
+      line-height: 24px;
+      font-size: 16px;
       padding: 8px 12px;
       border-radius: 4px;
       border: 1px solid;
       opacity: 1;
       background-color: rgba(0, 0, 0, 0.01);
-      @apply border-grey-40 text-grey-40 shadow-input;
+      @apply shadow-input text-grey-40 border-grey-40;
+
+      &.small {
+        line-height: 20px;
+        font-size: 14px;
+        padding: 4px 9px 4px 8px;
+        border-radius: 3px;
+      }
 
       &.with-leading-only {
-        border-width: 1px 0 1px 1px;
+        border-left: none;
         border-radius: 0 4px 4px 0;
-        width: 96px;
       }
 
       &.with-trailing-only {
-        border-width: 1px 1px 1px 0;
+        border-right: none;
         border-radius: 4px 0 0 4px;
-        width: 96px;
       }
 
       &.with-leading-and-trailing {
-        border-width: 1px 0 1px 0;
+        border-left: none;
+        border-right: none;
         border-radius: 0;
+      }
+
+      &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
         width: 96px;
       }
     }
@@ -71,7 +100,16 @@
       padding: 9px 16px 11px;
       border: 1px solid;
       border-radius: 0 4px 4px 0;
-      @apply text-sm text-grey-80 text-left leading-5 border-grey-40;
+      line-height: 20px;
+      font-size: 14px;
+      text-align: left;
+      @apply text-grey-80 border-grey-40;
+
+      &.small {
+        font-size: 12px;
+        line-height: 8px;
+        border-radius: 0 3px 3px 0;
+      }
     }
 
     .checkIndicator {
@@ -80,6 +118,7 @@
     }
   }
 
+  /* Remove increment/decrement buttons in number input */
   .input::-webkit-inner-spin-button,
   .input::-webkit-outer-spin-button {
     -webkit-appearance: none;
