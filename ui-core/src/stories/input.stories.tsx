@@ -4,7 +4,9 @@ import Input from '../components/inputs/input';
 const meta: Meta<typeof Input> = {
     component: Input,
     args:{
-        small:false
+        small:false,
+        disabled: false,
+        readOnly: false
     }
 };
 
