@@ -29,12 +29,7 @@ interface InputProps {
 // - concernant le mouse focus, est ce que c'est une bonne idée, de focus un input au mouseover, parce que du coup, si le focus était sur un autre composant (un autre input, un checkbox, etc...), il sera perdu sur ce dernier au détriment de celui sur lequel on fait le mouseover
 // 
 
-// hauteur fixée et bordure doit être à l'interieur blur radius à 1 et le spread radius à 1
 // virer padding top et bottom et garder le padding latéral à 12 du leading content 
-//leading background boxshadow au lieu de border
-// faire tourner l'icone 
-// black-1 rgba(0, 0, 0, 0.01) black-2
-// le caret, laisser le sytème s'en occupé
 
 const Input: React.FC<InputProps> = ({ 
     id,
@@ -53,8 +48,8 @@ const Input: React.FC<InputProps> = ({
     const [value, setValue] = useState(initialValue); 
     
     return (
-        <div className={"custom-input"}>
-            <div className="label-wrapper">
+        <div className={"custom-input bg-red-50"}>
+            <div className={cx("label-wrapper", { 'has-hint': hint })}>
                 {required && <span className="required"> <RequiredInput/> </span>}
                 <label
                     className={cx("label", {
@@ -85,7 +80,7 @@ const Input: React.FC<InputProps> = ({
                     readOnly={readOnly}
                 />
                 {trailingContent && <span className={cx("trailing-content", { "small":small })}>{trailingContent}</span>}
-                {checkIndicator && <span className={cx("checkIndicator", { "small":small })} ><Gear size={small ? 'sm' : 'lg'}/></span>}
+                {checkIndicator && <span className={cx("checkIndicator animate-spin-check-indicator", { "small":small })} ><Gear size={small ? 'sm' : 'lg'}/></span>}
             </div>
         </div>
     )

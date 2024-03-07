@@ -88,8 +88,12 @@ module.exports = {
         },
       },
       boxShadow:{
-        input: "0px 1px 3px rgba(0, 0, 0, 0.5) inset"
-      }
+        input: "inset 0 0 0 1px rgba(148, 145, 142, 1), inset 0 1px 3px rgba(0, 0, 0, 0.5)",
+        inputFocus: "0 0 0 1px #256AFA"
+      },
+      animation: {
+        "spin-check-indicator": "spin 3s linear infinite"
+      },
     },
     fontFamily : {
       sans: ['IBM Plex sans', 'sans-serif'],
