@@ -6,10 +6,13 @@
   .label-wrapper {
     position: relative;
     margin-top: 10px;
-    margin-bottom: 2px;
 
     &.has-hint {
       margin-bottom: 0;
+    }
+
+    &.small {
+      margin-top: 9px;
     }
 
     .required {
@@ -32,6 +35,7 @@
       @apply text-grey-80 font-sans font-semibold;
 
       &.small {
+        height: 20px;
         font-size: 14px;
         line-height: 20px;
       }
@@ -51,6 +55,10 @@
     font-size: 14px;
     line-height: 20px;
     @apply text-grey-50;
+
+    &.small {
+      margin-bottom: 3px;
+    }
   }
 
   .input-wrapper {
@@ -61,6 +69,10 @@
     padding: 3px;
     width:max-content;
     height: 46px;
+
+    &.small {
+      height: 34px;
+    }
 
     .leading-content {
       height: 40px;
@@ -74,8 +86,9 @@
       @apply text-grey-80 border-grey-40;
 
       &.small {
+        height: 28px;
         font-size: 12px;
-        line-height: 8px;
+        line-height: 8px; /* à check avec thibaut*/
         border-radius: 3px 0px 0px 3px;
       }
     }
@@ -93,9 +106,10 @@
       @apply shadow-input bg-black-1 text-black-100;
 
       &.small {
+        height: 28px;
         line-height: 20px;
         font-size: 14px;
-        padding: 4px 9px 4px 8px;
+        padding: 3px 8px 3px 7px;
         border-radius: 3px;
       }
 
@@ -146,6 +160,7 @@
       @apply text-grey-80 border-grey-40;
 
       &.small {
+        height: 28px;
         font-size: 12px;
         line-height: 8px;
         border-radius: 0 3px 3px 0;
@@ -153,8 +168,12 @@
     }
 
     .checkIndicator {
-      margin:8px 3px 8px 12px;
+      margin:8px 3px 8px 9px;
       @apply text-info-30;
+
+      &.small {
+        margin: 0 4px 0 8px;
+      }
     }
   }
 

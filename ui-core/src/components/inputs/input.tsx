@@ -49,7 +49,7 @@ const Input: React.FC<InputProps> = ({
     
     return (
         <div className={"custom-input bg-red-50"}>
-            <div className={cx("label-wrapper", { 'has-hint': hint })}>
+            <div className={cx("label-wrapper", { 'small':small, 'has-hint': hint })}>
                 {required && <span className="required"> <RequiredInput/> </span>}
                 <label
                     className={cx("label", {
@@ -62,8 +62,8 @@ const Input: React.FC<InputProps> = ({
                     {label}
                 </label>
             </div>
-            {hint && <span className="hint">{hint}</span>}
-            <div className={cx("input-wrapper")}>
+            {hint && <span className={cx("hint", { 'small':small })}>{hint}</span>}
+            <div className={cx("input-wrapper", {'small':small})}>
                 {leadingContent && <span className={cx("leading-content", { "small":small })}>{leadingContent}</span>}
                 <input 
                     className={cx('input', {
