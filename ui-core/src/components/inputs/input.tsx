@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { Gear, RequiredInput } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
@@ -45,10 +45,26 @@ const Input: React.FC<InputProps> = ({
     readOnly,
     small
 }) => {
-    const [value, setValue] = useState(initialValue); 
+    const [value, setValue] = useState(initialValue);
+    const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
+
+    const handleKeyDown = (e: { key: string; }) => {
+        if (e.key === 'Tab') {
+            setFocusViaKeyboard(true);
+        }
+    };
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
     
     return (
-        <div className={"custom-input bg-red-50"}>
+        <div className={"custom-input "}>
+
+            {/* LABEL */}
             <div className={cx("label-wrapper", { 'small':small, 'has-hint': hint })}>
                 {required && <span className="required"> <RequiredInput/> </span>}
                 <label
@@ -62,26 +78,34 @@ const Input: React.FC<InputProps> = ({
                     {label}
                 </label>
             </div>
+
+            {/* HINT */}
             {hint && <span className={cx("hint", { 'small':small })}>{hint}</span>}
-            <div className={cx("input-wrapper", {'small':small})}>
-                {leadingContent && <span className={cx("leading-content", { "small":small })}>{leadingContent}</span>}
-                <input 
-                    className={cx('input', {
-                        'with-leading-only': leadingContent && !trailingContent,
-                        'with-trailing-only': trailingContent && !leadingContent,
-                        'with-leading-and-trailing': leadingContent && trailingContent,
-                        'small':small,
-                    })}
-                    id={id}
-                    type={type}
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    disabled={disabled}
-                    readOnly={readOnly}
-                />
-                {trailingContent && <span className={cx("trailing-content", { "small":small })}>{trailingContent}</span>}
+            
+            {/* INPUT WRAPPER AND CHECK INDICATOR */}
+            <div className="input-wrapper-and-check-indicator">
+                <div className={cx("input-wrapper", {'small':small, 'focused': focusViaKeyboard})}>
+                    {leadingContent && <span className={cx("leading-content", { "small":small })}>{leadingContent}</span>}
+                    <input 
+                        className={cx('input', {
+                            'with-leading-only': leadingContent && !trailingContent,
+                            'with-trailing-only': trailingContent && !leadingContent,
+                            'with-leading-and-trailing': leadingContent && trailingContent,
+                            'small':small,
+                        })}
+                        id={id}
+                        type={type}
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        disabled={disabled}
+                        readOnly={readOnly}
+                        onMouseDown={() => setFocusViaKeyboard(false)}
+                    />
+                    {trailingContent && <span className={cx("trailing-content", { "small":small })}>{trailingContent}</span>}
+                </div>
                 {checkIndicator && <span className={cx("checkIndicator animate-spin-check-indicator", { "small":small })} ><Gear size={small ? 'sm' : 'lg'}/></span>}
             </div>
+
         </div>
     )
 }
