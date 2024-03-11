@@ -49,7 +49,7 @@ const Input: React.FC<InputProps> = ({
     const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
 
     const handleKeyDown = (e: { key: string; }) => {
-        if (e.key === 'Tab') {
+        if (e.key === 'Tab') {      
             setFocusViaKeyboard(true);
         }
     };
@@ -62,7 +62,7 @@ const Input: React.FC<InputProps> = ({
     }, []);
     
     return (
-        <div className={"custom-input "}>
+        <div className={"custom-input"}>
 
             {/* LABEL */}
             <div className={cx("label-wrapper", { 'small':small, 'has-hint': hint })}>
@@ -99,7 +99,7 @@ const Input: React.FC<InputProps> = ({
                         onChange={(e) => setValue(e.target.value)}
                         disabled={disabled}
                         readOnly={readOnly}
-                        onMouseDown={() => setFocusViaKeyboard(false)}
+                        onBlur={() => setFocusViaKeyboard(false)}
                     />
                     {trailingContent && <span className={cx("trailing-content", { "small":small })}>{trailingContent}</span>}
                 </div>
