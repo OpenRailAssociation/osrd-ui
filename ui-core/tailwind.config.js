@@ -88,8 +88,12 @@ module.exports = {
         },
       },
       boxShadow:{
-        input: "inset 0 0 0 1px rgba(148, 145, 142, 1), inset 0 1px 3px rgba(0, 0, 0, 0.5)",
-        inputFocus: "0 0 0 1px #256AFA"
+        "input-border": "inset 0 0 0 1px #94918E, inset 0 1px 3px 0 rgba(0,0,0,0.5)",
+        // "leading-border": "inset 0 0 0 1px #94918E",
+        // "trailing-border": "inset 0 0 0 1px #94918E",
+        "input-wrapper-focused": "0 0 0 1px #256AFA",
+        "input-border-read-only":"inset 0 0 0 2px white, 0 0 0 1px #D3D1CF",
+        "input-border-disabled":"inset 0 0 0 1px #EBEBEA"
       },
       animation: {
         "spin-check-indicator": "spin 3s linear infinite"

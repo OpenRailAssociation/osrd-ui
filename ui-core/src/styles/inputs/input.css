@@ -79,12 +79,12 @@
       }
   
       &.focused {
-        @apply shadow-inputFocus;
+        @apply shadow-input-wrapper-focused;
       }
   
       .leading-content {
         height: 40px;
-        padding: 8px 15px 10px;
+        padding: 8px 16px 10px 15px;
         border: 1px solid;
         border-right: none;
         border-radius: 4px 0 0 4px;
@@ -92,6 +92,7 @@
         font-size: 14px;
         text-align: left;
         @apply text-grey-80 border-grey-40;
+        /* @apply shadow-leading-border text-grey-80; */
   
         &.small {
           height: 28px;
@@ -111,7 +112,8 @@
         padding: 8px 12px;
         border-radius: 4px;
         opacity: 1;
-        @apply shadow-input bg-black-1 text-black-100;
+        @apply shadow-input-border bg-black-1 text-black-100;
+
   
         &.small {
           height: 28px;
@@ -140,21 +142,20 @@
         &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
           width: 96px;
         }
-      }
-  
-      .input:focus {
-        outline: none;
-      }
-  
-      .input:disabled {
-        box-shadow: none;
-        @apply text-grey-30 bg-black-2 border-grey-10;
         
+        &:focus {
+          outline: none;
+        }
+    
+        &:read-only {
+          @apply shadow-input-border-read-only text-grey-50 bg-black-2;
+        }
+  
+        &:disabled {
+          @apply shadow-input-border-disabled text-grey-30 bg-black-2;
+        }
       }
   
-      .input:read-only {
-        @apply text-grey-50 bg-black-2 border-grey-20;
-      }
       
       .trailing-content {
         height: 40px;
@@ -166,6 +167,7 @@
         font-size: 14px;
         text-align: left;
         @apply text-grey-80 border-grey-40;
+        /* @apply shadow-trailing-border text-grey-80 border-grey-40; */
   
         &.small {
           height: 28px;
@@ -186,11 +188,6 @@
     }
   }
 
-
-
-  /* .input-wrapper:focus-within {
-    @apply shadow-inputFocus;
-  } */
 
   /* Remove increment/decrement buttons in number input */
   .input::-webkit-inner-spin-button,
