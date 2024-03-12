@@ -1,8 +1,9 @@
-import React, { useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { Gear, RequiredInput } from '@osrd-project/ui-icons';
 import cx from 'classnames';
+import useKeyPress from './hooks/useKeyPress';
 
-interface InputProps {
+type InputProps = {
     id:string;
     label: string;
     type: "text" | "number";
@@ -47,19 +48,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
     const [value, setValue] = useState(initialValue);
     const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
-
-    const handleKeyDown = (e: { key: string; }) => {
-        if (e.key === 'Tab') {      
-            setFocusViaKeyboard(true);
-        }
-    };
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
+    useKeyPress("Tab", async () => setFocusViaKeyboard(true));
     
     return (
         <div className={"custom-input"}>
@@ -100,6 +89,7 @@ const Input: React.FC<InputProps> = ({
                         disabled={disabled}
                         readOnly={readOnly}
                         onBlur={() => setFocusViaKeyboard(false)}
+                        data-role="taginput"
                     />
                     {trailingContent && <span className={cx("trailing-content", { "small":small })}>{trailingContent}</span>}
                 </div>
