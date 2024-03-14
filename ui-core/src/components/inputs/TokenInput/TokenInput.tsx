@@ -17,7 +17,7 @@ const TokenInput : React.FC<TokenInputProps> = ({
     const [selectedToken, setSelectedToken] = useState<number|null>(null);
 
     const handleKeyDown = (e:React.KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === "Enter"){
+        if(e.key === "Enter" && newToken.trim() !== ""){
             setTokens(oldTokens => [...oldTokens, newToken])
             setNewToken("")
         }

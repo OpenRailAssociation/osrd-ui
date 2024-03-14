@@ -2,6 +2,19 @@
   display: flex;
   flex-direction: column;
   width: max-content;
+  border-radius: 8px;
+  
+  &.info {
+    @apply bg-info-5;
+  }
+
+  &.warning {
+    @apply bg-warning-5;
+  }
+
+  &.error {
+    @apply bg-error-5;
+  }
 
   .label-wrapper {
     position: relative;
@@ -159,6 +172,29 @@
           box-shadow: 0px 0px 0px 1px rgba(235, 235, 234, 1) inset;
           @apply text-grey-30 bg-black-2;
         }
+
+        &.success {
+          box-shadow: 0px 0px 0px 1px rgba(11, 114, 60, 1) inset, 0px 0px 0px 4px rgba(230, 247, 238, 1) inset;
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        &.info {
+          border: 1.5px solid rgba(112, 193, 229, 1);
+          box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+          background-color: rgba(255, 255, 255, 1);
+        }
+
+        &.warning {
+          border: 1.5px solid rgba(234, 167, 43, 1);
+          box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+          background-color: rgba(255, 255, 255, 1);
+        }
+
+        &.error {
+          border: 1.5px solid rgba(255, 104, 104, 1);
+          box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+          background-color: rgba(255, 255, 255, 1);
+        }
       }
   
       
@@ -191,17 +227,60 @@
       }
     }
   
-    .checkIndicator {
-      margin:8px 3px 8px 9px;
-      animation: spin 3s linear infinite;
-      @apply text-info-30;
-  
+    .status-icon {
+      margin:9px 0 9px 11px;
+      
+      &.loading {
+        animation: spin 3s linear infinite;
+        @apply text-info-30;
+      }
+
+      &.info {
+        @apply text-info-30;
+      }
+
+      &.success {
+        @apply text-success-30;
+      }
+ 
+      &.warning {
+        @apply text-warning-30;
+      }
+
+      &.error {
+        @apply text-error-60;
+      }
+
       &.small {
-        margin: 0 4px 0 8px;
+        margin: 5px 0 5px 8px;
       }
     }
   }
 
+  .status-message {
+    font-size: 16px;
+    letter-spacing: 0px;
+    text-align: left;
+    line-height: 24px;
+    margin: 14px 0 0 16px;
+    @apply font-semibold;
+
+    &.info {
+      @apply text-info-60;
+    }
+
+    &.success {
+      @apply text-success-60;
+    }
+
+    &.warning {
+      @apply text-warning-60;
+    }
+
+    &.error {
+      @apply text-error-60;
+    }
+  }
 
   /* Remove increment/decrement buttons in number input */
   .input::-webkit-inner-spin-button,
