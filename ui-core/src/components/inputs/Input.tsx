@@ -3,6 +3,25 @@ import { Gear, RequiredInput } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 import useKeyPress from './hooks/useKeyPress';
 
+type InputAffixProps = {
+    content:string
+    small?: boolean;
+    type: "leading" | "trailing";
+}
+
+const InputAffix: React.FC<InputAffixProps> = ({
+content,
+type,
+small
+}) => {
+    return (
+        <div className={cx(`${type}-content-wrapper`, { "small":small })}>
+            <span className={`${type}-content`}>{content}</span>
+        </div>
+    )
+}
+
+
 type InputProps = {
     id:string;
     label: string;
@@ -74,7 +93,7 @@ const Input: React.FC<InputProps> = ({
             {/* INPUT WRAPPER AND CHECK INDICATOR */}
             <div className="input-wrapper-and-check-indicator">
                 <div className={cx("input-wrapper", {'small':small, 'focused': focusViaKeyboard})}>
-                    {leadingContent && <span className={cx("leading-content", { "small":small })}>{leadingContent}</span>}
+                    {leadingContent && <InputAffix content={leadingContent} type="leading" small={small} />}
                     <input 
                         className={cx('input', {
                             'with-leading-only': leadingContent && !trailingContent,
@@ -91,12 +110,14 @@ const Input: React.FC<InputProps> = ({
                         onBlur={() => setFocusViaKeyboard(false)}
                         data-role="taginput"
                     />
-                    {trailingContent && <span className={cx("trailing-content", { "small":small })}>{trailingContent}</span>}
+                    {trailingContent && <InputAffix content={trailingContent} type="trailing" small={small} />}
                 </div>
-                {checkIndicator && <span className={cx("checkIndicator animate-spin-check-indicator", { "small":small })} ><Gear size={small ? 'sm' : 'lg'}/></span>}
+                {checkIndicator && <span className={cx("checkIndicator", { "small":small })} ><Gear size={small ? 'sm' : 'lg'}/></span>}
             </div>
 
         </div>
     )
 }
+
 export default Input;
+
