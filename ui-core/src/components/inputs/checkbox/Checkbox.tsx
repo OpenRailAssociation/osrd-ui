@@ -1,22 +1,20 @@
-import React from 'react';
+
 import cx from 'classnames';
 
-interface CheckboxProps {
-  id?: string;
+type checkboxProps = {
+  isChecked?: boolean;
+  isIndeterminate?: boolean;
+  onClick?: () => void;
   label: string;
   small?: boolean;
-  isChecked: boolean;
-  isIndeterminate?: boolean;
-  onChange: (id?: string) => void;
-}
+};
 
-const Checkbox: React.FC<CheckboxProps> = ({
-  id,
+const Checkbox: React.FC<checkboxProps> = ({ 
+  isChecked = false, 
+  isIndeterminate = false, 
+  onClick = () => {} ,
   label,
-  small = false,
-  isChecked,
-  isIndeterminate = false,
-  onChange,
+  small
 }) => {
   return (
     <label className={cx('custom-checkbox', { 'small': small })}>
@@ -24,7 +22,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         type="checkbox"
         checked={isChecked}
         ref={input => input && (input.indeterminate = isIndeterminate)}
-        onChange={() => onChange(id)}
+        onChange={onClick}
       />
       <span className='checkmark'></span>
       <div className='label'>{label}</div>

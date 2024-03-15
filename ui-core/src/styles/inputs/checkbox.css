@@ -2,7 +2,7 @@
   display: block;
   position: relative;
   padding-left: 31px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -39,6 +39,7 @@
     );
     outline: solid 2px #ebebea;
 
+
     &:after {
       content: "";
       position: absolute;
@@ -51,9 +52,21 @@
     }
   }
 
+  &:hover {
+    &.small {
+      .checkmark {
+        outline: solid 1.5px #98C0F5;
+      }
+    }
+    .checkmark{
+      outline: solid 2px #98C0F5;
+    }
+  }
+
   &.small {
     font-size: 0.875rem;
     padding-left: 24px;
+    margin-bottom: 2px;
 
     .checkmark {
       width: 0.875rem;
@@ -66,6 +79,16 @@
       line-height: 20px;
       padding-top: 2px;
     }
+    input:indeterminate ~ .checkmark {
+      &:after {
+        position: absolute;
+        border: none;
+        content: url(../../assets/indeterminateCheckbox_small_shadow.svg);
+        opacity: 1;
+        top:-1.5px;
+        left: 0px;
+      }
+    }
     input:checked ~ .checkmark {
         &:after {
             position: absolute;
@@ -73,7 +96,7 @@
             content: url(../../assets/check_small_shadow.svg);
             opacity: 1;
             top:-1.5px;
-            left: 0.5px;
+            left: 0px;
           }
     }
   }
@@ -99,8 +122,32 @@
         content: url(../../assets/check_regular_shadow.svg);
         opacity: 1;
         top: 0px;
-        left: 0.5px;
+        left: 0px;
       }
     }
+    &:indeterminate ~ .checkmark {
+      border-radius: 3px;
+      border: 1px solid #1F1B17;
+      opacity: 1;
+      background-image: linear-gradient(
+        180deg,
+        rgba(148, 145, 142, 1) 0%,
+        rgba(121, 118, 113, 1) 100%
+      );
+      &:after {
+        border: none;
+        content: url(../../assets/indeterminateCheckbox_regular_shadow.svg);
+        opacity: 1;
+        top: 0px;
+        left: 0px;
+      }
+    }
+  }
+}
+
+.checkbox-list {
+  padding-left: 16px;
+  &.small {
+    padding-left: 12px;;
   }
 }
