@@ -70,6 +70,18 @@ export const RequiredInput: Story = {
     }
 }
 
+export const LoadingInput: Story = {
+    args:{
+        label:"Name",
+        type:"text",
+        required:true,
+        value:"Manuel",
+        statusWithMessage:{
+            status:"loading",
+        }
+    }
+}
+
 export const SuccessInput: Story = {
     args:{
         label:"Your name",
@@ -84,7 +96,7 @@ export const SuccessInput: Story = {
 
 export const InformationInput: Story = {
     args:{
-        label:"Your name",
+        label:"Name",
         type:"text",
         required:true,
         value:"Jean-Michel Halleurt",
@@ -108,6 +120,18 @@ export const WarningInput: Story = {
     }
 }
 
+export const WarningWithoutMessageInput: Story = {
+    args:{
+        label:"Your name",
+        type:"text",
+        required:true,
+        value:"Jean-Michel Halleurt",
+        statusWithMessage:{
+            status:"warning",
+        }
+    }
+}
+
 export const ErrorInput: Story = {
     args:{
         label:"Name",
@@ -117,6 +141,18 @@ export const ErrorInput: Story = {
         statusWithMessage:{
             status:"error",
             message:"“Michel Sardou” can’t be used"
+        }
+    }
+}
+
+export const ErrorWithoutMessageInput: Story = {
+    args:{
+        label:"Name",
+        type:"text",
+        required:true,
+        value:"Michel Sardou",
+        statusWithMessage:{
+            status:"error",
         }
     }
 }

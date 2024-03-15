@@ -1,9 +1,9 @@
-.custom-input {
-  display: flex;
-  flex-direction: column;
-  width: max-content;
+.feed-back {
   border-radius: 8px;
-  
+  width: max-content;
+  position: relative;
+  padding: 10px 0 16px 16px;
+
   &.info {
     @apply bg-info-5;
   }
@@ -16,282 +16,283 @@
     @apply bg-error-5;
   }
 
-  .label-wrapper {
-    position: relative;
-    margin-top: 10px;
-
-    &.has-hint {
-      margin-bottom: 0;
-    }
-
-    &.small {
-      margin-top: 9px;
-    }
-
-    .required {
-      position:absolute;
-      left: 0;
-      margin: 5px 8px 2px 0;
-      border-radius: 0.5px;
-      @apply text-info-30;
-    }
-
-    .label {
-      display: inline-block;
-      height: 24px;
-      margin-left: 24px;
-      font-size: 16px;
-      line-height: 24px;
-      letter-spacing: 0;
-      text-align: left;
-      vertical-align: top;
-      @apply text-grey-80 font-sans font-semibold;
-
-      &.small {
-        height: 20px;
-        font-size: 14px;
-        line-height: 20px;
-      }
-
-      &.disabled {
-        @apply text-grey-30;
-      }
-    }
-  }
-
-  
-
-  .hint {
-    height: 20px;
-    margin-left: 25px;
-    margin-bottom: 7px;
-    font-size: 14px;
-    line-height: 20px;
-    @apply text-grey-50;
-
-    &.small {
-      margin-bottom: 3px;
-    }
-  }
-
-  .input-wrapper-and-check-indicator {
+  .custom-input {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    width: max-content;
+    
+  
+    .label-wrapper {
 
-    .input-wrapper {
-      margin-left: 24px;
-      margin-bottom: 3px;
       display: flex;
       align-items: center;
-      padding: 3px;
-      width:max-content;
-      height: 46px;
-  
-      &.small {
-        height: 34px;
-      }
-  
-      &.focused {
-        box-shadow: 0px 0px 0px 1px rgba(37, 106, 250, 1) inset;
-      }
-  
-      .leading-content-wrapper {
-        height: 40px;
-        padding: 9px 16px 11px 16px;
-        border-radius: 4px 0 0 4px;
-        box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset;
-        margin-right: -1px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-        &.small {
-          height: 28px;
-          border-radius: 3px 0px 0px 3px;
 
-          .leading-content {
-            font-size: 12px;
-            line-height: 8px; /* à check avec thibaut*/
-          }
-        }
-        
-        .leading-content {
-          line-height: 20px;
-          font-size: 14px;
-          text-align: center;
-          @apply text-grey-80;
-        }
+      &.has-hint {
+        margin-bottom: 0;
       }
   
-      .input {
-        height: 40px;
+      .required {
+        position:absolute;
+        left: -8px;
+        border-radius: 0.5px;
+        @apply text-info-30;
+      }
+  
+      .label {
+        display: inline-block;
+        height: 24px;
+        font-size: 16px;
         line-height: 24px;
+        letter-spacing: 0;
         text-align: left;
         vertical-align: top;
-        letter-spacing: 0px;
-        font-size: 16px;
-        padding: 8px 12px;
-        border-radius: 4px;
-        box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset, 0px 1px 3px rgba(0, 0, 0, 0.5) inset;
-        @apply bg-black-1 text-black-100;
+        @apply text-grey-80 font-sans font-semibold;
   
         &.small {
-          height: 28px;
-          line-height: 20px;
+          height: 20px;
           font-size: 14px;
-          padding: 3px 8px 3px 7px;
-          border-radius: 3px;
-        }
-  
-        &.with-leading-only {
-          border-radius: 0px 4px 4px 0px;
-        }
-  
-        &.with-trailing-only {
-          border-radius: 4px 0 0 4px;
-        }
-  
-        &.with-leading-and-trailing {
-          border-radius: 0;
-        }
-  
-        &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
-          width: 96px;
-        }
-        
-        &:focus {
-          outline: none;
-        }
-    
-        &:read-only {
-          box-shadow: 0px 0px 0px 1px rgba(211, 209, 207, 1) inset, 0px 0px 0px 3px rgba(255, 255, 255, 1) inset;
-          @apply text-grey-50 bg-black-2;
-        }
-  
-        &:disabled {
-          box-shadow: 0px 0px 0px 1px rgba(235, 235, 234, 1) inset;
-          @apply text-grey-30 bg-black-2;
-        }
-
-        &.success {
-          box-shadow: 0px 0px 0px 1px rgba(11, 114, 60, 1) inset, 0px 0px 0px 4px rgba(230, 247, 238, 1) inset;
-          background-color: rgba(255, 255, 255, 0.5);
-        }
-
-        &.info {
-          border: 1.5px solid rgba(112, 193, 229, 1);
-          box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
-          background-color: rgba(255, 255, 255, 1);
-        }
-
-        &.warning {
-          border: 1.5px solid rgba(234, 167, 43, 1);
-          box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
-          background-color: rgba(255, 255, 255, 1);
-        }
-
-        &.error {
-          border: 1.5px solid rgba(255, 104, 104, 1);
-          box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
-          background-color: rgba(255, 255, 255, 1);
-        }
-      }
-  
-      
-      .trailing-content-wrapper {
-        height: 40px;
-        padding: 9px 16px 11px;
-        border-radius: 0 4px 4px 0;
-        box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset;
-        margin-left: -1px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-        &.small {
-          height: 28px;
-          border-radius: 0 3px 3px 0;
-          
-          .trailing-content {
-            font-size: 12px;
-            line-height: 8px;
-          }
-        }
-        
-        .trailing-content {
           line-height: 20px;
-          font-size: 14px;
-          text-align: center;
-          @apply text-grey-80;
+        }
+  
+        &.disabled {
+          @apply text-grey-30;
         }
       }
     }
   
-    .status-icon {
-      margin:9px 0 9px 11px;
+    
+  
+    .hint {
+      height: 20px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      line-height: 20px;
+      @apply text-grey-50;
+  
+      &.small {
+        margin-bottom: 3px;
+      }
+    }
+  
+    .input-wrapper-and-status-icon {
+      display: flex;
+      align-items: center;
+      margin-right: 13px;
+  
+      .input-wrapper {
+        display: flex;
+        align-items: center;
+        /* padding: 3px; */
+        width:max-content;
+        height: 46px;
+    
+        &.small {
+          height: 34px;
+        }
+    
+        &.focused {
+          box-shadow: 0 0 0 1px rgba(37, 106, 250, 1) inset;
+        }
+    
+        .leading-content-wrapper {
+          height: 40px;
+          padding: 9px 16px 11px 16px;
+          border-radius: 4px 0 0 4px;
+          box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset;
+          margin-right: -1px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          &.small {
+            height: 28px;
+            border-radius: 3px 0px 0px 3px;
+  
+            .leading-content {
+              font-size: 12px;
+              line-height: 8px; /* à check avec thibaut*/
+            }
+          }
+          
+          .leading-content {
+            line-height: 20px;
+            font-size: 14px;
+            text-align: center;
+            @apply text-grey-80;
+          }
+        }
+    
+        .input {
+          height: 40px;
+          line-height: 24px;
+          text-align: left;
+          vertical-align: top;
+          letter-spacing: 0px;
+          font-size: 16px;
+          padding: 8px 12px;
+          border-radius: 4px;
+          box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset, 0px 1px 3px rgba(0, 0, 0, 0.5) inset;
+          @apply bg-black-1 text-black-100;
+    
+          &.small {
+            height: 28px;
+            line-height: 20px;
+            font-size: 14px;
+            padding: 3px 8px 3px 7px;
+            border-radius: 3px;
+          }
+    
+          &.with-leading-only {
+            border-radius: 0px 4px 4px 0px;
+          }
+    
+          &.with-trailing-only {
+            border-radius: 4px 0 0 4px;
+          }
+    
+          &.with-leading-and-trailing {
+            border-radius: 0;
+          }
+    
+          &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
+            width: 96px;
+          }
+          
+          &:focus {
+            outline: none;
+          }
       
-      &.loading {
-        animation: spin 3s linear infinite;
-        @apply text-info-30;
+          &:read-only {
+            box-shadow: 0px 0px 0px 1px rgba(211, 209, 207, 1) inset, 0px 0px 0px 3px rgba(255, 255, 255, 1) inset;
+            @apply text-grey-50 bg-black-2;
+          }
+    
+          &:disabled {
+            box-shadow: 0px 0px 0px 1px rgba(235, 235, 234, 1) inset;
+            @apply text-grey-30 bg-black-2;
+          }
+  
+          &.success {
+            box-shadow: 0px 0px 0px 1px rgba(11, 114, 60, 1) inset, 0px 0px 0px 4px rgba(230, 247, 238, 1) inset;
+            background-color: rgba(255, 255, 255, 0.5);
+          }
+  
+          &.info {
+            border: 1.5px solid rgba(112, 193, 229, 1);
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+            background-color: rgba(255, 255, 255, 1);
+          }
+  
+          &.warning {
+            border: 1.5px solid rgba(234, 167, 43, 1);
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+            background-color: rgba(255, 255, 255, 1);
+          }
+  
+          &.error {
+            border: 1.5px solid rgba(255, 104, 104, 1);
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+            background-color: rgba(255, 255, 255, 1);
+          }
+        }
+    
+        
+        .trailing-content-wrapper {
+          height: 40px;
+          padding: 9px 16px 11px;
+          border-radius: 0 4px 4px 0;
+          box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset;
+          margin-left: -1px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          &.small {
+            height: 28px;
+            border-radius: 0 3px 3px 0;
+            
+            .trailing-content {
+              font-size: 12px;
+              line-height: 8px;
+            }
+          }
+          
+          .trailing-content {
+            line-height: 20px;
+            font-size: 14px;
+            text-align: center;
+            @apply text-grey-80;
+          }
+        }
       }
-
+      .status-icon {
+        margin-left: 9px;
+        
+        &.loading {
+          animation: spin 3s linear infinite;
+          @apply text-info-30;
+        }
+  
+        &.info {
+          @apply text-info-30;
+        }
+  
+        &.success {
+          @apply text-success-30;
+        }
+   
+        &.warning {
+          @apply text-warning-30;
+        }
+  
+        &.error {
+          @apply text-error-60;
+        }
+  
+        &.small {
+          margin: 5px 0 5px 8px;
+        }
+      }
+    
+    }
+  
+    .status-message {
+      font-size: 16px;
+      letter-spacing: 0px;
+      text-align: left;
+      line-height: 24px;
+      margin-top: 11px;
+      margin-bottom: 2px;
+      @apply font-semibold;
+  
       &.info {
-        @apply text-info-30;
+        @apply text-info-60;
       }
-
+  
       &.success {
-        @apply text-success-30;
+        @apply text-success-60;
       }
- 
+  
       &.warning {
-        @apply text-warning-30;
+        @apply text-warning-60;
       }
-
+  
       &.error {
         @apply text-error-60;
       }
-
-      &.small {
-        margin: 5px 0 5px 8px;
-      }
     }
-  }
-
-  .status-message {
-    font-size: 16px;
-    letter-spacing: 0px;
-    text-align: left;
-    line-height: 24px;
-    margin: 14px 0 0 16px;
-    @apply font-semibold;
-
-    &.info {
-      @apply text-info-60;
+  
+    /* Remove increment/decrement buttons in number input */
+    .input::-webkit-inner-spin-button,
+    .input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
-
-    &.success {
-      @apply text-success-60;
+  
+    .input[type=number] {
+        appearance: none;
+      -moz-appearance: textfield;
     }
-
-    &.warning {
-      @apply text-warning-60;
-    }
-
-    &.error {
-      @apply text-error-60;
-    }
-  }
-
-  /* Remove increment/decrement buttons in number input */
-  .input::-webkit-inner-spin-button,
-  .input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .input[type=number] {
-      appearance: none;
-    -moz-appearance: textfield;
   }
 }
 
