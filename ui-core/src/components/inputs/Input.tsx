@@ -15,27 +15,27 @@ type,
 small
 }) => {
     return (
-        <div className={cx(`${type}-content-wrapper`, { "small":small })}>
+        <div className={`${type}-content-wrapper`}>
             <span className={`${type}-content`}>{content}</span>
         </div>
     )
 }
 
-type statusInput = "success" | "info" | "error" | "warning" | "loading";
+type status = "success" | "info" | "error" | "warning" | "loading";
 
 type statusWithMessage = {
-    status:statusInput,
+    status:status,
     message?:string
 }
 
 type InputStatusIconProps = {
-    status:statusInput;
+    status:status;
     small?: boolean;
 }
 
 const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
     return (
-        <span className={cx("status-icon", status, { "small":small })} >
+        <span className={cx("status-icon", status)} >
             { status==='loading' && <Gear size={small ? 'sm' : 'lg'}/>}
             { status==='info' && <Info size={small ? 'sm' : 'lg'}/>}
             { status==='success' && <CheckCircle variant='fill' size={small ? 'sm' : 'lg'}/>}
@@ -82,15 +82,12 @@ const Input: React.FC<InputProps> = ({
     
     return (
         <div className={cx("feed-back", statusClassname, { 'small': small})}>
-            <div className={cx("custom-input", statusClassname)}>
+            <div className="custom-input">
                 {/* LABEL */}
-                <div className={cx("label-wrapper", { 'small':small, 'has-hint': hint })}>
+                <div className={cx("label-wrapper", { 'has-hint': hint })}>
                     {required && <span className="required"> <RequiredInput/> </span>}
                     <label
-                        className={cx("label", {
-                            'small':small,
-                            'disabled': disabled
-                        })}
+                        className={cx("label", {'disabled': disabled })}
                         htmlFor={id}
                     >
                         {label}
@@ -98,19 +95,18 @@ const Input: React.FC<InputProps> = ({
                 </div>
 
                 {/* HINT */}
-                {hint && <span className={cx("hint", { 'small':small })}>{hint}</span>}
+                {hint && <span className="hint">{hint}</span>}
                 
                 {/* INPUT WRAPPER AND STATUS ICON */}
                 <div className="input-wrapper-and-status-icon">
-                    <div className={cx("input-wrapper", {'small':small, 'focused': focusViaKeyboard})}>
+                    <div className={cx("input-wrapper", {'focused': focusViaKeyboard})}>
                         {leadingContent && <InputAffix content={leadingContent} type="leading" small={small} />}
                         <input 
                             className={cx('input', {
                                 'with-leading-only': leadingContent && !trailingContent,
                                 'with-trailing-only': trailingContent && !leadingContent,
                                 'with-leading-and-trailing': leadingContent && trailingContent,
-                                ...statusClassname,
-                                'small':small,
+                                ...statusClassname
                             })}
                             id={id}
                             type={type}

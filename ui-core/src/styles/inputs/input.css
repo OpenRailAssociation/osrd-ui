@@ -41,18 +41,11 @@
       .label {
         display: inline-block;
         height: 24px;
-        font-size: 16px;
         line-height: 24px;
         letter-spacing: 0;
         text-align: left;
         vertical-align: top;
         @apply text-grey-80 font-sans font-semibold;
-  
-        &.small {
-          height: 20px;
-          font-size: 14px;
-          line-height: 20px;
-        }
   
         &.disabled {
           @apply text-grey-30;
@@ -61,19 +54,15 @@
     }
   
     
-  
     .hint {
       height: 20px;
       margin-bottom: 4px;
       font-size: 14px;
       line-height: 20px;
       @apply text-grey-50;
-  
-      &.small {
-        margin-bottom: 3px;
-      }
     }
   
+
     .input-wrapper-and-status-icon {
       display: flex;
       align-items: center;
@@ -82,13 +71,9 @@
       .input-wrapper {
         display: flex;
         align-items: center;
-        /* padding: 3px; */
+        padding: 3px;
+        margin-left: -2px;
         width:max-content;
-        height: 46px;
-    
-        &.small {
-          height: 34px;
-        }
     
         &.focused {
           box-shadow: 0 0 0 1px rgba(37, 106, 250, 1) inset;
@@ -103,17 +88,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          
-          &.small {
-            height: 28px;
-            border-radius: 3px 0px 0px 3px;
-  
-            .leading-content {
-              font-size: 12px;
-              line-height: 8px; /* à check avec thibaut*/
-            }
-          }
-          
+
           .leading-content {
             line-height: 20px;
             font-size: 14px;
@@ -128,19 +103,10 @@
           text-align: left;
           vertical-align: top;
           letter-spacing: 0px;
-          font-size: 16px;
           padding: 8px 12px;
           border-radius: 4px;
           box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset, 0px 1px 3px rgba(0, 0, 0, 0.5) inset;
           @apply bg-black-1 text-black-100;
-    
-          &.small {
-            height: 28px;
-            line-height: 20px;
-            font-size: 14px;
-            padding: 3px 8px 3px 7px;
-            border-radius: 3px;
-          }
     
           &.with-leading-only {
             border-radius: 0px 4px 4px 0px;
@@ -194,6 +160,16 @@
             box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
             background-color: rgba(255, 255, 255, 1);
           }
+
+          &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+        
+          &[type=number] {
+              appearance: none;
+            -moz-appearance: textfield;
+          }
         }
     
         
@@ -206,16 +182,6 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          
-          &.small {
-            height: 28px;
-            border-radius: 0 3px 3px 0;
-            
-            .trailing-content {
-              font-size: 12px;
-              line-height: 8px;
-            }
-          }
           
           .trailing-content {
             line-height: 20px;
@@ -257,7 +223,6 @@
     }
   
     .status-message {
-      font-size: 16px;
       letter-spacing: 0px;
       text-align: left;
       line-height: 24px;
@@ -281,17 +246,75 @@
         @apply text-error-60;
       }
     }
-  
-    /* Remove increment/decrement buttons in number input */
-    .input::-webkit-inner-spin-button,
-    .input::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-  
-    .input[type=number] {
-        appearance: none;
-      -moz-appearance: textfield;
+  }
+
+  &.small {
+    .custom-input {
+      .label-wrapper {
+        .label {
+          height: 20px;
+          font-size: 14px;
+          line-height: 20px;
+        }
+      }
+
+      .hint {
+        margin-bottom: 3px;
+      }
+    
+      .input-wrapper-and-status-icon {
+        .input-wrapper {
+          height: 34px;
+      
+          .leading-content-wrapper {
+            height: 28px;
+            border-radius: 3px 0px 0px 3px;
+            .leading-content {
+              font-size: 12px;
+              line-height: 8px; /* à check avec thibaut*/
+            }
+          }
+      
+          .input {
+            height: 28px;
+            line-height: 20px;
+            font-size: 14px;
+            padding: 3px 8px 3px 7px;
+            border-radius: 3px;
+
+            &.with-leading-only {
+              border-radius: 0px 4px 4px 0px;
+            }
+
+            &.with-trailing-only {
+              border-radius: 4px 0 0 4px;
+            }
+      
+            &.with-leading-and-trailing {
+              border-radius: 0;
+            }
+      
+            &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
+              width: 96px;
+            }
+          }
+          
+          .trailing-content-wrapper {
+            height: 28px;
+            border-radius: 0 3px 3px 0;
+              
+            .trailing-content {
+              font-size: 12px;
+              line-height: 8px;
+            }
+            
+          }
+        }
+        
+        .status-icon {
+          margin: 5px 0 5px 8px;
+        }
+      }
     }
   }
 }
