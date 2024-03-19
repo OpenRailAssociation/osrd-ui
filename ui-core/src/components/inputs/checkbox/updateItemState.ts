@@ -4,7 +4,7 @@ import { ItemState, CheckboxState } from "./Tree";
 type ParentChildrenMap = Record<number, number[]>; // Maps parent ID to child IDs
 type ChildParentMap = Record<number, number>; // Maps child ID to parent ID
 
-const buildRelationshipMaps = (items: Item[]): [ParentChildrenMap, ChildParentMap] => {
+export const buildRelationshipMaps = (items: Item[]): [ParentChildrenMap, ChildParentMap] => {
   const parentChildrenMap: ParentChildrenMap = {};
   const childParentMap: ChildParentMap = {};
 
@@ -67,9 +67,8 @@ const updateItemState = (newState: ItemState[], id: number, state: CheckboxState
     updateParentOptimized(parentId, newState, parentChildrenMap, childParentMap);
   };
   
-  export const updateItemStatesOptimized = (oldState: ItemState[], items: Item[], clickedId: number): ItemState[] => {
+  export const updateItemStatesOptimized = (oldState: ItemState[], items: Item[], clickedId: number , parentChildrenMap: ParentChildrenMap ,childParentMap: ChildParentMap): ItemState[] => {
     const newState = oldState.map(i => ({ ...i }));
-    const [parentChildrenMap, childParentMap] = buildRelationshipMaps(items);
   
     const currentItemState = newState.find(i => i.id === clickedId)?.state;
   

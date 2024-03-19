@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import CheckboxList from "./CheckboxList";
-import { updateItemStatesOptimized } from "./updateItemState"; 
+import { buildRelationshipMaps, updateItemStatesOptimized } from "./updateItemState"; 
 import { Item } from './CheckboxList'; 
 
 export enum CheckboxState {
@@ -44,14 +44,16 @@ const Tree = ({ items, small = false }: { items: rawItem[], small?:boolean }) =>
     state: CheckboxState.UNCHECKED, 
   }));
 
+  const [parentChildrenMap, childrenParentMap] = buildRelationshipMaps(flatItems);
+
   const [itemStates, setItemStates] = useState<ItemState[]>(defaultItemStates);
   
 
   const clickHandler = useCallback(
     (id: number) => {
-      setItemStates((currentStates) => updateItemStatesOptimized(currentStates, flatItems, id));
+      setItemStates((currentStates) => updateItemStatesOptimized(currentStates, flatItems, id, parentChildrenMap, childrenParentMap));
     },
-    [flatItems] 
+    [flatItems, parentChildrenMap, childrenParentMap] 
   );
 
   return <CheckboxList small={small} items={flatItems} onClick={clickHandler} getStateForId={(id: number) => itemStates.find((i) => i.id === id)?.state || CheckboxState.UNCHECKED} />;
