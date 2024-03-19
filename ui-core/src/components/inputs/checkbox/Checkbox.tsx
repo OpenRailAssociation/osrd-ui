@@ -1,5 +1,6 @@
+import React from "react";
 
-import cx from 'classnames';
+import cx from "classnames";
 
 type checkboxProps = {
   isChecked?: boolean;
@@ -9,23 +10,23 @@ type checkboxProps = {
   small?: boolean;
 };
 
-const Checkbox: React.FC<checkboxProps> = ({ 
-  isChecked = false, 
-  isIndeterminate = false, 
-  onClick = () => {} ,
+const Checkbox: React.FC<checkboxProps> = ({
+  isChecked = false,
+  isIndeterminate = false,
+  onClick = () => {},
   label,
-  small
+  small,
 }) => {
   return (
-    <label className={cx('custom-checkbox', { 'small': small })}>
+    <label className={cx("custom-checkbox", { small: small })}>
       <input
         type="checkbox"
         checked={isChecked}
-        ref={input => input && (input.indeterminate = isIndeterminate)}
+        ref={(input) => input && (input.indeterminate = isIndeterminate)}
         onChange={onClick}
       />
-      <span className='checkmark'></span>
-      <div className='label'>{label}</div>
+      <span className="checkmark"></span>
+      <div className="label">{label}</div>
     </label>
   );
 };

@@ -4,6 +4,7 @@ import "@osrd-project/ui-core/dist/theme.css";
 import TokenInput from "../components/inputs/TokenInput";
 
 const meta: Meta<typeof TokenInput> = {
+  title: "TokenInput",
   component: TokenInput,
   args: {
     label: "Favorite colors",

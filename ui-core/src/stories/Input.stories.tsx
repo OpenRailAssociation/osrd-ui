@@ -4,6 +4,7 @@ import "@osrd-project/ui-core/dist/theme.css";
 import Input from "../components/inputs/Input";
 
 const meta: Meta<typeof Input> = {
+  title: "Input",
   component: Input,
   args: {
     small: false,
