@@ -4,29 +4,27 @@ import cx from 'classnames';
 import useKeyPress from './hooks/useKeyPress';
 
 type InputAffixProps = {
-    content:string
-    small?: boolean;
+    value:InputAffixContent | InputAffixContentWithCallback;
     type: "leading" | "trailing";
 }
 
 const InputAffix: React.FC<InputAffixProps> = ({
-content,
+value,
 type,
-small
 }) => {
+
+  const isContentWithCallback = typeof value === 'object' && value !== null && 'onClickCallback' in value;
+  const spanContent = isContentWithCallback ? (value as InputAffixContentWithCallback).content : value as InputAffixContent;
+  const wrapperProps = isContentWithCallback ? { onClick: (value as InputAffixContentWithCallback).onClickCallback } : {};
+
     return (
-        <div className={`${type}-content-wrapper`}>
-            <span className={`${type}-content`}>{content}</span>
+        <div className={`${type}-content-wrapper`} {...wrapperProps}>
+            <span className={`${type}-content`}>{spanContent}</span>
         </div>
     )
 }
 
 type status = "success" | "info" | "error" | "warning" | "loading";
-
-type statusWithMessage = {
-    status:status,
-    message?:string
-}
 
 type InputStatusIconProps = {
     status:status;
@@ -45,22 +43,30 @@ const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
     );
 }
 
-type InputProps = {
-    id:string;
-    label: string;
-    type: "text" | "number";
-    value?: number | string;
-    hint?: string;
-    leadingContent?:string;
-    trailingContent?:string;
-    required?:boolean;
-    small?: boolean;
-    disabled?: boolean;
-    readOnly?: boolean;
-    statusWithMessage?: statusWithMessage;
+type statusWithMessage = {
+    status:status,
+    message?:string
 }
 
-const Input: React.FC<InputProps> = ({ 
+type InputAffixContent = string | React.ReactNode;
+
+type InputAffixContentWithCallback = {
+    content: string | React.ReactNode;
+    onClickCallback: () => void;
+}
+
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+    id:string;
+    label: string;
+    hint?: string;
+    leadingContent?:InputAffixContent | InputAffixContentWithCallback;
+    trailingContent?:InputAffixContent | InputAffixContentWithCallback;
+    small?: boolean;
+    statusWithMessage?: statusWithMessage;
+    inputWrapperClassname?:string
+}
+
+export const Input: React.FC<InputProps> = ({ 
     id,
     label,
     type,
@@ -72,7 +78,8 @@ const Input: React.FC<InputProps> = ({
     disabled,
     readOnly,
     statusWithMessage,
-    small
+    inputWrapperClassname,
+    small = false
 }) => {
     const [value, setValue] = useState(initialValue);
     const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
@@ -99,8 +106,8 @@ const Input: React.FC<InputProps> = ({
                 
                 {/* INPUT WRAPPER AND STATUS ICON */}
                 <div className="input-wrapper-and-status-icon">
-                    <div className={cx("input-wrapper", {'focused': focusViaKeyboard})}>
-                        {leadingContent && <InputAffix content={leadingContent} type="leading" small={small} />}
+                    <div className={cx("input-wrapper", inputWrapperClassname, {'focused': focusViaKeyboard})}>
+                        {leadingContent && <InputAffix value={leadingContent} type="leading" />}
                         <input 
                             className={cx('input', {
                                 'with-leading-only': leadingContent && !trailingContent,
@@ -116,7 +123,7 @@ const Input: React.FC<InputProps> = ({
                             readOnly={readOnly}
                             onBlur={() => setFocusViaKeyboard(false)}
                         />
-                        {trailingContent && <InputAffix content={trailingContent} type="trailing" small={small} />}
+                        {trailingContent && <InputAffix value={trailingContent} type="trailing" />}
                     </div>
                     {statusWithMessage && <InputStatusIcon status={statusWithMessage.status} small={small} />}
                 </div>

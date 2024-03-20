@@ -1,5 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import TokenInput from '../components/inputs/TokenInput/TokenInput';
+import TokenInput from '../components/inputs/TokenInput';
 
 const meta: Meta<typeof TokenInput> = {
     component: TokenInput,
