@@ -12,4 +12,3 @@ We should also explain how it is related to the `osrd-design` repository.
 
 ### ui-icons
 
-Inspired and taken from Primer/Octicons (https://github.com/primer/octicons). Distributed under the MIT license.
