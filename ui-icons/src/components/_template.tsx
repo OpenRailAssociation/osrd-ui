@@ -1,22 +1,22 @@
-import React from 'react'
-import { IconData } from '../types/icon-data'
-import { default as sizes } from '../sizes'
+import React from "react";
+import { IconData } from "../types/icon-data";
+import { default as sizes } from "../sizes";
 
-const iconData: IconData = {}
+const iconData: IconData = {};
 
 //ReplaceWithTypes
 
-const IconReplaceName: IconReplaceNameIcon = ({ variant = 'base', size = 'sm', title }) => {
-  const currentSize = sizes[size]
+const IconReplaceName: IconReplaceNameIcon = ({ variant = "base", size = "sm", title }) => {
+  const currentSize = sizes[size];
   if (!iconData[variant]) {
-    throw new Error(`IconReplaceName: variant ${variant} not found.`)
+    throw new Error(`IconReplaceName: variant ${variant} not found.`);
   }
   if (!iconData[variant][currentSize]) {
-    throw new Error(`IconReplaceName: size ${currentSize} not found for variant ${variant}.`)
+    throw new Error(`IconReplaceName: size ${currentSize} not found for variant ${variant}.`);
   }
-  let data = iconData[variant][currentSize]
+  let data = iconData[variant][currentSize];
   if (title) {
-    data = `<title>${title}</title>${data}`
+    data = `<title>${title}</title>${data}`;
   }
   return (
     <svg
@@ -28,8 +28,8 @@ const IconReplaceName: IconReplaceNameIcon = ({ variant = 'base', size = 'sm', t
       viewBox={`0 0 ${currentSize} ${currentSize}`}
       dangerouslySetInnerHTML={{ __html: data }}
     />
-  )
-}
+  );
+};
 
-export { IconReplaceName }
-export default IconReplaceName
+export { IconReplaceName };
+export default IconReplaceName;

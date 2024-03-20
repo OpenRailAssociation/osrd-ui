@@ -10,7 +10,7 @@ export default {
   output: formats.map(format => ({
     file: `dist/index.${format}.js`,
     format,
-    name: 'osrdicons',
+    name: 'osrdwarpedmap',
     sourcemap:true
   })),
   plugins: [

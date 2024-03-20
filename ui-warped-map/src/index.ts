@@ -1,2 +1,1 @@
-export * from './components/WarpedMap.tsx';
-
+export * from "./components/WarpedMap";

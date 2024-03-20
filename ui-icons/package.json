@@ -11,6 +11,9 @@
       "default": "./lib/react-sigma_core.esm.min.js"
     }
   },
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "svgo": "svgo icons --config svgo.config.cjs",
     "build-components": "node ./scripts/build.js",

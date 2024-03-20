@@ -10,7 +10,7 @@ export default {
   output: formats.map(format => ({
     file: `dist/index.${format}.js`,
     format,
-    name: 'osrdicons',
+    name: 'osrdspeedspacechart',
     sourcemap:true
   })),
   plugins: [
@@ -18,5 +18,5 @@ export default {
     typescript(),
     terser()
   ],
-  external: ['react']
+  external: ['react', "d3"]
 }
