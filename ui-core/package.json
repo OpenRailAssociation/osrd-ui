@@ -1,42 +1,28 @@
 {
-  "name": "ui-core",
+  "name": "@osrd-project/ui-core",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "main": "dist/index.esm.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.esm.js"
+    }
+  },
   "dependencies": {
     "@osrd-project/ui-icons": "^0.0.10",
     "classnames": "^2.5.1"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^18.2.0"
   },
   "scripts": {
     "build-lib": "rollup -c",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:storybook/recommended"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "web-vitals": "^2.1.4",
@@ -69,12 +55,7 @@
     "@babel/preset-env": "7.23.9",
     "@babel/preset-react": "7.23.3",
     "rollup": "^4.9.6",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6"
-  },
-  "exports":{
-    "./public/fonts/":"./public/fonts/"
   }
 }
