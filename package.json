@@ -1,0 +1,41 @@
+{
+    "name": "@osrd-project/root",
+    "version": "0.1.0",
+    "bugs": "https://github.com//osrd-project/osrd-ui/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/osrd-project/osrd-ui.git"
+    },
+    "workspaces": [
+        "ui-core",
+        "ui-icons",
+        "storybook"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "scripts": {
+        "clean": "npm run clean --workspaces --if-present",
+        "build": "npm run build --workspaces --if-present",
+        "test": "npm run test --workspaces --if-present",
+        "lerna:changed": "lerna changed",
+        "lerna:diff": "lerna diff",
+        "lerna:ls": "lerna ls",
+        "lerna:publish": "lerna publish --no-private"
+    },
+    "devDependencies": {
+        "@rollup/plugin-eslint": "^9.0.5",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@types/react": "^18.2.48",
+        "@typescript-eslint/eslint-plugin": "^7.3.1",
+        "@typescript-eslint/parser": "^7.3.1",
+        "eslint": "^8.24.0",
+        "eslint-plugin-react": "^7.31.8",
+        "lerna": "^8.1.2",
+        "react": "^18.2.0",
+        "rimraf": "^5.0.5",
+        "rollup": "^4.13.0",
+        "typescript": "^5.4.2"
+    }
+}

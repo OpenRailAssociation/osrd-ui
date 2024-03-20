@@ -1,7 +1,6 @@
 {
   "extends": "../tsconfig.base.json",
-  "include": ["./src/**/*"],
-  "exclude": ["src/components/_template.tsx"],
+  "include": [".storybook/*.tsx", "./stories/**/*"],
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
