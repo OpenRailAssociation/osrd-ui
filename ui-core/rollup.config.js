@@ -12,12 +12,14 @@ export default {
     file: `dist/index.${format}.js`,
     format,
     name: 'osrdcore',
+    sourcemap:true
   })),
   plugins: [
     eslint(),
     typescript(),
     postcss({
       extract: "style.css",
+      sourceMap:true,
       plugins: []
     }),
     terser()

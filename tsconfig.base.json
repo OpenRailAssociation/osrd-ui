@@ -47,7 +47,7 @@
       "rootDir": "./dist",
       "skipDefaultLibCheck": true,
       "skipLibCheck": true,
-      "sourceMap": false,
+      "sourceMap": true,
       "strict": true,
       "strictBindCallApply": true,
       "strictFunctionTypes": true,

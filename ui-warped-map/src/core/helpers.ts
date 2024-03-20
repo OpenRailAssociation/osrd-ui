@@ -1,13 +1,13 @@
-import along from '@turf/along';
-import bbox from '@turf/bbox';
-import bboxClip from '@turf/bbox-clip';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import distance from '@turf/distance';
-import { lineString, point } from '@turf/helpers';
-import intersect from '@turf/intersect';
-import length from '@turf/length';
-import lineIntersect from '@turf/line-intersect';
-import lineSlice from '@turf/line-slice';
+import along from "@turf/along";
+import bbox from "@turf/bbox";
+import bboxClip from "@turf/bbox-clip";
+import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
+import distance from "@turf/distance";
+import { lineString, point } from "@turf/helpers";
+import intersect from "@turf/intersect";
+import length from "@turf/length";
+import lineIntersect from "@turf/line-intersect";
+import lineSlice from "@turf/line-slice";
 import {
   BBox,
   Feature,
@@ -19,12 +19,12 @@ import {
   Point,
   Polygon,
   Position,
-} from 'geojson';
-import { chunk, first, last } from 'lodash';
-import { MapGeoJSONFeature } from 'maplibre-gl';
+} from "geojson";
+import { chunk, first, last } from "lodash";
+import { MapGeoJSONFeature } from "maplibre-gl";
 
-import { Zone } from './types.ts';
-import vec, { Vec2 } from './vec-lib';
+import { Zone } from "./types";
+import vec, { Vec2 } from "./vec-lib";
 
 /*
  * Useful types:
@@ -43,14 +43,11 @@ export type PointsGrid = Record<number, Position>[];
 /*
  * Path manipulation helpers:
  */
-export function getSamples(
-  line: Feature<LineString>,
-  samples: number,
-): { step: number; points: Feature<Point>[] } {
-  if (samples <= 1) throw new Error('samples must be an integer greater than 1');
+export function getSamples(line: Feature<LineString>, samples: number): { step: number; points: Feature<Point>[] } {
+  if (samples <= 1) throw new Error("samples must be an integer greater than 1");
 
   const points: Feature<Point>[] = [];
-  const l = length(line, { units: 'meters' });
+  const l = length(line, { units: "meters" });
   const step = l / (samples - 1);
   for (let i = 0; i < samples; i++) {
     if (!i) {
@@ -58,7 +55,7 @@ export function getSamples(
     } else if (i === samples - 1) {
       points.push(point(last(line.geometry.coordinates) as Position));
     } else {
-      points.push(along(line, step * i, { units: 'meters' }));
+      points.push(along(line, step * i, { units: "meters" }));
     }
   }
 
@@ -69,7 +66,7 @@ export function getSamples(
  * Given a line and a lengthToAdd, extend the line at its two extremities by lengthToAdd meters.
  */
 export function extendLine(line: Feature<LineString>, lengthToAdd: number): Feature<LineString> {
-  if (lengthToAdd <= 1) throw new Error('lengthToAdd must be a positive');
+  if (lengthToAdd <= 1) throw new Error("lengthToAdd must be a positive");
 
   const points = line.geometry.coordinates;
   const firstPoint = points[0] as Vec2;
@@ -84,17 +81,14 @@ export function extendLine(line: Feature<LineString>, lengthToAdd: number): Feat
       coordinates: [
         vec.add(
           firstPoint,
-          vec.multiply(
-            vec.vector(second, firstPoint),
-            lengthToAdd / distance(second, firstPoint, { units: 'meters' }),
-          ),
+          vec.multiply(vec.vector(second, firstPoint), lengthToAdd / distance(second, firstPoint, { units: "meters" })),
         ),
         ...points,
         vec.add(
           lastPoint,
           vec.multiply(
             vec.vector(secondToLast, lastPoint),
-            lengthToAdd / distance(secondToLast, lastPoint, { units: 'meters' }),
+            lengthToAdd / distance(secondToLast, lastPoint, { units: "meters" }),
           ),
         ),
       ],
@@ -142,7 +136,7 @@ export function getPointInTriangle(
  */
 export function simplifyFeature(feature: MapGeoJSONFeature, sourceLayer?: string): Feature {
   return {
-    type: 'Feature',
+    type: "Feature",
     id: feature.id,
     properties: {
       ...feature.properties,
@@ -158,14 +152,14 @@ export function simplifyFeature(feature: MapGeoJSONFeature, sourceLayer?: string
  */
 export function zoneToFeature(zone: Zone, close = false): Feature {
   switch (zone.type) {
-    case 'rectangle': {
+    case "rectangle": {
       const [[lat1, lon1], [lat2, lon2]] = zone.points;
 
       return {
-        type: 'Feature',
+        type: "Feature",
         properties: {},
         geometry: {
-          type: 'Polygon',
+          type: "Polygon",
           coordinates: [
             [
               [lat1, lon1],
@@ -178,23 +172,23 @@ export function zoneToFeature(zone: Zone, close = false): Feature {
         },
       };
     }
-    case 'polygon': {
+    case "polygon": {
       return {
-        type: 'Feature',
+        type: "Feature",
         properties: {},
         geometry: close
           ? {
-              type: 'Polygon',
+              type: "Polygon",
               coordinates: [[...zone.points, zone.points[0]]],
             }
           : {
-              type: 'LineString',
+              type: "LineString",
               coordinates: zone.points,
             },
       };
     }
     default:
-      throw new Error('Zone is neither a polygone, neither a rectangle');
+      throw new Error("Zone is neither a polygone, neither a rectangle");
   }
 }
 
@@ -202,7 +196,7 @@ export function zoneToFeature(zone: Zone, close = false): Feature {
  * Returns the BBox containing a given zone.
  */
 export function zoneToBBox(zone: Zone): BBox {
-  if (zone.type === 'rectangle') {
+  if (zone.type === "rectangle") {
     const [[x1, y1], [x2, y2]] = zone.points;
     return [Math.min(x1, x2), Math.min(y1, y2), Math.max(x1, x2), Math.max(y1, y2)];
   }
@@ -218,14 +212,12 @@ export function intersectPolygonLine(
   line: Feature<LineString | MultiLineString>,
 ): Feature<LineString | MultiLineString> | null {
   const lines: Position[][] =
-    line.geometry.type === 'MultiLineString'
-      ? line.geometry.coordinates
-      : [line.geometry.coordinates];
+    line.geometry.type === "MultiLineString" ? line.geometry.coordinates : [line.geometry.coordinates];
   const res: Feature<MultiLineString> = {
-    type: 'Feature',
+    type: "Feature",
     properties: line.properties,
     geometry: {
-      type: 'MultiLineString',
+      type: "MultiLineString",
       coordinates: [],
     },
   };
@@ -233,32 +225,26 @@ export function intersectPolygonLine(
   lines.forEach((l) => {
     if (l.length < 2) return;
 
-    const firstPoint: Point = { type: 'Point', coordinates: l[0] };
-    const lastPoint: Point = { type: 'Point', coordinates: l[l.length - 1] };
-    let intersections: Point[] = lineIntersect(
-      { type: 'LineString', coordinates: l },
-      poly,
-    ).features.map((f) => f.geometry);
+    const firstPoint: Point = { type: "Point", coordinates: l[0] };
+    const lastPoint: Point = { type: "Point", coordinates: l[l.length - 1] };
+    let intersections: Point[] = lineIntersect({ type: "LineString", coordinates: l }, poly).features.map(
+      (f) => f.geometry,
+    );
 
     if (booleanPointInPolygon(firstPoint, poly)) intersections = [firstPoint].concat(intersections);
     if (booleanPointInPolygon(lastPoint, poly)) intersections.push(lastPoint);
 
-    const splitters = chunk(intersections, 2).filter((pair) => pair.length === 2) as [
-      Point,
-      Point,
-    ][];
+    const splitters = chunk(intersections, 2).filter((pair) => pair.length === 2) as [Point, Point][];
 
     splitters.forEach(([start, end]) => {
       res.geometry.coordinates.push(
-        lineSlice(start.coordinates, end.coordinates, { type: 'LineString', coordinates: l })
-          .geometry.coordinates,
+        lineSlice(start.coordinates, end.coordinates, { type: "LineString", coordinates: l }).geometry.coordinates,
       );
     });
   });
 
   if (res.geometry.coordinates.length > 1) return res;
-  if (res.geometry.coordinates.length === 1)
-    return lineString(res.geometry.coordinates[0], res.properties);
+  if (res.geometry.coordinates.length === 1) return lineString(res.geometry.coordinates[0], res.properties);
 
   return null;
 }
@@ -269,7 +255,7 @@ export function intersectPolygonLine(
  * MultiPoints, and clips LineStrings and MultiLineStrings using @turf/bboxClip (when possible).
  */
 export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone): T | null {
-  if (tree.type === 'FeatureCollection') {
+  if (tree.type === "FeatureCollection") {
     return {
       ...tree,
       features: (tree as FeatureCollection).features.flatMap((f) => {
@@ -280,12 +266,12 @@ export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone)
     };
   }
 
-  if (tree.type === 'Feature') {
+  if (tree.type === "Feature") {
     const feature = tree as Feature;
     const type = feature.geometry.type;
 
-    if (type === 'LineString' || type === 'MultiLineString') {
-      if (zone.type === 'polygon') {
+    if (type === "LineString" || type === "MultiLineString") {
+      if (zone.type === "polygon") {
         const clipped = intersectPolygonLine(
           zoneToFeature(zone, true) as Feature<Polygon>,
           feature as Feature<LineString | MultiLineString>,
@@ -293,36 +279,31 @@ export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone)
         return clipped ? ({ ...feature, ...clipped } as T) : null;
       }
 
-      const clipped = bboxClip(
-        feature as Feature<LineString | MultiLineString>,
-        zoneToBBox(zone),
-      ) as Feature<LineString | MultiLineString>;
+      const clipped = bboxClip(feature as Feature<LineString | MultiLineString>, zoneToBBox(zone)) as Feature<
+        LineString | MultiLineString
+      >;
       return clipped.geometry.coordinates.length ? (clipped as T) : null;
     }
 
     const polygon = zoneToFeature(zone, true).geometry as Polygon;
 
-    if (type === 'Point') {
-      return booleanPointInPolygon((feature as Feature<Point>).geometry.coordinates, polygon)
-        ? tree
-        : null;
+    if (type === "Point") {
+      return booleanPointInPolygon((feature as Feature<Point>).geometry.coordinates, polygon) ? tree : null;
     }
 
-    if (type === 'MultiPoint') {
+    if (type === "MultiPoint") {
       const res: Feature<MultiPoint> = {
         ...feature,
         geometry: {
           ...feature.geometry,
-          coordinates: feature.geometry.coordinates.filter((position) =>
-            booleanPointInPolygon(position, polygon),
-          ),
+          coordinates: feature.geometry.coordinates.filter((position) => booleanPointInPolygon(position, polygon)),
         },
       };
 
       return res.geometry.coordinates.length ? (res as T) : null;
     }
 
-    if (type === 'Polygon' || type === 'MultiPolygon') {
+    if (type === "Polygon" || type === "MultiPolygon") {
       const res = intersect(feature as Feature<Polygon | MultiPolygon>, polygon);
 
       return res && res.geometry.coordinates.length

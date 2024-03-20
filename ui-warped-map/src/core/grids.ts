@@ -1,14 +1,14 @@
-import bearing from '@turf/bearing';
-import center from '@turf/center';
-import destination from '@turf/destination';
-import { featureCollection, lineString, polygon } from '@turf/helpers';
-import length from '@turf/length';
-import { Feature, LineString, Position } from 'geojson';
-import { clamp, cloneDeep, keyBy, meanBy } from 'lodash';
+import bearing from "@turf/bearing";
+import center from "@turf/center";
+import destination from "@turf/destination";
+import { featureCollection, lineString, polygon } from "@turf/helpers";
+import length from "@turf/length";
+import { Feature, LineString, Position } from "geojson";
+import { clamp, cloneDeep, keyBy, meanBy } from "lodash";
 
-import { GridFeature, GridIndex, Grids, PointsGrid, Triangle } from './helpers';
-import { PolygonZone } from './types';
-import vec, { Vec2 } from './vec-lib';
+import { GridFeature, GridIndex, Grids, PointsGrid, Triangle } from "./helpers";
+import { PolygonZone } from "./types";
+import vec, { Vec2 } from "./vec-lib";
 
 /*
  * Base helpers to manipulate grids:
@@ -101,7 +101,7 @@ export function pointsGridToZone(points: PointsGrid): PolygonZone {
   border.push(border[0]);
 
   return {
-    type: 'polygon',
+    type: "polygon",
     points: border,
   };
 }
@@ -119,7 +119,7 @@ export function getGrids(line: Feature<LineString>, settings?: { stripsPerSize?:
   const stripsPerSide = settings?.stripsPerSize || 3;
 
   const pointsCount = line.geometry.coordinates.length;
-  if (pointsCount <= 2) throw new Error('line must have at least 3 points');
+  if (pointsCount <= 2) throw new Error("line must have at least 3 points");
 
   const totalLength = length(line);
   const step = totalLength / (pointsCount - 1);

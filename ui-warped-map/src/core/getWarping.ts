@@ -1,21 +1,15 @@
-import bbox from '@turf/bbox';
-import { lineString } from '@turf/helpers';
-import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import simplify from '@turf/simplify';
-import { Feature, FeatureCollection, Geometry, LineString, Position } from 'geojson';
+import bbox from "@turf/bbox";
+import { lineString } from "@turf/helpers";
+import { BBox2d } from "@turf/helpers/dist/js/lib/geojson";
+import simplify from "@turf/simplify";
+import { Feature, FeatureCollection, Geometry, LineString, Position } from "geojson";
 
-import {
-  featureToPointsGrid,
-  getGridIndex,
-  getGrids,
-  pointsGridToZone,
-  straightenGrid,
-} from './grids.ts';
-import { extendLine, getSamples } from './helpers';
-import { clipAndProjectGeoJSON, projectBetweenGrids } from './projection';
-import { getQuadTree } from './quadtree';
+import { featureToPointsGrid, getGridIndex, getGrids, pointsGridToZone, straightenGrid } from "./grids";
+import { extendLine, getSamples } from "./helpers";
+import { clipAndProjectGeoJSON, projectBetweenGrids } from "./projection";
+import { getQuadTree } from "./quadtree";
 
-export type WarpingFunction = ReturnType<typeof getWarping>['transform'];
+export type WarpingFunction = ReturnType<typeof getWarping>["transform"];
 
 export type WarpingOptions = {
   tolerance: number;
@@ -35,10 +29,7 @@ export const DEFAULT_WARPING_OPTIONS: WarpingOptions = {
   stripsPerSide: 3,
 };
 
-export default function getWarping(
-  warpPath: Feature<LineString>,
-  options: Partial<WarpingOptions> = {},
-) {
+export default function getWarping(warpPath: Feature<LineString>, options: Partial<WarpingOptions> = {}) {
   const opts: WarpingOptions = {
     ...DEFAULT_WARPING_OPTIONS,
     ...options,
@@ -75,8 +66,7 @@ export default function getWarping(
 
   // Return projection function and exact warped grid boundaries:
   const zone = pointsGridToZone(featureToPointsGrid(betterOriginal, stepsCount));
-  const projection = (position: Position) =>
-    projectBetweenGrids(originalQuadTree, warpedIndex, position);
+  const projection = (position: Position) => projectBetweenGrids(originalQuadTree, warpedIndex, position);
 
   // Finally we have a proper transformation function that takes any feature
   // as input, clips it to the grid contour polygon, and projects it the

@@ -1,7 +1,4 @@
-import {
-  LIST_VALUES,
-  SIGNAL_BASE_DEFAULT,
-} from "../stories/assets/simulationConsts";
+import { LIST_VALUES, SIGNAL_BASE_DEFAULT } from "../stories/assets/simulationConsts";
 
 // * types from osrd/front/src/modules/simulationResult/consts.ts
 
@@ -275,10 +272,7 @@ export interface RouteAspect<Time = number, Color = number> {
   track?: string;
   track_offset?: number;
 }
-export type ConsolidatedRouteAspect<DateType = Date> = RouteAspect<
-  DateType | null,
-  string
->;
+export type ConsolidatedRouteAspect<DateType = Date> = RouteAspect<DateType | null, string>;
 
 export interface SignalAspect<Time = number, Color = number> {
   signal_id: string;
@@ -288,10 +282,7 @@ export interface SignalAspect<Time = number, Color = number> {
   blinking: boolean;
   aspect_label: string;
 }
-export type ConsolidatedSignalAspect<DateType = Date> = SignalAspect<
-  DateType | null,
-  string
->;
+export type ConsolidatedSignalAspect<DateType = Date> = SignalAspect<DateType | null, string>;
 
 export interface Regime {
   head_positions: Position[][];
@@ -366,10 +357,7 @@ export interface SimulationSnapshot {
 
 export type SimulationHistory = SimulationSnapshot[];
 
-export type PositionsSpeedTimes<Time = number> = Record<
-  AllListValues,
-  PositionSpeedTime<Time>
->;
+export type PositionsSpeedTimes<Time = number> = Record<AllListValues, PositionSpeedTime<Time>>;
 
 export interface SimulationTrain<DateType = Date> {
   id: number;

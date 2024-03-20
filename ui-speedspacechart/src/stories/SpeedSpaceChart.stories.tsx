@@ -1,7 +1,5 @@
 import type { Meta } from "@storybook/react";
-import SpeedSpaceChart, {
-  type SpeedSpaceChartProps,
-} from "../components/SpeedSpaceChart";
+import { type SpeedSpaceChartProps, SpeedSpaceChart } from "../components/SpeedSpaceChart";
 import OSRD_SAMPLE from "./assets/sampleData";
 
 export default {

@@ -1,3 +1,5 @@
+import React from "react";
+
 import type { Store } from "../../types/chartTypes";
 import { drawFrame } from "../helpers/drawElements";
 import { resetZoom } from "../helpers/layersManager";
@@ -10,12 +12,7 @@ type FrontInteractivityLayerProps = {
   setStore: React.Dispatch<React.SetStateAction<Store>>;
 };
 
-const FrontInteractivityLayer = ({
-  width,
-  height,
-  store,
-  setStore,
-}: FrontInteractivityLayerProps) => {
+const FrontInteractivityLayer = ({ width, height, store, setStore }: FrontInteractivityLayerProps) => {
   const canvas = useCanvas(drawFrame, width, height, store, setStore);
 
   const reset = () => {
@@ -36,12 +33,11 @@ const FrontInteractivityLayer = ({
         width={width}
         height={height}
       />
-      <div
-        className="flex justify-end absolute ml-10 mt-4"
-        style={{ width: width }}>
+      <div className="flex justify-end absolute ml-10 mt-4" style={{ width: width }}>
         <button
           className="bg-blue-600 hover:bg-blue-700 text-white p-1 mr-2 z-10 rounded-full w-8 h-8"
-          onClick={() => reset()}>
+          onClick={() => reset()}
+        >
           &#8617;
         </button>
       </div>

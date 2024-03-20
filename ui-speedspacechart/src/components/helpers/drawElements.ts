@@ -17,12 +17,7 @@ const marginBottom = 27;
 
 // ********** CURVE **********
 
-export const drawCurve = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawCurve = (ctx: CanvasRenderingContext2D, width: number, height: number, store: Store) => {
   clearCanvas(ctx, width, height);
   ctx.translate(store.leftOffset, 0);
 
@@ -52,12 +47,7 @@ export const drawCurve = (
 
 // ********** GRID-X **********
 
-export const drawGridX = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawGridX = (ctx: CanvasRenderingContext2D, width: number, height: number, store: Store) => {
   clearCanvas(ctx, width, height);
   ctx.translate(store.leftOffset, 0);
 
@@ -72,20 +62,12 @@ export const drawGridX = (
   store.speed.forEach((_, i) => {
     if (i <= Math.ceil(store.ratio) * 10) {
       ctx.moveTo(
-        marginLeft +
-          ((width - marginLeft - marginRight) / maxPosition) *
-            i *
-            RoundMaxPosition *
-            store.ratio,
-        height - marginBottom
+        marginLeft + ((width - marginLeft - marginRight) / maxPosition) * i * RoundMaxPosition * store.ratio,
+        height - marginBottom,
       );
       ctx.lineTo(
-        marginLeft +
-          ((width - marginLeft - marginRight) / maxPosition) *
-            i *
-            RoundMaxPosition *
-            store.ratio,
-        height - marginBottom + 5
+        marginLeft + ((width - marginLeft - marginRight) / maxPosition) * i * RoundMaxPosition * store.ratio,
+        height - marginBottom + 5,
       );
 
       ctx.textAlign = "center";
@@ -94,12 +76,8 @@ export const drawGridX = (
       const text = (i * RoundMaxPosition).toLocaleString();
       ctx.fillText(
         text,
-        marginLeft +
-          ((width - marginLeft - marginRight) / maxPosition) *
-            i *
-            RoundMaxPosition *
-            store.ratio,
-        height - marginBottom + 20
+        marginLeft + ((width - marginLeft - marginRight) / maxPosition) * i * RoundMaxPosition * store.ratio,
+        height - marginBottom + 20,
       );
     }
   });
@@ -112,20 +90,12 @@ export const drawGridX = (
   store.speed.forEach((_, i) => {
     if (i <= Math.ceil(store.ratio) * 10) {
       ctx.moveTo(
-        marginLeft +
-          ((width - marginLeft - marginRight) / maxPosition) *
-            i *
-            RoundMaxPosition *
-            store.ratio,
-        marginTop
+        marginLeft + ((width - marginLeft - marginRight) / maxPosition) * i * RoundMaxPosition * store.ratio,
+        marginTop,
       );
       ctx.lineTo(
-        marginLeft +
-          ((width - marginLeft - marginRight) / maxPosition) *
-            i *
-            RoundMaxPosition *
-            store.ratio,
-        height - marginBottom
+        marginLeft + ((width - marginLeft - marginRight) / maxPosition) * i * RoundMaxPosition * store.ratio,
+        height - marginBottom,
       );
     }
   });
@@ -142,12 +112,7 @@ export const drawGridX = (
 
 // ********** GRID-Y **********
 
-export const drawGridY = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawGridY = (ctx: CanvasRenderingContext2D, width: number, height: number, store: Store) => {
   clearCanvas(ctx, width, height);
 
   const { maxSpeed } = speedRangeValues(store);
@@ -161,27 +126,11 @@ export const drawGridY = (
   // horizontal ticks based on 10 units of round max speed
   ctx.beginPath();
   store.speed.forEach((_, i) => {
-    ctx.moveTo(
-      35,
-      height -
-        marginBottom -
-        ((height - marginBottom - marginTop) / maxSpeed) * i * 10
-    );
-    ctx.lineTo(
-      marginLeft,
-      height -
-        marginBottom -
-        ((height - marginBottom - marginTop) / maxSpeed) * i * 10
-    );
+    ctx.moveTo(35, height - marginBottom - ((height - marginBottom - marginTop) / maxSpeed) * i * 10);
+    ctx.lineTo(marginLeft, height - marginBottom - ((height - marginBottom - marginTop) / maxSpeed) * i * 10);
     ctx.textAlign = "right";
     const text = (i * 10).toString();
-    ctx.fillText(
-      text,
-      textOffsetX,
-      height -
-        textOffsetY -
-        ((height - marginBottom - marginTop) / maxSpeed) * i * 10
-    );
+    ctx.fillText(text, textOffsetX, height - textOffsetY - ((height - marginBottom - marginTop) / maxSpeed) * i * 10);
   });
   ctx.closePath();
 
@@ -191,17 +140,10 @@ export const drawGridY = (
   ctx.beginPath();
   store.speed.forEach((_, i) => {
     if (i >= 1) {
-      ctx.moveTo(
-        marginLeft,
-        height -
-          marginBottom -
-          ((height - marginBottom - marginTop) / maxSpeed) * i * 10
-      );
+      ctx.moveTo(marginLeft, height - marginBottom - ((height - marginBottom - marginTop) / maxSpeed) * i * 10);
       ctx.lineTo(
         width - marginRight,
-        height -
-          marginBottom -
-          ((height - marginBottom - marginTop) / maxSpeed) * i * 10
+        height - marginBottom - ((height - marginBottom - marginTop) / maxSpeed) * i * 10,
       );
     }
   });
@@ -217,7 +159,7 @@ export const drawFrame = (
   width: number,
   height: number,
   store: Store,
-  setStore?: React.Dispatch<React.SetStateAction<Store>>
+  setStore?: React.Dispatch<React.SetStateAction<Store>>,
 ) => {
   clearCanvas(ctx, width, height);
 
@@ -225,12 +167,7 @@ export const drawFrame = (
 
   ctx.strokeRect(1, 1, width - 1, height - 1);
 
-  const canvas = d3.select("#front-interactivity-layer") as d3.Selection<
-    Element,
-    unknown,
-    HTMLCanvasElement,
-    unknown
-  >;
+  const canvas = d3.select("#front-interactivity-layer") as d3.Selection<Element, unknown, HTMLCanvasElement, unknown>;
 
   // zoom interaction
   if (setStore) canvas.call(zoomX(store, setStore));

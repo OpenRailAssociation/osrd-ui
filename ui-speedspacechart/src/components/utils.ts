@@ -30,17 +30,11 @@ export const speedRangeValues = (store: Store): SpeedRangeValues => {
  */
 export const maxPositionValues = (store: Store): MaxPositionValues => {
   const maxPosition = store.speed[store.speed.length - 1].position;
-  const RoundMaxPosition = Math.floor(
-    maxPosition / (Math.ceil(store.ratio) * 10)
-  );
+  const RoundMaxPosition = Math.floor(maxPosition / (Math.ceil(store.ratio) * 10));
 
   return { maxPosition, RoundMaxPosition };
 };
 
-export const clearCanvas = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number
-) => {
+export const clearCanvas = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
   ctx.clearRect(0, 0, width, height);
 };
