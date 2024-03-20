@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import SampleMap from './SampleMap.tsx';
-import { PATH_EXTRA_LONG, PATH_LONG, PATH_MEDIUM, PATH_NAMES, PATH_SHORT } from './helpers.ts';
+import SampleMap from "./SampleMap";
+import { PATH_EXTRA_LONG, PATH_LONG, PATH_MEDIUM, PATH_NAMES, PATH_SHORT } from "./helpers";
 
 const meta: Meta<typeof SampleMap> = {
   component: SampleMap,
-  title: 'WarpedMap component',
+  title: "WarpedMap component",
   argTypes: {
     path: {
       options: PATH_NAMES,
-      control: { type: 'radio' },
+      control: { type: "radio" },
     },
   },
 };
@@ -18,25 +18,25 @@ export default meta;
 type Story = StoryObj<typeof SampleMap>;
 
 export const PathShort: Story = {
-  name: 'Short path',
+  name: "Short path",
   args: {
     path: PATH_SHORT,
   },
 };
 export const PathMedium: Story = {
-  name: 'Medium path',
+  name: "Medium path",
   args: {
     path: PATH_MEDIUM,
   },
 };
 export const PathLong: Story = {
-  name: 'Long path',
+  name: "Long path",
   args: {
     path: PATH_LONG,
   },
 };
 export const PathLonger: Story = {
-  name: 'Longer path',
+  name: "Longer path",
   args: {
     path: PATH_EXTRA_LONG,
   },

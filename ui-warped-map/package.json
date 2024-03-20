@@ -1,20 +1,24 @@
 {
   "name": "@osrd-project/ui-warped-map",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A React component to display MapLibre maps warped along a given path.",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
+  "type": "module",
+  "main": "dist/index.esm.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.esm.js"
+    }
+  },
   "files": [
     "/dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint . --ext .ts,.tsx --ignore-path .gitignore --fix",
-    "format": "prettier --write --parser typescript '**/*.{ts,tsx}'",
-    "build": "tsc && vite build",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "rollup": "rollup -c",
+    "clean": "rimraf dist",
+    "build": "npm run rollup"
   },
   "repository": {
     "type": "git",
@@ -53,37 +57,8 @@
     "maplibre-gl": "^3.6.2",
     "react-map-gl": "^7.1.7"
   },
-  "devDependencies": {
-    "@storybook/addon-essentials": "^7.6.7",
-    "@storybook/addon-interactions": "^7.6.7",
-    "@storybook/addon-links": "^7.6.7",
-    "@storybook/addon-mdx-gfm": "^7.6.7",
-    "@storybook/addon-onboarding": "^1.0.10",
-    "@storybook/blocks": "^7.6.7",
-    "@storybook/react": "^7.6.7",
-    "@storybook/react-vite": "^7.6.7",
-    "@storybook/test": "^7.6.7",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "@types/lodash": "^4.14.202",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.1",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-storybook": "^0.6.15",
-    "geojson": "^0.5.0",
-    "prettier": "^3.1.1",
-    "storybook": "^7.6.7",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.10",
-    "vite-plugin-dts": "^3.6.4"
-  },
+  "devDependencies": {},
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": ">=18.0"
   }
 }

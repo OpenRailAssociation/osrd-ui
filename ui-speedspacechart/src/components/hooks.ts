@@ -6,7 +6,7 @@ type DrawFunction = (
   width: number,
   height: number,
   store: Store,
-  setStore?: React.Dispatch<React.SetStateAction<Store>>
+  setStore?: React.Dispatch<React.SetStateAction<Store>>,
 ) => void;
 
 export const useCanvas = (
@@ -14,7 +14,7 @@ export const useCanvas = (
   width: number,
   height: number,
   store: Store,
-  setStore?: React.Dispatch<React.SetStateAction<Store>>
+  setStore?: React.Dispatch<React.SetStateAction<Store>>,
 ) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 

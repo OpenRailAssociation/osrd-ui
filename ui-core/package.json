@@ -13,10 +13,16 @@
       "default": "./dist/index.esm.js"
     }
   },
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "rollup": "rollup -c",
     "clean": "rimraf dist",
     "build": "npm run rollup"
+  },
+  "peerDependencies": {
+    "react": ">=18.0"
   },
   "dependencies": {
     "tailwindcss": "^3.4.1"

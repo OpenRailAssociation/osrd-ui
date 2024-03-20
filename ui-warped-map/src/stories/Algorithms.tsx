@@ -1,25 +1,25 @@
-import { featureCollection } from '@turf/helpers';
-import { Feature, LineString } from 'geojson';
-import { FC, useMemo } from 'react';
-import { Layer, LineLayer, Source } from 'react-map-gl/maplibre';
+import { featureCollection } from "@turf/helpers";
+import { Feature, LineString } from "geojson";
+import React, { FC, useMemo } from "react";
+import { Layer, LineLayer, Source } from "react-map-gl/maplibre";
 
-import BaseMap from '../components/BaseMap.tsx';
-import Loader from '../components/Loader.tsx';
-import WarpedMap from '../components/WarpedMap.tsx';
-import getWarping, { WarpingOptions } from '../core/getWarping.ts';
-import { SourceDefinition } from '../core/types.ts';
-import { useAsyncMemo } from '../core/useAsyncMemo.ts';
-import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers.ts';
+import BaseMap from "../components/BaseMap";
+import Loader from "../components/Loader";
+import WarpedMap from "../components/WarpedMap";
+import getWarping, { WarpingOptions } from "../core/getWarping";
+import { SourceDefinition } from "../core/types";
+import { useAsyncMemo } from "../core/useAsyncMemo";
+import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from "./helpers";
 
 const SOURCES: SourceDefinition[] = [OSM_SOURCE];
 
-const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
-  id: 'path-layer',
-  source: 'path',
-  type: 'line',
+const PATH_LAYER: Omit<LineLayer, "source-layer"> = {
+  id: "path-layer",
+  source: "path",
+  type: "line",
   paint: {
-    'line-width': 1,
-    'line-color': 'blue',
+    "line-width": 1,
+    "line-color": "blue",
   },
 };
 
@@ -27,24 +27,21 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
   path,
   warpingOptions,
 }) => {
-  const { grid, warpedGrid } = useMemo(
-    () => getWarping(path, warpingOptions),
-    [path, warpingOptions],
-  );
+  const { grid, warpedGrid } = useMemo(() => getWarping(path, warpingOptions), [path, warpingOptions]);
   const pathCollection = useMemo(() => featureCollection([path]), [path]);
 
   return (
     <div
       style={{
-        background: 'lightgrey',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'stretch',
-        position: 'absolute',
+        background: "lightgrey",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "stretch",
+        position: "absolute",
         inset: 0,
       }}
     >
-      <div style={{ marginRight: '1em', flexGrow: 1 }}>
+      <div style={{ marginRight: "1em", flexGrow: 1 }}>
         <BaseMap path={path} sources={SOURCES} mapStyle={OSM_BASE_MAP_STYLE}>
           <Source type="geojson" data={pathCollection}>
             <Layer
@@ -52,8 +49,8 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
               source="path"
               type="line"
               paint={{
-                'line-width': 1,
-                'line-color': 'blue',
+                "line-width": 1,
+                "line-color": "blue",
               }}
             />
           </Source>
@@ -63,8 +60,8 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
               source="grid"
               type="line"
               paint={{
-                'line-width': 1,
-                'line-color': 'red',
+                "line-width": 1,
+                "line-color": "red",
               }}
             />
           </Source>
@@ -85,8 +82,8 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
               source="grid"
               type="line"
               paint={{
-                'line-width': 1,
-                'line-color': 'red',
+                "line-width": 1,
+                "line-color": "red",
               }}
             />
           </Source>
@@ -102,7 +99,7 @@ const Algorithms: FC<{ path: string } & WarpingOptions> = (props) => {
     () => fetch(`/${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
     [pathName],
   );
-  const path = pathState.type === 'ready' ? pathState.data : null;
+  const path = pathState.type === "ready" ? pathState.data : null;
 
   if (!path) return <Loader />;
 

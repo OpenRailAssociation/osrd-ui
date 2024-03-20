@@ -1,16 +1,9 @@
-import { Feature, FeatureCollection, Geometry, Position } from 'geojson';
-import { keyBy } from 'lodash';
+import { Feature, FeatureCollection, Geometry, Position } from "geojson";
+import { keyBy } from "lodash";
 
-import {
-  GridIndex,
-  Triangle,
-  clip,
-  getBarycentricCoordinates,
-  getPointInTriangle,
-  isInTriangle,
-} from './helpers';
-import { Quad, getElements } from './quadtree';
-import { Zone } from './types';
+import { GridIndex, Triangle, clip, getBarycentricCoordinates, getPointInTriangle, isInTriangle } from "./helpers";
+import { Quad, getElements } from "./quadtree";
+import { Zone } from "./types";
 
 export type Projection = (position: Position) => Position | null;
 
@@ -19,11 +12,7 @@ export type Projection = (position: Position) => Position | null;
  * It can take either a GridIndex or a QuadTree for the source grid, but beware
  * that it is absolutely faster using a QuadTree.
  */
-export function projectBetweenGrids(
-  gridFrom: GridIndex,
-  gridTo: GridIndex,
-  position: Position,
-): Position | null;
+export function projectBetweenGrids(gridFrom: GridIndex, gridTo: GridIndex, position: Position): Position | null;
 export function projectBetweenGrids(
   quadTreeFrom: Quad<Triangle>,
   gridTo: GridIndex,
@@ -36,11 +25,8 @@ export function projectBetweenGrids(
 ): Position | null {
   let triangles: GridIndex;
 
-  if (from.type === 'quad') {
-    triangles = keyBy(
-      getElements(position, from as Quad<Triangle>),
-      (feature) => feature.properties.triangleId,
-    );
+  if (from.type === "quad") {
+    triangles = keyBy(getElements(position, from as Quad<Triangle>), (feature) => feature.properties.triangleId);
   } else {
     triangles = from as GridIndex;
   }
@@ -62,14 +48,11 @@ export function projectBetweenGrids(
  * This function projects any geometry, following a given projection function (ie. any function that transforms
  * coordinates into new coordinates).
  */
-export function projectGeometry<G extends Geometry = Geometry>(
-  geometry: G,
-  project: Projection,
-): G | null {
+export function projectGeometry<G extends Geometry = Geometry>(geometry: G, project: Projection): G | null {
   if (!geometry) return null;
 
   switch (geometry.type) {
-    case 'Point': {
+    case "Point": {
       const newCoordinates = project(geometry.coordinates);
 
       return newCoordinates
@@ -79,8 +62,8 @@ export function projectGeometry<G extends Geometry = Geometry>(
           }
         : null;
     }
-    case 'MultiPoint':
-    case 'LineString': {
+    case "MultiPoint":
+    case "LineString": {
       const newPoints = geometry.coordinates.flatMap((p) => {
         const newP = project(p);
         return newP ? [newP] : [];
@@ -93,8 +76,8 @@ export function projectGeometry<G extends Geometry = Geometry>(
           }
         : null;
     }
-    case 'Polygon':
-    case 'MultiLineString': {
+    case "Polygon":
+    case "MultiLineString": {
       const newPaths = geometry.coordinates.flatMap((path) => {
         const newPath = path.flatMap((p) => {
           const newP = project(p);
@@ -111,7 +94,7 @@ export function projectGeometry<G extends Geometry = Geometry>(
           }
         : null;
     }
-    case 'MultiPolygon': {
+    case "MultiPolygon": {
       const newMultiPaths = geometry.coordinates.flatMap((paths) => {
         const newPaths = paths.flatMap((path) => {
           const newPath = path.flatMap((p) => {
@@ -132,7 +115,7 @@ export function projectGeometry<G extends Geometry = Geometry>(
           }
         : null;
     }
-    case 'GeometryCollection':
+    case "GeometryCollection":
       return {
         ...geometry,
         geometries: geometry.geometries.map((g) => projectGeometry(g, project)),
@@ -151,7 +134,7 @@ export function clipAndProjectGeoJSON<T extends Geometry | Feature | FeatureColl
   projection: Projection,
   zone: Zone,
 ): T | null {
-  if (geojson.type === 'FeatureCollection')
+  if (geojson.type === "FeatureCollection")
     return {
       ...geojson,
       features: geojson.features.flatMap((f) => {
@@ -160,7 +143,7 @@ export function clipAndProjectGeoJSON<T extends Geometry | Feature | FeatureColl
       }),
     };
 
-  if (geojson.type === 'Feature') {
+  if (geojson.type === "Feature") {
     const clippedFeature = clip(geojson, zone) as Feature | null;
 
     if (clippedFeature) {
