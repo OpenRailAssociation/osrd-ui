@@ -20,6 +20,7 @@
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present",
         "test": "npm run test --workspaces --if-present",
+        "storybook": "npm start --workspace='@osrd-project/storybook'",
         "lerna:changed": "lerna changed",
         "lerna:diff": "lerna diff",
         "lerna:ls": "lerna ls",
