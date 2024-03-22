@@ -1,28 +1,28 @@
-import typescript from '@rollup/plugin-typescript'
-import terser from '@rollup/plugin-terser'
+import typescript from "@rollup/plugin-typescript";
+import terser from "@rollup/plugin-terser";
 import eslint from "@rollup/plugin-eslint";
-import postcss from 'rollup-plugin-postcss'
+import postcss from "rollup-plugin-postcss";
 
-const formats = ['esm']
+const formats = ["esm"];
 
-/** @type {import('rollup').RollupOptions} */
+/** @type {import("rollup").RollupOptions} */
 export default {
-  input: 'src/index.ts',
-  output: formats.map(format => ({
+  input: "src/index.ts",
+  output: formats.map((format) => ({
     file: `dist/index.${format}.js`,
     format,
-    name: 'osrdcore',
-    sourcemap:true
+    name: "osrdcore",
+    sourcemap: true,
   })),
   plugins: [
     eslint(),
     typescript(),
     postcss({
-      extract: "style.css",
-      sourceMap:true,
-      plugins: []
+      extract: "theme.css",
+      sourceMap: true,
+      plugins: [],
     }),
-    terser()
+    terser(),
   ],
-  external: ['react']
-}
+  external: ["react"],
+};

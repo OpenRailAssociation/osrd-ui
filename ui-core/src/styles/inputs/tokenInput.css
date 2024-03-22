@@ -1,0 +1,72 @@
+
+.token-input-wrapper {
+    .input-label {
+        font-size: 16px;
+        letter-spacing: 0px;
+        text-align: left;
+        line-height: 24px;
+        @apply text-grey-80 font-sans font-semibold;
+    }
+
+    .tokens-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        min-height: 40px;
+        padding: 4px;
+        width: 344px;
+        border-radius: 4px;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 1px rgba(148, 145, 142, 1) inset;
+        @apply bg-black-1;
+
+        .token-item-wrapper {
+            display: flex;
+            margin: 4px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.5) inset, 0px 0px 0px 1px rgba(196, 218, 245, 1) inset;
+            background-color: rgba(227, 237, 252, 1);
+
+            .token-label {
+                margin:2px 6px 2px 8px;
+                font-size: 14px;
+                letter-spacing: 0px;
+                text-align: left;
+                line-height: 20px;
+                @apply text-black-100;
+            }
+
+            .token-close-btn {
+                margin: 4px 4px 4px 0;
+                @apply text-black-25;
+            }
+
+            &:hover {
+                cursor: pointer;
+                box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.5) inset, 0px 0px 0px 1px rgb(152, 192, 245) inset;
+                background-color: rgba(255, 255, 255, 0.75);
+
+                .token-close-btn {
+                    @apply text-black-75;
+                }
+            }
+
+            &:active {
+                box-shadow: 0px 0px 0px 1px rgb(32, 30, 222) inset;
+                @apply text-white-50;
+
+                .token-close-btn {
+                    @apply text-black-100;
+                }
+            }
+        }
+
+        .token-input {
+            outline: none;
+            margin: 4px;
+            min-width: 100px;
+            flex: 1;
+            @apply bg-transparent;
+        }
+    }
+}
