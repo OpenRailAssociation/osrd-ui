@@ -8,7 +8,18 @@ module.exports = {
     extend: {
       colors: {
         transparent: 'transparent',
-        black: '#000',
+        black: {
+          1:"rgba(0, 0, 0, 0.01)",
+          2:"rgba(0, 0, 0, 0.02)",
+          25:"rgba(0, 0, 0, 0.25)",
+          75:"rgba(0, 0, 0, 0.75)",
+          50: "#94918E",
+          100:"#000000",
+        },
+        white: {
+          50:"rgba(255, 255, 255, 0.5)",
+          75:"rgba(255, 255, 255, 0.75)"
+        },
         ambientA: {
           5: '#F6F8F9',
           10: '#EFF3F5',
@@ -38,6 +49,7 @@ module.exports = {
           50: '#797671',
           60: '#5C5955',
           70: '#494641',
+          80: '#312E2B',
           90: '#1F1B17',
         } ,
         primary: {
@@ -66,12 +78,12 @@ module.exports = {
         } ,
         warning: {
           5: '#FDF5E1',
-          30: '#FDF5E1',
+          30: '#EAA72B',
           60: '#7D521E',
           80: '#432807'
         } ,
         error: {
-          5: '#432807',
+          5: '#FFEEED',
           30: '#FF6868',
           60: '#D91C1C',
           80: '#6B0000'
@@ -80,7 +92,7 @@ module.exports = {
           30: '#FFF700',
           50: '#E8D900',
         },
-      },
+      }
     },
     fontFamily : {
       sans: ['IBM Plex sans', 'sans-serif'],
