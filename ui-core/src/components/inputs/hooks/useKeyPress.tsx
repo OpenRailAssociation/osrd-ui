@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function useKeyPress(key: KeyboardEvent["key"], onKeyPressed: (e: KeyboardEvent) => {}) {
+export default function useKeyPress(key: KeyboardEvent["key"], onKeyPressed: (e: KeyboardEvent) => void) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === key) onKeyPressed(e);
