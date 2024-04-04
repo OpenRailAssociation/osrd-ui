@@ -10,6 +10,7 @@ const meta: Meta<typeof Input> = {
     disabled: false,
     readOnly: false,
   },
+  title: "Input",
 };
 
 export default meta;
@@ -19,6 +20,7 @@ export const Default: Story = {
   args: {
     label: "Your name",
     type: "text",
+    title: "Default Input",
   },
 };
 
@@ -27,6 +29,7 @@ export const Value: Story = {
     label: "Your name",
     type: "text",
     value: "Manuel",
+    title: "Input with Value",
   },
 };
 
@@ -36,6 +39,7 @@ export const Hint: Story = {
     type: "text",
     value: "Manuel",
     hint: "It doesn't have to be real",
+    title: "Input with Hint",
   },
 };
 
@@ -44,6 +48,7 @@ export const LeadingContent: Story = {
     label: "Price",
     type: "number",
     leadingContent: "£",
+    title: "Input with Leading Content",
   },
 };
 
@@ -52,6 +57,7 @@ export const TrainlingContent: Story = {
     label: "Price",
     type: "number",
     trailingContent: "€",
+    title: "Input with Trailing Content",
   },
 };
 
@@ -61,6 +67,7 @@ export const LeadingAndTrainlingContent: Story = {
     type: "number",
     leadingContent: "Minimum",
     trailingContent: "Km/h",
+    title: "Input with Leading and Trailing Content",
   },
 };
 
@@ -69,6 +76,7 @@ export const RequiredInput: Story = {
     label: "Your name",
     type: "text",
     required: true,
+    title: "Required Input",
   },
 };
 
@@ -81,6 +89,7 @@ export const LoadingInput: Story = {
     statusWithMessage: {
       status: "loading",
     },
+    title: "Loading Input",
   },
 };
 
@@ -93,6 +102,7 @@ export const SuccessInput: Story = {
     statusWithMessage: {
       status: "success",
     },
+    title: "Success Input",
   },
 };
 
@@ -106,6 +116,7 @@ export const InformationInput: Story = {
       status: "info",
       message: "You won’t be able to change it",
     },
+    title: "Information Input",
   },
 };
 
@@ -119,6 +130,7 @@ export const WarningInput: Story = {
       status: "warning",
       message: "Don’t be a troll, please",
     },
+    title: "Warning Input",
   },
 };
 
@@ -131,6 +143,7 @@ export const WarningWithoutMessageInput: Story = {
     statusWithMessage: {
       status: "warning",
     },
+    title: "Warning Input without Message",
   },
 };
 
@@ -144,6 +157,7 @@ export const ErrorInput: Story = {
       status: "error",
       message: "“Michel Sardou” can’t be used",
     },
+    title: "Error Input",
   },
 };
 
@@ -156,5 +170,6 @@ export const ErrorWithoutMessageInput: Story = {
     statusWithMessage: {
       status: "error",
     },
+    title: "Error Input without Message",
   },
 };
