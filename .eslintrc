@@ -1,25 +1,128 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
-    "ignorePatterns": ["*.css"],
-    "extends": [
-      "eslint:recommended", // ESLint recommended rules
-      "plugin:react/recommended", // React recommended rules
-      "plugin:@typescript-eslint/recommended", // TypeScript recommended rules
-      "plugin:@typescript-eslint/eslint-recommended", // ESLint overrides for TypeScript
-      "prettier", // Prettier rules
-      "plugin:prettier/recommended", // Prettier plugin integration
-      "plugin:react-hooks/recommended", // Recommended rules for React hooks
-      "plugin:storybook/recommended" // Recommended rules for Storybook
-    ],
-    "rules": {
-      "react/prop-types": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
+  "env": {
+    "browser": true
+  },
+  "ignorePatterns": ["src/common/api/*Api.ts"],
+  "extends": [
+    "plugin:vitest/recommended",
+    "airbnb",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier"
+  ],
+  "plugins": ["import", "only-warn", "prettier", "react", "react-hooks", "vitest"],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "builtin",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
       }
-  }
+    ],
+    "no-shadow": "off",
+    "@typescript-eslint/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-use-before-define": ["error"],
+
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "types": {
+          "LegacyFilterSpecification": {
+            "message": "Use ExpressionFilterSpecification instead",
+            "fixWith": "ExpressionFilterSpecification"
+          }
+        }
+      }
+    ],
+    "arrow-body-style": ["error", "as-needed"],
+    "global-require": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": 0,
+    "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
+    "jsx-a11y/click-events-have-key-events": "off",
+    "linebreak-style": ["error", "unix"],
+    "no-console": ["error", { "allow": ["info", "debug", "warn", "error"] }],
+    "no-named-as-default": "off",
+    "no-param-reassign": "off",
+    "no-use-before-define": "off",
+    "prettier/prettier": ["warn"],
+    "react/forbid-prop-types": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-no-useless-fragment": "error",
+    "react/jsx-props-no-spreading": 0,
+    "react/prefer-stateless-function": "off",
+    "react/static-property-placement": 0,
+    // disable vitest/prefer-to-be because it does not authorize toEqual for the floats
+    "vitest/prefer-to-be": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": 2,
+        "@typescript-eslint/explicit-module-boundary-types": 0,
+        "@typescript-eslint/space-before-blocks": 0,
+        "camelcase": 0,
+        "no-nonoctal-decimal-escape": 0,
+        "no-param-reassign": 0,
+        "no-unsafe-optional-chaining": 0,
+        "object-curly-newline": 0,
+        "react/function-component-definition": 0,
+        "react/jsx-props-no-spreading": 0,
+        "react/no-array-index-key": 0,
+        "react/require-default-props": 0
+      }
+    },
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+      }
+    },
+    {
+      "files": ["**/*.js", "**/*.jsx"],
+      "rules": {
+        "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+      }
+    }
+  ]
 }
