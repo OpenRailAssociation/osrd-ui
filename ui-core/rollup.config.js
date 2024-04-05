@@ -24,9 +24,9 @@ export default {
       plugins: [],
     }),
     terser(),
-    livereload({
-      watch: 'dist',
-    }),
+    // livereload({
+    //   watch: 'dist',
+    // }),
   ],
   external: ['react'],
 };
