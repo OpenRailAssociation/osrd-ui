@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { Gear, RequiredInput, CheckCircle, Info, Alert, Blocked } from '@osrd-project/ui-icons';
-import cx from 'classnames';
+import React, { useState } from "react";
+import cx from "classnames";
 
-import useKeyPress from './hooks/useKeyPress';
+import useKeyPress from "./hooks/useKeyPress";
+import FieldWrapper from "./FieldWrapper";
 
 type InputAffixProps = {
   value: InputAffixContent | InputAffixContentWithCallback;
-  type: 'leading' | 'trailing';
+  type: "leading" | "trailing";
+  disabled: boolean;
+  readOnly: boolean;
 };
 
-const InputAffix: React.FC<InputAffixProps> = ({ value, type }) => {
-  const isContentWithCallback =
-    typeof value === 'object' && value !== null && 'onClickCallback' in value;
+const InputAffix: React.FC<InputAffixProps> = ({ value, type, disabled, readOnly }) => {
+  const isContentWithCallback = typeof value === "object" && value !== null && "onClickCallback" in value;
   const spanContent = isContentWithCallback
     ? (value as InputAffixContentWithCallback).content
     : (value as InputAffixContent);
@@ -20,32 +21,15 @@ const InputAffix: React.FC<InputAffixProps> = ({ value, type }) => {
     : {};
 
   return (
-    <div className={`${type}-content-wrapper`} {...wrapperProps}>
+    <div className={cx(`${type}-content-wrapper`, { disabled, "read-only": readOnly })} {...wrapperProps}>
       <span className={`${type}-content`}>{spanContent}</span>
     </div>
   );
 };
 
-type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
+export type status = "success" | "info" | "error" | "warning" | "loading";
 
-type InputStatusIconProps = {
-  status: status;
-  small?: boolean;
-};
-
-const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
-  return (
-    <span className={cx('status-icon', status)}>
-      {status === 'loading' && <Gear size={small ? 'sm' : 'lg'} />}
-      {status === 'info' && <Info size={small ? 'sm' : 'lg'} />}
-      {status === 'success' && <CheckCircle variant="fill" size={small ? 'sm' : 'lg'} />}
-      {status === 'warning' && <Alert variant="fill" size={small ? 'sm' : 'lg'} />}
-      {status === 'error' && <Blocked variant="fill" size={small ? 'sm' : 'lg'} />}
-    </span>
-  );
-};
-
-type statusWithMessage = {
+export type statusWithMessage = {
   status: status;
   message?: string;
 };
@@ -77,8 +61,8 @@ export const Input: React.FC<InputProps> = ({
   leadingContent,
   trailingContent,
   required,
-  disabled,
-  readOnly,
+  disabled = false,
+  readOnly = false,
   statusWithMessage,
   inputWrapperClassname,
   small = false,
@@ -87,61 +71,39 @@ export const Input: React.FC<InputProps> = ({
   const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
   useKeyPress('Tab', async () => setFocusViaKeyboard(true));
 
-  const statusClassname = {
-    ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}),
-  };
-
+  const statusClassname = { ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}) };
   return (
-    <div className={cx('feed-back', statusClassname, { small: small })}>
-      <div className="custom-input">
-        {/* LABEL */}
-        <div className={cx('label-wrapper', { 'has-hint': hint })}>
-          {required && (
-            <span className="required">
-              {' '}
-              <RequiredInput />{' '}
-            </span>
-          )}
-          <label className={cx('label', { disabled: disabled })} htmlFor={id}>
-            {label}
-          </label>
-        </div>
-
-        {/* HINT */}
-        {hint && <span className="hint">{hint}</span>}
-
-        {/* INPUT WRAPPER AND STATUS ICON */}
-        <div className="input-wrapper-and-status-icon">
-          <div
-            className={cx('input-wrapper', inputWrapperClassname, { focused: focusViaKeyboard })}
-          >
-            {leadingContent && <InputAffix value={leadingContent} type="leading" />}
-            <input
-              className={cx('input', {
-                'with-leading-only': leadingContent && !trailingContent,
-                'with-trailing-only': trailingContent && !leadingContent,
-                'with-leading-and-trailing': leadingContent && trailingContent,
-                ...statusClassname,
-              })}
-              id={id}
-              type={type}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              disabled={disabled}
-              readOnly={readOnly}
-              onBlur={() => setFocusViaKeyboard(false)}
-            />
-            {trailingContent && <InputAffix value={trailingContent} type="trailing" />}
-          </div>
-          {statusWithMessage && <InputStatusIcon status={statusWithMessage.status} small={small} />}
-        </div>
-
-        {/* STATUS MESSAGE */}
-        {statusWithMessage?.message && (
-          <span className={cx('status-message', statusClassname)}>{statusWithMessage.message}</span>
+    <FieldWrapper
+      id={id}
+      label={label}
+      hint={hint}
+      statusWithMessage={statusWithMessage}
+      disabled={disabled}
+      required={required}
+      small={small}
+    >
+      <div className={cx("input-wrapper", inputWrapperClassname, { focused: focusViaKeyboard, small })}>
+        {leadingContent && <InputAffix value={leadingContent} type="leading" disabled={disabled} readOnly={readOnly} />}
+        <input
+          className={cx("input", {
+            "with-leading-only": leadingContent && !trailingContent,
+            "with-trailing-only": trailingContent && !leadingContent,
+            "with-leading-and-trailing": leadingContent && trailingContent,
+            ...statusClassname,
+          })}
+          id={id}
+          type={type}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={disabled}
+          readOnly={readOnly}
+          onBlur={() => setFocusViaKeyboard(false)}
+        />
+        {trailingContent && (
+          <InputAffix value={trailingContent} type="trailing" disabled={disabled} readOnly={readOnly} />
         )}
       </div>
-    </div>
+    </FieldWrapper>
   );
 };
 

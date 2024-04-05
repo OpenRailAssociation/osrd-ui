@@ -1,0 +1,128 @@
+.feed-back {
+    border-radius: 8px;
+    width: max-content;
+    position: relative;
+    padding: 10px 0 16px 16px;
+  
+    &.info {
+      @apply bg-info-5;
+    }
+  
+    &.warning {
+      @apply bg-warning-5;
+    }
+  
+    &.error {
+      @apply bg-error-5;
+    }
+  
+    .custom-field {
+      display: flex;
+      flex-direction: column;
+      width: max-content;
+    
+      .field-wrapper-and-status-icon {
+        display: flex;
+        align-items: center;
+        margin-right: 13px;
+    
+        .status-icon {
+          margin-left: 9px;
+          
+          &.loading {
+            animation: spin 3s linear infinite;
+            @apply text-info-30;
+          }
+    
+          &.info {
+            @apply text-info-30;
+          }
+    
+          &.success {
+            @apply text-success-30;
+          }
+     
+          &.warning {
+            @apply text-warning-30;
+          }
+    
+          &.error {
+            @apply text-error-60;
+          }
+    
+          &.small {
+            margin: 5px 0 5px 8px;
+          }
+        }
+      
+      }
+    }
+  
+    &.small {
+      .custom-input {
+            
+        .input-wrapper-and-status-icon {
+          .input-wrapper {
+            height: 34px;
+        
+            .leading-content-wrapper {
+              height: 28px;
+              border-radius: 3px 0px 0px 3px;
+              .leading-content {
+                font-size: 12px;
+                line-height: 8px;
+              }
+            }
+        
+            .input {
+              height: 28px;
+              line-height: 20px;
+              font-size: 14px;
+              padding: 3px 8px 3px 7px;
+              border-radius: 3px;
+  
+              &.with-leading-only {
+                border-radius: 0px 4px 4px 0px;
+              }
+  
+              &.with-trailing-only {
+                border-radius: 4px 0 0 4px;
+              }
+        
+              &.with-leading-and-trailing {
+                border-radius: 0;
+              }
+        
+              &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
+                width: 96px;
+              }
+            }
+            
+            .trailing-content-wrapper {
+              height: 28px;
+              border-radius: 0 3px 3px 0;
+                
+              .trailing-content {
+                font-size: 12px;
+                line-height: 8px;
+              }
+              
+            }
+          }
+          
+          .status-icon {
+            margin: 5px 0 5px 8px;
+          }
+        }
+      }
+    }
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
