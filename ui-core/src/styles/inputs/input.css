@@ -66,25 +66,25 @@
       .input-wrapper-and-status-icon {
         display: flex;
         align-items: center;
-        margin-right: 0.8125rem;
+        margin-right: 0.812rem;
     
         .input-wrapper {
           display: flex;
           align-items: center;
-          padding: 0.1875rem;
+          padding: 0.187rem;
           margin-left: -0.125rem;
           width:max-content;
       
           &.focused {
-            box-shadow: 0 0 0 0.0625rem rgba(37, 106, 250, 1) inset;
+            box-shadow: 0 0 0 0.062rem rgba(37, 106, 250, 1) inset;
           }
       
           .leading-content-wrapper {
             height: 2.5rem;
-            padding: 0.5625rem 1rem 0.6875rem 1rem;
+            padding: 0.562rem 1rem 0.687rem 1rem;
             border-radius: 0.25rem 0 0 0.25rem;
-            box-shadow: 0 0 0 0.0625rem rgba(148, 145, 142, 1) inset;
-            margin-right: -0.0625rem;
+            box-shadow: 0 0 0 0.062rem rgba(148, 145, 142, 1) inset;
+            margin-right: -0.062rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -105,7 +105,7 @@
             letter-spacing: 0;
             padding: 0.5rem 0.75rem;
             border-radius: 0.25rem;
-            box-shadow: 0 0 0 0.0625rem rgba(148, 145, 142, 1) inset, 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.5) inset;
+            box-shadow: 0 0 0 0.062rem rgba(148, 145, 142, 1) inset, 0 0.062rem 0.187rem rgba(0, 0, 0, 0.5) inset;
             @apply bg-black-1 text-black-100;
       
             &.with-leading-only {
@@ -129,35 +129,35 @@
             }
         
             &:read-only {
-              box-shadow: 0 0 0 0.0625rem rgba(211, 209, 207, 1) inset, 0 0 0 0.1875rem rgba(255, 255, 255, 1) inset;
+              box-shadow: 0 0 0 0.062rem rgba(211, 209, 207, 1) inset, 0 0 0 0.187rem rgba(255, 255, 255, 1) inset;
               @apply text-grey-50 bg-black-2;
             }
       
             &:disabled {
-              box-shadow: 0 0 0 0.0625rem rgba(235, 235, 234, 1) inset;
+              box-shadow: 0 0 0 0.062rem rgba(235, 235, 234, 1) inset;
               @apply text-grey-30 bg-black-2;
             }
     
             &.success {
-              box-shadow: 0 0 0 0.0625rem rgba(11, 114, 60, 1) inset, 0 0 0 0.25rem rgba(230, 247, 238, 1) inset;
+              box-shadow: 0 0 0 0.062rem rgba(11, 114, 60, 1) inset, 0 0 0 0.25rem rgba(230, 247, 238, 1) inset;
               background-color: rgba(255, 255, 255, 0.5);
             }
     
             &.info {
-              border: 0.09375rem solid rgba(112, 193, 229, 1);
-              box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.0625rem rgba(0, 0, 0, 1) inset;
+              border: 0.093rem solid rgba(112, 193, 229, 1);
+              box-shadow: 0 0.062rem 0.187rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.062rem rgba(0, 0, 0, 1) inset;
               background-color: rgba(255, 255, 255, 1);
             }
     
             &.warning {
-              border: 0.09375rem solid rgba(234, 167, 43, 1);
-              box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.0625rem rgba(0, 0, 0, 1) inset;
+              border: 0.093rem solid rgba(234, 167, 43, 1);
+              box-shadow: 0 0.062rem 0.187rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.062rem rgba(0, 0, 0, 1) inset;
               background-color: rgba(255, 255, 255, 1);
             }
     
             &.error {
-              border: 0.09375rem solid rgba(255, 104, 104, 1);
-              box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.0625rem rgba(0, 0, 0, 1) inset;
+              border: 0.093rem solid rgba(255, 104, 104, 1);
+              box-shadow: 0 0.062rem 0.187rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.062rem rgba(0, 0, 0, 1) inset;
               background-color: rgba(255, 255, 255, 1);
             }
 
@@ -175,10 +175,10 @@
           
           .trailing-content-wrapper {
             height: 2.5rem;
-            padding: 0.5625rem 1rem 0.6875rem;
+            padding: 0.562rem 1rem 0.687rem;
             border-radius: 0 0.25rem 0.25rem 0;
-            box-shadow: 0 0 0 0.0625rem rgba(148, 145, 142, 1) inset;
-            margin-left: -0.0625rem;
+            box-shadow: 0 0 0 0.062rem rgba(148, 145, 142, 1) inset;
+            margin-left: -0.062rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -192,7 +192,7 @@
           }
         }
         .status-icon {
-          margin-left: 0.5625rem;
+          margin-left: 0.562rem;
           
           &.loading {
             animation: spin 3s linear infinite;
@@ -216,7 +216,7 @@
           }
     
           &.small {
-            margin: 0.3125rem 0 0.3125rem 0.5rem;
+            margin: 0.312rem 0 0.312rem 0.5rem;
           }
         }
       
@@ -226,7 +226,7 @@
         letter-spacing: 0;
         text-align: left;
         line-height: 1.5rem;
-        margin-top: 0.6875rem;
+        margin-top: 0.687rem;
         margin-bottom: 0.125rem;
         @apply font-semibold;
     
@@ -259,7 +259,7 @@
         }
 
         .hint {
-          margin-bottom: 0.1875rem;
+          margin-bottom: 0.187rem;
         }
       
         .input-wrapper-and-status-icon {
@@ -268,7 +268,7 @@
         
             .leading-content-wrapper {
               height: 1.75rem;
-              border-radius: 0.1875rem 0 0 0.1875rem;
+              border-radius: 0.187rem 0 0 0.187rem;
               .leading-content {
                 font-size: 0.75rem;
                 line-height: 0.5rem;
@@ -279,8 +279,8 @@
               height: 1.75rem;
               line-height: 1.25rem;
               font-size: 0.875rem;
-              padding: 0.1875rem 0.5rem 0.1875rem 0.4375rem;
-              border-radius: 0.1875rem;
+              padding: 0.187rem 0.5rem 0.187rem 0.437rem;
+              border-radius: 0.187rem;
 
               &.with-leading-only {
                 border-radius: 0 0.25rem 0.25rem 0;
@@ -301,7 +301,7 @@
             
             .trailing-content-wrapper {
               height: 1.75rem;
-              border-radius: 0 0.1875rem 0.1875rem 0;
+              border-radius: 0 0.187rem 0.187rem 0;
                 
               .trailing-content {
                 font-size: 0.75rem;
@@ -312,7 +312,7 @@
           }
           
           .status-icon {
-            margin: 0.3125rem 0 0.3125rem 0.5rem;
+            margin: 0.312rem 0 0.312rem 0.5rem;
           }
         }
       }

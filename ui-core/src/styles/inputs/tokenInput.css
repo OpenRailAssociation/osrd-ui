@@ -14,7 +14,7 @@
         padding: 0.25rem;
         width: 21.5rem;
         border-radius: 0.25rem;
-        box-shadow: 0 0.0625rem 0.1875rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.0625rem rgba(148, 145, 142, 1) inset;
+        box-shadow: 0 0.062rem 0.187rem rgba(0, 0, 0, 0.5) inset, 0 0 0 0.062rem rgba(148, 145, 142, 1) inset;
         @apply bg-black-1;
 
         .token-item-wrapper {
@@ -22,8 +22,8 @@
             margin: 0.25rem;
             align-items: center;
             justify-content: center;
-            border-radius: 0.1875rem;
-            box-shadow: 0 0 0 0.125rem rgba(255, 255, 255, 0.5) inset, 0 0 0 0.0625rem rgba(196, 218, 245, 1) inset;
+            border-radius: 0.187rem;
+            box-shadow: 0 0 0 0.125rem rgba(255, 255, 255, 0.5) inset, 0 0 0 0.062rem rgba(196, 218, 245, 1) inset;
             background-color: rgba(227, 237, 252, 1);
 
             .token-label {
@@ -42,7 +42,7 @@
 
             &:hover {
                 cursor: pointer;
-                box-shadow: 0 0 0 0.125rem rgba(255, 255, 255, 0.5) inset, 0 0 0 0.0625rem rgb(152, 192, 245) inset;
+                box-shadow: 0 0 0 0.125rem rgba(255, 255, 255, 0.5) inset, 0 0 0 0.062rem rgb(152, 192, 245) inset;
                 background-color: rgba(255, 255, 255, 0.75);
 
                 .token-close-btn {
@@ -51,7 +51,7 @@
             }
 
             &:active {
-                box-shadow: 0 0 0 0.0625rem rgb(32, 30, 222) inset;
+                box-shadow: 0 0 0 0.062rem rgb(32, 30, 222) inset;
                 @apply text-white-50;
 
                 .token-close-btn {
