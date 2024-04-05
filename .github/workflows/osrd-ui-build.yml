@@ -1,4 +1,4 @@
-name: Build and Check Code
+name: Build osrd-ui
 
 on: [push]
 
