@@ -1,4 +1,8 @@
 {
-    "trailingComma": "all",
-    "printWidth": 120
-}
+    "printWidth": 100,
+    "singleQuote": true,
+    "arrowParens": "always",
+    "proseWrap": "always",
+    "trailingComma": "es5"
+  }
+  
