@@ -19,14 +19,15 @@
   "scripts": {
     "rollup": "rollup -c",
     "clean": "rimraf dist",
-    "build": "npm run rollup"
+    "build": "npm run rollup",
+    "watch": "rollup -c -w"
   },
   "peerDependencies": {
     "react": ">=18.0"
   },
   "dependencies": {
-    "tailwindcss": "^3.4.1",
-    "classnames": "^2.5.1"
+    "classnames": "^2.5.1",
+    "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.17",
@@ -34,6 +35,8 @@
     "postcss-assets": "^6.0.0",
     "postcss-import": "^16.0.0",
     "postcss-preset-env": "^9.5.2",
-    "rollup-plugin-postcss": "^4.0.2"
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^1.1.1"
   }
 }
