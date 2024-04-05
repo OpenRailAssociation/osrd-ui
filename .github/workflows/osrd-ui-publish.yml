@@ -1,4 +1,4 @@
-name: Publish @osrd-project/ui-icons on Release
+name: Publish @osrd-project on Release
 
 on:
   release:
@@ -16,10 +16,9 @@ jobs:
         registry-url: 'https://registry.npmjs.org/'
     - run: |
         npm ci
-        VERSION=${GITHUB_REF/refs\/tags\//}
-        npm version $VERSION --no-git-tag-version
         npm run build
-        npm publish --access public
+        VERSION=${GITHUB_REF/refs\/tags\//}
+        lerna version $VERSION --no-private --no-git-tag-version --yes
+        lerna publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      working-directory: ./ui-icons
