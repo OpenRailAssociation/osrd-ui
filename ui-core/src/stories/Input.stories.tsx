@@ -5,12 +5,13 @@ import Input from "../components/inputs/Input";
 
 const meta: Meta<typeof Input> = {
   component: Input,
+  title: "Input",
+  tags: ["autodocs"],
   args: {
     small: false,
     disabled: false,
     readOnly: false,
   },
-  title: "Input",
 };
 
 export default meta;

@@ -6,6 +6,7 @@ import PasswordInput from "../components/inputs/PasswordInput";
 const meta: Meta<typeof PasswordInput> = {
   component: PasswordInput,
   title: "PasswordInput",
+  tags: ["autodocs"],
   args: {
     label: "Password",
     hint: "You can uses spaces",

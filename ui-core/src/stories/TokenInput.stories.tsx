@@ -6,6 +6,7 @@ import TokenInput from "../components/inputs/TokenInput";
 const meta: Meta<typeof TokenInput> = {
   component: TokenInput,
   title: "TokenInput",
+  tags: ["autodocs"],
   args: {
     label: "Favorite colors",
     tokens: ["Yellow", "Orange", "Red", "Black"],
