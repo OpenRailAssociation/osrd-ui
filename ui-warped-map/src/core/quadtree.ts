@@ -1,14 +1,14 @@
-import bbox from "@turf/bbox";
-import { BBox2d } from "@turf/helpers/dist/js/lib/geojson";
-import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Position } from "geojson";
+import bbox from '@turf/bbox';
+import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Position } from 'geojson';
 
 // The following types help describing a full QuadTree:
 export type Leaf<T> = {
-  type: "leaf";
+  type: 'leaf';
   elements: T[];
 };
 export type Quad<T> = {
-  type: "quad";
+  type: 'quad';
   bbox: BBox2d;
   children: [QuadChild<T> | null, QuadChild<T> | null, QuadChild<T> | null, QuadChild<T> | null];
 };
@@ -21,11 +21,11 @@ export function bboxIntersect([mx1, my1, Mx1, My1]: BBox2d, [mx2, my2, Mx2, My2]
 function getNewQuadChild<T>(box: BBox2d, isLeaf?: boolean): QuadChild<T> {
   return isLeaf
     ? {
-        type: "leaf",
+        type: 'leaf',
         elements: [],
       }
     : {
-        type: "quad",
+        type: 'quad',
         bbox: box,
         children: [null, null, null, null],
       };
@@ -37,7 +37,7 @@ function getNewQuadChild<T>(box: BBox2d, isLeaf?: boolean): QuadChild<T> {
  */
 export function getQuadTree<G extends Geometry | null = Geometry, P = GeoJsonProperties>(
   collection: FeatureCollection<G, P>,
-  depth: number,
+  depth: number
 ): Quad<Feature<G, P>> {
   const boundingBox = bbox(collection) as BBox2d;
   const root = getNewQuadChild(boundingBox) as Quad<Feature<G, P>>;
@@ -53,7 +53,7 @@ export function getQuadTree<G extends Geometry | null = Geometry, P = GeoJsonPro
       const newQuads: QuadChild<Feature<G, P>>[] = [];
       for (let j = 0, quadsCount = quads.length; j < quadsCount; j++) {
         const quad = quads[j];
-        if (quad.type !== "quad") break;
+        if (quad.type !== 'quad') break;
 
         const [x1, y1, x2, y2] = quad.bbox;
         const ax = (x1 + x2) / 2;
@@ -79,7 +79,7 @@ export function getQuadTree<G extends Geometry | null = Geometry, P = GeoJsonPro
 
     for (let j = 0, k = quads.length; j < k; j++) {
       const quad = quads[j];
-      if (quad.type !== "leaf") break;
+      if (quad.type !== 'leaf') break;
 
       quad.elements.push(feature);
     }
@@ -105,7 +105,7 @@ export function getElements<T>(point: Position, quadTree: Quad<T>): T[] {
   else child = quadTree.children[3];
 
   if (!child) return [];
-  if (child.type === "quad") return getElements(point, child);
+  if (child.type === 'quad') return getElements(point, child);
 
   return child.elements;
 }
