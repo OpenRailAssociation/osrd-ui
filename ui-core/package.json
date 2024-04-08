@@ -22,6 +22,11 @@
     "build": "npm run rollup",
     "watch": "NODE_ENV=development rollup -c -w"
   },
+  "bugs": "https://github.com/osrd-project/osrd-ui/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osrd-project/osrd-ui.git"
+  },
   "peerDependencies": {
     "react": ">=18.0"
   },
