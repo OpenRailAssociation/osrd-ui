@@ -10,6 +10,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Create tempory branch
+        run: git checkout -b temp-branch
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
