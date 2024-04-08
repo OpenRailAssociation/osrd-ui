@@ -21,9 +21,6 @@ jobs:
       - run: |
           npm ci
           npm run build
-          cd ui-core
-          npm publish --access public
-          cd ../ui-icons
-          npm publish --access public
+          lerna publish from-package --no-private --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
