@@ -21,6 +21,6 @@ jobs:
       - run: |
           npm ci
           npm run build
-          lerna publish from-package --scope @osrd-project/ui-icons --scope @osrd-project/ui-core --yes
+          lerna publish from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
