@@ -23,4 +23,5 @@ jobs:
           npm run build
           lerna publish from-package --no-private --yes
         env:
+          LERNA_DEBUG: 1
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
