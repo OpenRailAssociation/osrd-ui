@@ -21,7 +21,9 @@ jobs:
       - run: |
           npm ci
           npm run build
-          lerna publish from-package --no-private --yes
+          cd ui-core
+          npm publish --access public
+          cd ../ui-icons
+          npm publish --access public
         env:
-          LERNA_DEBUG: 1
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
