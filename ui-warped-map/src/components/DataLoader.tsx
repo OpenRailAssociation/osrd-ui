@@ -1,15 +1,15 @@
-import { StyleSpecification } from "@maplibre/maplibre-gl-style-spec";
-import { featureCollection } from "@turf/helpers";
-import { BBox2d } from "@turf/helpers/dist/js/lib/geojson";
-import { Feature, FeatureCollection } from "geojson";
-import React, { FC, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import ReactMapGL, { Layer, LayerProps, MapRef, Source } from "react-map-gl/maplibre";
+import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { featureCollection } from '@turf/helpers';
+import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import { Feature, FeatureCollection } from 'geojson';
+import React, { FC, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import ReactMapGL, { Layer, LayerProps, MapRef, Source } from 'react-map-gl/maplibre';
 
-import { simplifyFeature } from "../core/helpers";
-import { SourceDefinition } from "../core/types";
+import { simplifyFeature } from '../core/helpers';
+import { SourceDefinition } from '../core/types';
 
-const TIME_LABEL = "Loading data around warped path";
+const TIME_LABEL = 'Loading data around warped path';
 
 /**
  * This component handles loading entities from MapLibre vector servers, and retrieving them as GeoJSONs from the
@@ -27,7 +27,7 @@ const DataLoader: FC<{
   log?: boolean;
 }> = ({ bbox, mapStyle, onDataLoaded, sources, timeout, log }) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
-  const [state, setState] = useState<"idle" | "render" | "loaded">("idle");
+  const [state, setState] = useState<'idle' | 'render' | 'loaded'>('idle');
 
   useEffect(() => {
     if (!mapRef) return;
@@ -35,12 +35,12 @@ const DataLoader: FC<{
     mapRef.fitBounds(bbox, { animate: false });
     setTimeout(() => {
       if (log) console.time(TIME_LABEL);
-      setState("render");
+      setState('render');
     }, 0);
   }, [mapRef, bbox]);
 
   useEffect(() => {
-    if (state === "render") {
+    if (state === 'render') {
       const m = mapRef as MapRef;
 
       const querySources = () => {
@@ -51,16 +51,16 @@ const DataLoader: FC<{
         const sourcesData: Record<string, FeatureCollection> = {};
         sources.forEach(({ id: sourceId, layers }) => {
           const features: Feature[] = [];
-          layers.forEach(({ "source-layer": sourceLayer }) => {
+          layers.forEach(({ 'source-layer': sourceLayer }) => {
             const layerFeatures = m
               .querySourceFeatures(sourceId, { sourceLayer })
               .map((f) => simplifyFeature(f, sourceLayer));
 
             for (let i = 0, l = layerFeatures.length; i < l; i++) {
               const feature = layerFeatures[i];
-              const id = feature.id || "generated/" + incrementalID++;
+              const id = feature.id || 'generated/' + incrementalID++;
               if (ids.has(id)) {
-                const newId = id + "/dedup/" + incrementalID++;
+                const newId = id + '/dedup/' + incrementalID++;
                 ids.add(newId);
                 features.push({ ...feature, id: newId });
               } else {
@@ -74,12 +74,12 @@ const DataLoader: FC<{
         });
 
         if (log) console.timeEnd(TIME_LABEL);
-        if (log) console.log("  - Features: ", featuresCount);
+        if (log) console.log('  - Features: ', featuresCount);
 
         // Finalize:
         clean();
         onDataLoaded(sourcesData);
-        setState("loaded");
+        setState('loaded');
       };
 
       let timeoutId: number | null = null;
@@ -88,11 +88,11 @@ const DataLoader: FC<{
       }
 
       const clean = () => {
-        m.off("idle", querySources);
+        m.off('idle', querySources);
         if (timeoutId !== null) window.clearTimeout(timeoutId);
       };
 
-      m.on("idle", querySources);
+      m.on('idle', querySources);
 
       return clean;
     }
@@ -100,18 +100,18 @@ const DataLoader: FC<{
     return undefined;
   }, [state]);
 
-  return state !== "loaded"
+  return state !== 'loaded'
     ? createPortal(
         <div
           style={{
-            position: "fixed",
-            bottom: "110%",
+            position: 'fixed',
+            bottom: '110%',
             height: 1200,
             width: 1200,
           }}
         >
-          <ReactMapGL ref={setMapRef} mapStyle={mapStyle} style={{ width: "100%", height: "100%" }}>
-            {state === "render" &&
+          <ReactMapGL ref={setMapRef} mapStyle={mapStyle} style={{ width: '100%', height: '100%' }}>
+            {state === 'render' &&
               sources.map(({ id, url, layers }) => (
                 <Source key={id} id={id} type="vector" url={url}>
                   {layers.map(({ id: layerId, ...layerProps }) => (
@@ -121,7 +121,7 @@ const DataLoader: FC<{
               ))}
           </ReactMapGL>
         </div>,
-        document.body,
+        document.body
       )
     : null;
 };

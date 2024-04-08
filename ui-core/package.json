@@ -20,7 +20,7 @@
     "rollup": "rollup -c",
     "clean": "rimraf dist",
     "build": "npm run rollup",
-    "watch": "rollup -c -w"
+    "watch": "NODE_ENV=development rollup -c -w"
   },
   "peerDependencies": {
     "react": ">=18.0"

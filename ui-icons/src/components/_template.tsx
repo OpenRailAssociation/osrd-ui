@@ -1,12 +1,12 @@
-import React from "react";
-import { IconData } from "../types/icon-data";
-import { default as sizes } from "../sizes";
+import React from 'react';
+import { IconData } from '../types/icon-data';
+import { default as sizes } from '../sizes';
 
 const iconData: IconData = {};
 
 //ReplaceWithTypes
 
-const IconReplaceName: IconReplaceNameIcon = ({ variant = "base", size = "sm", title }) => {
+const IconReplaceName: IconReplaceNameIcon = ({ variant = 'base', size = 'sm', title }) => {
   const currentSize = sizes[size];
   if (!iconData[variant]) {
     throw new Error(`IconReplaceName: variant ${variant} not found.`);
@@ -21,7 +21,7 @@ const IconReplaceName: IconReplaceNameIcon = ({ variant = "base", size = "sm", t
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      {...(title ? {} : { "aria-hidden": true })}
+      {...(title ? {} : { 'aria-hidden': true })}
       width={currentSize}
       height={currentSize}
       fill="currentColor"

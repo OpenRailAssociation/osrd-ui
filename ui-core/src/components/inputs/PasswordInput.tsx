@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Eye, EyeClosed } from "@osrd-project/ui-icons";
+import React, { useState } from 'react';
+import { Eye, EyeClosed } from '@osrd-project/ui-icons';
 
-import Input, { type InputProps } from "./Input";
+import Input, { type InputProps } from './Input';
 
 const PasswordInput: React.FC<InputProps> = (props) => {
   const [isVisible, toggleVisibility] = useState(false);
@@ -9,7 +9,7 @@ const PasswordInput: React.FC<InputProps> = (props) => {
   return (
     <Input
       {...props}
-      type={isVisible ? "text" : "password"}
+      type={isVisible ? 'text' : 'password'}
       trailingContent={{
         content: isVisible ? <EyeClosed /> : <Eye />,
         onClickCallback: () => toggleVisibility(!isVisible),

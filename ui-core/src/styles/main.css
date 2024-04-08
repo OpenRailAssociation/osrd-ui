@@ -9,20 +9,19 @@
 
 @font-face {
   font-family: 'IBM Plex Sans';
-  src: inline("./fonts/IBMPlexSans-Regular.ttf") format('truetype');
+  src: inline('./fonts/IBMPlexSans-Regular.ttf') format('truetype');
   font-weight: 400;
-  
 }
 
 @font-face {
   font-family: 'IBM Plex Sans';
-  src: inline("./fonts/IBMPlexSans-SemiBold.ttf") format('truetype');
+  src: inline('./fonts/IBMPlexSans-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }
 
 @font-face {
   font-family: 'IBM Plex Sans';
-  src: inline("./fonts/IBMPlexSans-Bold.ttf") format('truetype');
+  src: inline('./fonts/IBMPlexSans-Bold.ttf') format('truetype');
   font-weight: 900;
 }
 
@@ -30,13 +29,12 @@
 
 @font-face {
   font-family: 'IBM Plex Serif', serif;
-  src: inline("./fonts/IBMPlexSerif-Regular.ttf") format('truetype');
+  src: inline('./fonts/IBMPlexSerif-Regular.ttf') format('truetype');
   font-weight: 400;
-  
 }
 @font-face {
   font-family: 'IBM Plex Serif', serif;
-  src: inline("./fonts/IBMPlexSerif-SemiBold.ttf") format('truetype');
+  src: inline('./fonts/IBMPlexSerif-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }
 
@@ -44,12 +42,11 @@
 
 @font-face {
   font-family: 'IBM Plex Mono', monospace;
-  src: inline("./fonts/IBMPlexMono-Regular.ttf") format('truetype');
+  src: inline('./fonts/IBMPlexMono-Regular.ttf') format('truetype');
   font-weight: 400;
-  
 }
 @font-face {
   font-family: 'IBM Plex Mono', monospace;
-  src: inline("fonts/IBMPlexMono-SemiBold.ttf") format('truetype');
+  src: inline('fonts/IBMPlexMono-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }

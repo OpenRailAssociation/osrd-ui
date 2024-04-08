@@ -1,4 +1,4 @@
-import { LIST_VALUES, SIGNAL_BASE_DEFAULT } from "../stories/assets/simulationConsts";
+import { LIST_VALUES, SIGNAL_BASE_DEFAULT } from '../stories/assets/simulationConsts';
 
 // * types from osrd/front/src/modules/simulationResult/consts.ts
 
@@ -13,7 +13,7 @@ export type AllListValues = ArrayElement<ListValues>;
 
 // * types from  osrd/front/src/common/api/osrdEditoastApi.ts
 
-export type TrainScheduleValidation = "NewerRollingStock" | "NewerInfra";
+export type TrainScheduleValidation = 'NewerRollingStock' | 'NewerInfra';
 
 export type ScheduledPoint = {
   path_offset: number;
@@ -30,20 +30,20 @@ export type TrainScheduleOptions = {
   ignore_electrical_profiles?: boolean | null;
 };
 
-export type RollingStockComfortType = "STANDARD" | "AC" | "HEATING";
+export type RollingStockComfortType = 'STANDARD' | 'AC' | 'HEATING';
 
 export type AllowanceValue =
   | {
       minutes: number;
-      value_type: "time_per_distance";
+      value_type: 'time_per_distance';
     }
   | {
       seconds: number;
-      value_type: "time";
+      value_type: 'time';
     }
   | {
       percentage: number;
-      value_type: "percentage";
+      value_type: 'percentage';
     };
 
 export type RangeAllowance = {
@@ -52,7 +52,7 @@ export type RangeAllowance = {
   value: AllowanceValue;
 };
 
-export type AllowanceDistribution = "MARECO" | "LINEAR";
+export type AllowanceDistribution = 'MARECO' | 'LINEAR';
 
 export type EngineeringAllowance = RangeAllowance & {
   capacity_speed_limit?: number;
@@ -67,10 +67,10 @@ export type StandardAllowance = {
 
 export type Allowance =
   | (EngineeringAllowance & {
-      allowance_type: "engineering";
+      allowance_type: 'engineering';
     })
   | (StandardAllowance & {
-      allowance_type: "standard";
+      allowance_type: 'standard';
     });
 
 export type TrainSchedule = {
@@ -94,16 +94,16 @@ export type ElectrificationUsage =
   | {
       mode: string;
       mode_handled: boolean;
-      object_type: "Electrified";
+      object_type: 'Electrified';
       profile?: string | null;
       profile_handled: boolean;
     }
   | {
       lower_pantograph: boolean;
-      object_type: "Neutral";
+      object_type: 'Neutral';
     }
   | {
-      object_type: "NonElectrified";
+      object_type: 'NonElectrified';
     };
 
 export type ElectrificationRange = {
@@ -378,12 +378,12 @@ export interface SimulationTrain<DateType = Date> {
 }
 
 export enum SPEED_SPACE_SETTINGS_KEYS {
-  ALTITUDE = "altitude",
-  CURVES = "curves",
-  MAX_SPEED = "maxSpeed",
-  SLOPES = "slopes",
-  ELECTRICAL_PROFILES = "electricalProfiles",
-  POWER_RESTRICTION = "powerRestriction",
+  ALTITUDE = 'altitude',
+  CURVES = 'curves',
+  MAX_SPEED = 'maxSpeed',
+  SLOPES = 'slopes',
+  ELECTRICAL_PROFILES = 'electricalProfiles',
+  POWER_RESTRICTION = 'powerRestriction',
 }
 export type SpeedSpaceSettingKey =
   | SPEED_SPACE_SETTINGS_KEYS.ALTITUDE

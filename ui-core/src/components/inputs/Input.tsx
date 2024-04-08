@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { Gear, RequiredInput, CheckCircle, Info, Alert, Blocked } from "@osrd-project/ui-icons";
-import cx from "classnames";
+import React, { useState } from 'react';
+import { Gear, RequiredInput, CheckCircle, Info, Alert, Blocked } from '@osrd-project/ui-icons';
+import cx from 'classnames';
 
-import useKeyPress from "./hooks/useKeyPress";
+import useKeyPress from './hooks/useKeyPress';
 
 type InputAffixProps = {
   value: InputAffixContent | InputAffixContentWithCallback;
-  type: "leading" | "trailing";
+  type: 'leading' | 'trailing';
 };
 
 const InputAffix: React.FC<InputAffixProps> = ({ value, type }) => {
-  const isContentWithCallback = typeof value === "object" && value !== null && "onClickCallback" in value;
+  const isContentWithCallback =
+    typeof value === 'object' && value !== null && 'onClickCallback' in value;
   const spanContent = isContentWithCallback
     ? (value as InputAffixContentWithCallback).content
     : (value as InputAffixContent);
@@ -25,7 +26,7 @@ const InputAffix: React.FC<InputAffixProps> = ({ value, type }) => {
   );
 };
 
-type status = "success" | "info" | "error" | "warning" | "loading";
+type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
 
 type InputStatusIconProps = {
   status: status;
@@ -34,12 +35,12 @@ type InputStatusIconProps = {
 
 const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
   return (
-    <span className={cx("status-icon", status)}>
-      {status === "loading" && <Gear size={small ? "sm" : "lg"} />}
-      {status === "info" && <Info size={small ? "sm" : "lg"} />}
-      {status === "success" && <CheckCircle variant="fill" size={small ? "sm" : "lg"} />}
-      {status === "warning" && <Alert variant="fill" size={small ? "sm" : "lg"} />}
-      {status === "error" && <Blocked variant="fill" size={small ? "sm" : "lg"} />}
+    <span className={cx('status-icon', status)}>
+      {status === 'loading' && <Gear size={small ? 'sm' : 'lg'} />}
+      {status === 'info' && <Info size={small ? 'sm' : 'lg'} />}
+      {status === 'success' && <CheckCircle variant="fill" size={small ? 'sm' : 'lg'} />}
+      {status === 'warning' && <Alert variant="fill" size={small ? 'sm' : 'lg'} />}
+      {status === 'error' && <Blocked variant="fill" size={small ? 'sm' : 'lg'} />}
     </span>
   );
 };
@@ -84,22 +85,24 @@ export const Input: React.FC<InputProps> = ({
 }) => {
   const [value, setValue] = useState(initialValue);
   const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
-  useKeyPress("Tab", async () => setFocusViaKeyboard(true));
+  useKeyPress('Tab', async () => setFocusViaKeyboard(true));
 
-  const statusClassname = { ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}) };
+  const statusClassname = {
+    ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}),
+  };
 
   return (
-    <div className={cx("feed-back", statusClassname, { small: small })}>
+    <div className={cx('feed-back', statusClassname, { small: small })}>
       <div className="custom-input">
         {/* LABEL */}
-        <div className={cx("label-wrapper", { "has-hint": hint })}>
+        <div className={cx('label-wrapper', { 'has-hint': hint })}>
           {required && (
             <span className="required">
-              {" "}
-              <RequiredInput />{" "}
+              {' '}
+              <RequiredInput />{' '}
             </span>
           )}
-          <label className={cx("label", { disabled: disabled })} htmlFor={id}>
+          <label className={cx('label', { disabled: disabled })} htmlFor={id}>
             {label}
           </label>
         </div>
@@ -109,13 +112,15 @@ export const Input: React.FC<InputProps> = ({
 
         {/* INPUT WRAPPER AND STATUS ICON */}
         <div className="input-wrapper-and-status-icon">
-          <div className={cx("input-wrapper", inputWrapperClassname, { focused: focusViaKeyboard })}>
+          <div
+            className={cx('input-wrapper', inputWrapperClassname, { focused: focusViaKeyboard })}
+          >
             {leadingContent && <InputAffix value={leadingContent} type="leading" />}
             <input
-              className={cx("input", {
-                "with-leading-only": leadingContent && !trailingContent,
-                "with-trailing-only": trailingContent && !leadingContent,
-                "with-leading-and-trailing": leadingContent && trailingContent,
+              className={cx('input', {
+                'with-leading-only': leadingContent && !trailingContent,
+                'with-trailing-only': trailingContent && !leadingContent,
+                'with-leading-and-trailing': leadingContent && trailingContent,
                 ...statusClassname,
               })}
               id={id}
@@ -133,7 +138,7 @@ export const Input: React.FC<InputProps> = ({
 
         {/* STATUS MESSAGE */}
         {statusWithMessage?.message && (
-          <span className={cx("status-message", statusClassname)}>{statusWithMessage.message}</span>
+          <span className={cx('status-message', statusClassname)}>{statusWithMessage.message}</span>
         )}
       </div>
     </div>
