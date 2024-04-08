@@ -21,6 +21,6 @@ jobs:
       - run: |
           npm ci
           npm run build
-          lerna publish --force-publish --yes
+          lerna publish --from-package --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
