@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import cx from "classnames";
 
 import useKeyPress from "./hooks/useKeyPress";
-import FieldWrapper from "./FieldWrapper";
+import FieldWrapper, { FieldWrapperProps } from "./FieldWrapper";
 
 type InputAffixProps = {
   value: InputAffixContent | InputAffixContentWithCallback;
@@ -41,16 +41,12 @@ type InputAffixContentWithCallback = {
   onClickCallback: () => void;
 };
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  id: string;
-  label: string;
-  hint?: string;
-  leadingContent?: InputAffixContent | InputAffixContentWithCallback;
-  trailingContent?: InputAffixContent | InputAffixContentWithCallback;
-  small?: boolean;
-  statusWithMessage?: statusWithMessage;
-  inputWrapperClassname?: string;
-};
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
+  FieldWrapperProps & {
+    leadingContent?: InputAffixContent | InputAffixContentWithCallback;
+    trailingContent?: InputAffixContent | InputAffixContentWithCallback;
+    inputWrapperClassname?: string;
+  };
 
 export const Input: React.FC<InputProps> = ({
   id,
@@ -71,7 +67,6 @@ export const Input: React.FC<InputProps> = ({
   const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
   useKeyPress('Tab', async () => setFocusViaKeyboard(true));
 
-  const statusClassname = { ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}) };
   return (
     <FieldWrapper
       id={id}
@@ -89,7 +84,7 @@ export const Input: React.FC<InputProps> = ({
             "with-leading-only": leadingContent && !trailingContent,
             "with-trailing-only": trailingContent && !leadingContent,
             "with-leading-and-trailing": leadingContent && trailingContent,
-            ...statusClassname,
+            [statusWithMessage?.status || ""]: !!statusWithMessage,
           })}
           id={id}
           type={type}
