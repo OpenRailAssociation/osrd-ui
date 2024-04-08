@@ -21,6 +21,8 @@ jobs:
           npm run build
           VERSION=${GITHUB_REF/refs\/tags\//}
           lerna version $VERSION --no-private --no-git-tag-version --yes
+          git config user.name "OSRD GitHub Actions"
+          git config user.email "github-actions@osrd-project.com"
           git commit -am "Commit changes made by Lerna"
           lerna publish
         env:
