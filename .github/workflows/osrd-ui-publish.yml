@@ -1,9 +1,10 @@
 name: Publish @osrd-project on Release
 
-on:
-  release:
-    types: [created]
+# on:
+#   release:
+#     types: [created]
 
+on: [push]
 
 jobs:
   publish:
@@ -20,6 +21,6 @@ jobs:
       - run: |
           npm ci
           npm run build
-          lerna publish
+          lerna publish --force-publish --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
