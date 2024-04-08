@@ -22,7 +22,7 @@ jobs:
           npm run build
           VERSION=${GITHUB_REF/refs\/tags\//}
           echo "VERSION: $VERSION"
-          lerna version $VERSION --no-private --no-git-tag-version --no-changelog --yes
+          lerna version patch $VERSION --no-private --no-git-tag-version --no-changelog --yes
           lerna publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
