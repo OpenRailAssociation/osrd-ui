@@ -1,4 +1,4 @@
-import type { ConsolidatedPositionSpeedTime } from "./simulationTypes";
+import type { ConsolidatedPositionSpeedTime } from './simulationTypes';
 
 export type Store = {
   speed: ConsolidatedPositionSpeedTime[];

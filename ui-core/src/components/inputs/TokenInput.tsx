@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
-import cx from "classnames";
-import { X } from "@osrd-project/ui-icons";
+import React, { useRef, useState } from 'react';
+import cx from 'classnames';
+import { X } from '@osrd-project/ui-icons';
 
 type TokenInputProps = {
   label: string;
@@ -9,14 +9,14 @@ type TokenInputProps = {
 
 const TokenInput: React.FC<TokenInputProps> = ({ label, tokens: initialTokens }) => {
   const [tokens, setTokens] = useState(initialTokens);
-  const [newToken, setNewToken] = useState("");
+  const [newToken, setNewToken] = useState('');
   const [selectedToken, setSelectedToken] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const addToken = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && newToken.trim() !== "") {
+    if (e.key === 'Enter' && newToken.trim() !== '') {
       setTokens((oldTokens) => [...oldTokens, newToken]);
-      setNewToken("");
+      setNewToken('');
     }
   };
 
@@ -34,7 +34,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ label, tokens: initialTokens })
           <div
             key={`${token}-${index}`}
             onClick={() => setSelectedToken(index)}
-            className={cx("token-item-wrapper", { selected: selectedToken === index })}
+            className={cx('token-item-wrapper', { selected: selectedToken === index })}
           >
             <span className="token-label">{token}</span>
             <span

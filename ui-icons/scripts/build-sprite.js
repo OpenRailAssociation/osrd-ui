@@ -3,14 +3,14 @@ import path from 'path';
 import SVGSpriter from 'svg-sprite';
 
 const config = {
-  dest: 'temp/', 
+  dest: 'temp/',
   mode: {
     css: true, // Create a «css» sprite
     view: true, // Create a «view» sprite
     defs: true, // Create a «defs» sprite
     symbol: true, // Create a «symbol» sprite
-    stack: true // Create a «stack» sprite
-  }  
+    stack: true, // Create a «stack» sprite
+  },
 };
 
 // Create spriter instance (see below for `config` examples)

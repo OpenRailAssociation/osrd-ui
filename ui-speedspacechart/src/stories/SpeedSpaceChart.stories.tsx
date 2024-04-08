@@ -1,9 +1,9 @@
-import type { Meta } from "@storybook/react";
-import { type SpeedSpaceChartProps, SpeedSpaceChart } from "../components/SpeedSpaceChart";
-import OSRD_SAMPLE from "./assets/sampleData";
+import type { Meta } from '@storybook/react';
+import { type SpeedSpaceChartProps, SpeedSpaceChart } from '../components/SpeedSpaceChart';
+import OSRD_SAMPLE from './assets/sampleData';
 
 export default {
-  title: "SpeedSpaceChart",
+  title: 'SpeedSpaceChart',
   component: SpeedSpaceChart,
 } as Meta<typeof SpeedSpaceChart>;
 

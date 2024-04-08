@@ -1,4 +1,4 @@
-import type { Store } from "../types/chartTypes";
+import type { Store } from '../types/chartTypes';
 
 type SpeedRangeValues = {
   minSpeed: number;

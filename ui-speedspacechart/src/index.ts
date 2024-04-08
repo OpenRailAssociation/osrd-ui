@@ -1,1 +1,1 @@
-export * from "./components/SpeedSpaceChart";
+export * from './components/SpeedSpaceChart';

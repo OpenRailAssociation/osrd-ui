@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import type { Store } from "../../types/chartTypes";
-import { drawFrame } from "../helpers/drawElements";
-import { resetZoom } from "../helpers/layersManager";
-import { useCanvas } from "../hooks";
+import type { Store } from '../../types/chartTypes';
+import { drawFrame } from '../helpers/drawElements';
+import { resetZoom } from '../helpers/layersManager';
+import { useCanvas } from '../hooks';
 
 type FrontInteractivityLayerProps = {
   width: number;
@@ -12,7 +12,12 @@ type FrontInteractivityLayerProps = {
   setStore: React.Dispatch<React.SetStateAction<Store>>;
 };
 
-const FrontInteractivityLayer = ({ width, height, store, setStore }: FrontInteractivityLayerProps) => {
+const FrontInteractivityLayer = ({
+  width,
+  height,
+  store,
+  setStore,
+}: FrontInteractivityLayerProps) => {
   const canvas = useCanvas(drawFrame, width, height, store, setStore);
 
   const reset = () => {

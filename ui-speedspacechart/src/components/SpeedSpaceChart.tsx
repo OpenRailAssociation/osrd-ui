@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import CurveLayer from "./layers/CurveLayer";
-import FrontInteractivityLayer from "./layers/FrontInteractivityLayer";
-import { type ConsolidatedPositionSpeedTime, OsrdSimulationState } from "../types/simulationTypes";
-import type { Store } from "../types/chartTypes";
-import AxisLayerX from "./layers/AxisLayerX";
-import AxisLayerY from "./layers/AxisLayerY";
+import CurveLayer from './layers/CurveLayer';
+import FrontInteractivityLayer from './layers/FrontInteractivityLayer';
+import { type ConsolidatedPositionSpeedTime, OsrdSimulationState } from '../types/simulationTypes';
+import type { Store } from '../types/chartTypes';
+import AxisLayerX from './layers/AxisLayerX';
+import AxisLayerY from './layers/AxisLayerY';
 
 export type SpeedSpaceChartProps = {
   width: number;
@@ -25,7 +25,12 @@ export const SpeedSpaceChart = ({ width, height, data }: SpeedSpaceChartProps) =
       <CurveLayer width={width - 60} height={height - 35} store={store} />
       <AxisLayerY width={width} height={height} store={store} />
       <AxisLayerX width={width} height={height} store={store} />
-      <FrontInteractivityLayer width={width - 60} height={height - 35} store={store} setStore={setStore} />
+      <FrontInteractivityLayer
+        width={width - 60}
+        height={height - 35}
+        store={store}
+        setStore={setStore}
+      />
     </div>
   );
 };
