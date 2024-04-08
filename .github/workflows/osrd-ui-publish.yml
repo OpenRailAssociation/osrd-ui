@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Create tempory branch
+      - name: Create temporary branch
         run: git checkout -b temp-branch
       - uses: actions/setup-node@v3
         with:
@@ -21,6 +21,7 @@ jobs:
           npm run build
           VERSION=${GITHUB_REF/refs\/tags\//}
           lerna version $VERSION --no-private --no-git-tag-version --yes
+          git commit -am "Commit changes made by Lerna"
           lerna publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
