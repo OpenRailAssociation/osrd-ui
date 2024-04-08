@@ -1,8 +1,9 @@
 name: Publish @osrd-project on Release
 
-on:
-  release:
-    types: [created]
+# on:
+#   release:
+#     types: [created]
+on: [push]
 
 jobs:
   publish:
@@ -20,10 +21,7 @@ jobs:
           npm ci
           npm run build
           VERSION=${GITHUB_REF/refs\/tags\//}
-          lerna version $VERSION --no-private --no-git-tag-version --yes
-          git config user.name "OSRD GitHub Actions"
-          git config user.email "github-actions@osrd-project.com"
-          git commit -am "Commit changes made by Lerna"
-          lerna publish
+          echo "VERSION: $VERSION"
+          lerna version $VERSION --no-private --no-git-tag-version --no-changelog --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
