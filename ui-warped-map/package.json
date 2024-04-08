@@ -1,0 +1,64 @@
+{
+  "name": "@osrd-project/ui-warped-map",
+  "version": "0.1.0",
+  "description": "A React component to display MapLibre maps warped along a given path.",
+  "type": "module",
+  "main": "dist/index.esm.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.esm.js"
+    }
+  },
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "rollup": "rollup -c",
+    "clean": "rimraf dist",
+    "build": "npm run rollup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osrd-project/osrd-ui.git"
+  },
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/osrd-project/osrd-ui/issues"
+  },
+  "homepage": "https://github.com/osrd-project/osrd-ui#readme",
+  "dependencies": {
+    "@turf/along": "^6.5.0",
+    "@turf/bbox": "^6.5.0",
+    "@turf/bbox-clip": "^6.5.0",
+    "@turf/bearing": "^6.5.0",
+    "@turf/bezier-spline": "^6.5.0",
+    "@turf/boolean-intersects": "^6.5.0",
+    "@turf/boolean-point-in-polygon": "^6.5.0",
+    "@turf/center": "^6.5.0",
+    "@turf/combine": "^6.5.0",
+    "@turf/destination": "^6.5.0",
+    "@turf/distance": "^6.5.0",
+    "@turf/explode": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
+    "@turf/intersect": "^6.5.0",
+    "@turf/length": "^6.5.0",
+    "@turf/line-intersect": "^6.5.0",
+    "@turf/line-slice": "^6.5.0",
+    "@turf/line-slice-along": "^6.5.0",
+    "@turf/line-split": "^6.5.0",
+    "@turf/nearest-point": "^6.5.0",
+    "@turf/nearest-point-on-line": "^6.5.0",
+    "@turf/simplify": "^6.5.0",
+    "@turf/transform-translate": "^6.5.0",
+    "lodash": "^4.17.21",
+    "maplibre-gl": "^3.6.2",
+    "react-map-gl": "^7.1.7"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "react": ">=18.0"
+  }
+}

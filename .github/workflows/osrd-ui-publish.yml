@@ -1,0 +1,24 @@
+name: Publish @osrd-project on Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org/'
+      - run: |
+          npm ci
+          npm run build
+          VERSION=${GITHUB_REF/refs\/tags\//}
+          lerna version $VERSION --no-private --no-git-tag-version --yes
+          lerna publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

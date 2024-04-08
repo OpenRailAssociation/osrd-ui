@@ -1,0 +1,32 @@
+{
+  "name": "@osrd-project/ui-speedspacechart",
+  "version": "0.1.0",
+  "type": "module",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.esm.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.esm.js"
+    }
+  },
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "rollup": "rollup -c",
+    "clean": "rimraf dist",
+    "build": "npm run rollup"
+  },
+  "peerDependencies": {
+    "react": ">=18.0",
+    "react-dom": ">=18.0"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3"
+  },
+  "dependencies": {
+    "d3": "^7.8.5"
+  }
+}

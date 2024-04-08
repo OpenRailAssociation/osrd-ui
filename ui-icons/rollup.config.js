@@ -1,37 +1,18 @@
-import babel from '@rollup/plugin-babel'
-import commonjs from '@rollup/plugin-commonjs'
-import typescript from '@rollup/plugin-typescript'
-import terser from '@rollup/plugin-terser'
+import typescript from '@rollup/plugin-typescript';
+import terser from '@rollup/plugin-terser';
+import eslint from '@rollup/plugin-eslint';
 
-const formats = ['esm']
+const formats = ['esm'];
 
+/** @type {import('rollup').RollupOptions} */
 export default {
   input: 'src/index.ts',
-  plugins: [
-    commonjs(),
-    babel({
-      babelrc: false,
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            modules: false
-          }
-        ],
-        '@babel/preset-react'
-      ],
-      babelHelpers: 'bundled'
-    }),
-    typescript(),
-    terser()
-  ],
-  output: formats.map(format => ({
+  output: formats.map((format) => ({
     file: `dist/index.${format}.js`,
     format,
     name: 'osrdicons',
-    globals: {
-      'react/jsx-runtime': 'jsxRuntime'
-    }
+    sourcemap: true,
   })),
-  external: ['react/jsx-runtime']
-}
+  plugins: [eslint(), typescript(), terser()],
+  external: ['react'],
+};

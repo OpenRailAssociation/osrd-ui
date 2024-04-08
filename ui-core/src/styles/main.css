@@ -1,25 +1,27 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import './inputs/input.css';
+@import './inputs/passwordInput.css';
+@import './inputs/tokenInput.css';
 
 /* REGULAR */
 
 @font-face {
   font-family: 'IBM Plex Sans';
-  src: url(../../public/fonts/IBMPlexSans-Regular.ttf) format('truetype');
+  src: inline('./fonts/IBMPlexSans-Regular.ttf') format('truetype');
   font-weight: 400;
-  
 }
 
 @font-face {
   font-family: 'IBM Plex Sans';
-  src: url(../../public/fonts/IBMPlexSans-SemiBold.ttf) format('truetype');
+  src: inline('./fonts/IBMPlexSans-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }
 
 @font-face {
   font-family: 'IBM Plex Sans';
-  src: url(../../public/fonts/IBMPlexSans-Bold.ttf) format('truetype');
+  src: inline('./fonts/IBMPlexSans-Bold.ttf') format('truetype');
   font-weight: 900;
 }
 
@@ -27,13 +29,12 @@
 
 @font-face {
   font-family: 'IBM Plex Serif', serif;
-  src: url(../../public/fonts/IBMPlexSerif-Regular.ttf) format('truetype');
+  src: inline('./fonts/IBMPlexSerif-Regular.ttf') format('truetype');
   font-weight: 400;
-  
 }
 @font-face {
   font-family: 'IBM Plex Serif', serif;
-  src: url(../../public/fonts/IBMPlexSerif-SemiBold.ttf) format('truetype');
+  src: inline('./fonts/IBMPlexSerif-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }
 
@@ -41,12 +42,11 @@
 
 @font-face {
   font-family: 'IBM Plex Mono', monospace;
-  src: url(../../public/fonts/IBMPlexMono-Regular.ttf) format('truetype');
+  src: inline('./fonts/IBMPlexMono-Regular.ttf') format('truetype');
   font-weight: 400;
-  
 }
 @font-face {
   font-family: 'IBM Plex Mono', monospace;
-  src: url(../../public/fonts/IBMPlexMono-SemiBold.ttf) format('truetype');
+  src: inline('fonts/IBMPlexMono-SemiBold.ttf') format('truetype');
   font-weight: 600;
 }

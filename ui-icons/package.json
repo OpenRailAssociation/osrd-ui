@@ -2,35 +2,30 @@
   "name": "@osrd-project/ui-icons",
   "version": "0.1.0",
   "type": "module",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "main": "dist/index.esm.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.esm.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.esm.js"
+    }
+  },
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "svgo": "svgo icons --config svgo.config.cjs",
     "build-components": "node ./scripts/build.js",
     "rollup": "rollup -c",
+    "clean": "rimraf dist",
     "build": "npm run build-components && npm run rollup"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "7.23.9",
-    "@babel/preset-react": "7.23.3",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@types/react": "^18.2.48",
-    "cheerio": "^1.0.0-rc.12",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "rollup": "^4.9.6",
-    "svgo": "3.2.0",
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "react": ">=18.0"
   },
-  "engines": {
-    "node": ">=18"
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "svgo": "3.2.0"
   }
 }
