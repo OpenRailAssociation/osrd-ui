@@ -16,6 +16,9 @@
   "types": "dist/index.d.ts",
   "main": "dist/index.esm.js",
   "style": "dist/theme.css",
+  "files": [
+    "/dist"
+  ],
   "exports": {
     "./dist/theme.css": "./dist/theme.css",
     ".": {
