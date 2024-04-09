@@ -1,6 +1,12 @@
 {
   "name": "@osrd-project/ui-core",
   "version": "0.0.18",
+  "bugs": "https://github.com/osrd-project/osrd-ui/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osrd-project/osrd-ui.git",
+    "directory": "ui-core"
+  },
   "type": "module",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -13,19 +19,11 @@
       "default": "./dist/index.esm.js"
     }
   },
-  "files": [
-    "/dist"
-  ],
   "scripts": {
     "rollup": "rollup -c",
     "clean": "rimraf dist",
     "build": "npm run rollup",
     "watch": "NODE_ENV=development rollup -c -w"
-  },
-  "bugs": "https://github.com/osrd-project/osrd-ui/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/osrd-project/osrd-ui.git"
   },
   "peerDependencies": {
     "react": ">=18.0"
