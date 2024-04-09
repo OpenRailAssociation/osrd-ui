@@ -2,6 +2,12 @@
   "name": "@osrd-project/ui-speedspacechart",
   "version": "0.0.18",
   "private": true,
+  "bugs": "https://github.com/osrd-project/osrd-ui/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osrd-project/osrd-ui.git",
+    "directory": "ui-speedspacechart"
+  },
   "type": "module",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -12,9 +18,6 @@
       "default": "./dist/index.esm.js"
     }
   },
-  "files": [
-    "/dist"
-  ],
   "scripts": {
     "rollup": "rollup -c",
     "clean": "rimraf dist",
