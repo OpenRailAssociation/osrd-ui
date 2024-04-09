@@ -2,6 +2,7 @@
   "name": "@osrd-project/ui-warped-map",
   "description": "A React component to display MapLibre maps warped along a given path.",
   "version": "0.0.18",
+  "license": "LGPL-3.0-or-later",
   "private": true,
   "homepage": "https://github.com/osrd-project/osrd-ui#readme",
   "repository": {
@@ -25,7 +26,8 @@
   "scripts": {
     "rollup": "rollup -c",
     "clean": "rimraf dist",
-    "build": "npm run rollup"
+    "build": "npm run rollup",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
     "@turf/along": "^6.5.0",

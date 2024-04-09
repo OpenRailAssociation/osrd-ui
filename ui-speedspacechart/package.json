@@ -1,6 +1,7 @@
 {
   "name": "@osrd-project/ui-speedspacechart",
   "version": "0.0.18",
+  "license": "LGPL-3.0-or-later",
   "private": true,
   "bugs": "https://github.com/osrd-project/osrd-ui/issues",
   "repository": {
@@ -21,7 +22,8 @@
   "scripts": {
     "rollup": "rollup -c",
     "clean": "rimraf dist",
-    "build": "npm run rollup"
+    "build": "npm run rollup",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "peerDependencies": {
     "react": ">=18.0",
