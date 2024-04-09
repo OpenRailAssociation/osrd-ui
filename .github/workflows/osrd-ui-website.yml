@@ -1,4 +1,4 @@
-name: Publish @osrd-project on Release
+name: Publish @osrd-project website
 
 on:
   release:
@@ -11,18 +11,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Authenticate with Registry
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -30,8 +22,16 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Publish
+      - name: Build
         run: |
-          VERSION=${GITHUB_REF/refs\/tags\//}
           npm ci
-          npm run lerna -- publish ${VERSION} --force-publish --yes --no-push --no-git-tag-version
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: packages/storybook/storybook-static
+          jekyll: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
