@@ -1,6 +1,7 @@
 name: Publish @osrd-project website
 
 on:
+  workflow_dispatch:
   release:
     types: [created]
 
