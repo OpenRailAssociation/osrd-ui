@@ -1,7 +1,8 @@
 name: Publish @osrd-project on Release
 
 on:
-  workflow_dispatch:
+  release:
+    types: [created]
 
 jobs:
   publish:
@@ -23,8 +24,8 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: 'Build & deploy'
+      - name: Publish
         run: |
+          VERSION=${GITHUB_REF/refs\/tags\//}
           npm ci
-          npm run build
-          lerna publish from-package --no-private --yes
+          npm run lerna -- publish ${VERSION} --force-publish --yes --no-push --no-git-tag-version
