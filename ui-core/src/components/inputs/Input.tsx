@@ -124,5 +124,5 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
     </FieldWrapper>
   );
 });
-
+Input.displayName = 'Input';
 export default Input;
