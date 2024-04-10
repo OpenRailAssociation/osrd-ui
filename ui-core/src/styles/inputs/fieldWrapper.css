@@ -20,41 +20,40 @@
     display: flex;
     flex-direction: column;
     width: max-content;
-  
+
     .field-wrapper-and-status-icon {
       display: flex;
       align-items: center;
       margin-right: 13px;
-  
+
       .status-icon {
         margin-left: 9px;
-        
+
         &.loading {
           animation: spin 3s linear infinite;
           @apply text-info-30;
         }
-  
+
         &.info {
           @apply text-info-30;
         }
-  
+
         &.success {
           @apply text-success-30;
         }
-    
+
         &.warning {
           @apply text-warning-30;
         }
-  
+
         &.error {
           @apply text-error-60;
         }
-  
+
         &.small {
           margin: 5px 0 5px 8px;
         }
       }
-    
     }
   }
 
@@ -68,7 +67,7 @@
     }
   }
 }
-  
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

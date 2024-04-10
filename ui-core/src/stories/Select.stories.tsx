@@ -1,24 +1,24 @@
-import { StoryObj, Meta } from "@storybook/react";
+import { StoryObj, Meta } from '@storybook/react';
 
-import Select from "../components/Select";
-import "@osrd-project/ui-core/dist/theme.css";
+import Select from '../components/Select';
+import '@osrd-project/ui-core/dist/theme.css';
 
 const meta: Meta<typeof Select> = {
   component: Select,
   args: {
-    label: "Fill colour",
-    placeholder: "Choose",
-    initialSelected: "blue",
+    label: 'Fill colour',
+    placeholder: 'Choose',
+    initialSelected: 'blue',
     options: [
-      { value: "blue", label: "Blue" },
-      { value: "red", label: "Red" },
-      { value: "green", label: "Green" },
+      { value: 'blue', label: 'Blue' },
+      { value: 'red', label: 'Red' },
+      { value: 'green', label: 'Green' },
     ],
     small: false,
     disabled: false,
     readOnly: false,
   },
-  title: "Select",
+  title: 'Select',
 };
 
 export default meta;
@@ -33,13 +33,13 @@ export const Default: Story = {
 
 export const SelectedOption: Story = {
   args: {
-    initialSelected: "blue",
+    initialSelected: 'blue',
   },
 };
 
 export const Hint: Story = {
   args: {
-    hint: "This is not a choice",
+    hint: 'This is not a choice',
   },
 };
 
@@ -53,8 +53,8 @@ export const InformationSelect: Story = {
   args: {
     required: true,
     statusWithMessage: {
-      status: "info",
-      message: "This is a one way choice",
+      status: 'info',
+      message: 'This is a one way choice',
     },
   },
 };
@@ -63,8 +63,8 @@ export const WarningSelect: Story = {
   args: {
     required: true,
     statusWithMessage: {
-      status: "warning",
-      message: "This is a one way choice",
+      status: 'warning',
+      message: 'This is a one way choice',
     },
   },
 };
@@ -73,8 +73,8 @@ export const WarningWithMessageSelect: Story = {
   args: {
     required: true,
     statusWithMessage: {
-      status: "warning",
-      message: "This is a one way choice",
+      status: 'warning',
+      message: 'This is a one way choice',
     },
   },
 };
@@ -83,8 +83,8 @@ export const ErrorSelect: Story = {
   args: {
     required: true,
     statusWithMessage: {
-      status: "error",
-      message: "This is a one way choice",
+      status: 'error',
+      message: 'This is a one way choice',
     },
   },
 };
@@ -93,8 +93,8 @@ export const ErrorWithMessageSelect: Story = {
   args: {
     required: true,
     statusWithMessage: {
-      status: "error",
-      message: "This is a one way choice",
+      status: 'error',
+      message: 'This is a one way choice',
     },
   },
 };

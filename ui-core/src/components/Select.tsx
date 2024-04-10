@@ -1,6 +1,6 @@
-import React from "react";
-import FieldWrapper, { FieldWrapperProps } from "./inputs/FieldWrapper";
-import cx from "classnames";
+import React from 'react';
+import FieldWrapper, { FieldWrapperProps } from './inputs/FieldWrapper';
+import cx from 'classnames';
 
 export type SelectOption = { value: string; label: string };
 
@@ -11,7 +11,7 @@ export type SelectProps = React.InputHTMLAttributes<HTMLSelectElement> &
     initialSelected?: string;
   };
 
-const PLACEHOLDER_OPTION_VALUE = "";
+const PLACEHOLDER_OPTION_VALUE = '';
 
 // TODO
 // Faut-il changer l'icone d'ouverture de la pop-up des options ?
@@ -55,11 +55,11 @@ const Select: React.FC<SelectProps> = ({
       small={small}
     >
       <select
-        className={cx("custom-select", {
-          "placeholder-selected": selected === PLACEHOLDER_OPTION_VALUE,
+        className={cx('custom-select', {
+          'placeholder-selected': selected === PLACEHOLDER_OPTION_VALUE,
           small,
-          "read-only": readOnly,
-          [statusWithMessage?.status || ""]: !!statusWithMessage,
+          'read-only': readOnly,
+          [statusWithMessage?.status || '']: !!statusWithMessage,
         })}
         required={required}
         value={selected}

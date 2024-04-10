@@ -20,23 +20,23 @@
     display: flex;
     flex-direction: column;
     width: max-content;
-  
+
     .input-wrapper-and-status-icon {
       display: flex;
       align-items: center;
       margin-right: 13px;
-  
+
       .input-wrapper {
         display: flex;
         align-items: center;
         padding: 3px;
         margin-left: -2px;
-        width:max-content;
-    
+        width: max-content;
+
         &.focused {
           box-shadow: 0 0 0 1px rgba(37, 106, 250, 1) inset;
         }
-    
+
         .leading-content-wrapper {
           height: 40px;
           padding: 9px 16px 11px 16px;
@@ -54,7 +54,7 @@
             @apply text-grey-80;
           }
         }
-    
+
         .input {
           height: 40px;
           line-height: 24px;
@@ -63,74 +63,88 @@
           letter-spacing: 0px;
           padding: 8px 12px;
           border-radius: 4px;
-          box-shadow: 0px 0px 0px 1px rgba(148, 145, 142, 1) inset, 0px 1px 3px rgba(0, 0, 0, 0.5) inset;
+          box-shadow:
+            0px 0px 0px 1px rgba(148, 145, 142, 1) inset,
+            0px 1px 3px rgba(0, 0, 0, 0.5) inset;
           @apply bg-black-1 text-black-100;
-    
+
           &.with-leading-only {
             border-radius: 0px 4px 4px 0px;
           }
-    
+
           &.with-trailing-only {
             border-radius: 4px 0 0 4px;
           }
-    
+
           &.with-leading-and-trailing {
             border-radius: 0;
           }
-    
-          &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
+
+          &.with-leading-only,
+          &.with-trailing-only,
+          &.with-leading-and-trailing {
             width: 96px;
           }
-          
+
           &:focus {
             outline: none;
           }
-      
+
           &:read-only {
-            box-shadow: 0px 0px 0px 1px rgba(211, 209, 207, 1) inset, 0px 0px 0px 3px rgba(255, 255, 255, 1) inset;
+            box-shadow:
+              0px 0px 0px 1px rgba(211, 209, 207, 1) inset,
+              0px 0px 0px 3px rgba(255, 255, 255, 1) inset;
             @apply text-grey-50 bg-black-2;
           }
-    
+
           &:disabled {
             box-shadow: 0px 0px 0px 1px rgba(235, 235, 234, 1) inset;
             @apply text-grey-30 bg-black-2;
           }
-  
+
           &.success {
-            box-shadow: 0px 0px 0px 1px rgba(11, 114, 60, 1) inset, 0px 0px 0px 4px rgba(230, 247, 238, 1) inset;
+            box-shadow:
+              0px 0px 0px 1px rgba(11, 114, 60, 1) inset,
+              0px 0px 0px 4px rgba(230, 247, 238, 1) inset;
             background-color: rgba(255, 255, 255, 0.5);
           }
-  
+
           &.info {
             border: 1.5px solid rgba(112, 193, 229, 1);
-            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
-            background-color: rgba(255, 255, 255, 1);
-          }
-  
-          &.warning {
-            border: 1.5px solid rgba(234, 167, 43, 1);
-            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
-            background-color: rgba(255, 255, 255, 1);
-          }
-  
-          &.error {
-            border: 1.5px solid rgba(255, 104, 104, 1);
-            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+            box-shadow:
+              0px 1px 3px rgba(0, 0, 0, 0.5) inset,
+              0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
             background-color: rgba(255, 255, 255, 1);
           }
 
-          &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+          &.warning {
+            border: 1.5px solid rgba(234, 167, 43, 1);
+            box-shadow:
+              0px 1px 3px rgba(0, 0, 0, 0.5) inset,
+              0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+            background-color: rgba(255, 255, 255, 1);
+          }
+
+          &.error {
+            border: 1.5px solid rgba(255, 104, 104, 1);
+            box-shadow:
+              0px 1px 3px rgba(0, 0, 0, 0.5) inset,
+              0px 0px 0px 0.5px rgba(0, 0, 0, 1) inset;
+            background-color: rgba(255, 255, 255, 1);
+          }
+
+          &::-webkit-inner-spin-button,
+          &::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
           }
-        
-          &[type=number] {
-              appearance: none;
+
+          &[type='number'] {
+            appearance: none;
             -moz-appearance: textfield;
           }
         }
-    
-        
+
         .trailing-content-wrapper {
           height: 40px;
           padding: 9px 16px 11px;
@@ -140,7 +154,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          
+
           .trailing-content {
             line-height: 20px;
             font-size: 14px;
@@ -151,35 +165,34 @@
       }
       .status-icon {
         margin-left: 9px;
-        
+
         &.loading {
           animation: spin 3s linear infinite;
           @apply text-info-30;
         }
-  
+
         &.info {
           @apply text-info-30;
         }
-  
+
         &.success {
           @apply text-success-30;
         }
-   
+
         &.warning {
           @apply text-warning-30;
         }
-  
+
         &.error {
           @apply text-error-60;
         }
-  
+
         &.small {
           margin: 5px 0 5px 8px;
         }
       }
-    
     }
-  
+
     /* .status-message {
       letter-spacing: 0px;
       text-align: left;
@@ -208,11 +221,10 @@
 
   &.small {
     .custom-input {
-          
       .input-wrapper-and-status-icon {
         .input-wrapper {
           height: 34px;
-      
+
           .leading-content-wrapper {
             height: 28px;
             border-radius: 3px 0px 0px 3px;
@@ -221,7 +233,7 @@
               line-height: 8px; /* à check avec thibaut*/
             }
           }
-      
+
           .input {
             height: 28px;
             line-height: 20px;
@@ -236,28 +248,29 @@
             &.with-trailing-only {
               border-radius: 4px 0 0 4px;
             }
-      
+
             &.with-leading-and-trailing {
               border-radius: 0;
             }
-      
-            &.with-leading-only, &.with-trailing-only, &.with-leading-and-trailing {
+
+            &.with-leading-only,
+            &.with-trailing-only,
+            &.with-leading-and-trailing {
               width: 96px;
             }
           }
-          
+
           .trailing-content-wrapper {
             height: 28px;
             border-radius: 0 3px 3px 0;
-              
+
             .trailing-content {
               font-size: 12px;
               line-height: 8px;
             }
-            
           }
         }
-        
+
         .status-icon {
           margin: 5px 0 5px 8px;
         }

@@ -1,12 +1,12 @@
-import React from "react";
-import { Gear, CheckCircle, Info, Alert, Blocked } from "@osrd-project/ui-icons";
-import cx from "classnames";
+import React from 'react';
+import { Gear, CheckCircle, Info, Alert, Blocked } from '@osrd-project/ui-icons';
+import cx from 'classnames';
 
-import Label from "./Label";
-import Hint from "./Hint";
-import StatusMessage from "./StatusMessage";
+import Label from './Label';
+import Hint from './Hint';
+import StatusMessage from './StatusMessage';
 
-export type status = "success" | "info" | "error" | "warning" | "loading";
+export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
 
 type InputStatusIconProps = {
   status: status;
@@ -14,14 +14,14 @@ type InputStatusIconProps = {
 };
 
 const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
-  const size = small ? "sm" : "lg";
+  const size = small ? 'sm' : 'lg';
   return (
-    <span className={cx("status-icon", status)}>
-      {status === "loading" && <Gear size={size} />}
-      {status === "info" && <Info size={size} />}
-      {status === "success" && <CheckCircle variant="fill" size={size} />}
-      {status === "warning" && <Alert variant="fill" size={size} />}
-      {status === "error" && <Blocked variant="fill" size={size} />}
+    <span className={cx('status-icon', status)}>
+      {status === 'loading' && <Gear size={size} />}
+      {status === 'info' && <Info size={size} />}
+      {status === 'success' && <CheckCircle variant="fill" size={size} />}
+      {status === 'warning' && <Alert variant="fill" size={size} />}
+      {status === 'error' && <Blocked variant="fill" size={size} />}
     </span>
   );
 };
@@ -52,10 +52,12 @@ export const FieldWrapper: React.FC<FieldWrapperProps> = ({
   small = false,
   children,
 }) => {
-  const statusClassname = { ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}) };
+  const statusClassname = {
+    ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}),
+  };
 
   return (
-    <div className={cx("feed-back", statusClassname, { small: small })}>
+    <div className={cx('feed-back', statusClassname, { small: small })}>
       <div className="custom-field">
         {/* LABEL AND HINT */}
         <Label

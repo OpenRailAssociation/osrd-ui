@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import cx from "classnames";
+import React, { useState } from 'react';
+import cx from 'classnames';
 
-import useKeyPress from "./hooks/useKeyPress";
-import FieldWrapper, { FieldWrapperProps } from "./FieldWrapper";
+import useKeyPress from './hooks/useKeyPress';
+import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
 
 type InputAffixProps = {
   value: InputAffixContent | InputAffixContentWithCallback;
-  type: "leading" | "trailing";
+  type: 'leading' | 'trailing';
   disabled: boolean;
   readOnly: boolean;
 };
 
 const InputAffix: React.FC<InputAffixProps> = ({ value, type, disabled, readOnly }) => {
-  const isContentWithCallback = typeof value === "object" && value !== null && "onClickCallback" in value;
+  const isContentWithCallback =
+    typeof value === 'object' && value !== null && 'onClickCallback' in value;
   const spanContent = isContentWithCallback
     ? (value as InputAffixContentWithCallback).content
     : (value as InputAffixContent);
@@ -21,13 +22,16 @@ const InputAffix: React.FC<InputAffixProps> = ({ value, type, disabled, readOnly
     : {};
 
   return (
-    <div className={cx(`${type}-content-wrapper`, { disabled, "read-only": readOnly })} {...wrapperProps}>
+    <div
+      className={cx(`${type}-content-wrapper`, { disabled, 'read-only': readOnly })}
+      {...wrapperProps}
+    >
       <span className={`${type}-content`}>{spanContent}</span>
     </div>
   );
 };
 
-export type status = "success" | "info" | "error" | "warning" | "loading";
+export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
 
 export type statusWithMessage = {
   status: status;
@@ -77,14 +81,23 @@ export const Input: React.FC<InputProps> = ({
       required={required}
       small={small}
     >
-      <div className={cx("input-wrapper", inputWrapperClassname, { focused: focusViaKeyboard, small })}>
-        {leadingContent && <InputAffix value={leadingContent} type="leading" disabled={disabled} readOnly={readOnly} />}
+      <div
+        className={cx('input-wrapper', inputWrapperClassname, { focused: focusViaKeyboard, small })}
+      >
+        {leadingContent && (
+          <InputAffix
+            value={leadingContent}
+            type="leading"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        )}
         <input
-          className={cx("input", {
-            "with-leading-only": leadingContent && !trailingContent,
-            "with-trailing-only": trailingContent && !leadingContent,
-            "with-leading-and-trailing": leadingContent && trailingContent,
-            [statusWithMessage?.status || ""]: !!statusWithMessage,
+          className={cx('input', {
+            'with-leading-only': leadingContent && !trailingContent,
+            'with-trailing-only': trailingContent && !leadingContent,
+            'with-leading-and-trailing': leadingContent && trailingContent,
+            [statusWithMessage?.status || '']: !!statusWithMessage,
           })}
           id={id}
           type={type}
@@ -95,7 +108,12 @@ export const Input: React.FC<InputProps> = ({
           onBlur={() => setFocusViaKeyboard(false)}
         />
         {trailingContent && (
-          <InputAffix value={trailingContent} type="trailing" disabled={disabled} readOnly={readOnly} />
+          <InputAffix
+            value={trailingContent}
+            type="trailing"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
         )}
       </div>
     </FieldWrapper>
