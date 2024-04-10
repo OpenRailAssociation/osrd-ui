@@ -52,11 +52,10 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
     inputWrapperClassname?: string;
   };
 
-export const Input: React.FC<InputProps> = ({
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   id,
   label,
   type,
-  value: initialValue,
   hint,
   leadingContent,
   trailingContent,
@@ -66,10 +65,16 @@ export const Input: React.FC<InputProps> = ({
   statusWithMessage,
   inputWrapperClassname,
   small = false,
-}) => {
-  const [value, setValue] = useState(initialValue);
+  onBlur,
+  ...rest
+}, ref) => {
   const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
   useKeyPress('Tab', async () => setFocusViaKeyboard(true));
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFocusViaKeyboard(false);
+    onBlur?.(e);
+  }
 
   return (
     <FieldWrapper
@@ -93,6 +98,7 @@ export const Input: React.FC<InputProps> = ({
           />
         )}
         <input
+          ref={ref}
           className={cx('input', {
             'with-leading-only': leadingContent && !trailingContent,
             'with-trailing-only': trailingContent && !leadingContent,
@@ -101,11 +107,10 @@ export const Input: React.FC<InputProps> = ({
           })}
           id={id}
           type={type}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
           disabled={disabled}
           readOnly={readOnly}
-          onBlur={() => setFocusViaKeyboard(false)}
+          onBlur={handleBlur}
+          {...rest}
         />
         {trailingContent && (
           <InputAffix
@@ -118,6 +123,6 @@ export const Input: React.FC<InputProps> = ({
       </div>
     </FieldWrapper>
   );
-};
+});
 
 export default Input;
