@@ -1,8 +1,8 @@
 .feed-back {
-  border-radius: 8px;
+  border-radius: 0.5rem;
   width: max-content;
   position: relative;
-  padding: 10px 0 16px 16px;
+  padding: 0.625rem 0.813rem 1rem 1rem;
 
   &.info {
     @apply bg-info-5;
@@ -24,10 +24,9 @@
     .field-wrapper-and-status-icon {
       display: flex;
       align-items: center;
-      margin-right: 13px;
 
       .status-icon {
-        margin-left: 9px;
+        margin-left: 0.563rem;
 
         &.loading {
           animation: spin 3s linear infinite;
@@ -51,7 +50,7 @@
         }
 
         &.small {
-          margin: 5px 0 5px 8px;
+          margin: 0.313rem 0 0.313rem 0.5rem;
         }
       }
     }
@@ -61,7 +60,7 @@
     .custom-field {
       .field-wrapper-and-status-icon {
         .status-icon {
-          margin: 5px 0 5px 8px;
+          margin: 0.313rem 0 0.313rem 0.5rem;
         }
       }
     }

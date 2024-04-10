@@ -1,9 +1,9 @@
 .base-status-message {
-  letter-spacing: 0px;
+  letter-spacing: 0;
   text-align: left;
-  line-height: 24px;
-  margin-top: 11px;
-  margin-bottom: 2px;
+  line-height: 1.5rem;
+  margin-top: 0.688rem;
+  margin-bottom: 0.125rem;
   @apply font-semibold;
 
   &.info {

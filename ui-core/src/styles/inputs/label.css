@@ -8,15 +8,15 @@
 
   .required {
     position: absolute;
-    left: -8px;
-    border-radius: 0.5px;
+    left: -0.5rem;
+    border-radius: 0.031rem;
     @apply text-info-30;
   }
 
   .label {
     display: inline-block;
-    height: 24px;
-    line-height: 24px;
+    height: 1.5rem;
+    line-height: 1.5rem;
     letter-spacing: 0;
     text-align: left;
     vertical-align: top;
@@ -29,9 +29,9 @@
 
   &.small {
     .label {
-      height: 20px;
-      font-size: 14px;
-      line-height: 20px;
+      height: 1.25rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
     }
   }
 }
