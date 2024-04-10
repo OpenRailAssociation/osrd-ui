@@ -10,6 +10,8 @@ const meta: Meta<typeof Input> = {
     disabled: false,
     readOnly: false,
   },
+  title: 'Input',
+  tags: ['autodocs'],
 };
 
 export default meta;

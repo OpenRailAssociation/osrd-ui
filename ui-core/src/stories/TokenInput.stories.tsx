@@ -9,6 +9,8 @@ const meta: Meta<typeof TokenInput> = {
     label: 'Favorite colors',
     tokens: ['Yellow', 'Orange', 'Red', 'Black'],
   },
+  title: 'TokenInput',
+  tags: ['autodocs'],
 };
 
 export default meta;

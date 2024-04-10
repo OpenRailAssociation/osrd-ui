@@ -19,6 +19,7 @@ const meta: Meta<typeof Select> = {
     readOnly: false,
   },
   title: 'Select',
+  tags: ['autodocs'],
 };
 
 export default meta;
