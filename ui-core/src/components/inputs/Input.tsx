@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Gear, RequiredInput, CheckCircle, Info, Alert, Blocked } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
 import useKeyPress from './hooks/useKeyPress';
+import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
 
 type InputAffixProps = {
   value: InputAffixContent | InputAffixContentWithCallback;
   type: 'leading' | 'trailing';
+  disabled: boolean;
+  readOnly: boolean;
 };
 
-const InputAffix: React.FC<InputAffixProps> = ({ value, type }) => {
+const InputAffix: React.FC<InputAffixProps> = ({ value, type, disabled, readOnly }) => {
   const isContentWithCallback =
     typeof value === 'object' && value !== null && 'onClickCallback' in value;
   const spanContent = isContentWithCallback
@@ -20,32 +22,18 @@ const InputAffix: React.FC<InputAffixProps> = ({ value, type }) => {
     : {};
 
   return (
-    <div className={`${type}-content-wrapper`} {...wrapperProps}>
+    <div
+      className={cx(`${type}-content-wrapper`, { disabled, 'read-only': readOnly })}
+      {...wrapperProps}
+    >
       <span className={`${type}-content`}>{spanContent}</span>
     </div>
   );
 };
 
-type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
+export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
 
-type InputStatusIconProps = {
-  status: status;
-  small?: boolean;
-};
-
-const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
-  return (
-    <span className={cx('status-icon', status)}>
-      {status === 'loading' && <Gear size={small ? 'sm' : 'lg'} />}
-      {status === 'info' && <Info size={small ? 'sm' : 'lg'} />}
-      {status === 'success' && <CheckCircle variant="fill" size={small ? 'sm' : 'lg'} />}
-      {status === 'warning' && <Alert variant="fill" size={small ? 'sm' : 'lg'} />}
-      {status === 'error' && <Blocked variant="fill" size={small ? 'sm' : 'lg'} />}
-    </span>
-  );
-};
-
-type statusWithMessage = {
+export type statusWithMessage = {
   status: status;
   message?: string;
 };
@@ -57,92 +45,92 @@ type InputAffixContentWithCallback = {
   onClickCallback: () => void;
 };
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  id: string;
-  label: string;
-  hint?: string;
-  leadingContent?: InputAffixContent | InputAffixContentWithCallback;
-  trailingContent?: InputAffixContent | InputAffixContentWithCallback;
-  small?: boolean;
-  statusWithMessage?: statusWithMessage;
-  inputWrapperClassname?: string;
-};
-
-export const Input: React.FC<InputProps> = ({
-  id,
-  label,
-  type,
-  value: initialValue,
-  hint,
-  leadingContent,
-  trailingContent,
-  required,
-  disabled,
-  readOnly,
-  statusWithMessage,
-  inputWrapperClassname,
-  small = false,
-}) => {
-  const [value, setValue] = useState(initialValue);
-  const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
-  useKeyPress('Tab', async () => setFocusViaKeyboard(true));
-
-  const statusClassname = {
-    ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}),
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
+  FieldWrapperProps & {
+    leadingContent?: InputAffixContent | InputAffixContentWithCallback;
+    trailingContent?: InputAffixContent | InputAffixContentWithCallback;
+    inputWrapperClassname?: string;
   };
 
-  return (
-    <div className={cx('feed-back', statusClassname, { small: small })}>
-      <div className="custom-input">
-        {/* LABEL */}
-        <div className={cx('label-wrapper', { 'has-hint': hint })}>
-          {required && (
-            <span className="required">
-              {' '}
-              <RequiredInput />{' '}
-            </span>
-          )}
-          <label className={cx('label', { disabled: disabled })} htmlFor={id}>
-            {label}
-          </label>
-        </div>
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      id,
+      label,
+      type,
+      hint,
+      leadingContent,
+      trailingContent,
+      required,
+      disabled = false,
+      readOnly = false,
+      statusWithMessage,
+      inputWrapperClassname,
+      small = false,
+      onBlur,
+      ...rest
+    },
+    ref
+  ) => {
+    const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
+    useKeyPress('Tab', async () => setFocusViaKeyboard(true));
 
-        {/* HINT */}
-        {hint && <span className="hint">{hint}</span>}
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocusViaKeyboard(false);
+      onBlur?.(e);
+    };
 
-        {/* INPUT WRAPPER AND STATUS ICON */}
-        <div className="input-wrapper-and-status-icon">
-          <div
-            className={cx('input-wrapper', inputWrapperClassname, { focused: focusViaKeyboard })}
-          >
-            {leadingContent && <InputAffix value={leadingContent} type="leading" />}
-            <input
-              className={cx('input', {
-                'with-leading-only': leadingContent && !trailingContent,
-                'with-trailing-only': trailingContent && !leadingContent,
-                'with-leading-and-trailing': leadingContent && trailingContent,
-                ...statusClassname,
-              })}
-              id={id}
-              type={type}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
+    return (
+      <FieldWrapper
+        id={id}
+        label={label}
+        hint={hint}
+        statusWithMessage={statusWithMessage}
+        disabled={disabled}
+        required={required}
+        small={small}
+      >
+        <div
+          className={cx('input-wrapper', inputWrapperClassname, {
+            focused: focusViaKeyboard,
+            small,
+          })}
+        >
+          {leadingContent && (
+            <InputAffix
+              value={leadingContent}
+              type="leading"
               disabled={disabled}
               readOnly={readOnly}
-              onBlur={() => setFocusViaKeyboard(false)}
             />
-            {trailingContent && <InputAffix value={trailingContent} type="trailing" />}
-          </div>
-          {statusWithMessage && <InputStatusIcon status={statusWithMessage.status} small={small} />}
+          )}
+          <input
+            ref={ref}
+            className={cx('input', {
+              'with-leading-only': leadingContent && !trailingContent,
+              'with-trailing-only': trailingContent && !leadingContent,
+              'with-leading-and-trailing': leadingContent && trailingContent,
+              [statusWithMessage?.status || '']: !!statusWithMessage,
+            })}
+            id={id}
+            type={type}
+            disabled={disabled}
+            readOnly={readOnly}
+            onBlur={handleBlur}
+            {...rest}
+          />
+          {trailingContent && (
+            <InputAffix
+              value={trailingContent}
+              type="trailing"
+              disabled={disabled}
+              readOnly={readOnly}
+            />
+          )}
         </div>
-
-        {/* STATUS MESSAGE */}
-        {statusWithMessage?.message && (
-          <span className={cx('status-message', statusClassname)}>{statusWithMessage.message}</span>
-        )}
-      </div>
-    </div>
-  );
-};
-
+      </FieldWrapper>
+    );
+  }
+);
+Input.displayName = 'Input';
 export default Input;
