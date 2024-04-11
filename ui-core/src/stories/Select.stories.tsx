@@ -8,7 +8,7 @@ const meta: Meta<typeof Select> = {
   args: {
     label: 'Fill colour',
     placeholder: 'Choose',
-    initialSelected: 'blue',
+    value: 'blue',
     options: [
       { value: 'blue', label: 'Blue' },
       { value: 'red', label: 'Red' },
@@ -28,13 +28,13 @@ type Story = StoryObj<typeof Select>;
 
 export const Default: Story = {
   args: {
-    initialSelected: undefined,
+    value: undefined,
   },
 };
 
 export const SelectedOption: Story = {
   args: {
-    initialSelected: 'blue',
+    value: 'blue',
   },
 };
 
@@ -65,7 +65,6 @@ export const WarningSelect: Story = {
     required: true,
     statusWithMessage: {
       status: 'warning',
-      message: 'This is a one way choice',
     },
   },
 };
@@ -85,7 +84,6 @@ export const ErrorSelect: Story = {
     required: true,
     statusWithMessage: {
       status: 'error',
-      message: 'This is a one way choice',
     },
   },
 };
