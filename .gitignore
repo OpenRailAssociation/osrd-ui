@@ -7,3 +7,7 @@ storybook-static
 # Direnv
 .envrc
 .direnv
+
+# IDE
+.vscode/
+
