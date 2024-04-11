@@ -1,0 +1,24 @@
+.base-status-message {
+  letter-spacing: 0;
+  text-align: left;
+  line-height: 1.5rem;
+  margin-top: 0.688rem;
+  margin-bottom: 0.125rem;
+  @apply font-semibold;
+
+  &.info {
+    @apply text-info-60;
+  }
+
+  &.success {
+    @apply text-success-60;
+  }
+
+  &.warning {
+    @apply text-warning-60;
+  }
+
+  &.error {
+    @apply text-error-60;
+  }
+}

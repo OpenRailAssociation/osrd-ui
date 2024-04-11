@@ -1,0 +1,37 @@
+.base-label-wrapper {
+  display: flex;
+  align-items: center;
+
+  &.has-hint {
+    margin-bottom: 0;
+  }
+
+  .required {
+    position: absolute;
+    left: -0.5rem;
+    border-radius: 0.031rem;
+    @apply text-info-30;
+  }
+
+  .label {
+    display: inline-block;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    letter-spacing: 0;
+    text-align: left;
+    vertical-align: top;
+    @apply text-grey-80 font-sans font-semibold;
+
+    &.disabled {
+      @apply text-grey-30;
+    }
+  }
+
+  &.small {
+    .label {
+      height: 1.25rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+  }
+}

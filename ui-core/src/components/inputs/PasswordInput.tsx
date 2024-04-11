@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { Eye, EyeClosed } from '@osrd-project/ui-icons';
 
-import Input, { type InputProps } from './Input';
+import Input, { InputProps } from './Input';
 
-const PasswordInput: React.FC<InputProps> = (props) => {
-  const [isVisible, toggleVisibility] = useState(false);
+export const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const [showPassword, toggleShowPassword] = useState(false);
 
   return (
     <Input
       {...props}
-      type={isVisible ? 'text' : 'password'}
+      type={showPassword ? 'text' : 'password'}
       trailingContent={{
-        content: isVisible ? <EyeClosed /> : <Eye />,
-        onClickCallback: () => toggleVisibility(!isVisible),
+        content: showPassword ? <EyeClosed /> : <Eye />,
+        onClickCallback: () => toggleShowPassword(!showPassword),
       }}
       inputWrapperClassname="password-input"
-      small={false}
+      ref={ref}
     />
   );
-};
+});
+
+PasswordInput.displayName = 'PasswordInput';
 
 export default PasswordInput;
