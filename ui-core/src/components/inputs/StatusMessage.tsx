@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { status } from './InputV1';
+import { status } from './Input';
 
 export type StatusMessageProps = {
   status: status;

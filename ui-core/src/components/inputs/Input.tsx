@@ -52,77 +52,85 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
     inputWrapperClassname?: string;
   };
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
-  id,
-  label,
-  type,
-  hint,
-  leadingContent,
-  trailingContent,
-  required,
-  disabled = false,
-  readOnly = false,
-  statusWithMessage,
-  inputWrapperClassname,
-  small = false,
-  onBlur,
-  ...rest
-}, ref) => {
-  const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
-  useKeyPress('Tab', async () => setFocusViaKeyboard(true));
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      id,
+      label,
+      type,
+      hint,
+      leadingContent,
+      trailingContent,
+      required,
+      disabled = false,
+      readOnly = false,
+      statusWithMessage,
+      inputWrapperClassname,
+      small = false,
+      onBlur,
+      ...rest
+    },
+    ref
+  ) => {
+    const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
+    useKeyPress('Tab', async () => setFocusViaKeyboard(true));
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setFocusViaKeyboard(false);
-    onBlur?.(e);
-  }
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setFocusViaKeyboard(false);
+      onBlur?.(e);
+    };
 
-  return (
-    <FieldWrapper
-      id={id}
-      label={label}
-      hint={hint}
-      statusWithMessage={statusWithMessage}
-      disabled={disabled}
-      required={required}
-      small={small}
-    >
-      <div
-        className={cx('input-wrapper', inputWrapperClassname, { focused: focusViaKeyboard, small })}
+    return (
+      <FieldWrapper
+        id={id}
+        label={label}
+        hint={hint}
+        statusWithMessage={statusWithMessage}
+        disabled={disabled}
+        required={required}
+        small={small}
       >
-        {leadingContent && (
-          <InputAffix
-            value={leadingContent}
-            type="leading"
-            disabled={disabled}
-            readOnly={readOnly}
-          />
-        )}
-        <input
-          ref={ref}
-          className={cx('input', {
-            'with-leading-only': leadingContent && !trailingContent,
-            'with-trailing-only': trailingContent && !leadingContent,
-            'with-leading-and-trailing': leadingContent && trailingContent,
-            [statusWithMessage?.status || '']: !!statusWithMessage,
+        <div
+          className={cx('input-wrapper', inputWrapperClassname, {
+            focused: focusViaKeyboard,
+            small,
           })}
-          id={id}
-          type={type}
-          disabled={disabled}
-          readOnly={readOnly}
-          onBlur={handleBlur}
-          {...rest}
-        />
-        {trailingContent && (
-          <InputAffix
-            value={trailingContent}
-            type="trailing"
+        >
+          {leadingContent && (
+            <InputAffix
+              value={leadingContent}
+              type="leading"
+              disabled={disabled}
+              readOnly={readOnly}
+            />
+          )}
+          <input
+            ref={ref}
+            className={cx('input', {
+              'with-leading-only': leadingContent && !trailingContent,
+              'with-trailing-only': trailingContent && !leadingContent,
+              'with-leading-and-trailing': leadingContent && trailingContent,
+              [statusWithMessage?.status || '']: !!statusWithMessage,
+            })}
+            id={id}
+            type={type}
             disabled={disabled}
             readOnly={readOnly}
+            onBlur={handleBlur}
+            {...rest}
           />
-        )}
-      </div>
-    </FieldWrapper>
-  );
-});
+          {trailingContent && (
+            <InputAffix
+              value={trailingContent}
+              type="trailing"
+              disabled={disabled}
+              readOnly={readOnly}
+            />
+          )}
+        </div>
+      </FieldWrapper>
+    );
+  }
+);
 Input.displayName = 'Input';
 export default Input;

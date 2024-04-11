@@ -27,7 +27,7 @@
   &:focus {
     outline: none;
     border: 2px solid rgba(37, 106, 250, 1);
-    @apply bg-black-1;
+    @apply bg-black-1 border-primary-50;
   }
 
   &.read-only {
@@ -48,26 +48,26 @@
 
   &.success {
     box-shadow: none;
-    border: 2px solid rgba(11, 114, 60, 1);
-    background-color: rgba(255, 255, 255, 1);
+    border: 2px solid;
+    @apply bg-white-100 border-success-30;
   }
 
   &.info {
     box-shadow: none;
-    border: 2px solid rgba(112, 193, 229, 1);
-    background-color: rgba(255, 255, 255, 1);
+    border: 2px solid;
+    @apply bg-white-100 border-info-30;
   }
 
   &.warning {
     box-shadow: none;
-    border: 2px solid rgba(234, 167, 43, 1);
-    background-color: rgba(255, 255, 255, 1);
+    border: 2px solid;
+    @apply bg-white-100 border-warning-30;
   }
 
   &.error {
     box-shadow: none;
-    border: 2px solid rgba(255, 104, 104, 1);
-    background-color: rgba(255, 255, 255, 1);
+    border: 2px solid;
+    @apply bg-white-100 border-error-30;
   }
 
   &.small {
