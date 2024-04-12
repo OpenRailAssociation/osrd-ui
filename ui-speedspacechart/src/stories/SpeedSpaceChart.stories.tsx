@@ -10,8 +10,8 @@ export default {
 } as Meta<typeof SpeedSpaceChart>;
 
 const defaultArgs: SpeedSpaceChartProps = {
-  width: 1200,
-  height: 400,
+  width: 1440,
+  height: 521.5,
   data: OSRD_SAMPLE,
 };
 

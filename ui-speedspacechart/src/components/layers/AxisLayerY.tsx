@@ -14,7 +14,7 @@ const AxisLayerY = ({ width, height, store }: AxisLayerYProps) => {
   return (
     <canvas
       id="axis-layer-y"
-      className="absolute"
+      className="absolute rounded-t-xl"
       ref={canvas}
       width={width}
       height={height}

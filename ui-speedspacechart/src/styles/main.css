@@ -51,3 +51,14 @@
   font-weight: 600;
 }
 
+#curve-layer {
+  margin-left: 48px;
+  margin-top: 27px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.19);
+  box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.06);
+}
+
+#front-interactivity-layer {
+  margin-left: 48px;
+  margin-top: 27px;
+}
