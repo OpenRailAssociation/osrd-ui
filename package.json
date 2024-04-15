@@ -12,6 +12,7 @@
   "workspaces": [
     "ui-core",
     "ui-icons",
+    "ui-spacetimechart",
     "ui-speedspacechart",
     "ui-warped-map",
     "storybook"

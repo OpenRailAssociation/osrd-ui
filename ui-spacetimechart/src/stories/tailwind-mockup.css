@@ -1,0 +1,29 @@
+/**
+ * [jacomyal]
+ * Since I don't know exactly how Tailwind should work with osrd-ui modules, and since I only use very few classes, they
+ * are mocked here, at least until we find a better way:
+ */
+.absolute {
+  position: absolute;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.inset-0 {
+  inset: 0;
+}
+.w-full {
+  width: 100%;
+}
+.w-full {
+  height: 100%;
+}
+.cursor-grabbing {
+  cursor: grabbing;
+}
+.cursor-grab {
+  cursor: grab;
+}
+.cursor-pointer {
+  cursor: pointer;
+}

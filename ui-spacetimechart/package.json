@@ -1,0 +1,44 @@
+{
+  "name": "@osrd-project/ui-spacetimechart",
+  "version": "0.0.18",
+  "license": "LGPL-3.0-or-later",
+  "private": true,
+  "bugs": "https://github.com/osrd-project/osrd-ui/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osrd-project/osrd-ui.git",
+    "directory": "ui-spacetimechart"
+  },
+  "type": "module",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "main": "dist/index.esm.js",
+  "files": [
+    "/dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.esm.js"
+    }
+  },
+  "scripts": {
+    "rollup": "rollup -c",
+    "clean": "rimraf dist",
+    "build": "npm run rollup",
+    "test": "vitest run --dir src/__tests__",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "peerDependencies": {
+    "classnames": ">=2.5",
+    "react": ">=18.0",
+    "react-dom": ">=18.0",
+    "tailwindcss": ">=3.4"
+  },
+  "dependencies": {
+    "@types/chroma-js": "^2.4.4",
+    "chroma-js": "^2.4.2",
+    "lodash": "^4.17.21",
+    "vitest": "^1.5.0"
+  }
+}
