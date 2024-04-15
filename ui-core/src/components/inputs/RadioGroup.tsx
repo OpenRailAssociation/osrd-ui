@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import RadioButton, { RadioButtonProps } from "./RadioButton";
-import cx from "classnames";
-import InputStatusIcon, { Status } from "./InputStatusIcon";
-import { RequiredInput } from "@osrd-project/ui-icons";
+import React, { useState } from 'react';
+import RadioButton, { RadioButtonProps } from './RadioButton';
+import cx from 'classnames';
+import InputStatusIcon, { Status } from './InputStatusIcon';
+import { RequiredInput } from '@osrd-project/ui-icons';
 
 export interface RadioGroupProps {
   label?: string;
@@ -26,7 +26,9 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
   required,
   small,
 }) => {
-  const [selectedValue, setSelectedValue] = useState<string>(options.find((option) => option.checked)?.value || "");
+  const [selectedValue, setSelectedValue] = useState<string>(
+    options.find((option) => option.checked)?.value || ''
+  );
 
   const handleOptionChange = (value: string) => {
     setSelectedValue(value);
@@ -35,7 +37,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
   const statusClassname = statusWithMessage?.status ? { [statusWithMessage.status]: true } : {};
 
   return (
-    <div className={cx("radio-button-wrapper", statusClassname)}>
+    <div className={cx('radio-button-wrapper', statusClassname)}>
       {label && (
         <label className="label">
           {required && (
@@ -62,11 +64,11 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
       ))}
       {statusWithMessage?.message && (
         <div className="status-with-message">
-          <span className={cx("status-icon", statusWithMessage.status)}>
+          <span className={cx('status-icon', statusWithMessage.status)}>
             <InputStatusIcon status={statusWithMessage.status} />
           </span>
 
-          <span className={cx("status-message", statusClassname)}>{statusWithMessage.message}</span>
+          <span className={cx('status-message', statusClassname)}>{statusWithMessage.message}</span>
         </div>
       )}
     </div>
