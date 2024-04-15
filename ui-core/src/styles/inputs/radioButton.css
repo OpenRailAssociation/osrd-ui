@@ -3,7 +3,7 @@
   margin-bottom: 0.25rem;
   cursor: pointer;
 
-  input[type="radio"] {
+  input[type='radio'] {
     position: absolute;
     opacity: 0;
     height: 0.75rem;
@@ -19,11 +19,15 @@
     height: 1.125rem;
     border: 0.0625rem solid #94918e;
     opacity: 1;
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(245, 245, 245, 1) 100%);
+    background-image: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(245, 245, 245, 1) 100%
+    );
     outline: solid 0.125rem #d3d1cf;
 
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0.0625rem;
       left: 0.0625rem;
@@ -73,11 +77,15 @@
     }
   }
 
-  input[type="radio"]:checked ~ .checkmark {
+  input[type='radio']:checked ~ .checkmark {
     border-radius: 50%;
     border: 0.0625rem solid #5c5955;
     opacity: 1;
-    background-image: linear-gradient(180deg, rgba(148, 145, 142, 1) 0%, rgba(121, 118, 113, 1) 100%);
+    background-image: linear-gradient(
+      180deg,
+      rgba(148, 145, 142, 1) 0%,
+      rgba(121, 118, 113, 1) 100%
+    );
 
     &:after {
       border: none;
@@ -87,7 +95,7 @@
     }
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       left: 50%;
@@ -99,7 +107,7 @@
     }
   }
 
-  input[type="radio"]:disabled ~ .checkmark {
+  input[type='radio']:disabled ~ .checkmark {
     background-image: white;
     outline: none;
     cursor: default;
@@ -111,7 +119,7 @@
       left: 0px;
     }
   }
-  input[type="radio"]:disabled ~ .checkmark {
+  input[type='radio']:disabled ~ .checkmark {
     cursor: default;
   }
 
@@ -133,7 +141,7 @@
   }
 }
 
-.radio-button:has(input[type="radio"]:disabled) {
+.radio-button:has(input[type='radio']:disabled) {
   cursor: default;
 }
 
@@ -148,7 +156,7 @@
   padding: 1rem 0.625rem;
   border-radius: 0.5rem;
 
-  input[type="radio"]:disabled ~ label {
+  input[type='radio']:disabled ~ label {
     @apply text-grey-30;
     cursor: default;
   }
@@ -251,7 +259,7 @@
   }
 
   .read-only {
-    input[type="radio"] {
+    input[type='radio'] {
       cursor: default;
       @apply border-grey-60;
     }
@@ -281,19 +289,19 @@
     }
   }
   .read-only {
-    input[type="radio"] {
+    input[type='radio'] {
       cursor: default;
       @apply border-grey-60;
     }
     .radio-label {
       @apply text-grey-50;
     }
-    input[type="radio"]:checked ~ .checkmark {
+    input[type='radio']:checked ~ .checkmark {
       background-image: none;
       background-color: white;
       cursor: default;
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 50%;
         left: 50%;
