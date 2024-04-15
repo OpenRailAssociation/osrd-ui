@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import cx from "classnames";
-import useKeyPress from "./hooks/useKeyPress";
+import React, { useState, useEffect, useRef } from 'react';
+import cx from 'classnames';
+import useKeyPress from './hooks/useKeyPress';
 
 export interface RadioButtonProps {
   label: string;
@@ -32,7 +32,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
     }
   }, [focusViaKeyboard]);
 
-  useKeyPress("Tab", () => setFocusViaKeyboard(true));
+  useKeyPress('Tab', () => setFocusViaKeyboard(true));
 
   const handleChange = () => {
     if (!checked && !disabled && !readonly) {
@@ -42,7 +42,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
 
   return (
     <div
-      className={cx("radio-button", { "read-only": readonly, small })}
+      className={cx('radio-button', { 'read-only': readonly, small })}
       onClick={handleChange}
       tabIndex={0}
       ref={radioButtonRef}
@@ -57,7 +57,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
           tabIndex={-1}
           onChange={handleChange}
         />
-        <span className={cx("checkmark", { focused: focusViaKeyboard })}></span>
+        <span className={cx('checkmark', { focused: focusViaKeyboard })}></span>
         <label className="radio-label">{label}</label>
       </div>
       {hint && <div className="hint">{hint}</div>}
