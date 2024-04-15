@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from "@storybook/react";
-import TextArea from "../components/inputs/TextArea";
+import { Meta, StoryObj } from '@storybook/react';
+import TextArea from '../components/inputs/TextArea';
 
-import "@osrd-project/ui-core/dist/theme.css";
+import '@osrd-project/ui-core/dist/theme.css';
 
 const meta: Meta<typeof TextArea> = {
   component: TextArea,
@@ -9,7 +9,7 @@ const meta: Meta<typeof TextArea> = {
     disabled: false,
     readOnly: false,
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -17,119 +17,119 @@ type Story = StoryObj<typeof TextArea>;
 
 export const Default: Story = {
   args: {
-    label: "Your name",
-    type: "text",
+    label: 'Your name',
+    type: 'text',
   },
 };
 
 export const Value: Story = {
   args: {
-    label: "Your name",
-    type: "text",
-    value: "Manuel",
+    label: 'Your name',
+    type: 'text',
+    value: 'Manuel',
   },
 };
 
 export const Hint: Story = {
   args: {
-    label: "Your name",
-    type: "text",
-    value: "Manuel",
+    label: 'Your name',
+    type: 'text',
+    value: 'Manuel',
     hint: "It doesn't have to be real",
   },
 };
 
 export const RequiredTextArea: Story = {
   args: {
-    label: "Your name",
-    type: "text",
+    label: 'Your name',
+    type: 'text',
     required: true,
   },
 };
 
 export const LoadingTextArea: Story = {
   args: {
-    label: "Name",
-    type: "text",
+    label: 'Name',
+    type: 'text',
     required: true,
-    value: "Manuel",
+    value: 'Manuel',
     statusWithMessage: {
-      status: "loading",
+      status: 'loading',
     },
   },
 };
 
 export const SuccessTextArea: Story = {
   args: {
-    label: "Your name",
-    type: "text",
+    label: 'Your name',
+    type: 'text',
     required: true,
-    value: "jean-michel.halleurt@exemple.fr",
+    value: 'jean-michel.halleurt@exemple.fr',
     statusWithMessage: {
-      status: "success",
+      status: 'success',
     },
   },
 };
 
 export const InformationTextArea: Story = {
   args: {
-    label: "Name",
-    type: "text",
+    label: 'Name',
+    type: 'text',
     required: true,
-    value: "Jean-Michel Halleurt",
+    value: 'Jean-Michel Halleurt',
     statusWithMessage: {
-      status: "info",
-      message: "You won’t be able to change it",
+      status: 'info',
+      message: 'You won’t be able to change it',
     },
   },
 };
 
 export const WarningTextArea: Story = {
   args: {
-    label: "Your name",
-    type: "text",
+    label: 'Your name',
+    type: 'text',
     required: true,
-    value: "Jean-Michel Halleurt",
+    value: 'Jean-Michel Halleurt',
     statusWithMessage: {
-      status: "warning",
-      message: "Don’t be a troll, please",
+      status: 'warning',
+      message: 'Don’t be a troll, please',
     },
   },
 };
 
 export const WarningWithoutMessageTextArea: Story = {
   args: {
-    label: "Your name",
-    type: "text",
+    label: 'Your name',
+    type: 'text',
     required: true,
-    value: "Jean-Michel Halleurt",
+    value: 'Jean-Michel Halleurt',
     statusWithMessage: {
-      status: "warning",
+      status: 'warning',
     },
   },
 };
 
 export const ErrorTextArea: Story = {
   args: {
-    label: "Name",
-    type: "text",
+    label: 'Name',
+    type: 'text',
     required: true,
-    value: "Michel Sardou",
+    value: 'Michel Sardou',
     statusWithMessage: {
-      status: "error",
-      message: "“Michel Sardou” can’t be used",
+      status: 'error',
+      message: '“Michel Sardou” can’t be used',
     },
   },
 };
 
 export const ErrorWithoutMessageTextArea: Story = {
   args: {
-    label: "Name",
-    type: "text",
+    label: 'Name',
+    type: 'text',
     required: true,
-    value: "Michel Sardou",
+    value: 'Michel Sardou',
     statusWithMessage: {
-      status: "error",
+      status: 'error',
     },
   },
 };
