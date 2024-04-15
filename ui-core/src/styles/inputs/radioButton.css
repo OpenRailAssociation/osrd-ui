@@ -139,6 +139,18 @@
     display: flex;
     align-items: center;
   }
+  &:focus {
+    outline: none;
+    .checkmark {
+      &:after {
+        top: -4px;
+        width: 26px;
+        height: 26px;
+        left: -4px;
+        border: 1px rgba(37, 106, 250, 1) solid;
+      }
+    }
+  }
 }
 
 .radio-button:has(input[type='radio']:disabled) {
