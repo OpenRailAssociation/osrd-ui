@@ -9,6 +9,7 @@ const meta: Meta<typeof TextArea> = {
     disabled: false,
     readOnly: false,
   },
+  title: 'TextArea',
   tags: ['autodocs'],
 };
 
