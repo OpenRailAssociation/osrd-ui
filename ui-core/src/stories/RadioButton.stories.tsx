@@ -50,6 +50,7 @@ export default {
   component: RadioGroup,
   args: options,
   tags: ['autodocs'],
+  title: 'RadioGroup',
 } as Meta;
 
 export const WarningRadioButton = {
