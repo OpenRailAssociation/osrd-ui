@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import cx from 'classnames';
 
-import useKeyPress from './hooks/useKeyPress';
 import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
 
 type InputAffixProps = {
@@ -67,19 +66,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       statusWithMessage,
       inputWrapperClassname,
       small = false,
-      onBlur,
       ...rest
     },
     ref
   ) => {
-    const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
-    useKeyPress('Tab', async () => setFocusViaKeyboard(true));
-
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      setFocusViaKeyboard(false);
-      onBlur?.(e);
-    };
-
     return (
       <FieldWrapper
         id={id}
@@ -90,12 +80,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         required={required}
         small={small}
       >
-        <div
-          className={cx('input-wrapper', inputWrapperClassname, {
-            focused: focusViaKeyboard,
-            small,
-          })}
-        >
+        <div className={cx('input-wrapper', inputWrapperClassname, { small })}>
           {leadingContent && (
             <InputAffix
               value={leadingContent}
@@ -116,7 +101,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             disabled={disabled}
             readOnly={readOnly}
-            onBlur={handleBlur}
             {...rest}
           />
           {trailingContent && (

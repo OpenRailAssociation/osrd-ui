@@ -9,6 +9,7 @@ const meta: Meta<typeof Input> = {
     small: false,
     disabled: false,
     readOnly: false,
+    onChange: () => {},
   },
   title: 'Input',
   tags: ['autodocs'],
