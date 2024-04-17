@@ -1,0 +1,10 @@
+export const MARGINS = {
+  MARGIN_LEFT: 48,
+  MARGIN_RIGHT: 12,
+  MARGIN_TOP: 27,
+  MARGIN_BOTTOM: 52.5,
+  CURVE_MARGIN_TOP: 40,
+  CURVE_MARGIN_SIDES: 16,
+};
+
+export const FRONT_INTERACTIVITY_LAYER_ID = '#front-interactivity-layer';
