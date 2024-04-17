@@ -1,20 +1,20 @@
 import React from 'react';
 import type { Store } from '../../types/chartTypes';
-import { drawGridY } from '../helpers/drawElements/gridY';
+import { drawTickY } from '../helpers/drawElements/tickY';
 import { useCanvas } from '../hooks';
 
-type AxisLayerYProps = {
+type TickLayerYProps = {
   width: number;
   height: number;
   store: Store;
 };
 
-const AxisLayerY = ({ width, height, store }: AxisLayerYProps) => {
-  const canvas = useCanvas(drawGridY, width, height, store);
+const TickLayerY = ({ width, height, store }: TickLayerYProps) => {
+  const canvas = useCanvas(drawTickY, width, height, store);
 
   return (
     <canvas
-      id="axis-layer-y"
+      id="tick-layer-y"
       className="absolute rounded-t-xl"
       ref={canvas}
       width={width}
@@ -23,4 +23,4 @@ const AxisLayerY = ({ width, height, store }: AxisLayerYProps) => {
   );
 };
 
-export default AxisLayerY;
+export default TickLayerY;

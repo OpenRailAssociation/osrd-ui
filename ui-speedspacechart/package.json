@@ -2,21 +2,25 @@
   "name": "@osrd-project/ui-speedspacechart",
   "version": "0.0.18",
   "license": "LGPL-3.0-or-later",
-  "private": true,
   "bugs": "https://github.com/osrd-project/osrd-ui/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/osrd-project/osrd-ui.git",
     "directory": "ui-speedspacechart"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "main": "dist/index.esm.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.esm.js",
+  "style": "dist/theme.css",
   "files": [
     "/dist"
   ],
   "exports": {
+    "./dist/theme.css": "./dist/theme.css",
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.esm.js"
@@ -26,16 +30,28 @@
     "rollup": "rollup -c",
     "clean": "rimraf dist",
     "build": "npm run rollup",
+    "watch": "NODE_ENV=development rollup -c -w",
+    "test": "vitest run --dir src/__tests__",
     "prepublishOnly": "npm run clean && npm run build"
   },
+  "dependencies": {
+    "@types/d3": "^7.4.3",
+    "classnames": "^2.5.1",
+    "d3": "^7.9.0",
+    "tailwindcss": "^3.4.1"
+  },
   "peerDependencies": {
-    "react": ">=18.0",
-    "react-dom": ">=18.0"
+    "react": ">=18.0"
   },
   "devDependencies": {
-    "@types/d3": "^7.4.3"
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.37",
+    "postcss-assets": "^6.0.0",
+    "postcss-import": "^16.0.0",
+    "postcss-preset-env": "^9.5.2",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^1.1.1"
   },
-  "dependencies": {
-    "d3": "^7.8.5"
-  }
+  "gitHead": "973ad1478be4544e1c97303b844903247d9a9cd7"
 }
