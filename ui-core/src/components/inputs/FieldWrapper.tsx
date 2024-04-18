@@ -18,7 +18,7 @@ const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
   return (
     <span className={cx('status-icon', status)}>
       {status === 'loading' && <Gear size={size} />}
-      {status === 'info' && <Info size={size} />}
+      {status === 'info' && <Info variant="fill" size={size} />}
       {status === 'success' && <CheckCircle variant="fill" size={size} />}
       {status === 'warning' && <Alert variant="fill" size={size} />}
       {status === 'error' && <Blocked variant="fill" size={size} />}
