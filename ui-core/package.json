@@ -34,7 +34,8 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "peerDependencies": {
-    "react": ">=18.0"
+    "react": ">=18.0",
+    "@osrd-project/ui-core": ">=0.0.18"
   },
   "dependencies": {
     "classnames": "^2.5.1",
