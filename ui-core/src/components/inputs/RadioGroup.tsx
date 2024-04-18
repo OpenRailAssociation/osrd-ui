@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import RadioButton, { RadioButtonProps } from './RadioButton';
-import cx from 'classnames';
 import InputStatusIcon, { Status } from './InputStatusIcon';
 import { RequiredInput } from '@osrd-project/ui-icons';
+
+import cx from 'classnames';
 
 export interface RadioGroupProps {
   label?: string;
@@ -64,10 +65,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
       ))}
       {statusWithMessage?.message && (
         <div className="status-with-message">
-          <span className={cx('status-icon', statusWithMessage.status)}>
-            <InputStatusIcon status={statusWithMessage.status} />
-          </span>
-
+          <InputStatusIcon status={statusWithMessage.status} />
           <span className={cx('status-message', statusClassname)}>{statusWithMessage.message}</span>
         </div>
       )}
