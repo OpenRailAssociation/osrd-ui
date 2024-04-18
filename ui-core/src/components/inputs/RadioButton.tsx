@@ -10,7 +10,7 @@ export interface RadioButtonProps {
   disabled?: boolean;
   readonly?: boolean;
   small?: boolean;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
 }
 
 const RadioButton: React.FC<RadioButtonProps> = ({
@@ -36,7 +36,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
 
   const handleChange = () => {
     if (!checked && !disabled && !readonly) {
-      onChange(value);
+      onChange?.(value);
     }
   };
 
