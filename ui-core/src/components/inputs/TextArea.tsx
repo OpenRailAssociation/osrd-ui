@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import InputStatusIcon, { Status } from './InputStatusIcon';
-import { RequiredInput } from '@osrd-project/ui-icons';
+import { Status } from './InputStatusIcon';
 import cx from 'classnames';
-
-import useKeyPress from './hooks/useKeyPress';
+import FieldWrapper from './FieldWrapper';
 
 type StatusWithMessage = {
   status: Status;
   message?: string;
 };
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type TextAreaProps = React.InputHTMLAttributes<HTMLInputElement> & {
   id: string;
   label: string;
   hint?: string;
   statusWithMessage?: StatusWithMessage;
   inputWrapperClassname?: string;
+  maxCharCount?: number;
+  warningCharCount?: number;
 };
 
-const Input: React.FC<InputProps> = ({
+const TextArea: React.FC<TextAreaProps> = ({
   id,
   label,
   value: initialValue,
@@ -27,58 +27,53 @@ const Input: React.FC<InputProps> = ({
   disabled,
   readOnly,
   statusWithMessage,
-  inputWrapperClassname,
+  maxCharCount = 220,
+  warningCharCount = 180,
 }) => {
   const [value, setValue] = useState(initialValue);
-  const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
-
-  useKeyPress('Tab', async () => setFocusViaKeyboard(true));
+  const [charCount, setCharCount] = useState((initialValue?.toString() || '').length || 0);
 
   const statusClassname = statusWithMessage?.status ? { [statusWithMessage.status]: true } : {};
 
+  const charCountClass = () => {
+    if (charCount === maxCharCount && charCount !== warningCharCount) {
+      return 'char-count error';
+    } else if (charCount > warningCharCount && charCount < maxCharCount) {
+      return 'char-count warning';
+    }
+    return 'char-count';
+  };
+
   return (
-    <div className={cx('text-area-wrapper', statusClassname)}>
-      <div className="custom-input">
-        <div className={cx('label-wrapper', { 'has-hint': hint })}>
-          {required && (
-            <span className="required">
-              <RequiredInput />
-            </span>
-          )}
-          <label className={cx('label', { disabled })} htmlFor={id}>
-            {label}
-          </label>
-        </div>
-
-        {hint && <span className="hint">{hint}</span>}
-
-        <div className="input-wrapper-and-status-icon">
-          <div
-            className={cx('input-wrapper', inputWrapperClassname, { focused: focusViaKeyboard })}
-          >
-            <textarea
-              className={cx('input', statusClassname)}
-              id={id}
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              disabled={disabled}
-              readOnly={readOnly}
-              onBlur={() => setFocusViaKeyboard(false)}
-            />
+    <FieldWrapper
+      id={id}
+      label={label}
+      hint={hint}
+      statusWithMessage={statusWithMessage}
+      disabled={disabled}
+      required={required}
+    >
+      <div className="text-area-wrapper">
+        {maxCharCount && (
+          <div className={charCountClass()}>
+            {charCount}/{maxCharCount}
           </div>
-          {statusWithMessage && (
-            <span className={cx('status-icon', statusWithMessage.status)}>
-              <InputStatusIcon status={statusWithMessage.status} />
-            </span>
-          )}
-        </div>
-
-        {statusWithMessage?.message && (
-          <span className={cx('status-message', statusClassname)}>{statusWithMessage.message}</span>
         )}
+        <textarea
+          className={cx('text-area', statusClassname)}
+          id={id}
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+            setCharCount(e.target.value.length);
+          }}
+          disabled={disabled}
+          readOnly={readOnly}
+          maxLength={maxCharCount}
+        />
       </div>
-    </div>
+    </FieldWrapper>
   );
 };
 
-export default Input;
+export default TextArea;
