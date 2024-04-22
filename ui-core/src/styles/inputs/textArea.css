@@ -2,9 +2,9 @@
   padding: 0.1875rem;
   position: relative;
 
-  &:has(:focus) {
+  &.focused-by-tab {
     box-shadow: 0 0 0 0.0625rem rgba(37, 106, 250, 1) inset;
-  }
+  }  
 
   .text-area {
     height: 5.875rem;
@@ -90,6 +90,16 @@
 
     &.error {
       @apply bg-error-5 text-error-60;
+    }
+  }
+}
+
+/*OVERRIDE FIELD WRAPPER */
+.text-area-field-wrapper {
+  .field-wrapper-and-status-icon {
+    align-items: flex-start !important;
+    .status-icon {
+      margin-top: 0.688rem !important;
     }
   }
 }

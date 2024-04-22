@@ -8,6 +8,7 @@ const meta: Meta<typeof TextArea> = {
   args: {
     disabled: false,
     readOnly: false,
+    label: 'Description',
   },
   title: 'TextArea',
   tags: ['autodocs'],
@@ -16,56 +17,33 @@ const meta: Meta<typeof TextArea> = {
 export default meta;
 type Story = StoryObj<typeof TextArea>;
 
-export const Default: Story = {
-  args: {
-    label: 'Your name',
-    type: 'text',
-  },
-};
-
 export const Value: Story = {
   args: {
-    label: 'Your name',
-    type: 'text',
-    value: 'Manuel',
+    value: 'The light you see is this end of the tunnel.',
   },
 };
 
 export const Hint: Story = {
   args: {
-    label: 'Your name',
-    type: 'text',
-    value: 'Manuel',
-    hint: "It doesn't have to be real",
+    hint: 'Be precise and succinct',
+  },
+};
+
+export const Counter: Story = {
+  args: {
+    maxLength: 220,
   },
 };
 
 export const RequiredTextArea: Story = {
   args: {
-    label: 'Your name',
-    type: 'text',
     required: true,
-  },
-};
-
-export const LoadingTextArea: Story = {
-  args: {
-    label: 'Name',
-    type: 'text',
-    required: true,
-    value: 'Manuel',
-    statusWithMessage: {
-      status: 'loading',
-    },
   },
 };
 
 export const SuccessTextArea: Story = {
   args: {
-    label: 'Your name',
-    type: 'text',
-    required: true,
-    value: 'jean-michel.halleurt@exemple.fr',
+    value: 'A good looking red train.',
     statusWithMessage: {
       status: 'success',
     },
@@ -74,10 +52,6 @@ export const SuccessTextArea: Story = {
 
 export const InformationTextArea: Story = {
   args: {
-    label: 'Name',
-    type: 'text',
-    required: true,
-    value: 'Jean-Michel Halleurt',
     statusWithMessage: {
       status: 'info',
       message: 'You won’t be able to change it',
@@ -87,23 +61,17 @@ export const InformationTextArea: Story = {
 
 export const WarningTextArea: Story = {
   args: {
-    label: 'Your name',
-    type: 'text',
-    required: true,
-    value: 'Jean-Michel Halleurt',
+    value: 'Blah blah blah',
     statusWithMessage: {
       status: 'warning',
-      message: 'Don’t be a troll, please',
+      message: 'Please make it useful',
     },
   },
 };
 
 export const WarningWithoutMessageTextArea: Story = {
   args: {
-    label: 'Your name',
-    type: 'text',
-    required: true,
-    value: 'Jean-Michel Halleurt',
+    value: 'Blah blah blah',
     statusWithMessage: {
       status: 'warning',
     },
@@ -112,23 +80,17 @@ export const WarningWithoutMessageTextArea: Story = {
 
 export const ErrorTextArea: Story = {
   args: {
-    label: 'Name',
-    type: 'text',
-    required: true,
-    value: 'Michel Sardou',
+    value: '^pcds^qpdc^plsqd ^cpl qs^dpcl ^`pqsld c^`pl q',
     statusWithMessage: {
       status: 'error',
-      message: '“Michel Sardou” can’t be used',
+      message: 'This doesn’t make sense',
     },
   },
 };
 
 export const ErrorWithoutMessageTextArea: Story = {
   args: {
-    label: 'Name',
-    type: 'text',
-    required: true,
-    value: 'Michel Sardou',
+    value: '^pcds^qpdc^plsqd ^cpl qs^dpcl ^`pqsld c^`pl q',
     statusWithMessage: {
       status: 'error',
     },
