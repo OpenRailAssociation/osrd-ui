@@ -5,9 +5,9 @@
   margin-left: -0.125rem;
   width: max-content;
 
-  &:has(:focus-visible) {
-    box-shadow: 0 0 0 0.063rem rgba(37, 106, 250, 1) inset;
-  }
+  &.focused-by-tab {
+    box-shadow: 0 0 0 0.0625rem rgba(37, 106, 250, 1) inset;
+  } 
 
   .leading-content-wrapper {
     height: 2.5rem;

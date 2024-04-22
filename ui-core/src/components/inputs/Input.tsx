@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
+import useFocusByTab from '../hooks/useFocusByTab';
 
 type InputAffixProps = {
   value: InputAffixContent | InputAffixContentWithCallback;
@@ -66,10 +67,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       statusWithMessage,
       inputWrapperClassname,
       small = false,
+      onKeyUp,
+      onBlur,
       ...rest
     },
     ref
   ) => {
+    const { handleKeyUp, handleBlur, isFocusByTab } = useFocusByTab({ onBlur, onKeyUp });
+
     return (
       <FieldWrapper
         id={id}
@@ -80,7 +85,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         required={required}
         small={small}
       >
-        <div className={cx('input-wrapper', inputWrapperClassname, { small })}>
+        <div
+          className={cx('input-wrapper', inputWrapperClassname, {
+            small,
+            'focused-by-tab': isFocusByTab,
+          })}
+        >
           {leadingContent && (
             <InputAffix
               value={leadingContent}
@@ -101,6 +111,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             disabled={disabled}
             readOnly={readOnly}
+            onKeyUp={handleKeyUp}
+            onBlur={handleBlur}
             {...rest}
           />
           {trailingContent && (

@@ -1,23 +1,11 @@
 import React, { useState } from 'react';
-import { Status } from './InputStatusIcon';
 import cx from 'classnames';
-import FieldWrapper from './FieldWrapper';
+import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
+import useFocusByTab from '../hooks/useFocusByTab';
 
-type StatusWithMessage = {
-  status: Status;
-  message?: string;
-};
+export type TextAreaProps = React.InputHTMLAttributes<HTMLTextAreaElement> & FieldWrapperProps;
 
-export type TextAreaProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  id: string;
-  label: string;
-  hint?: string;
-  statusWithMessage?: StatusWithMessage;
-  inputWrapperClassname?: string;
-  maxCharCount?: number;
-  warningCharCount?: number;
-};
-
+const CHAR_COUNT_ERROR_THRESHOLD = 40;
 const TextArea: React.FC<TextAreaProps> = ({
   id,
   label,
@@ -25,23 +13,20 @@ const TextArea: React.FC<TextAreaProps> = ({
   hint,
   required,
   disabled,
-  readOnly,
   statusWithMessage,
-  maxCharCount = 220,
-  warningCharCount = 180,
+  maxLength,
+  onChange,
+  onKeyUp,
+  onBlur,
+  ...rest
 }) => {
-  const [value, setValue] = useState(initialValue);
-  const [charCount, setCharCount] = useState((initialValue?.toString() || '').length || 0);
+  const [value, setValue] = useState<string>(initialValue as string);
+  const charCount = value?.length || 0;
+  const { handleKeyUp, handleBlur, isFocusByTab } = useFocusByTab({ onBlur, onKeyUp });
 
-  const statusClassname = statusWithMessage?.status ? { [statusWithMessage.status]: true } : {};
-
-  const charCountClass = () => {
-    if (charCount === maxCharCount && charCount !== warningCharCount) {
-      return 'char-count error';
-    } else if (charCount > warningCharCount && charCount < maxCharCount) {
-      return 'char-count warning';
-    }
-    return 'char-count';
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(e.target.value);
+    onChange?.(e);
   };
 
   return (
@@ -52,24 +37,29 @@ const TextArea: React.FC<TextAreaProps> = ({
       statusWithMessage={statusWithMessage}
       disabled={disabled}
       required={required}
+      className="text-area-field-wrapper"
     >
-      <div className="text-area-wrapper">
-        {maxCharCount && (
-          <div className={charCountClass()}>
-            {charCount}/{maxCharCount}
+      <div className={cx('text-area-wrapper', { 'focused-by-tab': isFocusByTab })}>
+        {maxLength && (
+          <div
+            className={cx('char-count', {
+              error: charCount === maxLength,
+              warning: maxLength - charCount <= CHAR_COUNT_ERROR_THRESHOLD,
+            })}
+          >
+            {charCount}/{maxLength}
           </div>
         )}
         <textarea
-          className={cx('text-area', statusClassname)}
+          className={cx('text-area', { [statusWithMessage?.status || '']: !!statusWithMessage })}
           id={id}
           value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-            setCharCount(e.target.value.length);
-          }}
           disabled={disabled}
-          readOnly={readOnly}
-          maxLength={maxCharCount}
+          maxLength={maxLength}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onKeyUp={handleKeyUp}
+          {...rest}
         />
       </div>
     </FieldWrapper>

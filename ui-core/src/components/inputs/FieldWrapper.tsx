@@ -40,6 +40,7 @@ export type FieldWrapperProps = {
   statusWithMessage?: statusWithMessage;
   small?: boolean;
   children: React.ReactNode;
+  className?: string;
 };
 
 export const FieldWrapper: React.FC<FieldWrapperProps> = ({
@@ -50,14 +51,13 @@ export const FieldWrapper: React.FC<FieldWrapperProps> = ({
   disabled,
   statusWithMessage,
   small = false,
+  className,
   children,
 }) => {
-  const statusClassname = {
-    ...(statusWithMessage ? { [statusWithMessage.status]: statusWithMessage.status } : {}),
-  };
+  const statusClassname = statusWithMessage ? { [statusWithMessage.status]: true } : {};
 
   return (
-    <div className={cx('feed-back', statusClassname, { small: small })}>
+    <div className={cx('feed-back', statusClassname, className, { small: small })}>
       <div className="custom-field">
         {/* LABEL AND HINT */}
         <Label
