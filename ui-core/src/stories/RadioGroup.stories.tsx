@@ -1,0 +1,191 @@
+import { StoryObj, Meta } from '@storybook/react';
+
+import '@osrd-project/ui-core/dist/theme.css';
+
+import RadioGroup from '../components/inputs/RadioGroup';
+
+const meta: Meta<typeof RadioGroup> = {
+  component: RadioGroup,
+  args: {
+    small: false,
+    disabled: false,
+    readOnly: false,
+  },
+  tags: ['autodocs'],
+  title: 'RadioGroup',
+};
+
+export default meta;
+
+type Story = StoryObj<typeof RadioGroup>;
+
+export const Default: Story = {
+  args: {
+    options: [
+      {
+        label: 'Banana',
+        value: 'Banana',
+      },
+      {
+        label: 'Pear',
+        value: 'Pear',
+      },
+      {
+        label: 'Litchee',
+        value: 'Litchee',
+      },
+    ],
+  },
+};
+
+export const GroupWithLabel: Story = {
+  args: {
+    label: 'Choose a flavour',
+    options: [
+      {
+        label: 'Banana',
+        value: 'Banana',
+      },
+      {
+        label: 'Pear',
+        value: 'Pear',
+      },
+      {
+        label: 'Litchee',
+        value: 'Litchee',
+      },
+    ],
+  },
+};
+
+export const GroupLabelCaption: Story = {
+  args: {
+    label: 'Pick a flower',
+    subtitle: 'And put a smile on your face',
+    options: [
+      {
+        label: 'Iris',
+        value: 'Iris',
+      },
+      {
+        label: 'Daisy',
+        value: 'Daisy',
+      },
+      {
+        label: 'Tulip',
+        value: 'Tulip',
+      },
+    ],
+  },
+};
+
+export const LabelOverflow: Story = {
+  args: {
+    options: [
+      {
+        label: 'Cycling around Britany',
+        value: 'Cycling around Britany',
+      },
+      {
+        label: 'Discovering forgotten tracks in the Italian Alps',
+        value: 'Discovering forgotten tracks in the Italian Alps',
+      },
+      {
+        label: 'Visiting middle age churches',
+        value: 'Visiting middle age churches',
+      },
+    ],
+  },
+};
+
+export const RequiredRadioButton: Story = {
+  args: {
+    label: 'Choose a flavour',
+    required: true,
+    options: [
+      {
+        label: 'Banana',
+        value: 'Banana',
+      },
+      {
+        label: 'Pear',
+        value: 'Pear',
+      },
+      {
+        label: 'Litchee',
+        value: 'Litchee',
+      },
+    ],
+  },
+};
+
+export const InfoRadioButton: Story = {
+  args: {
+    options: [
+      {
+        label: 'Banana',
+        value: 'Banana',
+      },
+      {
+        label: 'Pear',
+        value: 'Pear',
+      },
+      {
+        label: 'Litchee',
+        value: 'Litchee',
+      },
+    ],
+    statusWithMessage: {
+      status: 'info',
+      message: 'We made this choice for you',
+    },
+  },
+};
+
+export const WarningRadioButton: Story = {
+  args: {
+    label: 'With your beverage',
+    required: true,
+    options: [
+      {
+        label: 'Milk',
+        value: 'Milk',
+      },
+      {
+        label: 'Sugar',
+        value: 'Sugar',
+      },
+      {
+        label: 'Lemon slice',
+        value: 'Lemon slice',
+      },
+    ],
+    statusWithMessage: {
+      status: 'warning',
+      message: 'Lemon and coffee is a rare match',
+    },
+  },
+};
+
+export const ErrorRadioButton: Story = {
+  args: {
+    options: [
+      {
+        label: 'Parsley',
+        value: 'Parsley',
+      },
+      {
+        label: 'Chives',
+        value: 'Chives',
+      },
+      {
+        label: 'Garlic',
+        value: 'Garlic',
+      },
+    ],
+    statusWithMessage: {
+      status: 'error',
+      message: 'The Chef refuses to cook omelettes with garlic',
+    },
+  },
+};
