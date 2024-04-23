@@ -1,38 +1,44 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import RadioButton, { RadioButtonProps } from './RadioButton';
-import InputStatusIcon, { Status } from './InputStatusIcon';
+import InputStatusIcon from './InputStatusIcon';
 import { RequiredInput } from '@osrd-project/ui-icons';
 
 import cx from 'classnames';
+import { statusWithMessage } from './FieldWrapper';
 
-export interface RadioGroupProps {
+export type RadioGroupProps = {
   label?: string;
   subtitle?: string;
-  readonly?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
   required?: boolean;
   small?: boolean;
+  value?: string;
   options: RadioButtonProps[];
-  statusWithMessage?: {
-    status: Status;
-    message?: string;
-  };
-}
+  statusWithMessage?: statusWithMessage;
+};
 
 const RadioGroup: React.FC<RadioGroupProps> = ({
   label,
+  value,
   subtitle,
-  readonly,
+  readOnly,
+  disabled,
   options,
   statusWithMessage,
   required,
   small,
 }) => {
-  const [selectedValue, setSelectedValue] = useState<string>(
-    options.find((option) => option.checked)?.value || ''
-  );
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(value);
 
-  const handleOptionChange = (value: string) => {
-    setSelectedValue(value);
+  const handleOptionChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLLabelElement>,
+    nextOption: RadioButtonProps
+  ) => {
+    if (!readOnly) {
+      setSelectedValue(nextOption.value);
+      nextOption.onChange?.(e);
+    }
   };
 
   const statusClassname = statusWithMessage?.status ? { [statusWithMessage.status]: true } : {};
@@ -53,13 +59,13 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
       {options.map((option) => (
         <RadioButton
           key={option.value}
-          label={option.label}
-          value={option.value}
-          hint={option.hint}
-          readonly={readonly}
-          checked={readonly ? option.checked : selectedValue === option.value}
-          disabled={option.disabled}
-          onChange={handleOptionChange}
+          {...option}
+          readOnly={readOnly}
+          disabled={disabled}
+          checked={selectedValue === option.value}
+          onChange={(e) => {
+            handleOptionChange(e, option);
+          }}
           small={small}
         />
       ))}

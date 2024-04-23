@@ -38,6 +38,19 @@
     }
   }
 
+  .radio-label {
+    z-index: 1; /* This is to move the label above the checkmark to make the label clickable. */
+  }
+
+  .hint {
+    height: 1.25rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    @apply text-black-50;
+    margin-left: 2rem;
+  }
+
   &:hover {
     &.small {
       .checkmark {
@@ -261,15 +274,6 @@
     }
   }
 
-  .hint {
-    height: 1.25rem;
-    margin-bottom: 0.25rem;
-    font-size: 0.75rem;
-    line-height: 1.25rem;
-    @apply text-black-50;
-    margin-left: 2rem;
-  }
-
   .read-only {
     input[type='radio'] {
       cursor: default;
@@ -291,7 +295,6 @@
       border: 0.0625rem solid #5c5955;
       outline: none;
       cursor: default;
-      border: 0.0625rem solid rgba(92, 89, 85, 1);
       &:after {
         border: none;
         opacity: 1;
