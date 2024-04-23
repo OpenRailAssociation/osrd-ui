@@ -1,51 +1,25 @@
 import React from 'react';
 import { Gear, CheckCircle, Info, Alert, Blocked } from '@osrd-project/ui-icons';
+import cx from 'classnames';
 
-export type Status = 'success' | 'info' | 'error' | 'warning' | 'loading';
+export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
 
-interface InputStatusIconProps {
-  status: Status;
+type InputStatusIconProps = {
+  status: status;
   small?: boolean;
-}
+};
 
 const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
-  const iconProps = { size: small ? 'sm' : 'lg' } as const;
-  const statusClass = `status-icon ${status}`;
-
-  switch (status) {
-    case 'loading':
-      return (
-        <span className={statusClass}>
-          <Gear {...iconProps} />
-        </span>
-      );
-    case 'info':
-      return (
-        <span className={statusClass}>
-          <Info {...iconProps} />
-        </span>
-      );
-    case 'success':
-      return (
-        <span className={statusClass}>
-          <CheckCircle variant="fill" {...iconProps} />
-        </span>
-      );
-    case 'warning':
-      return (
-        <span className={statusClass}>
-          <Alert variant="fill" {...iconProps} />
-        </span>
-      );
-    case 'error':
-      return (
-        <span className={statusClass}>
-          <Blocked variant="fill" {...iconProps} />
-        </span>
-      );
-    default:
-      return null;
-  }
+  const size = small ? 'sm' : 'lg';
+  return (
+    <span className={cx('status-icon', status)}>
+      {status === 'loading' && <Gear size={size} />}
+      {status === 'info' && <Info size={size} />}
+      {status === 'success' && <CheckCircle variant="fill" size={size} />}
+      {status === 'warning' && <Alert variant="fill" size={size} />}
+      {status === 'error' && <Blocked variant="fill" size={size} />}
+    </span>
+  );
 };
 
 export default InputStatusIcon;

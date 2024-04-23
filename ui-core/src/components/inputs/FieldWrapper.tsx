@@ -1,35 +1,10 @@
 import React from 'react';
-import { Gear, CheckCircle, Info, Alert, Blocked } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
 import Label from './Label';
 import Hint from './Hint';
-import StatusMessage from './StatusMessage';
-
-export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
-
-type InputStatusIconProps = {
-  status: status;
-  small?: boolean;
-};
-
-const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small }) => {
-  const size = small ? 'sm' : 'lg';
-  return (
-    <span className={cx('status-icon', status)}>
-      {status === 'loading' && <Gear size={size} />}
-      {status === 'info' && <Info size={size} />}
-      {status === 'success' && <CheckCircle variant="fill" size={size} />}
-      {status === 'warning' && <Alert variant="fill" size={size} />}
-      {status === 'error' && <Blocked variant="fill" size={size} />}
-    </span>
-  );
-};
-
-export type statusWithMessage = {
-  status: status;
-  message?: string;
-};
+import StatusMessage, { statusWithMessage } from './StatusMessage';
+import InputStatusIcon from './InputStatusIcon';
 
 export type FieldWrapperProps = {
   id: string;
