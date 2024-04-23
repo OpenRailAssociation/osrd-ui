@@ -1,64 +1,46 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import cx from 'classnames';
-import useKeyPress from './hooks/useKeyPress';
+import useFocusByTab from '../hooks/useFocusByTab';
 
-export interface RadioButtonProps {
+export type RadioButtonProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement | HTMLLabelElement>,
+  'value'
+> & {
   label: string;
   value: string;
   hint?: string;
-  checked: boolean;
-  disabled?: boolean;
-  readonly?: boolean;
   small?: boolean;
-  onChange?: (value: string) => void;
-}
+};
 
 const RadioButton: React.FC<RadioButtonProps> = ({
+  id,
   label,
   value,
   hint,
-  checked,
-  disabled,
-  readonly,
-  onChange,
+  readOnly,
+  onBlur,
+  onKeyUp,
   small,
+  ...rest
 }) => {
-  const [focusViaKeyboard, setFocusViaKeyboard] = useState(false);
-  const radioButtonRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (focusViaKeyboard && radioButtonRef.current) {
-      radioButtonRef.current.focus();
-    }
-  }, [focusViaKeyboard]);
-
-  useKeyPress('Tab', () => setFocusViaKeyboard(true));
-
-  const handleChange = () => {
-    if (!checked && !disabled && !readonly) {
-      onChange?.(value);
-    }
-  };
-
+  const { handleKeyUp, handleBlur, isFocusByTab } = useFocusByTab({ onBlur, onKeyUp });
   return (
-    <div
-      className={cx('radio-button', { 'read-only': readonly, small })}
-      onClick={handleChange}
-      tabIndex={0}
-      ref={radioButtonRef}
-    >
+    <div className={cx('radio-button', { 'read-only': readOnly, small })} tabIndex={0}>
       <div className="radio-container">
         <input
-          name="radio"
+          className="radio-input"
+          id={id || value}
           type="radio"
           value={value}
-          checked={checked}
-          disabled={disabled}
           tabIndex={-1}
-          onChange={handleChange}
+          onBlur={handleBlur}
+          onKeyUp={handleKeyUp}
+          {...rest}
         />
-        <span className={cx('checkmark', { focused: focusViaKeyboard })}></span>
-        <label className="radio-label">{label}</label>
+        <span className={cx('checkmark', { focused: isFocusByTab })} />
+        <label htmlFor={id || value} className="radio-label">
+          {label}
+        </label>
       </div>
       {hint && <div className="hint">{hint}</div>}
     </div>
