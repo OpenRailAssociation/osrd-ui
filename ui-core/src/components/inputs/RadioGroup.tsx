@@ -2,9 +2,9 @@ import React, { ChangeEvent, useState } from 'react';
 import RadioButton, { RadioButtonProps } from './RadioButton';
 import InputStatusIcon from './InputStatusIcon';
 import { RequiredInput } from '@osrd-project/ui-icons';
+import { statusWithMessage } from './StatusMessage';
 
 import cx from 'classnames';
-import { statusWithMessage } from './FieldWrapper';
 
 export type RadioGroupProps = {
   label?: string;
