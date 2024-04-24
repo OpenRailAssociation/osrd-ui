@@ -1,11 +1,34 @@
+import React from 'react';
 import { StoryObj, Meta } from '@storybook/react';
 
 import '@osrd-project/ui-core/dist/theme.css';
 
 import RadioGroup from '../components/inputs/RadioGroup';
+import { RadioButtonProps } from '../components/inputs/RadioButton';
+
+const buildFruitsOptions: (prefixId: string) => RadioButtonProps[] = (prefixId) => [
+  {
+    id: `${prefixId}-banana-${Date.now()}`,
+    label: 'Banana',
+    value: 'Banana',
+  },
+  {
+    id: `${prefixId}-pear-${Date.now()}`,
+    label: 'Pear',
+    value: 'Pear',
+  },
+  {
+    id: `${prefixId}-litchee-${Date.now()}`,
+    label: 'Litchee',
+    value: 'Litchee',
+  },
+];
 
 const meta: Meta<typeof RadioGroup> = {
   component: RadioGroup,
+  render: (props) => {
+    return <RadioGroup {...props} options={buildFruitsOptions('doc')} />;
+  },
   args: {
     small: false,
     disabled: false,
@@ -21,40 +44,17 @@ type Story = StoryObj<typeof RadioGroup>;
 
 export const Default: Story = {
   args: {
-    options: [
-      {
-        label: 'Banana',
-        value: 'Banana',
-      },
-      {
-        label: 'Pear',
-        value: 'Pear',
-      },
-      {
-        label: 'Litchee',
-        value: 'Litchee',
-      },
-    ],
+    options: buildFruitsOptions('default'),
   },
 };
 
 export const GroupWithLabel: Story = {
   args: {
     label: 'Choose a flavour',
-    options: [
-      {
-        label: 'Banana',
-        value: 'Banana',
-      },
-      {
-        label: 'Pear',
-        value: 'Pear',
-      },
-      {
-        label: 'Litchee',
-        value: 'Litchee',
-      },
-    ],
+    options: buildFruitsOptions('groupWithLabel'),
+  },
+  render: (currentArgs) => {
+    return <RadioGroup {...currentArgs} />;
   },
 };
 
@@ -77,6 +77,9 @@ export const GroupLabelCaption: Story = {
       },
     ],
   },
+  render: (currentArgs) => {
+    return <RadioGroup {...currentArgs} />;
+  },
 };
 
 export const LabelOverflow: Story = {
@@ -96,49 +99,32 @@ export const LabelOverflow: Story = {
       },
     ],
   },
+  render: (currentArgs) => {
+    return <RadioGroup {...currentArgs} />;
+  },
 };
 
 export const RequiredRadioButton: Story = {
   args: {
     label: 'Choose a flavour',
     required: true,
-    options: [
-      {
-        label: 'Banana',
-        value: 'Banana',
-      },
-      {
-        label: 'Pear',
-        value: 'Pear',
-      },
-      {
-        label: 'Litchee',
-        value: 'Litchee',
-      },
-    ],
+    options: buildFruitsOptions('required'),
+  },
+  render: (currentArgs) => {
+    return <RadioGroup {...currentArgs} />;
   },
 };
 
 export const InfoRadioButton: Story = {
   args: {
-    options: [
-      {
-        label: 'Banana',
-        value: 'Banana',
-      },
-      {
-        label: 'Pear',
-        value: 'Pear',
-      },
-      {
-        label: 'Litchee',
-        value: 'Litchee',
-      },
-    ],
+    options: buildFruitsOptions('info'),
     statusWithMessage: {
       status: 'info',
       message: 'We made this choice for you',
     },
+  },
+  render: (currentArgs) => {
+    return <RadioGroup {...currentArgs} />;
   },
 };
 
@@ -165,6 +151,9 @@ export const WarningRadioButton: Story = {
       message: 'Lemon and coffee is a rare match',
     },
   },
+  render: (currentArgs) => {
+    return <RadioGroup {...currentArgs} />;
+  },
 };
 
 export const ErrorRadioButton: Story = {
@@ -187,5 +176,8 @@ export const ErrorRadioButton: Story = {
       status: 'error',
       message: 'The Chef refuses to cook omelettes with garlic',
     },
+  },
+  render: (currentArgs) => {
+    return <RadioGroup {...currentArgs} />;
   },
 };
