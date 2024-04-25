@@ -29,10 +29,13 @@
     "lerna": "lerna",
     "lerna:publish": "lerna publish from-package --no-private --yes"
   },
+  "type": "module",
   "devDependencies": {
     "@rollup/plugin-eslint": "^9.0.5",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2",
     "@types/react": "^18.2.40",
     "@types/react-dom": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
