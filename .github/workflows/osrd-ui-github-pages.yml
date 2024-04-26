@@ -1,4 +1,4 @@
-name: Publish @osrd-project website
+name: Publish to ui.osrd.fr (github pages)
 
 on:
   workflow_dispatch:
@@ -29,10 +29,10 @@ jobs:
           npm run build
 
       - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v4
         with:
           target_branch: gh-pages
           build_dir: storybook/storybook-static
-          jekyll: false
+          domain: ui.osrd.fr
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
