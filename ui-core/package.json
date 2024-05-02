@@ -31,7 +31,7 @@
     "clean": "rimraf dist",
     "build": "npm run rollup",
     "watch": "NODE_ENV=development rollup -c -w",
-    "test": "vitest run src",
+    "test": "vitest run",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "peerDependencies": {
@@ -42,7 +42,12 @@
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.1.0",
+    "@testing-library/react": "^16.0.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.17",
+    "jsdom": "^24.0.0",
     "postcss": "^8.4.38",
     "postcss-assets": "^6.0.0",
     "postcss-import": "^16.0.0",

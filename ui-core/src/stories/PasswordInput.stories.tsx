@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
 
@@ -9,6 +10,13 @@ const meta: Meta<typeof PasswordInput> = {
     label: 'Password',
     hint: 'You can uses spaces',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '20rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   title: 'Core/PasswordInput',
   tags: ['autodocs'],
 };

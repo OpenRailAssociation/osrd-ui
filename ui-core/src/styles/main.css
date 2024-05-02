@@ -1,7 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import './inputs/inputs.css';
+@import './animations.css';
+@import './inputs/index.css';
 @import './select.css';
 @import './button.css';
 /* REGULAR */
