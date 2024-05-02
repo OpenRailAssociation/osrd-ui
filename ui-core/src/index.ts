@@ -17,3 +17,10 @@ export { default as RadioButton, RadioButtonProps } from './components/inputs/Ra
 export { default as RadioGroup, RadioGroupProps } from './components/inputs/RadioGroup';
 export { default as Select, SelectProps } from './components/Select';
 export { default as TimePicker } from './components/inputs/TimePicker';
+export {
+  DatePicker,
+  type RangeDatePickerProps,
+  type SingleDatePickerProps,
+  type DatePickerProps,
+  type CalendarSlot,
+} from './components/inputs/datePicker';
