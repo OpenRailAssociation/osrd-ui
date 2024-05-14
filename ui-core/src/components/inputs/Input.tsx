@@ -46,7 +46,7 @@ type InputAffixContentWithCallback = {
 };
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
-  FieldWrapperProps & {
+  Omit<FieldWrapperProps, 'children'> & {
     leadingContent?: InputAffixContent | InputAffixContentWithCallback;
     trailingContent?: InputAffixContent | InputAffixContentWithCallback;
     inputWrapperClassname?: string;
