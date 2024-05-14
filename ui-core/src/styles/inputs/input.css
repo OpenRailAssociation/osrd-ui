@@ -10,8 +10,12 @@
   }
 
   &:focus-within {
-    .leading-content-wrapper, .trailing-content-wrapper, .input {
-      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 1px rgba(31, 27, 23, 1) inset;
+    .leading-content-wrapper,
+    .trailing-content-wrapper,
+    .input {
+      box-shadow:
+        0px 1px 3px rgba(0, 0, 0, 0.5) inset,
+        0px 0px 0px 1px rgba(31, 27, 23, 1) inset;
       @apply bg-white-25;
     }
   }
@@ -77,7 +81,6 @@
       border-radius: 0;
     }
 
-
     &:focus {
       outline: none;
     }
@@ -134,6 +137,11 @@
     &[type='number'] {
       appearance: none;
       -moz-appearance: textfield;
+    }
+
+    &[type='time']::-webkit-calendar-picker-indicator {
+      background: none;
+      display: none;
     }
   }
 
@@ -202,7 +210,6 @@
       &.with-leading-and-trailing {
         border-radius: 0;
       }
-
     }
 
     .trailing-content-wrapper {

@@ -14,7 +14,7 @@ export type FieldWrapperProps = {
   disabled?: boolean;
   statusWithMessage?: statusWithMessage;
   small?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 };
 
