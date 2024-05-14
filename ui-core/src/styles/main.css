@@ -12,8 +12,8 @@
 @import './button.css';
 @import './inputs/textArea.css';
 @import './inputs/radioButton.css';
-
 @import './inputs/radioButton.css';
+@import './inputs/timePicker.css';
 /* REGULAR */
 
 @font-face {

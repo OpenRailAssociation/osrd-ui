@@ -9,3 +9,4 @@ export { default as TextArea, TextAreaProps } from './components/inputs/TextArea
 export { default as RadioButton, RadioButtonProps } from './components/inputs/RadioButton';
 export { default as RadioGroup, RadioGroupProps } from './components/inputs/RadioGroup';
 export { default as Select, SelectOption, SelectProps } from './components/Select';
+export { default as TimePicker } from './components/inputs/TimePicker';
