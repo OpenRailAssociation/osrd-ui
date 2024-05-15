@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-interface CheckboxProps {
+export interface CheckboxProps {
   label: string;
 }
 

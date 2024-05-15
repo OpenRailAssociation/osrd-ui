@@ -175,8 +175,6 @@
 }
 
 .radio-button-wrapper {
-  width: -moz-max-content;
-  width: max-content;
   position: relative;
   padding: 1rem 0.625rem;
   border-radius: 0.5rem;

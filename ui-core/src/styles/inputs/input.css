@@ -1,13 +1,20 @@
 .input-wrapper {
   display: flex;
   align-items: center;
+  width: 100%;
   padding: 0.188rem;
   margin-left: -0.125rem;
-  width: max-content;
 
   &.focused-by-tab {
     box-shadow: 0 0 0 0.0625rem rgba(37, 106, 250, 1) inset;
-  } 
+  }
+
+  &:focus-within {
+    .leading-content-wrapper, .trailing-content-wrapper, .input {
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset, 0px 0px 0px 1px rgba(31, 27, 23, 1) inset;
+      @apply bg-white-25;
+    }
+  }
 
   .leading-content-wrapper {
     height: 2.5rem;
@@ -23,6 +30,7 @@
       line-height: 1.25rem;
       font-size: 0.875rem;
       text-align: center;
+      flex-shrink: 0;
       @apply text-grey-80;
     }
 
@@ -45,6 +53,7 @@
 
   .input {
     height: 2.5rem;
+    width: 100%;
     line-height: 1.5rem;
     text-align: left;
     vertical-align: top;
@@ -68,11 +77,6 @@
       border-radius: 0;
     }
 
-    &.with-leading-only,
-    &.with-trailing-only,
-    &.with-leading-and-trailing {
-      width: 6rem;
-    }
 
     &:focus {
       outline: none;
@@ -147,6 +151,7 @@
       line-height: 1.25rem;
       font-size: 0.875rem;
       text-align: center;
+      flex-shrink: 0;
       @apply text-grey-80;
     }
 
@@ -198,11 +203,6 @@
         border-radius: 0;
       }
 
-      &.with-leading-only,
-      &.with-trailing-only,
-      &.with-leading-and-trailing {
-        width: 6rem;
-      }
     }
 
     .trailing-content-wrapper {

@@ -1,6 +1,5 @@
 .feed-back {
   border-radius: 0.5rem;
-  width: max-content;
   position: relative;
   padding: 0.625rem 0.813rem 1rem 1rem;
 
@@ -19,7 +18,6 @@
   .custom-field {
     display: flex;
     flex-direction: column;
-    width: max-content;
 
     .field-wrapper-and-status-icon {
       display: flex;

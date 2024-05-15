@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
 
@@ -11,6 +12,13 @@ const meta: Meta<typeof Input> = {
     readOnly: false,
     onChange: () => {},
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '20rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   title: 'Input',
   tags: ['autodocs'],
 };
@@ -48,6 +56,13 @@ export const LeadingContent: Story = {
     type: 'number',
     leadingContent: '£',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '10rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const TrainlingContent: Story = {
@@ -56,6 +71,13 @@ export const TrainlingContent: Story = {
     type: 'number',
     trailingContent: '€',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '10rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const LeadingAndTrainlingContent: Story = {
