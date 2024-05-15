@@ -14,7 +14,7 @@ export type SelectOption = { value: string; label: string };
  * but for our Select component, we want to ensure that it's always a string.
  */
 export type SelectProps = Omit<React.InputHTMLAttributes<HTMLSelectElement>, 'value'> &
-  FieldWrapperProps & {
+  Omit<FieldWrapperProps, 'children'> & {
     value?: string;
     placeholder?: string;
     options: SelectOption[];

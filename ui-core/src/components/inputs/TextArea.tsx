@@ -3,7 +3,8 @@ import cx from 'classnames';
 import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
 import useFocusByTab from '../hooks/useFocusByTab';
 
-export type TextAreaProps = React.InputHTMLAttributes<HTMLTextAreaElement> & FieldWrapperProps;
+export type TextAreaProps = React.InputHTMLAttributes<HTMLTextAreaElement> &
+  Omit<FieldWrapperProps, 'children'>;
 
 const CHAR_COUNT_ERROR_THRESHOLD = 40;
 const TextArea: React.FC<TextAreaProps> = ({

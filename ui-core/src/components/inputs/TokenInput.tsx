@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import cx from 'classnames';
 import { X } from '@osrd-project/ui-icons';
 
-type TokenInputProps = {
+export type TokenInputProps = {
   label: string;
   tokens: string[];
 };

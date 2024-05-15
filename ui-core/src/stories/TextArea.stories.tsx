@@ -1,3 +1,4 @@
+import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import TextArea from '../components/inputs/TextArea';
 
@@ -10,6 +11,13 @@ const meta: Meta<typeof TextArea> = {
     readOnly: false,
     label: 'Description',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '25rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   title: 'TextArea',
   tags: ['autodocs'],
 };

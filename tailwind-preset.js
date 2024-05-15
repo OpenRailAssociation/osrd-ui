@@ -12,6 +12,7 @@ export default {
           100: '#000000',
         },
         white: {
+          25: '#FFFFFF',
           50: '#FFFFFF80',
           75: '#FFFFFFBF',
           100: '#FFFFFF',

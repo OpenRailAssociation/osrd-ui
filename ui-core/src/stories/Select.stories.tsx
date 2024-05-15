@@ -1,3 +1,4 @@
+import React from 'react';
 import { StoryObj, Meta } from '@storybook/react';
 
 import Select from '../components/Select';
@@ -18,6 +19,13 @@ const meta: Meta<typeof Select> = {
     disabled: false,
     readOnly: false,
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '20rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
   title: 'Select',
   tags: ['autodocs'],
 };

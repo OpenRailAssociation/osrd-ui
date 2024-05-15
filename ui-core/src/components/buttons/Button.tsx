@@ -4,7 +4,7 @@ import { Gear } from '@osrd-project/ui-icons';
 
 type ButtonVariant = 'Normal' | 'Cancel' | 'Quiet' | 'Destructive' | 'Primary';
 
-interface ButtonProps {
+export interface ButtonProps {
   label: string;
   variant?: ButtonVariant;
   isLoading?: boolean;
