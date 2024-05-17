@@ -1,0 +1,21 @@
+.manchette {
+  height: 561px;
+  overflow: auto;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  border-bottom-left-radius: 4px;
+
+
+  &-actions {
+    background-color: rgba(250, 249, 245, 0.20);
+    height: 2.5rem;
+    width: inherit;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    backdrop-filter: blur(8px);
+    border: solid 1px;
+    @apply border-black-25
+  }
+}
