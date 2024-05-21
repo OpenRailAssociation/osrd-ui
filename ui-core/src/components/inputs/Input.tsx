@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
-import useFocusByTab from '../hooks/useFocusByTab';
+import useFocusByTab from '../../hooks/useFocusByTab';
 
 type InputAffixProps = {
   value: InputAffixContent | InputAffixContentWithCallback;
