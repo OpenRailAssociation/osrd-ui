@@ -2,9 +2,9 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './animations.css';
+@import './button.css';
 @import './inputs/index.css';
 @import './select.css';
-@import './button.css';
 /* REGULAR */
 
 @font-face {

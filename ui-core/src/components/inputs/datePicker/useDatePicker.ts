@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import useClickOutside from '../../hooks/useOutsideClick';
-import { useModalPosition } from '../../hooks/useModalPosition';
+import useOutsideClick from '../../../hooks/useOutsideClick';
 import { computeNewSelectedSlot, formatInputValue, formatValueToSlot } from './utils';
 import { DatePickerProps } from './DatePicker';
+import { useModalPosition } from '../../../hooks/useModalPosition';
 
 const MODAL_HORIZONTAL_OFFSET = -24;
 const MODAL_VERTICAL_OFFSET = 3;
@@ -15,7 +15,7 @@ export default function useDatePicker(datePickerProps: DatePickerProps) {
 
   const calendarPickerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  useClickOutside(calendarPickerRef, (e) => {
+  useOutsideClick(calendarPickerRef, (e) => {
     // Do not close the picker if any children in input wrapper is clicked.
     // This wrapper include, the input itself, the trailing content (which contains the calendar icon) and the leading content
     if (inputRef.current && inputRef.current.parentElement?.contains(e.target as Node)) return;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useModalPosition } from './hooks/useModalPosition';
-import useClickOutside from './hooks/useOutsideClick';
+import useOutsideClick from '../hooks/useOutsideClick';
+import { useModalPosition } from '../hooks/useModalPosition';
 
 type ModalProps = {
   inputRef: React.RefObject<HTMLInputElement>;
@@ -19,7 +19,7 @@ const InputModal: React.FC<ModalProps> = ({ inputRef, isOpen, onClose, children 
     }
   }, [calculatePosition, isOpen]);
 
-  useClickOutside(modalRef, onClose);
+  useOutsideClick(modalRef, onClose);
 
   if (!isOpen) return null;
 

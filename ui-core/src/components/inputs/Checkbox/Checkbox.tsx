@@ -1,7 +1,7 @@
 import React from 'react';
 
 import cx from 'classnames';
-import useFocusByTab from '../../hooks/useFocusByTab';
+import useFocusByTab from '../../../hooks/useFocusByTab';
 
 export type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;

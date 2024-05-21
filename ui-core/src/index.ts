@@ -24,3 +24,7 @@ export {
   type DatePickerProps,
   type CalendarSlot,
 } from './components/inputs/datePicker';
+export {
+  default as TolerancePicker,
+  type TolerancePickerProps,
+} from './components/inputs/tolerancePicker/TolerancePicker';
