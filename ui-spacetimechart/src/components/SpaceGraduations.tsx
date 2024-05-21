@@ -26,8 +26,8 @@ const STYLES: Record<
 
 const SpaceGraduations: FC = () => {
   const drawingFunction = useCallback<DrawingFunction>(
-    (ctx, { xOffset, getY, operationalPoints }) => {
-      const width = ctx.canvas.width;
+    (ctx, { timePixelOffset, getSpacePixel, operationalPoints, swapAxis, width, height }) => {
+      const axisSize = !swapAxis ? width : height;
 
       // Draw operational point lines:
       operationalPoints.forEach((point) => {
@@ -39,15 +39,19 @@ const SpaceGraduations: FC = () => {
         ctx.globalAlpha = styles.opacity || 1;
         if (styles.dashArray) {
           ctx.setLineDash(styles.dashArray || []);
-          ctx.lineDashOffset = -xOffset;
+          ctx.lineDashOffset = -timePixelOffset;
         }
 
-        const y = getY(point.position);
-        if (typeof y !== 'number') return;
+        const spacePixel = getSpacePixel(point.position);
 
         ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
+        if (!swapAxis) {
+          ctx.moveTo(0, spacePixel);
+          ctx.lineTo(axisSize, spacePixel);
+        } else {
+          ctx.moveTo(spacePixel, 0);
+          ctx.lineTo(spacePixel, axisSize);
+        }
         ctx.stroke();
       });
 

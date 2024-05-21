@@ -31,7 +31,7 @@ const HOURS_FORMATTER = (t: number, pixelsPerMinute: number) => {
   }
 };
 
-export const CAPTION_HEIGHT = 33;
+export const CAPTION_SIZE = 33;
 const RANGES_FORMATER: ((t: number, pixelsPerMinute: number) => string)[] = [
   () => '',
   () => '',
@@ -78,10 +78,10 @@ const STYLES: Record<
 
 const TimeCaptions: FC = () => {
   const drawingFunction = useCallback<DrawingFunction>(
-    (ctx, { timeScale, timeOrigin, xOffset, getX }) => {
-      const width = ctx.canvas.width;
-      const height = ctx.canvas.height;
-      const minT = timeOrigin - timeScale * xOffset;
+    (ctx, { timeScale, timeOrigin, timePixelOffset, getTimePixel, swapAxis, width, height }) => {
+      const timeAxisSize = !swapAxis ? width : height;
+      const spaceAxisSize = !swapAxis ? height : width;
+      const minT = timeOrigin - timeScale * timePixelOffset;
       const maxT = minT + timeScale * width;
 
       // Find which styles to apply, relatively to the timescale (i.e. horizontal zoom level):
@@ -113,14 +113,23 @@ const TimeCaptions: FC = () => {
 
       // Render caption background:
       ctx.fillStyle = 'white';
-      ctx.fillRect(0, height - CAPTION_HEIGHT, width, height);
+      if (!swapAxis) {
+        ctx.fillRect(0, spaceAxisSize - CAPTION_SIZE, timeAxisSize, CAPTION_SIZE);
+      } else {
+        ctx.fillRect(0, 0, CAPTION_SIZE, timeAxisSize);
+      }
 
       // Render caption top border:
       ctx.strokeStyle = '#979797';
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(0, height - CAPTION_HEIGHT);
-      ctx.lineTo(width, height - CAPTION_HEIGHT);
+      if (!swapAxis) {
+        ctx.moveTo(0, spaceAxisSize - CAPTION_SIZE);
+        ctx.lineTo(timeAxisSize, spaceAxisSize - CAPTION_SIZE);
+      } else {
+        ctx.moveTo(CAPTION_SIZE, 0);
+        ctx.lineTo(CAPTION_SIZE, timeAxisSize);
+      }
       ctx.stroke();
 
       // Render time captions:
@@ -134,7 +143,19 @@ const TimeCaptions: FC = () => {
         ctx.textBaseline = 'top';
         ctx.fillStyle = styles.color;
         ctx.font = `${styles.fontWeight || 'normal'} ${styles.fontSize}px ${FONT}`;
-        ctx.fillText(text, getX(+t), height - CAPTION_HEIGHT + (styles.topOffset || 0));
+        if (!swapAxis) {
+          ctx.fillText(
+            text,
+            getTimePixel(+t),
+            spaceAxisSize - CAPTION_SIZE + (styles.topOffset || 0)
+          );
+        } else {
+          ctx.save();
+          ctx.translate(CAPTION_SIZE - (styles.topOffset || 0), getTimePixel(+t));
+          ctx.rotate(Math.PI / 2);
+          ctx.fillText(text, 0, 0);
+          ctx.restore();
+        }
       }
     },
     []

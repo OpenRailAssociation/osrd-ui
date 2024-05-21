@@ -33,6 +33,7 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
     timeScale,
     xOffset = 0,
     yOffset = 0,
+    swapAxis,
     onHoveredChildUpdate,
     children,
     /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -59,27 +60,39 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
         timeScale,
         xOffset,
         yOffset,
+        swapAxis,
       }),
-    [width, height, spaceOrigin, spaceScales, timeOrigin, timeScale, xOffset, yOffset]
+    [width, height, spaceOrigin, spaceScales, timeOrigin, timeScale, xOffset, yOffset, swapAxis]
   );
 
   const contextState: SpaceTimeChartContextType = useMemo(() => {
     const spaceScaleTree = spaceScalesToBinaryTree(spaceOrigin, spaceScales);
 
     // Data translation helpers:
-    const getX = getTimeToPixel(timeOrigin, xOffset, timeScale);
-    const getY = getSpaceToPixel(spaceOrigin, yOffset, spaceScaleTree);
-    const getPoint = getDataToPoint(getX, getY);
-    const getTime = getPixelToTime(timeOrigin, xOffset, timeScale);
-    const getSpace = getPixelToSpace(spaceOrigin, yOffset, spaceScaleTree);
+    let timePixelOffset;
+    let spacePixelOffset;
+
+    if (!swapAxis) {
+      timePixelOffset = xOffset;
+      spacePixelOffset = yOffset;
+    } else {
+      timePixelOffset = yOffset;
+      spacePixelOffset = xOffset;
+    }
+
+    const getTimePixel = getTimeToPixel(timeOrigin, timePixelOffset, timeScale);
+    const getSpacePixel = getSpaceToPixel(spaceOrigin, spacePixelOffset, spaceScaleTree);
+    const getPoint = getDataToPoint(getTimePixel, getSpacePixel);
+    const getTime = getPixelToTime(timeOrigin, timePixelOffset, timeScale);
+    const getSpace = getPixelToSpace(spaceOrigin, spacePixelOffset, spaceScaleTree);
     const getData = getPointToData(getTime, getSpace);
 
     return {
       fingerprint,
       width,
       height,
-      getX,
-      getY,
+      getTimePixel,
+      getSpacePixel,
       getPoint,
       getTime,
       getSpace,
@@ -89,8 +102,11 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
       spaceScaleTree,
       timeOrigin,
       timeScale,
-      xOffset,
-      yOffset,
+      timePixelOffset,
+      spacePixelOffset,
+      timeAxis: !swapAxis ? 'x' : 'y',
+      spaceAxis: !swapAxis ? 'y' : 'x',
+      swapAxis: !!swapAxis,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fingerprint]);

@@ -90,10 +90,20 @@ export function drawAliasedLine(
  * represented in the chart.
  */
 const STOP_END_SIZE = 6;
-export function drawPathStopExtremity(ctx: CanvasRenderingContext2D, x: number, y: number): void {
+export function drawPathStopExtremity(
+  ctx: CanvasRenderingContext2D,
+  timePixel: number,
+  spacePixel: number,
+  swapAxis: boolean
+): void {
   ctx.beginPath();
-  ctx.moveTo(x, y - STOP_END_SIZE / 2);
-  ctx.lineTo(x, y + STOP_END_SIZE / 2);
+  if (!swapAxis) {
+    ctx.moveTo(timePixel, spacePixel - STOP_END_SIZE / 2);
+    ctx.lineTo(timePixel, spacePixel + STOP_END_SIZE / 2);
+  } else {
+    ctx.moveTo(spacePixel - STOP_END_SIZE / 2, timePixel);
+    ctx.lineTo(spacePixel + STOP_END_SIZE / 2, timePixel);
+  }
   ctx.stroke();
 }
 
@@ -104,15 +114,24 @@ export function drawPathStopExtremity(ctx: CanvasRenderingContext2D, x: number, 
 const OUT_END_SIZE = 12;
 export function drawPathOutExtremity(
   ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
+  timePixel: number,
+  spacePixel: number,
+  swapAxis: boolean,
   extremityType: 'from' | 'to',
   pathDirection: 'up' | 'down'
 ): void {
-  const horizontalSign = extremityType === 'from' ? 1 : -1;
-  const verticalSign = (pathDirection === 'down' ? 1 : -1) * horizontalSign;
-  const controlX = x - 4 * horizontalSign;
-  const controlY = y + (OUT_END_SIZE - 2) * verticalSign;
+  let horizontalSign = extremityType === 'from' ? -1 : 1;
+  let verticalSign = (pathDirection === 'down' ? -1 : 1) * horizontalSign;
+  let controlX = timePixel + 4 * horizontalSign;
+  let controlY = spacePixel + (OUT_END_SIZE - 2) * verticalSign;
+  let x = timePixel;
+  let y = spacePixel;
+  if (swapAxis) {
+    [horizontalSign, verticalSign] = [verticalSign, horizontalSign];
+    [controlX, controlY] = [controlY, controlX];
+    [x, y] = [y, x];
+  }
+
   ctx.beginPath();
   ctx.moveTo(x, y);
   ctx.bezierCurveTo(
@@ -120,7 +139,7 @@ export function drawPathOutExtremity(
     controlY,
     controlX,
     controlY,
-    x - OUT_END_SIZE * horizontalSign,
+    x + OUT_END_SIZE * horizontalSign,
     y + OUT_END_SIZE * verticalSign
   );
   ctx.stroke();
@@ -131,15 +150,16 @@ export function drawPathOutExtremity(
  */
 export function drawPathExtremity(
   ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
+  timePixel: number,
+  spacePixel: number,
+  swapAxis: boolean,
   extremityType: 'from' | 'to',
   pathDirection: 'up' | 'down',
   pathEnd: PathEnd
 ): void {
   if (pathEnd === 'out') {
-    drawPathOutExtremity(ctx, x, y, extremityType, pathDirection);
+    drawPathOutExtremity(ctx, timePixel, spacePixel, swapAxis, extremityType, pathDirection);
   } else {
-    drawPathStopExtremity(ctx, x, y);
+    drawPathStopExtremity(ctx, timePixel, spacePixel, swapAxis);
   }
 }

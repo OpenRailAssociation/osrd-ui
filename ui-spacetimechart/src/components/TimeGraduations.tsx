@@ -59,11 +59,23 @@ const STYLES: Record<
 
 const TimeGraduations: FC = () => {
   const drawingFunction = useCallback<DrawingFunction>(
-    (ctx, { timeScale, timeOrigin, xOffset, yOffset, getX }) => {
-      const width = ctx.canvas.width;
-      const height = ctx.canvas.height;
-      const minT = timeOrigin - timeScale * xOffset;
-      const maxT = minT + timeScale * width;
+    (
+      ctx,
+      {
+        timeScale,
+        timeOrigin,
+        timePixelOffset,
+        spacePixelOffset,
+        getTimePixel,
+        swapAxis,
+        width,
+        height,
+      }
+    ) => {
+      const timeAxisSize = !swapAxis ? width : height;
+      const spaceAxisSize = !swapAxis ? height : width;
+      const minT = timeOrigin - timeScale * timePixelOffset;
+      const maxT = minT + timeScale * timeAxisSize;
 
       // Find which styles to apply, relatively to the timescale (i.e. horizontal zoom level):
       const pixelsPerMinute = (1 / timeScale) * MINUTE;
@@ -102,13 +114,18 @@ const TimeGraduations: FC = () => {
         ctx.globalAlpha = styles.opacity || 1;
         ctx.setLineDash(styles.dashArray || []);
         if (styles.dashArray) {
-          ctx.lineDashOffset = -yOffset;
+          ctx.lineDashOffset = -spacePixelOffset;
         }
 
-        const x = getX(+t) as number;
+        const timePixel = getTimePixel(+t);
         ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
+        if (!swapAxis) {
+          ctx.moveTo(timePixel, 0);
+          ctx.lineTo(timePixel, spaceAxisSize);
+        } else {
+          ctx.moveTo(0, timePixel);
+          ctx.lineTo(spaceAxisSize, timePixel);
+        }
         ctx.stroke();
       }
 
