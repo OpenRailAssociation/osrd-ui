@@ -80,6 +80,8 @@ export type OperationalPoint = {
   importanceLevel?: number; // Lower is better. If null, the point won't be displayed.
 };
 
+export type Axis = 'x' | 'y';
+
 // DATA TRANSLATION TYPES:
 export type TimeToPixel = (time: number) => number;
 export type SpaceToPixel = (position: number) => number;
@@ -148,6 +150,9 @@ export type SpaceTimeChartProps = {
   xOffset?: number;
   yOffset?: number;
 
+  // If true, the time and space axis are swapped:
+  swapAxis?: boolean;
+
   // Event handlers:
   onPan?: Handler<{
     isPanning: boolean;
@@ -166,20 +171,24 @@ export type SpaceTimeChartContextType = {
   width: number;
   height: number;
 
+  timeAxis: Axis;
+  spaceAxis: Axis;
+  swapAxis: boolean;
+
   // This string is designed to be unique to each rendering:
   fingerprint: string;
 
   // Scales:
-  xOffset: number;
-  yOffset: number;
+  timePixelOffset: number;
+  spacePixelOffset: number;
   timeOrigin: number;
   timeScale: number;
   spaceOrigin: number;
   spaceScaleTree: NormalizedScaleTree;
 
   // Translation helpers:
-  getX: TimeToPixel;
-  getY: SpaceToPixel;
+  getTimePixel: TimeToPixel;
+  getSpacePixel: SpaceToPixel;
   getPoint: DataToPoint;
   getTime: PixelToTime;
   getSpace: PixelToSpace;
