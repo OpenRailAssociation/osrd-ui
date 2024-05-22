@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   type DataPoint,
-  type MouseState,
+  type MouseContextType,
   type Point,
   type SpaceTimeChartContextType,
   type SpaceTimeChartProps,
@@ -12,11 +12,12 @@ import { getEventPosition, getEventWheelDelta } from '../utils/events';
 type Handlers = Pick<SpaceTimeChartProps, 'onPan' | 'onMouseMove' | 'onClick' | 'onZoom'>;
 
 /**
- * This hook handles SpaceTimeChart mouse tracking and interactions.
+ * This hook handles SpaceTimeChart mouse interactions.
  * It is an internal hook, and should only be used inside SpaceTimeChart.
  */
-export function useMouse(
+export function useMouseInteractions(
   dom: HTMLElement | null,
+  { position, hoveredItem, down, isHover }: MouseContextType,
   handlers: Handlers,
   getData: SpaceTimeChartContextType['getData']
 ) {
@@ -24,11 +25,6 @@ export function useMouse(
   const [panningState, setPanningState] = useState<
     { type: 'idle' } | { type: 'panning'; initialPosition: Point; initialData: DataPoint }
   >({ type: 'idle' });
-  const [mouseState, setMouseState] = useState<MouseState>({
-    isHover: false,
-    position: { x: NaN, y: NaN },
-  });
-  const { position, down } = mouseState;
 
   useEffect(() => {
     handlersRef.current = handlers;
@@ -41,60 +37,15 @@ export function useMouse(
 
       const { onClick } = handlersRef.current;
       if (onClick) {
-        const mousePosition = getEventPosition(event, dom);
         onClick({
           event,
           position,
-          data: getData(mousePosition),
+          data: getData(position),
+          hoveredItem,
         });
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dom, getData]
-  );
-  const downHandler = useCallback(
-    (e: MouseEvent) => {
-      if (!dom) return;
-
-      setMouseState((state) => ({
-        ...state,
-        down: { ctrl: e.ctrlKey, shift: e.shiftKey },
-      }));
-    },
-    [dom]
-  );
-  const upHandler = useCallback(() => {
-    if (!dom) return;
-
-    setMouseState((state) => ({ ...state, down: undefined }));
-  }, [dom]);
-  const moveHandler = useCallback(
-    (event: MouseEvent) => {
-      if (!dom) return;
-
-      const mousePosition = getEventPosition(event, dom);
-      const { x, y } = position;
-      const width = dom.offsetWidth;
-      const height = dom.offsetHeight;
-      const isHover = x >= 0 && x <= width && y >= 0 && y <= height;
-      setMouseState((state) => ({
-        ...state,
-        position: mousePosition,
-        isHover,
-      }));
-
-      const { onMouseMove } = handlersRef.current;
-      if (onMouseMove)
-        onMouseMove({
-          event,
-          isHover,
-          position,
-          // TODO
-          data: { position: NaN, time: NaN },
-        });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dom]
+    [dom, getData, hoveredItem, position]
   );
   const wheelHandler = useCallback(
     (event: WheelEvent) => {
@@ -117,25 +68,6 @@ export function useMouse(
       dom.removeEventListener('click', clickHandler);
     };
   }, [dom, clickHandler]);
-  useEffect(() => {
-    if (!dom) return;
-    dom.addEventListener('mousedown', downHandler);
-    return () => {
-      dom.removeEventListener('mousedown', downHandler);
-    };
-  }, [dom, downHandler]);
-  useEffect(() => {
-    document.addEventListener('mouseup', upHandler);
-    return () => {
-      document.removeEventListener('mouseup', upHandler);
-    };
-  }, [upHandler]);
-  useEffect(() => {
-    document.addEventListener('mousemove', moveHandler);
-    return () => {
-      document.removeEventListener('mousemove', moveHandler);
-    };
-  }, [moveHandler]);
   useEffect(() => {
     if (!dom) return;
     dom.addEventListener('wheel', wheelHandler);
@@ -173,7 +105,16 @@ export function useMouse(
 
   // Listen to "move" updates:
   useEffect(() => {
-    const { onPan } = handlersRef.current;
+    const { onPan, onMouseMove } = handlersRef.current;
+
+    if (onMouseMove) {
+      onMouseMove({
+        position,
+        isHover: isHover,
+        data: getData(position),
+        hoveredItem,
+      });
+    }
 
     if (panningState.type === 'panning' && onPan)
       onPan({
@@ -184,7 +125,5 @@ export function useMouse(
         initialData: panningState.initialData,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [position]);
-
-  return mouseState;
+  }, [position.x, position.y]);
 }

@@ -23,7 +23,7 @@ const Line: FC<{
       x2={p2.x}
       y2={p2.y}
       stroke="black"
-      strokeWidth="2"
+      strokeWidth="1"
       strokeDasharray="5, 5"
     />
   </svg>
@@ -51,33 +51,56 @@ function formatTimeLength(date: Date): string {
   return result.trim();
 }
 
-const DataLabel: FC<{ data: DataPoint; position: Point; isDiff?: boolean; marginTop?: number }> = ({
-  data,
-  position,
-  isDiff,
-  marginTop = 0,
-}) => (
+const CROSS_SIZE = 11;
+const DataLabel: FC<{
+  data: DataPoint;
+  position: Point;
+  isDiff?: boolean;
+  marginTop?: number;
+}> = ({ data, position, isDiff, marginTop = 0 }) => (
   <div
     style={{
       position: 'absolute',
-      top: position.y + marginTop,
+      top: position.y,
       left: position.x,
+      paddingTop: marginTop,
       whiteSpace: 'nowrap',
-      background: WHITE_75,
       fontSize: '0.7em',
     }}
   >
-    {isDiff ? (
-      <>
-        <div>Time difference: {formatTimeLength(new Date(data.time))}</div>
-        <div>Distance to mark: {round(data.position).toLocaleString()} m</div>
-      </>
-    ) : (
-      <>
-        <div>Time: {new Date(data.time).toLocaleTimeString()}</div>
-        <div>Distance: {round(data.position).toLocaleString()} m</div>
-      </>
-    )}
+    <div
+      style={{
+        position: 'absolute',
+        width: CROSS_SIZE,
+        height: 1,
+        left: -CROSS_SIZE / 2,
+        top: -0.5,
+        background: 'black',
+      }}
+    />
+    <div
+      style={{
+        position: 'absolute',
+        width: 1,
+        height: CROSS_SIZE,
+        left: -0.5,
+        top: -CROSS_SIZE / 2,
+        background: 'black',
+      }}
+    />
+    <div className="content" style={{ background: WHITE_75 }}>
+      {isDiff ? (
+        <>
+          <div>Time difference: {formatTimeLength(new Date(data.time))}</div>
+          <div>Distance to mark: {round(data.position).toLocaleString()} m</div>
+        </>
+      ) : (
+        <>
+          <div>Time: {new Date(data.time).toLocaleTimeString()}</div>
+          <div>Distance: {round(data.position).toLocaleString()} m</div>
+        </>
+      )}
+    </div>
   </div>
 );
 
@@ -109,22 +132,7 @@ const Mark: FC<{ data: DataPoint }> = ({ data }) => {
   const { getPoint } = useContext(SpaceTimeChartContext);
   const position = getPoint(data);
 
-  return (
-    <div>
-      <div
-        style={{
-          position: 'absolute',
-          top: position.y,
-          left: position.x,
-          width: 3,
-          height: 3,
-          margin: '-1 -1',
-          background: 'black',
-        }}
-      />
-      <DataLabel data={data} position={position} marginTop={5} />
-    </div>
-  );
+  return <DataLabel data={data} position={position} marginTop={5} />;
 };
 
 /**
@@ -132,14 +140,15 @@ const Mark: FC<{ data: DataPoint }> = ({ data }) => {
  */
 const Wrapper: FC<{
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ spaceScaleType }) => {
+  enableSnapping: boolean;
+}> = ({ spaceScaleType, enableSnapping }) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;
     xZoomLevel: number;
     yZoomLevel: number;
     panTarget: null | { type: 'stage'; initialOffset: Point };
-    mark: null | { data: DataPoint };
+    mark: null | { data: DataPoint; pathId?: string };
   }>({
     xOffset: 0,
     yOffset: 0,
@@ -156,6 +165,7 @@ const Wrapper: FC<{
           'inset-0 absolute overflow-hidden p-0 m-0',
           state.panTarget && 'cursor-grabbing'
         )}
+        enableSnapping={enableSnapping}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
@@ -215,8 +225,8 @@ const Wrapper: FC<{
           }));
         }}
       >
-        {PATHS.map((path, i) => (
-          <PathLayer key={path.id} index={i} path={path} color={path.color} />
+        {PATHS.map((path) => (
+          <PathLayer key={path.id} path={path} color={path.color} />
         ))}
         <MouseTracker reference={state.mark?.data} />
         {state.mark && <Mark data={state.mark.data} />}
@@ -235,6 +245,11 @@ export default {
       defaultValue: 'linear',
       control: { type: 'radio' },
     },
+    enableSnapping: {
+      name: 'Enable snapping to closest points?',
+      defaultValue: true,
+      control: { type: 'boolean' },
+    },
   },
 } as Meta<typeof Wrapper>;
 
@@ -242,5 +257,6 @@ export const DefaultArgs = {
   name: 'Default arguments',
   args: {
     spaceScaleType: 'linear',
+    enableSnapping: true,
   },
 };
