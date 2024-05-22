@@ -89,6 +89,9 @@ export default {
           30: '#FFF700',
           50: '#E8D900',
         },
+        selection: {
+          20: '#FFF2B3',
+        },
       },
     },
     fontFamily: {

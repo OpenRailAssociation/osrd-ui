@@ -39,11 +39,18 @@ type InputAffixContentWithCallback = {
   onClickCallback: () => void;
 };
 
+type IconConfig = {
+  icon: React.ReactNode;
+  action: () => void;
+  className?: string;
+};
+
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
   Omit<FieldWrapperProps, 'children'> & {
     leadingContent?: InputAffixContent | InputAffixContentWithCallback;
     trailingContent?: InputAffixContent | InputAffixContentWithCallback;
     inputFieldWrapperClassname?: string;
+    withIcons?: IconConfig[];
   };
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -61,6 +68,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       statusWithMessage,
       inputFieldWrapperClassname = '',
       small = false,
+      withIcons = [],
       onKeyUp,
       onBlur,
       ...rest
@@ -94,22 +102,35 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               readOnly={readOnly}
             />
           )}
-          <input
-            ref={ref}
-            className={cx('input', {
-              'with-leading-only': leadingContent && !trailingContent,
-              'with-trailing-only': trailingContent && !leadingContent,
-              'with-leading-and-trailing': leadingContent && trailingContent,
-              [statusWithMessage?.status || '']: !!statusWithMessage,
-            })}
-            id={id}
-            type={type}
-            disabled={disabled}
-            readOnly={readOnly}
-            onKeyUp={handleKeyUp}
-            onBlur={handleBlur}
-            {...rest}
-          />
+          <div className="input-container">
+            <input
+              ref={ref}
+              className={cx('input', {
+                'with-leading-only': leadingContent && !trailingContent,
+                'with-trailing-only': trailingContent && !leadingContent,
+                'with-leading-and-trailing': leadingContent && trailingContent,
+                [statusWithMessage?.status || '']: !!statusWithMessage,
+              })}
+              id={id}
+              type={type}
+              disabled={disabled}
+              readOnly={readOnly}
+              onKeyUp={handleKeyUp}
+              onBlur={handleBlur}
+              {...rest}
+            />
+            <div
+              className={cx('input-icons', {
+                small,
+              })}
+            >
+              {withIcons.map((iconConfig, index) => (
+                <span key={index} className={iconConfig?.className} onClick={iconConfig.action}>
+                  {iconConfig.icon}
+                </span>
+              ))}
+            </div>
+          </div>
           {trailingContent && (
             <InputAffix
               value={trailingContent}
