@@ -17,7 +17,7 @@ type ZoomState = {
 };
 
 /**
- * This function helps to have a zoom that is centered on the mouse position.=
+ * This function helps to have a zoom that is centered on the mouse position.
  */
 export function zoom(
   state: ZoomState,
@@ -39,4 +39,29 @@ export function zoom(
     xOffset: x - ((x - state.xOffset) / state.xZoomLevel) * xZoomLevel,
     yOffset: y - ((y - state.yOffset) / state.yZoomLevel) * yZoomLevel,
   };
+}
+
+/**
+ * This function helps to pretty-print a Date as a length:
+ */
+export function formatTimeLength(date: Date): string {
+  const totalMilliseconds = date.getTime();
+  const sign = totalMilliseconds >= 0 ? '+' : '-';
+
+  let absMilliseconds = Math.abs(totalMilliseconds);
+
+  const hours = Math.floor(absMilliseconds / (1000 * 60 * 60));
+  absMilliseconds -= hours * 1000 * 60 * 60;
+  const minutes = Math.floor(absMilliseconds / (1000 * 60));
+
+  let result = sign;
+  if (hours > 0) {
+    result += `${hours} hour${hours > 1 ? 's' : ''}`;
+  }
+  if (minutes > 0) {
+    if (hours > 0) result += ' ';
+    result += `${minutes} minute${minutes > 1 ? 's' : ''}`;
+  }
+
+  return result.trim();
 }

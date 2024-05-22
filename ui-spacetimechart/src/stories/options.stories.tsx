@@ -4,6 +4,7 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 
 import { OPERATIONAL_POINTS, PATHS } from './assets/paths';
+import { MouseTracker } from './components';
 import {
   MAX_X_ZOOM,
   MAX_Y_ZOOM,
@@ -15,16 +16,18 @@ import {
 import { SpaceTimeChart, PathLayer } from '../';
 import { type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
-
 import './tailwind-mockup.css';
 
 /**
- * This story aims at showcasing how to swap time and space axis in a SpaceTimeChart.
+ * This story aims at showcasing how to handle panning and zooming in a SpaceTimeChart.
  */
 const Wrapper: FC<{
+  enableSnapping: boolean;
+  hideGrid: boolean;
+  hidePathsLabels: boolean;
   swapAxis: boolean;
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ swapAxis, spaceScaleType }) => {
+}> = ({ enableSnapping, hideGrid, hidePathsLabels, swapAxis, spaceScaleType }) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;
@@ -43,6 +46,9 @@ const Wrapper: FC<{
     <div className="inset-0">
       <SpaceTimeChart
         className={cx('inset-0 absolute p-0 m-0', state.panning && 'cursor-grabbing')}
+        enableSnapping={enableSnapping}
+        hideGrid={hideGrid}
+        hidePathsLabels={hidePathsLabels}
         swapAxis={swapAxis}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
@@ -78,33 +84,31 @@ const Wrapper: FC<{
             }
             // Keep panning:
             else {
+              const { initialOffset } = s.panning;
               return {
                 ...s,
-                xOffset: s.panning.initialOffset.x + diff.x,
-                yOffset: s.panning.initialOffset.y + diff.y,
+                xOffset: initialOffset.x + diff.x,
+                yOffset: initialOffset.y + diff.y,
               };
             }
           });
         }}
         onZoom={({ delta, position: { x, y } }) => {
-          // The zoom is quite straightforward. The hardest part is to keep the zoom centered on the
-          // mouse. There is a shorter version in ./utils.ts, used by the other stories.
           setState((s) => {
-            const newState = {
-              ...s,
-            };
+            const newState = { ...s };
+
             newState.xZoomLevel = Math.min(
               Math.max(newState.xZoomLevel * (1 + delta / 10), MIN_X_ZOOM),
               MAX_X_ZOOM
             );
-            // This line is to center the zoom on the mouse X position:
-            newState.xOffset = x - ((x - s.xOffset) / s.xZoomLevel) * newState.xZoomLevel;
             newState.yZoomLevel = Math.min(
               Math.max(newState.yZoomLevel * (1 + delta / 10), MIN_Y_ZOOM),
               MAX_Y_ZOOM
             );
-            // This line is to center the zoom on the mouse Y position:
-            newState.yOffset = y - ((y - s.yOffset) / s.yZoomLevel) * newState.yZoomLevel;
+
+            // These line is to center the zoom on the mouse Y position:
+            newState.xOffset = x - ((x - state.xOffset) / state.xZoomLevel) * newState.xZoomLevel;
+            newState.yOffset = y - ((y - state.yOffset) / state.yZoomLevel) * newState.yZoomLevel;
 
             return newState;
           });
@@ -113,18 +117,34 @@ const Wrapper: FC<{
         {PATHS.map((path) => (
           <PathLayer key={path.id} path={path} color={path.color} />
         ))}
+        <MouseTracker />
       </SpaceTimeChart>
     </div>
   );
 };
 
 export default {
-  title: 'SpaceTimeChart/Swap axis',
+  title: 'SpaceTimeChart/Options',
   component: Wrapper,
   argTypes: {
+    enableSnapping: {
+      name: 'Enable snapping?',
+      defaultValue: true,
+      control: { type: 'boolean' },
+    },
+    hideGrid: {
+      name: 'Hide grid?',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
+    hidePathsLabels: {
+      name: 'Hide paths labels?',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
     swapAxis: {
       name: 'Swap time and space axis?',
-      defaultValue: true,
+      defaultValue: false,
       control: { type: 'boolean' },
     },
     spaceScaleType: {
@@ -139,7 +159,10 @@ export default {
 export const DefaultArgs = {
   name: 'Default arguments',
   args: {
-    swapAxis: true,
+    enableSnapping: true,
+    hideGrid: false,
+    hidePathsLabels: false,
+    swapAxis: false,
     spaceScaleType: 'linear',
   },
 };
