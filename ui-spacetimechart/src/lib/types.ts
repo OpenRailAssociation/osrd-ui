@@ -161,6 +161,10 @@ export type SpaceTimeChartProps = {
   // If true, the registered position will snap to the closest item if any:
   enableSnapping?: boolean;
 
+  // Additional options to show/hide context information:
+  hideGrid?: boolean;
+  hidePathsLabels?: boolean;
+
   // Event handlers:
   onPan?: Handler<{
     isPanning: boolean;
@@ -223,4 +227,6 @@ export type SpaceTimeChartContextType = {
 
   // Other options:
   enableSnapping: boolean;
+  hideGrid: boolean;
+  hidePathsLabels: boolean;
 };
