@@ -34,8 +34,8 @@ const Wrapper: FC<{
     xOffset={xOffset}
     yOffset={yOffset}
   >
-    {PATHS.map((path, i) => (
-      <PathLayer key={path.id} index={i} path={path} color={path.color} />
+    {PATHS.map((path) => (
+      <PathLayer key={path.id} path={path} color={path.color} />
     ))}
   </SpaceTimeChart>
 );

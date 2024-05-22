@@ -52,6 +52,7 @@ export function useCanvas(
    */
   const drawPicking = useCallback(
     (stcContext: SpaceTimeChartContextType, layers?: Set<LayerType>) => {
+      stcContext.resetPickingElements();
       PICKING_LAYERS.forEach((layer) => {
         if (layers && !layers.has(layer)) return;
 
@@ -222,9 +223,11 @@ export function useCanvas(
         const [r, g, b, a] = ctx.getImageData(position.x, position.y, 1, 1).data;
         if (a === 255) {
           const color = rgbToHex(r, g, b);
+          const index = colorToIndex(color);
+          const element = stcContextRef.current.pickingElements[index];
           newHoveredItem = {
             layer,
-            index: colorToIndex(color),
+            element,
           };
           return true;
         }

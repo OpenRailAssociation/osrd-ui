@@ -2,6 +2,7 @@ import { type FC, useCallback } from 'react';
 
 import { inRange, last } from 'lodash';
 
+import { CAPTION_SIZE } from './TimeCaptions';
 import { useDraw, usePicking } from '../hooks/useCanvas';
 import { FONT_SIZE, WHITE_75 } from '../lib/consts';
 import {
@@ -13,7 +14,7 @@ import {
   type Point,
   type SpaceTimeChartContextType,
 } from '../lib/types';
-import { drawAliasedLine, drawPathExtremity } from '../utils/canvas';
+import { drawAliasedDisc, drawAliasedLine, drawPathExtremity } from '../utils/canvas';
 import { indexToColor, hexToRgb } from '../utils/colors';
 import { getSpaceBreakpoints } from '../utils/scales';
 
@@ -74,7 +75,6 @@ const STYLES: Record<PathLevel, PathStyle> = {
 export const DEFAULT_LEVEL: PathLevel = 2;
 
 export type PathLayerProps = {
-  index: number;
   path: PathData;
   // Style:
   color: string;
@@ -89,7 +89,6 @@ export type PathLayerProps = {
  * - The "picking" shape (to handle interactions)
  */
 export const PathLayer: FC<PathLayerProps> = ({
-  index,
   path,
   color,
   level = DEFAULT_LEVEL,
@@ -131,6 +130,30 @@ export const PathLayer: FC<PathLayerProps> = ({
             [spaceAxis]: getSpacePixel(position),
           } as Point);
         }
+      });
+      return res;
+    },
+    [path]
+  );
+  /**
+   * This function returns the list of important points, where the mouse can snap.
+   */
+  const getSnapPoints = useCallback(
+    ({
+      getTimePixel,
+      getSpacePixel,
+      timeAxis,
+      spaceAxis,
+      operationalPoints,
+    }: SpaceTimeChartContextType): Point[] => {
+      const res: Point[] = [];
+      const stopPositions = new Set(operationalPoints.map((p) => p.position));
+      path.points.forEach(({ position, time }) => {
+        if (stopPositions.has(position))
+          res.push({
+            [timeAxis]: getTimePixel(time),
+            [spaceAxis]: getSpacePixel(position),
+          } as Point);
       });
       return res;
     },
@@ -307,21 +330,48 @@ export const PathLayer: FC<PathLayerProps> = ({
 
   const drawPicking = useCallback<PickingDrawingFunction>(
     (imageData, stcContext) => {
-      const lineColor = hexToRgb(indexToColor(index));
+      const { registerPickingElement } = stcContext;
+
+      // Draw segments:
       getPathSegments(stcContext).forEach((point, i, a) => {
         if (i) {
           const previousPoint = a[i - 1];
+          const index = registerPickingElement({
+            type: 'segment',
+            path: path.id,
+            from: previousPoint,
+            to: point,
+          });
+          const lineColor = hexToRgb(indexToColor(index));
           drawAliasedLine(
             imageData,
             previousPoint,
             point,
             lineColor,
-            STYLES[level].width + pickingTolerance
+            STYLES[level].width + pickingTolerance,
+            true
           );
         }
       });
+
+      // Draw snap points:
+      getSnapPoints(stcContext).forEach((point) => {
+        const index = registerPickingElement({
+          type: 'point',
+          path: path.id,
+          point,
+        });
+        const lineColor = hexToRgb(indexToColor(index));
+        drawAliasedDisc(
+          imageData,
+          point,
+          (STYLES[level].width + pickingTolerance) * 2,
+          lineColor,
+          false
+        );
+      });
     },
-    [index, getPathSegments, level, pickingTolerance]
+    [getPathSegments, getSnapPoints, level, path.id, pickingTolerance]
   );
   usePicking('paths', drawPicking);
 

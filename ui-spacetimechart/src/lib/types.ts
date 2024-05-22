@@ -91,12 +91,16 @@ export type PointToData = (point: Point) => DataPoint;
 export type DataToPoint = (data: DataPoint) => Point;
 
 // CANVAS SPECIFIC TYPES:
-export type HoveredItem = { layer: PickingLayerType; index: number };
-
 export const PICKING_LAYERS = ['paths'] as const;
 export type PickingLayerType = (typeof PICKING_LAYERS)[number];
 export const LAYERS = ['graduations', 'paths', 'captions', 'overlay'] as const;
 export type LayerType = (typeof LAYERS)[number];
+
+// PICKING SPECIFIC TYPES:
+export type PickingElement =
+  | { type: 'point'; path: string; point: Point }
+  | { type: 'segment'; path: string; from: Point; to: Point };
+export type HoveredItem = { layer: PickingLayerType; element: PickingElement };
 
 export type DrawingFunction = (
   canvasContext: CanvasRenderingContext2D,
@@ -128,6 +132,7 @@ export type MouseState = {
 
 export type MouseContextType = MouseState & {
   data: DataPoint;
+  hoveredItem: HoveredItem | null;
 };
 
 // CORE COMPONENT MAIN TYPES:
@@ -153,6 +158,9 @@ export type SpaceTimeChartProps = {
   // If true, the time and space axis are swapped:
   swapAxis?: boolean;
 
+  // If true, the registered position will snap to the closest item if any:
+  enableSnapping?: boolean;
+
   // Event handlers:
   onPan?: Handler<{
     isPanning: boolean;
@@ -162,8 +170,18 @@ export type SpaceTimeChartProps = {
     data: DataPoint;
   }>;
   onZoom?: Handler<{ delta: number; position: Point; event: WheelEvent }>;
-  onClick?: Handler<{ position: Point; data: DataPoint; event: MouseEvent }>;
-  onMouseMove?: Handler<{ position: Point; data: DataPoint; isHover: boolean; event: MouseEvent }>;
+  onClick?: Handler<{
+    position: Point;
+    data: DataPoint;
+    event: MouseEvent;
+    hoveredItem: HoveredItem | null;
+  }>;
+  onMouseMove?: Handler<{
+    position: Point;
+    data: DataPoint;
+    isHover: boolean;
+    hoveredItem: HoveredItem | null;
+  }>;
   onHoveredChildUpdate?: Handler<{ item: HoveredItem | null }>;
 } & Omit<HTMLProps<HTMLDivElement>, 'onClick' | 'onMouseMove'>;
 
@@ -171,12 +189,18 @@ export type SpaceTimeChartContextType = {
   width: number;
   height: number;
 
+  // Axis-swapping related data:
   timeAxis: Axis;
   spaceAxis: Axis;
   swapAxis: boolean;
 
   // This string is designed to be unique to each rendering:
   fingerprint: string;
+
+  // Picking:
+  pickingElements: PickingElement[];
+  resetPickingElements: () => void;
+  registerPickingElement: (element: PickingElement) => number;
 
   // Scales:
   timePixelOffset: number;
@@ -196,4 +220,7 @@ export type SpaceTimeChartContextType = {
 
   // Useful data:
   operationalPoints: OperationalPoint[];
+
+  // Other options:
+  enableSnapping: boolean;
 };

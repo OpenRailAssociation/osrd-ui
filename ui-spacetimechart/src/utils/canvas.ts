@@ -13,9 +13,11 @@ export function drawAliasedLine(
   to: Point,
   [r, g, b]: RGBColor | RGBAColor,
   thickness: number,
+  drawOnBottom: boolean,
   number: number = Math.ceil(thickness / 2)
 ): void {
-  if (from.x > to.x) return drawAliasedLine(imageData, to, from, [r, g, b], thickness);
+  if (from.x > to.x)
+    return drawAliasedLine(imageData, to, from, [r, g, b], thickness, drawOnBottom);
 
   const width = imageData.width;
   const height = imageData.height;
@@ -75,11 +77,96 @@ export function drawAliasedLine(
     );
 
     for (let x = xMinRow; x <= xMaxRow; x++) {
-      const idx = (y * width + x) * 4;
-      imageData.data[idx] = r;
-      imageData.data[idx + 1] = g;
-      imageData.data[idx + 2] = b;
-      imageData.data[idx + 3] = 255;
+      const index = (y * width + x) * 4;
+      if (!drawOnBottom || !imageData.data[index + 3]) {
+        imageData.data[index] = r;
+        imageData.data[index + 1] = g;
+        imageData.data[index + 2] = b;
+        imageData.data[index + 3] = 255;
+      }
+    }
+  }
+}
+
+/**
+ * This function takes an integer radius, and returns a flat matrix of 1s and 0s, where the 1s
+ * represent the pixels that are within the disc. The shapes are cached, to make it faster to draw
+ * a lot of times discs of the same radius.
+ *
+ * Here are some examples to make it clearer what the output should look like:
+ *
+ * getAliasedDiscShape(0);
+ * // [1]
+ * getAliasedDiscShape(1);
+ * // [0, 1, 0,
+ * //  1, 1, 1,
+ * //  0, 1, 0]
+ * getAliasedDiscShape(2);
+ * // [0, 0, 1, 0, 0,
+ * //  0, 1, 1, 1, 0,
+ * //  1, 1, 1, 1, 1,
+ * //  0, 1, 1, 1, 0,
+ * //  0, 0, 1, 0, 0]
+ */
+const DISCS_CACHE: Map<number, Uint8Array> = new Map();
+export function getAliasedDiscShape(radius: number): Uint8Array {
+  const cachedShape = DISCS_CACHE.get(radius);
+  if (cachedShape) return cachedShape;
+
+  const diameter = radius * 2 + 1;
+  const shape = new Uint8Array(diameter * diameter);
+
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      const distance = dx * dx + dy * dy;
+      if (distance <= radius * radius) {
+        const x = dx + radius;
+        const y = dy + radius;
+        shape[y * diameter + x] = 1;
+      }
+    }
+  }
+
+  DISCS_CACHE.set(radius, shape);
+  return shape;
+}
+
+/**
+ * This function draws an aliased disc, using a shape computed by getDiscShape.
+ */
+export function drawAliasedDisc(
+  imageData: ImageData,
+  { x: centerX, y: centerY }: Point,
+  radius: number,
+  [r, g, b]: RGBColor | RGBAColor,
+  drawOnBottom: boolean
+): void {
+  centerX = Math.round(centerX);
+  centerY = Math.round(centerY);
+  radius = Math.ceil(radius);
+
+  const { width, height } = imageData;
+
+  const discShape = getAliasedDiscShape(radius);
+
+  // Draw the disc on the imageData
+  const diameter = radius * 2 + 1;
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      const shapeIndex = (dy + radius) * diameter + (dx + radius);
+      if (discShape[shapeIndex] === 1) {
+        const x = centerX + dx;
+        const y = centerY + dy;
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+          const index = (y * width + x) * 4;
+          if (!drawOnBottom || !imageData.data[index + 3]) {
+            imageData.data[index] = r;
+            imageData.data[index + 1] = g;
+            imageData.data[index + 2] = b;
+            imageData.data[index + 3] = 255;
+          }
+        }
+      }
     }
   }
 }
