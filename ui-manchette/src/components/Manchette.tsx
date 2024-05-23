@@ -1,14 +1,19 @@
 import React from 'react';
 import OperationalPointList from './OperationalPointList';
-import { OperationalPointType } from '../types/pathPropertiesTypes';
+import { OperationalPointType } from '../types';
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 
-interface ManchetteProps {
+type ManchetteProps = {
   operationalPoints: OperationalPointType[];
   children?: React.ReactNode;
-}
+  isProportionnal?: boolean;
+};
 
-const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, children }) => {
+const Manchette: React.FC<ManchetteProps> = ({
+  operationalPoints,
+  children,
+  isProportionnal = false,
+}) => {
   const [zoom, setZoom] = React.useState(1);
 
   const zoomIn = () => {
@@ -22,7 +27,11 @@ const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, children }) =>
   return (
     <div className="manchette flex">
       <div className="manchette-container">
-        <OperationalPointList operationalPoints={operationalPoints} zoom={zoom} />
+        <OperationalPointList
+          operationalPoints={operationalPoints}
+          zoom={zoom}
+          isProportionnal={isProportionnal}
+        />
         <div className="manchette-actions flex items-center">
           <div className=" flex items-center ">
             <button className="h-full px-3 w-full" onClick={zoomOut} disabled={zoom === 1}>

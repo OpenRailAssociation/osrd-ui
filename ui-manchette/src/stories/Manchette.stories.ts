@@ -5,12 +5,19 @@ import { SAMPLE_DATA } from './assets/sampleData';
 
 import Manchette from '../components/Manchette';
 
-const OperationalPointListData = SAMPLE_DATA.operational_points;
+const OperationalPointListData = SAMPLE_DATA.operational_points ?? [];
 
 const meta: Meta<typeof Manchette> = {
   component: Manchette,
-  title: 'Manchette',
+  title: 'Manchette/Manchette',
   tags: ['autodocs'],
+  argTypes: {
+    operationalPoints: {
+      control: {
+        type: 'object',
+      },
+    },
+  },
 };
 
 export default meta;

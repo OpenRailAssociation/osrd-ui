@@ -1,6 +1,5 @@
 .operational-point-list {
     width: 349px;
-    overflow: auto;
     border-bottom-left-radius: 0.25rem;
 
     @apply bg-ambientB-10;
