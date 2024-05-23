@@ -4,13 +4,13 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import { keyBy } from 'lodash';
 
-import { OPERATIONAL_POINTS, PATHS } from './assets/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './utils';
+import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
 import { SpaceTimeChart, PathLayer } from '../';
 import { type HoveredItem, type PathData, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './tailwind-mockup.css';
+import './lib/tailwind-mockup.css';
 
 function delayPath<T extends PathData>(path: T, newTimeOrigin: number): T {
   const delay = newTimeOrigin - path.points[0].time;

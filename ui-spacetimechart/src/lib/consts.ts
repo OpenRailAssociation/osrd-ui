@@ -5,6 +5,9 @@ export const GREY_10 = '#EDEDED';
 export const GREY_30 = '#B6B2AF';
 export const GREY_50 = '#797671';
 export const WHITE_75 = '#FFFFFFC0';
+export const AMBIANT_A10 = '#EFF3F5';
+export const ERROR_30 = '#FF6868';
+export const ERROR_60 = '#D91C1C';
 
 // Fonts:
 export const FONT_SIZE = 10;
