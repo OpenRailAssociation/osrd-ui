@@ -23,10 +23,7 @@ export const SpaceTimeChartContext = createContext<SpaceTimeChartContextType>(
  */
 export const CanvasContext = createContext<CanvasContextType>(
   // That value should never be used, since the context should always be accessed within a provider
-  {
-    register: () => {},
-    unregister: () => {},
-  }
+  undefined as unknown as CanvasContextType
 );
 
 /**

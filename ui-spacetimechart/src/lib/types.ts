@@ -121,6 +121,7 @@ export type DrawingFunctionHandler = (
 export type CanvasContextType = {
   register: DrawingFunctionHandler;
   unregister: DrawingFunctionHandler;
+  captureCanvases: () => Promise<Blob>;
 };
 
 // MOUSE CONTEXT:
