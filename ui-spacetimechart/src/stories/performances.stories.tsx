@@ -1,17 +1,17 @@
 import React, { type FC, useMemo, useState } from 'react';
 
-import type { Meta } from '@storybook/react';
+import { type Meta } from '@storybook/react';
 import cx from 'classnames';
 import { random, range } from 'lodash';
 
-import { getPaths, type PATHS } from './assets/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './utils';
+import { getPaths, type PATHS } from './lib/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
 import { SpaceTimeChart, PathLayer } from '../';
 import { KILOMETER, MINUTE } from '../lib/consts';
 import { type OperationalPoint, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './tailwind-mockup.css';
+import './lib/tailwind-mockup.css';
 
 const DATE_OFFSET = +new Date('2024/01/01');
 const COLORS = [

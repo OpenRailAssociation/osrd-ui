@@ -101,6 +101,8 @@ const REVERSED_POINTS = OPERATIONAL_POINTS.slice(0).reverse();
 const EXTREME_POINTS = [OPERATIONAL_POINTS[0], OPERATIONAL_POINTS[2], OPERATIONAL_POINTS[5]];
 const REVERSED_EXTREME_POINTS = EXTREME_POINTS.slice(0).reverse();
 
+export const START_DATE = new Date('2024/04/02');
+
 export const PATHS: (PathData & { color: string })[] = [
   // Omnibuses:
   ...getPaths(
@@ -110,7 +112,7 @@ export const PATHS: (PathData & { color: string })[] = [
     30 * MIN,
     (80 * KM) / (60 * MIN),
     5,
-    +new Date('2024/04/02'),
+    +START_DATE,
     { color: '#FF362E' }
   ),
   ...getPaths(
@@ -120,21 +122,16 @@ export const PATHS: (PathData & { color: string })[] = [
     35 * MIN,
     -(80 * KM) / (60 * MIN),
     4,
-    +new Date('2024/04/02'),
+    +START_DATE,
     { color: '#FF8E3D' }
   ),
 
   // Fast trains:
-  ...getPaths(
-    'fast',
-    EXTREME_POINTS,
-    5 * MIN,
-    50 * MIN,
-    (140 * KM) / (60 * MIN),
-    3,
-    +new Date('2024/04/02'),
-    { color: '#526CE8', fromEnd: 'out', toEnd: 'out' }
-  ),
+  ...getPaths('fast', EXTREME_POINTS, 5 * MIN, 50 * MIN, (140 * KM) / (60 * MIN), 3, +START_DATE, {
+    color: '#526CE8',
+    fromEnd: 'out',
+    toEnd: 'out',
+  }),
   ...getPaths(
     'fast-reversed',
     REVERSED_EXTREME_POINTS,
@@ -142,7 +139,7 @@ export const PATHS: (PathData & { color: string })[] = [
     45 * MIN,
     -(140 * KM) / (60 * MIN),
     3,
-    +new Date('2024/04/02'),
+    +START_DATE,
     { color: '#66C0F1', fromEnd: 'out', toEnd: 'out' }
   ),
 ];
