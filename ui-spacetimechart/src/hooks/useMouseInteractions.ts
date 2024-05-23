@@ -19,12 +19,19 @@ export function useMouseInteractions(
   dom: HTMLElement | null,
   { position, hoveredItem, down, isHover }: MouseContextType,
   handlers: Handlers,
-  getData: SpaceTimeChartContextType['getData']
+  context: SpaceTimeChartContextType
 ) {
+  const contextRef = useRef(context);
   const handlersRef = useRef<Handlers>(handlers);
   const [panningState, setPanningState] = useState<
     { type: 'idle' } | { type: 'panning'; initialPosition: Point; initialData: DataPoint }
   >({ type: 'idle' });
+
+  // Cache latest context in ref:
+  useEffect(() => {
+    contextRef.current = context;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context.fingerprint]);
 
   useEffect(() => {
     handlersRef.current = handlers;
@@ -40,14 +47,15 @@ export function useMouseInteractions(
         onClick({
           event,
           position,
-          data: getData(position),
+          data: contextRef.current.getData(position),
           hoveredItem,
+          context: contextRef.current,
         });
       }
     },
-    [dom, getData, hoveredItem, position]
+    [dom, hoveredItem, position]
   );
-  const wheelHandler = useCallback(
+  const wheelHandler: (event: WheelEvent) => void = useCallback(
     (event: WheelEvent) => {
       const { onZoom } = handlersRef.current;
       if (onZoom && dom)
@@ -55,6 +63,7 @@ export function useMouseInteractions(
           delta: getEventWheelDelta(event),
           position: getEventPosition(event, dom),
           event,
+          context: contextRef.current,
         });
     },
     [dom]
@@ -85,7 +94,7 @@ export function useMouseInteractions(
       setPanningState({
         type: 'panning',
         initialPosition: position,
-        initialData: getData(position),
+        initialData: contextRef.current.getData(position),
       });
     } else {
       // Stop panning:
@@ -94,8 +103,9 @@ export function useMouseInteractions(
           isPanning: false,
           position,
           initialPosition: panningState.initialPosition,
-          data: getData(position),
+          data: contextRef.current.getData(position),
           initialData: panningState.initialData,
+          context: contextRef.current,
         });
 
       if (panningState.type !== 'idle') setPanningState({ type: 'idle' });
@@ -111,8 +121,9 @@ export function useMouseInteractions(
       onMouseMove({
         position,
         isHover: isHover,
-        data: getData(position),
+        data: contextRef.current.getData(position),
         hoveredItem,
+        context: contextRef.current,
       });
     }
 
@@ -121,8 +132,9 @@ export function useMouseInteractions(
         isPanning: true,
         position,
         initialPosition: panningState.initialPosition,
-        data: getData(position),
+        data: contextRef.current.getData(position),
         initialData: panningState.initialData,
+        context: contextRef.current,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [position.x, position.y]);
