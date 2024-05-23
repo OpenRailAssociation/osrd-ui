@@ -161,7 +161,8 @@ export function useCanvas(
     () =>
       getPNGBlob(
         canvasesRef.current,
-        LAYERS.map((layer) => `${RENDERING}-${layer}`)
+        LAYERS.map((layer) => `${RENDERING}-${layer}`),
+        stcContextRef.current.theme.background
       ),
     []
   );

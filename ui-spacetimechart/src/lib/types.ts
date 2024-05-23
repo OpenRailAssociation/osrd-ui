@@ -136,6 +136,36 @@ export type MouseContextType = MouseState & {
   hoveredItem: HoveredItem | null;
 };
 
+// STYLES:
+export type SpaceTimeChartTheme = {
+  background: string;
+  breakpoints: number[];
+  timeRanges: number[];
+  pathsStyles: {
+    font: string;
+  };
+  spaceGraduationsStyles: Record<
+    number,
+    { width: number; color: string; opacity?: number; dashArray?: number[] }
+  >;
+  timeCaptionsPriorities: number[][];
+  timeCaptionsStyles: Record<
+    number,
+    {
+      color: string;
+      font: string;
+      fontWeight?: string;
+      fontSize?: string;
+      topOffset?: number;
+    }
+  >;
+  timeGraduationsPriorities: number[][];
+  timeGraduationsStyles: Record<
+    number,
+    { width: number; color: string; opacity?: number; dashArray?: number[] }
+  >;
+};
+
 // CORE COMPONENT MAIN TYPES:
 export type SpaceTimeChartProps = {
   children?: ReactNode[];
@@ -165,6 +195,9 @@ export type SpaceTimeChartProps = {
   // Additional options to show/hide context information:
   hideGrid?: boolean;
   hidePathsLabels?: boolean;
+
+  // Custom styles:
+  theme?: Partial<SpaceTimeChartTheme>;
 
   // Event handlers:
   onPan?: Handler<{
@@ -225,6 +258,9 @@ export type SpaceTimeChartContextType = {
 
   // Useful data:
   operationalPoints: OperationalPoint[];
+
+  // Full theme:
+  theme: SpaceTimeChartTheme;
 
   // Other options:
   enableSnapping: boolean;
