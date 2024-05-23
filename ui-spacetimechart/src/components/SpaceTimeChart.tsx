@@ -4,11 +4,12 @@ import cx from 'classnames';
 
 import SpaceGraduations from './SpaceGraduations';
 import TimeCaptions from './TimeCaptions';
-import TimeGraduations from './TimeGraduations';
+import { TimeGraduations } from './TimeGraduations';
 import { useCanvas } from '../hooks/useCanvas';
 import { useMouseInteractions } from '../hooks/useMouseInteractions';
 import { useMouseTracking } from '../hooks/useMouseTracking';
 import { useSize } from '../hooks/useSize';
+import { DEFAULT_THEME } from '../lib/consts';
 import { CanvasContext, MouseContext, SpaceTimeChartContext } from '../lib/context';
 import {
   type MouseContextType,
@@ -42,6 +43,7 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
     enableSnapping,
     hideGrid,
     hidePathsLabels,
+    theme,
     /* eslint-disable @typescript-eslint/no-unused-vars */
     onPan,
     onZoom,
@@ -53,6 +55,7 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
 
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
   const [canvasesRoot, setCanvasesRoot] = useState<HTMLDivElement | null>(null);
+  const fullTheme = useMemo(() => ({ ...DEFAULT_THEME, ...theme }), [theme]);
   const { width, height } = useSize(root);
 
   const fingerprint = useMemo(
@@ -144,6 +147,7 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
       enableSnapping: !!enableSnapping,
       hideGrid: !!hideGrid,
       hidePathsLabels: !!hidePathsLabels,
+      theme: fullTheme,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fingerprint]);
@@ -183,7 +187,12 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
   }, [hoveredItem]);
 
   return (
-    <div {...attr} ref={setRoot} className={cx('relative space-time-chart', attr.className)}>
+    <div
+      {...attr}
+      ref={setRoot}
+      className={cx('relative space-time-chart', attr.className)}
+      style={{ background: fullTheme.background }}
+    >
       <div ref={setCanvasesRoot} className="absolute inset-0" />
       <SpaceTimeChartContext.Provider value={contextState}>
         <CanvasContext.Provider value={canvasContext}>
