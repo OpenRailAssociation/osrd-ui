@@ -171,17 +171,12 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
   }, [enableSnapping, mouseState.position, hoveredItem, down, isHover, contextState]);
 
   // Handle interactions:
-  useMouseInteractions(
-    root,
-    mouseContext,
-    { onPan, onZoom, onClick, onMouseMove },
-    contextState.getData
-  );
+  useMouseInteractions(root, mouseContext, { onPan, onZoom, onClick, onMouseMove }, contextState);
 
   // Handle onHoveredChildUpdate:
   useEffect(() => {
     if (onHoveredChildUpdate) {
-      onHoveredChildUpdate({ item: hoveredItem });
+      onHoveredChildUpdate({ item: hoveredItem, context: contextState });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hoveredItem]);

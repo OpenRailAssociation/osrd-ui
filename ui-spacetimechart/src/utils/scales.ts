@@ -1,4 +1,4 @@
-import { clamp } from 'lodash';
+import { clamp, inRange } from 'lodash';
 
 import {
   type NormalizedScaleTree,
@@ -13,6 +13,7 @@ import {
   type DataToPoint,
   type DataPoint,
   type Axis,
+  type PathData,
 } from '../lib/types';
 
 /**
@@ -202,6 +203,30 @@ export function getDataToPoint(
       [timeAxis]: getTimePixel(time),
       [spaceAxis]: getSpacePixel(position),
     }) as Point;
+}
+
+/**
+ * This function takes a path and a time, a returns the position of the train at the given time, or
+ * the position at the closest time to the path existence.
+ */
+export function getSpaceAtTime(path: PathData, time: number): number {
+  const segments = path.points.slice(0, -1).map((p, i) => [p, path.points[i + 1]]);
+  const matchingSegment = segments.find(([p1, p2]) => inRange(time, p1.time, p2.time));
+
+  if (matchingSegment) {
+    const [p1, p2] = matchingSegment;
+    return p1.position + ((time - p1.time) / (p2.time - p1.time)) * (p2.position - p1.position);
+  }
+
+  let minPoint = path.points[0];
+  let maxPoint = path.points[0];
+  path.points.slice(1).forEach((point) => {
+    if (point.time < minPoint.time) minPoint = point;
+    if (point.time > maxPoint.time) maxPoint = point;
+  });
+
+  if (minPoint.time > time) return minPoint.position;
+  return maxPoint.position;
 }
 
 /**

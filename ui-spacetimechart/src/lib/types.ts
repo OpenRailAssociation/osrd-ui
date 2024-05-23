@@ -206,21 +206,29 @@ export type SpaceTimeChartProps = {
     position: Point;
     initialData: DataPoint;
     data: DataPoint;
+    context: SpaceTimeChartContextType;
   }>;
-  onZoom?: Handler<{ delta: number; position: Point; event: WheelEvent }>;
+  onZoom?: Handler<{
+    delta: number;
+    position: Point;
+    event: WheelEvent;
+    context: SpaceTimeChartContextType;
+  }>;
   onClick?: Handler<{
     position: Point;
     data: DataPoint;
     event: MouseEvent;
     hoveredItem: HoveredItem | null;
+    context: SpaceTimeChartContextType;
   }>;
   onMouseMove?: Handler<{
     position: Point;
     data: DataPoint;
     isHover: boolean;
     hoveredItem: HoveredItem | null;
+    context: SpaceTimeChartContextType;
   }>;
-  onHoveredChildUpdate?: Handler<{ item: HoveredItem | null }>;
+  onHoveredChildUpdate?: Handler<{ item: HoveredItem | null; context: SpaceTimeChartContextType }>;
 } & Omit<HTMLProps<HTMLDivElement>, 'onClick' | 'onMouseMove'>;
 
 export type SpaceTimeChartContextType = {
