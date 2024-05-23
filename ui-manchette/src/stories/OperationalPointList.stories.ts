@@ -5,11 +5,11 @@ import { SAMPLE_DATA } from './assets/sampleData';
 
 import OperationalPointList from '../components/OperationalPointList';
 
-const OperationalPointListData = SAMPLE_DATA.operational_points;
+const OperationalPointListData = SAMPLE_DATA.operational_points ?? [];
 
 const meta: Meta<typeof OperationalPointList> = {
   component: OperationalPointList,
-  title: 'OperationalPointList',
+  title: 'Manchette/OperationalPointList',
   tags: ['autodocs'],
 };
 

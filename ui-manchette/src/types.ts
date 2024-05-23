@@ -76,9 +76,7 @@ export type OperationalPointPart = {
   track: string;
 };
 
-export type OperationalPointType = {
-  extensions?: OperationalPointExtensions;
-  id: string;
-  part: OperationalPointPart;
-  position: number;
-};
+export type ArrayElement<ArrayType extends readonly unknown[] | null | undefined> =
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
+
+export type OperationalPointType = ArrayElement<PathProperties['operational_points'] | null>;
