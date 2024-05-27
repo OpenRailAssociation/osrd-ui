@@ -2,88 +2,76 @@ import React, { useState } from 'react';
 import FieldWrapper, { FieldWrapperProps } from './inputs/FieldWrapper';
 import cx from 'classnames';
 
-export type SelectOption = { value: string; label: string };
-
-/**
- * Type for the props of the Select component.
- *
- * We use Omit to create a new type based on React.InputHTMLAttributes<HTMLSelectElement>,
- * but without the 'value' property. This is because we want to enforce that the 'value'
- * prop for our Select component is always a string. In React, the 'value' prop for a
- * select element can be a string, a number, or an array of strings (for multiple selects),
- * but for our Select component, we want to ensure that it's always a string.
- */
-export type SelectProps = Omit<React.InputHTMLAttributes<HTMLSelectElement>, 'value'> &
+export type SelectProps<T> = Omit<
+  React.InputHTMLAttributes<HTMLSelectElement>,
+  'value' | 'onChange'
+> &
   Omit<FieldWrapperProps, 'children'> & {
-    value?: string;
-    placeholder?: string;
-    options: SelectOption[];
+    options: Array<T>;
+    value: T;
+    getOptionLabel: (option: T) => string;
+    getOptionValue: (option: T) => string;
+    onChange: (option?: T) => void;
   };
 
-const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  (
-    {
-      id,
-      label,
-      hint,
-      value,
-      options,
-      placeholder,
-      statusWithMessage,
-      required,
-      disabled,
-      readOnly,
-      small,
-      onChange,
-    },
-    ref
-  ) => {
-    if (value && value != '' && !options.some((option) => option.value === value)) {
-      console.warn(`option "${value}" does not match any option`);
-    }
+const PLACEHOLDER_VALUE = '__PLACEHOLDER__';
 
-    const [selectedOption, setSelectedOption] = useState<string>(value || '');
+const Select = <T,>({
+  id,
+  label,
+  hint,
+  value,
+  options,
+  placeholder,
+  statusWithMessage,
+  required,
+  disabled,
+  readOnly,
+  small,
+  getOptionLabel,
+  getOptionValue,
+  onChange,
+}: SelectProps<T>) => {
+  const [selectedOption, setSelectedOption] = useState<T | undefined>(value);
+  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSelectedOption =
+      e.target.value === PLACEHOLDER_VALUE
+        ? undefined
+        : options.find((option) => getOptionValue(option) === e.target.value);
+    setSelectedOption(newSelectedOption);
+    onChange(newSelectedOption);
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedOption(e.target.value);
-      onChange?.(e);
-    };
-
-    return (
-      <FieldWrapper
-        id={id}
-        label={label}
-        hint={hint}
-        statusWithMessage={statusWithMessage}
+  return (
+    <FieldWrapper
+      id={id}
+      label={label}
+      hint={hint}
+      statusWithMessage={statusWithMessage}
+      required={required}
+      disabled={disabled}
+      small={small}
+    >
+      <select
+        className={cx('custom-select', statusWithMessage?.status, {
+          'placeholder-selected': placeholder && !selectedOption,
+          small,
+          'read-only': readOnly,
+        })}
+        value={selectedOption ? getOptionValue(selectedOption) : undefined}
         required={required}
-        disabled={disabled}
-        small={small}
+        disabled={disabled || readOnly}
+        onChange={handleOnChange}
       >
-        <select
-          className={cx('custom-select', {
-            'placeholder-selected': selectedOption === '',
-            small,
-            'read-only': readOnly,
-            [statusWithMessage?.status || '']: !!statusWithMessage,
-          })}
-          value={selectedOption}
-          required={required}
-          disabled={disabled || readOnly}
-          ref={ref}
-          onChange={handleChange}
-        >
-          <option value="">{placeholder ? `– ${placeholder} –` : ''}</option>
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </FieldWrapper>
-    );
-  }
-);
-
-Select.displayName = 'Select';
+        {placeholder && <option value={PLACEHOLDER_VALUE}>{`– ${placeholder} –`}</option>}
+        {options.map((option) => (
+          <option key={getOptionValue(option)} value={getOptionValue(option)}>
+            {getOptionLabel(option)}
+          </option>
+        ))}
+      </select>
+    </FieldWrapper>
+  );
+};
 
 export default Select;

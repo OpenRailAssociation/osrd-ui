@@ -1,20 +1,31 @@
 import React from 'react';
 import { StoryObj, Meta } from '@storybook/react';
 
-import Select from '../components/Select';
+import Select, { SelectProps } from '../components/Select';
 import '@osrd-project/ui-core/dist/theme.css';
 
-const meta: Meta<typeof Select> = {
+type Option = { value: string; label: string };
+
+const options = [
+  { value: 'blue', label: 'Blue' },
+  { value: 'red', label: 'Red' },
+  { value: 'green', label: 'Green' },
+] as Option[];
+
+const SelectWrapper = (props: SelectProps<Option>) => {
+  return <Select {...props} />;
+};
+
+const meta: Meta<typeof SelectWrapper> = {
   component: Select,
   args: {
     label: 'Fill colour',
     placeholder: 'Choose',
-    value: 'blue',
-    options: [
-      { value: 'blue', label: 'Blue' },
-      { value: 'red', label: 'Red' },
-      { value: 'green', label: 'Green' },
-    ],
+    value: options[0],
+    options,
+    getOptionLabel: (option: Option) => option.label,
+    getOptionValue: (option: Option) => option.value,
+    onChange: (option?: Option) => console.log(option),
     small: false,
     disabled: false,
     readOnly: false,
@@ -26,40 +37,45 @@ const meta: Meta<typeof Select> = {
       </div>
     ),
   ],
-  title: 'Select',
+  title: 'core/Select',
   tags: ['autodocs'],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Select>;
+type StoryType = StoryObj<typeof SelectWrapper>;
 
-export const Default: Story = {
+export const Default: StoryType = {
   args: {
+    id: 'Default',
     value: undefined,
   },
 };
 
-export const SelectedOption: Story = {
+export const SelectedOption: StoryType = {
   args: {
-    value: 'blue',
+    id: 'SelectedOption',
+    value: options[1],
   },
 };
 
-export const Hint: Story = {
+export const Hint: StoryType = {
   args: {
+    id: 'Hint',
     hint: 'This is not a choice',
   },
 };
 
-export const RequiredInput: Story = {
+export const RequiredInput: StoryType = {
   args: {
+    id: 'RequiredInput',
     required: true,
   },
 };
 
-export const InformationSelect: Story = {
+export const InformationSelect: StoryType = {
   args: {
+    id: 'InformationSelect',
     required: true,
     statusWithMessage: {
       status: 'info',
@@ -68,8 +84,9 @@ export const InformationSelect: Story = {
   },
 };
 
-export const WarningSelect: Story = {
+export const WarningSelect: StoryType = {
   args: {
+    id: 'WarningSelect',
     required: true,
     statusWithMessage: {
       status: 'warning',
@@ -77,8 +94,9 @@ export const WarningSelect: Story = {
   },
 };
 
-export const WarningWithMessageSelect: Story = {
+export const WarningWithMessageSelect: StoryType = {
   args: {
+    id: 'WarningWithMessageSelect',
     required: true,
     statusWithMessage: {
       status: 'warning',
@@ -87,8 +105,9 @@ export const WarningWithMessageSelect: Story = {
   },
 };
 
-export const ErrorSelect: Story = {
+export const ErrorSelect: StoryType = {
   args: {
+    id: 'ErrorSelect',
     required: true,
     statusWithMessage: {
       status: 'error',
@@ -96,8 +115,9 @@ export const ErrorSelect: Story = {
   },
 };
 
-export const ErrorWithMessageSelect: Story = {
+export const ErrorWithMessageSelect: StoryType = {
   args: {
+    id: 'ErrorWithMessageSelect',
     required: true,
     statusWithMessage: {
       status: 'error',
