@@ -1,2 +1,4 @@
 export const BASE_OP_HEIGHT = 32;
 export const BASE_KM_HEIGHT = 8;
+export const INITIAL_OP_LIST_HEIGHT = 521;
+export const INITIAL_SPACE_TIME_CHART_HEIGHT = INITIAL_OP_LIST_HEIGHT + 40;

@@ -1,21 +1,51 @@
-.manchette {
-  height: 561px;
-  overflow: auto;
-  -webkit-border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  border-bottom-left-radius: 4px;
+.manchette-space-time-chart-wrapper{
+  border-radius: 10px;
+box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.06), 0px 1px 2px rgba(0, 0, 0, 0.19);
+opacity: 1;
+background-color: rgba(255, 255, 255, 1);
+  .manchette {
+    height: 561px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-border-bottom-left-radius: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    border-bottom-left-radius: 4px;
+  
+  
+    &-actions {
+      background-color: rgba(250, 249, 245, 0.6);
+      height: 2.5rem;
+      width: inherit;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-top: solid 1px;
+      border-right: solid 1px;
+      @apply border-black-25;
+      border-radius: 0px 0px 0px 10px;
 
+      .zoom-out:disabled {
+        opacity: 0.4;
+      
+      }
+      .zoom-in:disabled {
+        opacity: 0.4;
+      }
+      
+      .toggle-mode{
+        font-size: 0.875rem;
+        line-height: 14px;
+      }
 
-  &-actions {
-    background-color: rgba(250, 249, 245, 0.20);
-    height: 2.5rem;
-    width: inherit;
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    backdrop-filter: blur(8px);
-    border: solid 1px;
-    @apply border-black-25
+    }
+  
+    .space-time-chart-container {
+      height: 561px;
+      width: 100%;
+      bottom:0;
+    }
   }
 }

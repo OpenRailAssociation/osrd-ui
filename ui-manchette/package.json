@@ -36,7 +36,8 @@
   "dependencies": {
     "classnames": "^2.5.1",
     "lodash.isequal": "^4.5.0",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "@osrd-project/ui-spacetimechart": "0.0.18"
   },
   "peerDependencies": {
     "react": ">=18.0"
