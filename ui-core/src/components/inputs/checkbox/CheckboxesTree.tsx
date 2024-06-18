@@ -1,7 +1,6 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import CheckboxList from './CheckboxList';
 import { buildRelationshipMaps, updateItemStatesOptimized } from './updateItemState';
-import React from 'react';
 import FieldWrapper from '../FieldWrapper';
 import { statusWithMessage } from '../StatusMessage';
 import { checkboxListItem, CheckboxState, checkboxTreeItem, ItemState } from './type';

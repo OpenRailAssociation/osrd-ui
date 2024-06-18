@@ -1,7 +1,7 @@
 import './styles/main.css';
 
 export { default as Button, ButtonProps } from './components/buttons/Button';
-export { default as Checkbox, CheckboxProps } from './components/inputs/checkbox';
+export { default as Checkbox, CheckboxProps } from './components/inputs/checkbox/Checkbox';
 export {
   default as CheckboxList,
   CheckboxListProps,

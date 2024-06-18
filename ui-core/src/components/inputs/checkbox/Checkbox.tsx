@@ -3,14 +3,14 @@ import React from 'react';
 import cx from 'classnames';
 import useFocusByTab from '../../hooks/useFocusByTab';
 
-export type checkboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   small?: boolean;
   hint?: string;
   isIndeterminate?: boolean;
 };
 
-const Checkbox: React.FC<checkboxProps> = ({
+const Checkbox: React.FC<CheckboxProps> = ({
   label,
   small,
   hint,

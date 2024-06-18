@@ -1,9 +1,9 @@
-import { checkboxProps } from './Checkbox';
+import { CheckboxProps } from './Checkbox';
 
 export type checkboxListItem = {
   id: number;
   parentId?: number; // Make parentId optional for root items
-  checkboxProps: checkboxProps;
+  checkboxProps: CheckboxProps;
 };
 
 export enum CheckboxState {
@@ -19,6 +19,6 @@ export type ItemState = {
 
 export type checkboxTreeItem = {
   id: number;
-  checkboxProps: checkboxProps;
+  checkboxProps: CheckboxProps;
   items?: checkboxTreeItem[];
 };
