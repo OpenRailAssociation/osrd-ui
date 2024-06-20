@@ -102,7 +102,7 @@ export const drawTickX = (
   ctx.shadowOffsetY = 0;
   ctx.shadowBlur = 0;
   ctx.beginPath();
-  ctx.fillText('km', width - MARGIN_RIGHT + CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM + 24);
+  ctx.fillText('km', width - MARGIN_RIGHT - CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM + 24);
   ctx.closePath();
   ctx.stroke();
 };

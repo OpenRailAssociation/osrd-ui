@@ -1,5 +1,10 @@
-import type { Store } from '../types/chartTypes';
-import { LAYERS_HEIGHTS, MARGINS } from './const';
+import { type Store } from '../types/chartTypes';
+import {
+  MARGINS,
+  LINEAR_LAYER_SEPARATOR_HEIGHT,
+  LINEAR_LAYERS_HEIGHTS_BY_NAME,
+  LAYERS_SELECTION,
+} from './const';
 
 type SpeedRangeValues = {
   minSpeed: number;
@@ -63,24 +68,37 @@ export const getAdaptiveHeight = (
   layersDisplay: Store['layersDisplay'],
   isIncludingLinearLayers: boolean = true
 ): number => {
-  const { ELECTRICAL_PROFILES_HEIGHT, POWER_RESTRICTIONS_HEIGHT, SPEED_LIMIT_TAGS_HEIGHT } =
-    LAYERS_HEIGHTS;
-
-  const layerHeights = {
-    electricalProfiles: ELECTRICAL_PROFILES_HEIGHT,
-    powerRestrictions: POWER_RESTRICTIONS_HEIGHT,
-    speedLimitTags: SPEED_LIMIT_TAGS_HEIGHT,
-  };
-
   let adjustment = 0;
 
-  Object.keys(layerHeights).forEach((key) => {
-    const layer = key as keyof typeof layerHeights;
+  Object.keys(LINEAR_LAYERS_HEIGHTS_BY_NAME).forEach((key) => {
+    const layer = key as keyof typeof LINEAR_LAYERS_HEIGHTS_BY_NAME;
     if (layersDisplay[layer]) {
-      adjustment += isIncludingLinearLayers ? layerHeights[layer] : -layerHeights[layer];
+      adjustment += isIncludingLinearLayers
+        ? LINEAR_LAYERS_HEIGHTS_BY_NAME[layer]
+        : -LINEAR_LAYERS_HEIGHTS_BY_NAME[layer];
     }
   });
   return height + adjustment;
+};
+
+/**
+ * Calculates the top position for the linear layers based on the height and the layers displayed.
+ * The speed limit tags linear layer needs to call this function with the isSpeedLimitByTag flag set to true.
+ */
+export const getLinearLayerMarginTop = (
+  height: number,
+  layersDisplay: Store['layersDisplay'],
+  isSpeedLimitByTag: boolean = false
+) => {
+  let adjustment = 0;
+  const { electricalProfiles, powerRestrictions } = layersDisplay;
+
+  if (electricalProfiles) adjustment = LINEAR_LAYERS_HEIGHTS_BY_NAME.electricalProfiles;
+
+  if (powerRestrictions && isSpeedLimitByTag)
+    adjustment += LINEAR_LAYERS_HEIGHTS_BY_NAME.powerRestrictions;
+
+  return height + adjustment - MARGINS.MARGIN_BOTTOM;
 };
 
 /**
@@ -125,12 +143,12 @@ export const drawSeparatorLinearLayer = (
   width: number,
   height: number
 ) => {
-  const { MARGIN_LEFT, MARGIN_BOTTOM, MARGIN_RIGHT } = margins;
+  const { MARGIN_LEFT, MARGIN_RIGHT } = margins;
   ctx.beginPath();
   ctx.strokeStyle = separatorColor;
   ctx.lineWidth = 1;
-  ctx.moveTo(MARGIN_LEFT, height - MARGIN_BOTTOM);
-  ctx.lineTo(width - MARGIN_RIGHT, height - MARGIN_BOTTOM);
+  ctx.moveTo(MARGIN_LEFT, height);
+  ctx.lineTo(width - MARGIN_RIGHT, height);
   ctx.stroke();
 };
 
@@ -145,17 +163,28 @@ export const drawLinearLayerBackground = (
   backgroundColor: string,
   margins: typeof MARGINS,
   width: number,
-  height: number,
-  linearLayerHeight: number
+  startingHeight: number,
+  layerHeight: number
 ) => {
-  const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM } = margins;
+  const { MARGIN_LEFT, MARGIN_RIGHT } = margins;
 
   ctx.beginPath();
   ctx.fillStyle = backgroundColor;
   ctx.fillRect(
     MARGIN_LEFT,
-    height - MARGIN_BOTTOM + 1, //  +1 is separator linear layer height
+    startingHeight - layerHeight + LINEAR_LAYER_SEPARATOR_HEIGHT,
     width - MARGIN_LEFT - MARGIN_RIGHT,
-    linearLayerHeight
+    layerHeight
+  );
+};
+
+/**
+ * Check if an optional layer data is missing in the store.
+ * Optional datas : electricalProfiles, powerRestrictions, speedLimitTags
+ */
+export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION)[number]) => {
+  // TODO : add speedLimitsTags check
+  return (
+    (selection === 'electricalProfiles' || selection === 'powerRestrictions') && !store[selection]
   );
 };

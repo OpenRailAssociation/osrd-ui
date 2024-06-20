@@ -1,14 +1,14 @@
 export const translations = {
   detailsBoxDisplay: {
-    ReticleInfos: 'Reticle infos',
+    reticleInfos: 'Reticle infos',
     energySource: 'Energy Source',
     tractionStatus: 'Traction Status',
     declivities: 'Declivities',
-    eletricalProfiles: 'Electrical Profiles',
+    electricalProfiles: 'Electrical Profiles',
     powerRestrictions: 'Power Restrictions',
   },
   layersDisplay: {
-    Context: 'Context',
+    context: 'Context',
     steps: 'Steps',
     declivities: 'Declivities',
     speedLimits: 'Speed Limits',

@@ -30,6 +30,7 @@ export const drawCursor = (
     electrification,
     slopes,
     electricalProfiles,
+    powerRestrictions,
   } = store;
 
   ctx.strokeStyle = 'rgb(0, 0, 0)';
@@ -43,6 +44,7 @@ export const drawCursor = (
   let effortText = 'coasting';
   let electricalModeText = '';
   let electricalProfileText = '';
+  let powerRestrictionText = '';
   let previousGradientText = 0;
   let modeText = '';
   let curveX = cursor.x!;
@@ -97,7 +99,17 @@ export const drawCursor = (
       }
     }
 
-    // calculate the y position of the curve based on pointer position beetwen two points
+    // Get the power restriction code based on the position of the cursor
+    if (powerRestrictions) {
+      const currentPowerRestriction = powerRestrictions.find(
+        (range) =>
+          cursor.x! >= xPositionReference(range.start) &&
+          cursor.x! <= xPositionReference(range.stop)
+      );
+      powerRestrictionText = currentPowerRestriction?.code || '';
+    }
+
+    // calculate the y position of the curve based on pointer position between two points
     // adapt texts based on the position of the cursor
     if (
       previousCurvePosition !== undefined &&
@@ -252,6 +264,7 @@ export const drawCursor = (
     effortText,
     electricalModeText,
     electricalProfileText,
+    powerRestrictionText,
     previousGradientText,
     modeText,
   };

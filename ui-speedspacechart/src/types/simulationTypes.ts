@@ -428,4 +428,5 @@ export interface OsrdSimulationState {
         }
     )[];
   };
+  powerRestrictions?: SimulationPowerRestrictionRange[];
 }

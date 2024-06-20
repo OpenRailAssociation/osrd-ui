@@ -6,6 +6,7 @@ import {
   clearCanvas,
   getAdaptiveHeight,
   positionOnGraphScale,
+  getLinearLayerMarginTop,
 } from '../components/utils';
 import type { Store } from '../types/chartTypes';
 import type { ConsolidatedPositionSpeedTime } from '../types/simulationTypes';
@@ -24,13 +25,13 @@ const store: Store = {
   stops: [],
   electrification: [],
   slopes: [],
+  powerRestrictions: [],
   ratioX: 1,
   leftOffset: 0,
   cursor: {
     x: null,
     y: null,
   },
-
   // TODO: Create test for detailsBoxDisplay, linearDisplay and electricalProfiles
   detailsBoxDisplay: {
     energySource: true,
@@ -41,8 +42,8 @@ const store: Store = {
   },
   layersDisplay: {
     speedLimits: false,
-    electricalProfiles: true,
-    powerRestrictions: false,
+    electricalProfiles: false,
+    powerRestrictions: true,
     declivities: false,
     speedLimitTags: false,
     steps: true,
@@ -181,3 +182,35 @@ describe('positionOnGraphScale', () => {
     expect(positionOnScale).toBe(980);
   });
 });
+
+describe('getLinearLayerMarginTop', () => {
+  const height = 100;
+  const layersDisplay = {
+    speedLimits: false,
+    electricalProfiles: false,
+    powerRestrictions: false,
+    declivities: false,
+    speedLimitTags: false,
+    steps: false,
+    temporarySpeedLimits: false,
+  };
+  it('should return the height of the chart', () => {
+    expect(getLinearLayerMarginTop(height, layersDisplay)).toBe(47.5);
+  });
+  it('should return the height of the chart if only power restrictions layer is displayed', () => {
+    expect(getLinearLayerMarginTop(height, { ...layersDisplay, powerRestrictions: true })).toBe(
+      47.5
+    );
+  });
+  it('should return the height of the chart including electrical profiles layers height if both electrical profiles and power restrictions layer are displayed', () => {
+    expect(
+      getLinearLayerMarginTop(height, {
+        ...layersDisplay,
+        electricalProfiles: true,
+        powerRestrictions: true,
+      })
+    ).toBe(103.5);
+  });
+});
+
+// TODO Test drawLinearLayerBackground

@@ -12,10 +12,12 @@ import StepLayer from './layers/StepLayer';
 import ReticleLayer from './layers/ReticleLayer';
 import { resetZoom } from './helpers/layersManager';
 import StepNamesLayer from './layers/StepNamesLayer';
-import { getGraphOffsets, getAdaptiveHeight } from './utils';
+import { getGraphOffsets, getAdaptiveHeight, getLinearLayerMarginTop } from './utils';
 import ElectricalProfileLayer from './layers/ElectricalProfileLayer';
+import PowerRestrictionsLayer from './layers/PowerRestrictionsLayer';
 import SettingsPanel from './common/SettingsPanel';
 import InteractionButtons from './common/InteractionButtons';
+import { LINEAR_LAYERS_HEIGHTS } from './const';
 
 export type SpeedSpaceChartProps = {
   width: number;
@@ -55,6 +57,7 @@ const SpeedSpaceChart = ({
     speed: [],
     stops: [],
     electrification: [],
+    powerRestrictions: undefined,
     slopes: [],
     electricalProfiles: undefined,
     ratioX: 1,
@@ -111,6 +114,7 @@ const SpeedSpaceChart = ({
       electrification: data.simulation.present.trains[0].electrification_ranges || [],
       slopes: data.simulation.present.trains[0].slopes || [],
       electricalProfiles: data.electricalProfiles,
+      powerRestrictions: data.powerRestrictions,
     };
 
     const { speed, stops, electrification, slopes } = storeData;
@@ -161,10 +165,21 @@ const SpeedSpaceChart = ({
         </>
       )}
       <TickLayerY width={width} height={height} store={store} />
-      <TickLayerX width={width} height={dynamicHeight} store={store} />
       {store.layersDisplay.electricalProfiles && (
-        <ElectricalProfileLayer width={width} height={height + 56} store={store} />
+        <ElectricalProfileLayer
+          width={width}
+          height={height + LINEAR_LAYERS_HEIGHTS.ELECTRICAL_PROFILES_HEIGHT}
+          store={store}
+        />
       )}
+      {store.layersDisplay.powerRestrictions && (
+        <PowerRestrictionsLayer
+          width={width}
+          marginTop={getLinearLayerMarginTop(height, store.layersDisplay)}
+          store={store}
+        />
+      )}
+      <TickLayerX width={width} height={dynamicHeight} store={store} />
       <ReticleLayer
         width={width}
         height={dynamicHeight}

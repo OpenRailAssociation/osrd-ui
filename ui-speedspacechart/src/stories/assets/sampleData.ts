@@ -33057,6 +33057,86 @@ export const SAMPLE_DATA: OsrdSimulationState = {
       },
     ],
   },
+  powerRestrictions: [
+    {
+      code: 'FFFF',
+      handled: true,
+      start: 0,
+      stop: 6503.965,
+    },
+    {
+      code: 'FFFF',
+      handled: false,
+      start: 6503.965,
+      stop: 7106.965,
+    },
+    {
+      code: 'FFFF',
+      handled: true,
+      start: 7106.965,
+      stop: 53305.965,
+    },
+    {
+      code: 'FFFF',
+      handled: false,
+      start: 63305.965,
+      stop: 63996.965,
+    },
+    {
+      code: 'AAAA',
+      handled: false,
+      start: 63996.965,
+      stop: 93473.965,
+    },
+    {
+      code: 'AAAA',
+      handled: false,
+      start: 93473.965,
+      stop: 94165.965,
+    },
+    {
+      code: 'FFFF',
+      handled: true,
+      start: 94165.965,
+      stop: 131273.965,
+    },
+    {
+      code: 'FFFF',
+      handled: false,
+      start: 131273.965,
+      stop: 131965.965,
+    },
+    {
+      code: 'GGGG',
+      handled: true,
+      start: 131965.965,
+      stop: 179005.965,
+    },
+    {
+      code: 'GGGG',
+      handled: false,
+      start: 179005.965,
+      stop: 179011.965,
+    },
+    {
+      code: 'GGGG',
+      handled: true,
+      start: 179011.965,
+      stop: 179841.965,
+    },
+    {
+      code: 'BBBB',
+      handled: false,
+      start: 179841.965,
+      stop: 180550.965,
+    },
+    {
+      code: 'BBBB',
+      handled: true,
+      start: 180550.965,
+      stop: 201408.607,
+    },
+  ],
 };
 
 export default SAMPLE_DATA;

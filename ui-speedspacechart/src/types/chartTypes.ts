@@ -3,6 +3,7 @@ import type {
   ElectrificationRange,
   GradientPosition,
   OsrdSimulationState,
+  SimulationPowerRestrictionRange,
   Slope,
   Stop,
 } from './simulationTypes';
@@ -13,6 +14,7 @@ export type Store = {
   electrification: ElectrificationRange[];
   slopes: GradientPosition[] | Slope[];
   electricalProfiles?: OsrdSimulationState['electricalProfiles'];
+  powerRestrictions?: SimulationPowerRestrictionRange[];
   ratioX: number;
   leftOffset: number;
   cursor: {
@@ -43,7 +45,9 @@ export type TrainDetails = {
   curveY: number;
   marecoSpeedText: string;
   effortText: string;
+  electricalModeText: string;
   electricalProfileText: string;
+  powerRestrictionText: string;
   previousGradientText: number;
   modeText: string;
 };
