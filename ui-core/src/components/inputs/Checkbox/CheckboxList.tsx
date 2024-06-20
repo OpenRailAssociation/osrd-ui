@@ -55,7 +55,7 @@ const CheckboxList: React.FC<CheckboxListProps> = ({
                 onClick={() => onClick(item.id)}
                 checked={checkboxState === CheckboxState.CHECKED}
                 isIndeterminate={checkboxState === CheckboxState.INDETERMINATE}
-                {...item.checkboxProps}
+                {...item.props}
                 disabled={disabled}
                 readOnly={readOnly}
               />

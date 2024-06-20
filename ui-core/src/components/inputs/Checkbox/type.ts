@@ -3,7 +3,7 @@ import { CheckboxProps } from './Checkbox';
 export type CheckboxListItem = {
   id: number;
   parentId?: number; // Make parentId optional for root items
-  checkboxProps: CheckboxProps;
+  props: CheckboxProps;
 };
 
 export enum CheckboxState {
