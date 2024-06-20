@@ -19,6 +19,6 @@ export type ItemState = {
 
 export type CheckboxTreeItem = {
   id: number;
-  checkboxProps: CheckboxProps;
+  props: CheckboxProps;
   items?: CheckboxTreeItem[];
 };

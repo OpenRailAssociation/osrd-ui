@@ -23,7 +23,7 @@ function flattenArray(
   result: CheckboxListItem[] = []
 ) {
   items.forEach((item) => {
-    const newItem: CheckboxListItem = { id: item.id, checkboxProps: item.checkboxProps };
+    const newItem: CheckboxListItem = { id: item.id, checkboxProps: item.props };
     if (parentId != undefined) {
       newItem.parentId = parentId;
     }

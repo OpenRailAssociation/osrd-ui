@@ -19,15 +19,15 @@ export default meta;
 type Story = StoryObj<typeof CheckboxesTree>;
 
 const milkButterCream = [
-  { id: 1, checkboxProps: { label: 'Milk' } },
-  { id: 2, checkboxProps: { label: 'Butter' } },
-  { id: 3, checkboxProps: { label: 'Cream' } },
+  { id: 1, props: { label: 'Milk' } },
+  { id: 2, props: { label: 'Butter' } },
+  { id: 3, props: { label: 'Cream' } },
 ];
 
 const milkSugarLemon = [
-  { id: 1, checkboxProps: { label: 'Milk' } },
-  { id: 2, checkboxProps: { label: 'Sugar' } },
-  { id: 3, checkboxProps: { label: 'Lemon slice' } },
+  { id: 1, props: { label: 'Milk' } },
+  { id: 2, props: { label: 'Sugar' } },
+  { id: 3, props: { label: 'Lemon slice' } },
 ];
 
 export const Default: Story = {
@@ -54,9 +54,9 @@ export const GroupWithLabelCaption: Story = {
 export const LabelOverflow: Story = {
   args: {
     items: [
-      { id: 1, checkboxProps: { label: 'A walk on the beach' } },
-      { id: 2, checkboxProps: { label: 'A bike ride on long forest winding roads' } },
-      { id: 3, checkboxProps: { label: 'Reading a book in a couch' } },
+      { id: 1, props: { label: 'A walk on the beach' } },
+      { id: 2, props: { label: 'A bike ride on long forest winding roads' } },
+      { id: 3, props: { label: 'Reading a book in a couch' } },
     ],
   },
 };
@@ -66,11 +66,11 @@ export const Nested: Story = {
     items: [
       {
         id: 0,
-        checkboxProps: { label: 'Dairy products' },
+        props: { label: 'Dairy products' },
         items: [
-          { id: 1, checkboxProps: { label: 'Milk' } },
-          { id: 2, checkboxProps: { label: 'Butter' } },
-          { id: 3, checkboxProps: { label: 'Cream' } },
+          { id: 1, props: { label: 'Milk' } },
+          { id: 2, props: { label: 'Butter' } },
+          { id: 3, props: { label: 'Cream' } },
         ],
       },
     ],
@@ -82,33 +82,33 @@ export const MoreNested: Story = {
     items: [
       {
         id: 1,
-        checkboxProps: { label: 'foo' },
+        props: { label: 'foo' },
         items: [
           {
             id: 2,
-            checkboxProps: { label: 'foo2' },
+            props: { label: 'foo2' },
             items: [
-              { id: 3, checkboxProps: { label: 'foo3' } },
-              { id: 4, checkboxProps: { label: 'foo4' } },
+              { id: 3, props: { label: 'foo3' } },
+              { id: 4, props: { label: 'foo4' } },
             ],
           },
           {
             id: 5,
-            checkboxProps: { label: 'foo5' },
+            props: { label: 'foo5' },
             items: [
               {
                 id: 6,
-                checkboxProps: { label: 'foo6' },
+                props: { label: 'foo6' },
                 items: [
-                  { id: 8, checkboxProps: { label: 'foo8' } },
-                  { id: 9, checkboxProps: { label: 'foo9' } },
+                  { id: 8, props: { label: 'foo8' } },
+                  { id: 9, props: { label: 'foo9' } },
                 ],
               },
             ],
           },
         ],
       },
-      { id: 7, checkboxProps: { label: 'foo7' } },
+      { id: 7, props: { label: 'foo7' } },
     ],
   },
 };
@@ -124,9 +124,7 @@ export const Required: Story = {
 export const Information: Story = {
   args: {
     items: milkButterCream.map((item, index) =>
-      index === 1
-        ? { ...item, checkboxProps: { ...item.checkboxProps, checked: true } }
-        : { ...item }
+      index === 1 ? { ...item, checkboxProps: { ...item.props, checked: true } } : { ...item }
     ),
     disabled: true,
     statusWithMessage: { status: 'info', message: 'These controls are disabled' },
@@ -160,9 +158,9 @@ export const Warning: Story = {
 export const Error: Story = {
   args: {
     items: [
-      { id: 1, checkboxProps: { label: 'Chocolate cake' } },
-      { id: 2, checkboxProps: { label: 'Ice cream' } },
-      { id: 3, checkboxProps: { label: 'Tiramisu' } },
+      { id: 1, props: { label: 'Chocolate cake' } },
+      { id: 2, props: { label: 'Ice cream' } },
+      { id: 3, props: { label: 'Tiramisu' } },
     ],
     statusWithMessage: {
       status: 'error',
