@@ -1,11 +1,11 @@
 import React from 'react';
-import { CheckboxState, checkboxListItem } from './type';
+import { CheckboxState, CheckboxListItem } from './type';
 import Checkbox from './Checkbox';
 
 import cx from 'classnames';
 
 export type CheckboxListProps = {
-  items: checkboxListItem[];
+  items: CheckboxListItem[];
   idsToRender?: number[];
   onClick?: (id: number) => void;
   getStateForId: (id: number) => CheckboxState;

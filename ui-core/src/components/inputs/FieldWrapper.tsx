@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import Label from './Label';
 import Hint from './Hint';
-import StatusMessage, { statusWithMessage } from './StatusMessage';
+import StatusMessage, { StatusWithMessage } from './StatusMessage';
 import InputStatusIcon from './InputStatusIcon';
 
 export type FieldWrapperProps = {
@@ -12,7 +12,7 @@ export type FieldWrapperProps = {
   hint?: string;
   required?: boolean;
   disabled?: boolean;
-  statusWithMessage?: statusWithMessage;
+  statusWithMessage?: StatusWithMessage;
   statusIconPosition?: 'next-to-field' | 'before-status-message';
   small?: boolean;
   children?: React.ReactNode;

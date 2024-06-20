@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import RadioButton, { RadioButtonProps } from './RadioButton';
 import InputStatusIcon from './InputStatusIcon';
 import { RequiredInput } from '@osrd-project/ui-icons';
-import { statusWithMessage } from './StatusMessage';
+import { StatusWithMessage } from './StatusMessage';
 
 import cx from 'classnames';
 
@@ -15,7 +15,7 @@ export type RadioGroupProps = {
   small?: boolean;
   value?: string;
   options: RadioButtonProps[];
-  statusWithMessage?: statusWithMessage;
+  statusWithMessage?: StatusWithMessage;
 };
 
 const RadioGroup: React.FC<RadioGroupProps> = ({

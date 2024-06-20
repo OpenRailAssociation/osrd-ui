@@ -2,28 +2,28 @@ import React, { useState, useCallback } from 'react';
 import CheckboxList from './CheckboxList';
 import { buildRelationshipMaps, updateItemStatesOptimized } from './updateItemState';
 import FieldWrapper from '../FieldWrapper';
-import { statusWithMessage } from '../StatusMessage';
-import { checkboxListItem, CheckboxState, checkboxTreeItem, ItemState } from './type';
+import { StatusWithMessage } from '../StatusMessage';
+import { CheckboxListItem, CheckboxState, CheckboxTreeItem, ItemState } from './type';
 
 export type CheckboxesTreeProps = {
   id: string;
   label?: string;
   hint?: string;
-  statusWithMessage: statusWithMessage;
+  statusWithMessage: StatusWithMessage;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
-  items: checkboxTreeItem[];
+  items: CheckboxTreeItem[];
   small?: boolean;
 };
 
 function flattenArray(
-  items: checkboxTreeItem[],
+  items: CheckboxTreeItem[],
   parentId: number | undefined = undefined,
-  result: checkboxListItem[] = []
+  result: CheckboxListItem[] = []
 ) {
   items.forEach((item) => {
-    const newItem: checkboxListItem = { id: item.id, checkboxProps: item.checkboxProps };
+    const newItem: CheckboxListItem = { id: item.id, checkboxProps: item.checkboxProps };
     if (parentId != undefined) {
       newItem.parentId = parentId;
     }

@@ -1,10 +1,10 @@
-import { checkboxListItem, ItemState, CheckboxState } from './type';
+import { CheckboxListItem, ItemState, CheckboxState } from './type';
 
 type ParentChildrenMap = Record<number, number[]>; // Maps parent ID to child IDs
 type ChildParentMap = Record<number, number>; // Maps child ID to parent ID
 
 export const buildRelationshipMaps = (
-  items: checkboxListItem[]
+  items: CheckboxListItem[]
 ): [ParentChildrenMap, ChildParentMap] => {
   const parentChildrenMap: ParentChildrenMap = {};
   const childParentMap: ChildParentMap = {};

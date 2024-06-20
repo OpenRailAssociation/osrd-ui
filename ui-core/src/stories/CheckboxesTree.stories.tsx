@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
-import CheckboxesTree from '../components/inputs/checkbox/CheckboxesTree';
+import CheckboxesTree from '../components/inputs/Checkbox/CheckboxesTree';
 
 const meta: Meta<typeof CheckboxesTree> = {
   component: CheckboxesTree,

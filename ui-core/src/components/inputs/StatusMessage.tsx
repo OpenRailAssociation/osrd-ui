@@ -2,15 +2,15 @@ import React from 'react';
 import cx from 'classnames';
 import InputStatusIcon from './InputStatusIcon';
 
-export type status = 'success' | 'info' | 'error' | 'warning' | 'loading';
+export type Status = 'success' | 'info' | 'error' | 'warning' | 'loading';
 
-export type statusWithMessage = {
-  status: status;
+export type StatusWithMessage = {
+  status: Status;
   message?: string;
 };
 
 export type StatusMessageProps = {
-  statusWithMessage: statusWithMessage;
+  statusWithMessage: StatusWithMessage;
   showIcon?: boolean;
   small?: boolean;
 };

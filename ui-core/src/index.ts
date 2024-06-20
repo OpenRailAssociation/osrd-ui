@@ -8,7 +8,7 @@ export {
   CheckboxListProps,
   CheckboxProps,
   CheckboxesTreeProps,
-} from './components/inputs/checkbox';
+} from './components/inputs/Checkbox';
 export { default as Input, InputProps } from './components/inputs/Input';
 export { default as TokenInput, TokenInputProps } from './components/inputs/TokenInput';
 export { default as PasswordInput, PasswordInputProps } from './components/inputs/PasswordInput';
