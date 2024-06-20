@@ -4,6 +4,7 @@ import type { SpeedSpaceChartProps } from '../SpeedSpaceChart';
 import { DETAILS_BOX_SELECTION, LAYERS_SELECTION } from '../const';
 import { X } from '@osrd-project/ui-icons';
 import { Checkbox } from '@osrd-project/ui-core';
+import { checkLayerData } from '../utils';
 
 type SettingsPanelProps = {
   color: string;
@@ -35,6 +36,7 @@ const SettingsPanel = ({ color, store, setStore, translations }: SettingsPanelPr
             <Checkbox
               label={translations?.layersDisplay[selection] || selection}
               checked={store.layersDisplay[selection]}
+              disabled={checkLayerData(store, selection)}
               onChange={() => {
                 setStore((prev) => ({
                   ...prev,

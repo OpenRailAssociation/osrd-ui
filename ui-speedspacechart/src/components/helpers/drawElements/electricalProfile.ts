@@ -6,7 +6,7 @@ import {
   positionOnGraphScale,
 } from '../../utils';
 import type { Store } from '../../../types/chartTypes';
-import { LINEAR_LAYERS_BACKGROUND_COLOR, MARGINS, LAYERS_HEIGHTS } from '../../const';
+import { LINEAR_LAYERS_BACKGROUND_COLOR, MARGINS, LINEAR_LAYERS_HEIGHTS } from '../../const';
 
 const PROFILE_HEIGHT_MAX = 40;
 const MARGIN_POSITION_TEXT = 12;
@@ -21,7 +21,7 @@ export const drawElectricalProfile = (
   store: Store
 ) => {
   const { electricalProfiles, ratioX, leftOffset, cursor } = store;
-  const { ELECTRICAL_PROFILES_HEIGHT } = LAYERS_HEIGHTS;
+  const { ELECTRICAL_PROFILES_HEIGHT } = LINEAR_LAYERS_HEIGHTS;
 
   if (!electricalProfiles) return;
   clearCanvas(ctx, width, height);
@@ -70,20 +70,15 @@ export const drawElectricalProfile = (
 
       if (profile === 'incompatible') {
         // Incompatible profile
-        ctx.beginPath();
         for (let i = 0; i < 9; i++) {
           ctx.fillRect(x, topRect + 15 + i * 3, profileWidth, 1);
         }
-        ctx.stroke();
       } else {
-        ctx.beginPath();
-
         topRect += heightLevelMax * 4;
 
         const profileHeight = PROFILE_HEIGHT_MAX - heightLevelMax * 4;
 
         ctx.fillRect(x, topRect, profileWidth, profileHeight);
-        ctx.stroke();
 
         // Draw only if cursor hover a profile
         if (
@@ -95,27 +90,22 @@ export const drawElectricalProfile = (
           cursor.x - leftOffset <= x + profileWidth - MARGIN_LEFT
         ) {
           // Draw selection bar
-          ctx.beginPath();
           ctx.globalAlpha = 0.2;
           ctx.fillRect(x, MARGIN_TOP, profileWidth, topLayer - SELECTION_BAR_HEIGHT_AJUSTEMENT);
           ctx.globalAlpha = 1;
-          ctx.stroke();
 
           const profilNameWidth = Math.floor(ctx.measureText(profile).width);
           const marginProfilName = 20;
 
           // Draw profile name
           if (profileWidth > profilNameWidth + marginProfilName) {
-            ctx.beginPath();
             ctx.fillStyle = '#000';
             ctx.font = '600 14px IBM Plex Sans';
             ctx.textAlign = 'center';
             ctx.fillText(`${profile}`, x + profileWidth / 2, topLayer / 2);
-            ctx.stroke();
           }
 
           // Draw begin and end position
-          ctx.beginPath();
           ctx.fillStyle = 'rgb(49, 46, 43)';
           ctx.font = '400 14px IBM Plex Sans';
           ctx.textAlign = 'right';
@@ -130,15 +120,12 @@ export const drawElectricalProfile = (
             x + profileWidth + MARGIN_POSITION_TEXT,
             topLayer / 2
           );
-          ctx.stroke();
         }
       }
     } else {
-      ctx.beginPath();
       ctx.fillStyle = '#1F1B17';
       ctx.fillRect(x, topRect + 28, profileWidth, 9);
       ctx.clearRect(x, topRect + 31, profileWidth, 3);
-      ctx.stroke();
     }
   });
 
@@ -186,7 +173,6 @@ export const drawElectricalProfile = (
       ctx.shadowColor = 'rgba(0, 0, 0, 0.19)';
       ctx.shadowBlur = 5;
 
-      ctx.beginPath();
       ctx.strokeStyle = '#FFF';
       ctx.lineWidth = 2;
       ctx.strokeRect(x - 1, startHoverStrokeHeight - 1, profileWidth + 2, profileHeight + 2);
@@ -194,7 +180,7 @@ export const drawElectricalProfile = (
     }
   }
 
-  drawSeparatorLinearLayer(ctx, 'rgba(0,0,0,0.1)', MARGINS, width, topLayer + 1);
+  drawSeparatorLinearLayer(ctx, 'rgba(0,0,0,0.1)', MARGINS, width, topLayer + 1 - MARGIN_BOTTOM);
 
   ctx.restore();
 

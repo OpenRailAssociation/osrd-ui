@@ -13,6 +13,7 @@ type DetailsBoxProps = {
   effortText: string;
   electricalModeText: string;
   electricalProfileText: string;
+  powerRestrictionText: string;
   previousGradientText: number;
   modeText: string;
 };
@@ -27,6 +28,7 @@ const DetailsBox = ({
   effortText,
   electricalModeText,
   electricalProfileText,
+  powerRestrictionText,
   previousGradientText,
   modeText,
 }: DetailsBoxProps) => {
@@ -72,7 +74,9 @@ const DetailsBox = ({
           {detailsBoxDisplay.electricalProfiles && <p>{electricalProfileText}</p>}
         </div>
       )}
-      {detailsBoxDisplay.powerRestrictions && <span id="power-restriction">--</span>}
+      {detailsBoxDisplay.powerRestrictions && (
+        <span id="power-restriction">{powerRestrictionText}</span>
+      )}
       {detailsBoxDisplay.declivities && (
         <>
           <hr />
