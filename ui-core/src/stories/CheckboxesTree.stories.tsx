@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
-import CheckboxesTree, {
-  CheckboxesTreeProps,
-  flattenArray,
-} from '../components/inputs/Checkbox/CheckboxesTree';
+import CheckboxesTree, { CheckboxesTreeProps } from '../components/inputs/Checkbox/CheckboxesTree';
 import { CheckboxState, ItemState } from '../components/inputs/Checkbox/type';
+import { flattenArray } from '../components/inputs/Checkbox/updateItemState';
 
 const CheckboxesTreeStory = (props: CheckboxesTreeProps) => {
   const initialItemsStates: ItemState[] = flattenArray(props.items).map(({ id, props }) => {

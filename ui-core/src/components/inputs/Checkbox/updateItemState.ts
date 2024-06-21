@@ -1,7 +1,27 @@
-import { CheckboxListItem, ItemState, CheckboxState } from './type';
+import { CheckboxListItem, ItemState, CheckboxState, CheckboxTreeItem } from './type';
 
 type ParentChildrenMap = Record<number, number[]>; // Maps parent ID to child IDs
 type ChildParentMap = Record<number, number>; // Maps child ID to parent ID
+
+export function flattenArray(
+  items: CheckboxTreeItem[],
+  parentId: number | undefined = undefined,
+  result: CheckboxListItem[] = []
+) {
+  items.forEach((item) => {
+    const newItem: CheckboxListItem = { id: item.id, props: item.props };
+    if (parentId != undefined) {
+      newItem.parentId = parentId;
+    }
+    result.push(newItem);
+
+    if (item.items && item.items.length > 0) {
+      flattenArray(item.items, item.id, result);
+    }
+  });
+
+  return result;
+}
 
 export const buildRelationshipMaps = (
   items: CheckboxListItem[]
