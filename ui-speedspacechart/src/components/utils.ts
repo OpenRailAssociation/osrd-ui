@@ -14,7 +14,7 @@ type MaxPositionValues = {
 };
 
 export const getGraphOffsets = (width: number, height: number) => {
-  const WIDTH_OFFSET = width - 68;
+  const WIDTH_OFFSET = width - 60;
   const HEIGHT_OFFSET = height - 80;
   return { WIDTH_OFFSET, HEIGHT_OFFSET };
 };

@@ -3,6 +3,7 @@ import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-speedspacechart/dist/theme.css';
 import SpeedSpaceChart from '../components/SpeedSpaceChart';
 import OSRD_SAMPLE from './assets/sampleData';
+import { translations } from './assets/const';
 
 const meta: Meta<typeof SpeedSpaceChart> = {
   title: 'SpeedSpaceChart/Rendering',
@@ -25,5 +26,6 @@ export const SpeedSpaceChartDefault: Story = {
     height: 521.5,
     backgroundColor: 'rgb(247, 246, 238)',
     data: OSRD_SAMPLE,
+    translations,
   },
 };

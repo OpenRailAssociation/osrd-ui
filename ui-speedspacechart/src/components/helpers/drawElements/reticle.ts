@@ -41,6 +41,7 @@ export const drawCursor = (
 
   let marecoSpeedText = '';
   let effortText = 'coasting';
+  let electricalModeText = '';
   let electricalProfileText = '';
   let previousGradientText = 0;
   let modeText = '';
@@ -81,7 +82,6 @@ export const drawCursor = (
     const nextStop = stops.find((stop) => xPositionReference(stop.position) >= cursor.x!);
 
     // Get the electrical profile name based on the position of the cursor
-    let electricalProfileName = '--';
     if (electricalProfiles) {
       const { values, boundaries } = electricalProfiles;
       const currentBoundaryProfileIndex = boundaries.findIndex(
@@ -93,7 +93,7 @@ export const drawCursor = (
         'profile' in electricalProfileValue &&
         electricalProfileValue.profile !== 'incompatible'
       ) {
-        electricalProfileName = electricalProfileValue.profile;
+        electricalProfileText = electricalProfileValue.profile;
       }
     }
 
@@ -124,7 +124,7 @@ export const drawCursor = (
       if (electrificationUsage) {
         const isElectrified = electrificationUsage.object_type === 'Electrified';
         modeText = isElectrified ? 'electric' : '--';
-        electricalProfileText = `${isElectrified ? electrificationUsage.mode : electrificationUsage.object_type} ${electricalProfileName}`;
+        electricalModeText = `${isElectrified ? electrificationUsage.mode : electrificationUsage.object_type}`;
       }
 
       // find out if the cursor isn't close to the previous stop or the next stop based on 20px
@@ -250,6 +250,7 @@ export const drawCursor = (
     curveY,
     marecoSpeedText,
     effortText,
+    electricalModeText,
     electricalProfileText,
     previousGradientText,
     modeText,

@@ -13,13 +13,7 @@ const CurveLayer = ({ width, height, store }: CurveLayerProps) => {
   const canvas = useCanvas(drawCurve, width, height, store);
 
   return (
-    <canvas
-      id="curve-layer"
-      className="absolute rounded-t-xl"
-      ref={canvas}
-      width={width}
-      height={height}
-    />
+    <canvas id="curve-layer" className="absolute" ref={canvas} width={width} height={height} />
   );
 };
 
