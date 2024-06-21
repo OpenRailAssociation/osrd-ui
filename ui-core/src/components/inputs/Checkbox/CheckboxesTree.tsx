@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import CheckboxList from './CheckboxList';
 import { buildRelationshipMaps, updateItemStatesOptimized } from './updateItemState';
 import FieldWrapper from '../FieldWrapper';
 import { StatusWithMessage } from '../StatusMessage';
-import { CheckboxListItem, CheckboxState, CheckboxTreeItem, ItemState } from './type';
+import { CheckboxListItem, CheckboxTreeItem, ItemState } from './type';
 
 export type CheckboxesTreeProps = {
   id: string;
@@ -15,9 +15,12 @@ export type CheckboxesTreeProps = {
   required?: boolean;
   items: CheckboxTreeItem[];
   small?: boolean;
+  itemStates: ItemState[];
+  onChange?: (newItemStates: ItemState[], item: CheckboxTreeItem) => void;
+  computeNewState?: (prevItemState: ItemState[], item: CheckboxTreeItem) => ItemState[];
 };
 
-function flattenArray(
+export function flattenArray(
   items: CheckboxTreeItem[],
   parentId: number | undefined = undefined,
   result: CheckboxListItem[] = []
@@ -47,26 +50,24 @@ const CheckboxesTree = ({
   disabled,
   required,
   readOnly,
+  itemStates,
+  onChange,
+  computeNewState,
 }: CheckboxesTreeProps) => {
   const flatItems = flattenArray(items);
 
-  const defaultItemStates: ItemState[] = flatItems.map((i) => ({
-    id: i.id,
-    state: CheckboxState.UNCHECKED,
-  }));
-
   const [parentChildrenMap, childrenParentMap] = buildRelationshipMaps(flatItems);
 
-  const [itemStates, setItemStates] = useState<ItemState[]>(defaultItemStates);
-
-  const clickHandler = useCallback(
-    (id: number) => {
-      setItemStates((currentStates) =>
-        updateItemStatesOptimized(currentStates, id, parentChildrenMap, childrenParentMap)
-      );
-    },
-    [parentChildrenMap, childrenParentMap]
-  );
+  const handleClick = (
+    e: React.MouseEvent<HTMLInputElement, MouseEvent>,
+    item: CheckboxTreeItem
+  ) => {
+    const newItemStates = computeNewState
+      ? computeNewState(itemStates, item)
+      : updateItemStatesOptimized(itemStates, item.id, parentChildrenMap, childrenParentMap);
+    onChange?.(newItemStates, item);
+    item.props.onClick?.(e);
+  };
 
   return (
     <FieldWrapper
@@ -81,13 +82,11 @@ const CheckboxesTree = ({
     >
       <CheckboxList
         small={small}
-        items={flatItems}
+        items={items}
         disabled={disabled}
         readOnly={readOnly}
-        onClick={clickHandler}
-        getStateForId={(id: number) =>
-          itemStates.find((i) => i.id === id)?.state || CheckboxState.UNCHECKED
-        }
+        onClickItem={handleClick}
+        itemStates={itemStates}
       />
     </FieldWrapper>
   );

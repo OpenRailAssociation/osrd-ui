@@ -1,65 +1,49 @@
 import React from 'react';
-import { CheckboxState, CheckboxListItem } from './type';
+import { CheckboxState, CheckboxTreeItem, ItemState } from './type';
 import Checkbox from './Checkbox';
 
 import cx from 'classnames';
 
 export type CheckboxListProps = {
-  items: CheckboxListItem[];
-  idsToRender?: number[];
-  onClick?: (id: number) => void;
-  getStateForId: (id: number) => CheckboxState;
+  items: CheckboxTreeItem[];
+  onClickItem: (e: React.MouseEvent<HTMLInputElement, MouseEvent>, item: CheckboxTreeItem) => void;
+  itemStates: ItemState[];
   small?: boolean;
   label?: string;
   readOnly?: boolean;
   disabled?: boolean;
 };
 
-const CheckboxList: React.FC<CheckboxListProps> = ({
-  items,
-  getStateForId,
-  idsToRender = items.filter((i) => i.parentId == null).map((i) => i.id),
-  onClick = () => {},
-  small = false,
-  label = '',
-  readOnly = false,
-  disabled = false,
-}) => {
-  const getChildNodes = (parentId: number) => {
-    const childIds = items.filter((i) => i.parentId === parentId).map((i) => i.id);
-    return childIds.length > 0 ? (
-      <CheckboxList
-        items={items}
-        idsToRender={childIds}
-        onClick={onClick}
-        getStateForId={getStateForId}
-        small={small}
-        disabled={disabled}
-        readOnly={readOnly}
-      />
-    ) : null;
-  };
+const CheckboxList: React.FC<CheckboxListProps> = (checkBoxListprops) => {
+  const {
+    items,
+    onClickItem,
+    itemStates,
+    small = false,
+    label = '',
+    readOnly = false,
+    disabled = false,
+  } = checkBoxListprops;
 
   return (
     <>
       <span className="checkbox-list-label">{label}</span>
       <ul className={cx('checkbox-list', { small: small })}>
-        {idsToRender.map((id) => {
-          const item = items.find((i) => i.id === id);
-          if (!item) return null;
-          const checkboxState = getStateForId(id);
+        {items.map((item) => {
+          const { id, props, items: subItems } = item;
+          const itemState = itemStates.find((i) => i.id === id)?.state;
           return (
-            <li key={item.id}>
+            <li key={id}>
               <Checkbox
                 small={small}
-                onClick={() => onClick(item.id)}
-                checked={checkboxState === CheckboxState.CHECKED}
-                isIndeterminate={checkboxState === CheckboxState.INDETERMINATE}
-                {...item.props}
+                onClick={(e) => onClickItem(e, item)}
+                checked={itemState === CheckboxState.CHECKED}
+                isIndeterminate={itemState === CheckboxState.INDETERMINATE}
+                {...props}
                 disabled={disabled}
                 readOnly={readOnly}
               />
-              {getChildNodes(item.id)}
+              {subItems && <CheckboxList {...checkBoxListprops} items={subItems} />}
             </li>
           );
         })}

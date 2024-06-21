@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
-import CheckboxesTree from '../components/inputs/Checkbox/CheckboxesTree';
+import CheckboxesTree, {
+  CheckboxesTreeProps,
+  flattenArray,
+} from '../components/inputs/Checkbox/CheckboxesTree';
+import { CheckboxState, ItemState } from '../components/inputs/Checkbox/type';
+
+const CheckboxesTreeStory = (props: CheckboxesTreeProps) => {
+  const initialItemsStates: ItemState[] = flattenArray(props.items).map(({ id, props }) => {
+    let state = CheckboxState.UNCHECKED;
+    if (props.isIndeterminate) state = CheckboxState.INDETERMINATE;
+    if (props.checked) state = CheckboxState.CHECKED;
+    return { id, state };
+  });
+
+  const handleOnChange = (newItemStates: ItemState[]) => setItemStates(newItemStates);
+
+  const [itemStates, setItemStates] = useState<ItemState[]>(initialItemsStates);
+  return <CheckboxesTree {...props} itemStates={itemStates} onChange={handleOnChange} />;
+};
 
 const meta: Meta<typeof CheckboxesTree> = {
   component: CheckboxesTree,
@@ -13,6 +31,7 @@ const meta: Meta<typeof CheckboxesTree> = {
     readOnly: { control: 'boolean' },
     required: { control: 'boolean' },
   },
+  render: (props) => <CheckboxesTreeStory {...props} />,
 };
 
 export default meta;
