@@ -49,7 +49,7 @@ const ReticleLayer = ({
     <>
       <canvas id="cursor-layer" className="absolute" ref={canvas} width={width} height={height} />
       {showDetailsBox && debouncedDetailsBox && (
-        <DetailsBox width={width} height={height} {...debouncedDetailsBox} />
+        <DetailsBox width={width} height={height} store={store} {...debouncedDetailsBox} />
       )}
     </>
   );

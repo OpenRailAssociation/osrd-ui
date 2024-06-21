@@ -1,6 +1,8 @@
+import { Store } from '../types/chartTypes';
+
 export const MARGINS = {
   MARGIN_LEFT: 48,
-  MARGIN_RIGHT: 20,
+  MARGIN_RIGHT: 12,
   MARGIN_TOP: 27,
   MARGIN_BOTTOM: 52.5,
   CURVE_MARGIN_TOP: 40,
@@ -21,3 +23,21 @@ export const LINEAR_LAYERS_BACKGROUND_COLOR = {
 };
 
 export const FRONT_INTERACTIVITY_LAYER_ID = '#front-interactivity-layer';
+
+export const DETAILS_BOX_SELECTION: Array<keyof Store['detailsBoxDisplay']> = [
+  'energySource',
+  'tractionStatus',
+  'declivities',
+  'electricalProfiles',
+  'powerRestrictions',
+];
+
+export const LAYERS_SELECTION: Array<keyof Store['layersDisplay']> = [
+  'steps',
+  'declivities',
+  'speedLimits',
+  'temporarySpeedLimits',
+  'electricalProfiles',
+  'powerRestrictions',
+  'speedLimitTags',
+];

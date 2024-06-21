@@ -1,13 +1,17 @@
 import React from 'react';
 import { MARGINS } from '../const';
+import type { Store } from '../../types/chartTypes';
+import cx from 'classnames';
 
 type DetailsBoxProps = {
   width: number;
   height: number;
+  store: Store;
   curveX: number;
   curveY: number;
   marecoSpeedText: string;
   effortText: string;
+  electricalModeText: string;
   electricalProfileText: string;
   previousGradientText: number;
   modeText: string;
@@ -16,15 +20,18 @@ type DetailsBoxProps = {
 const DetailsBox = ({
   width,
   height,
+  store,
   curveX,
   curveY,
   marecoSpeedText,
   effortText,
+  electricalModeText,
   electricalProfileText,
   previousGradientText,
   modeText,
 }: DetailsBoxProps) => {
   const { MARGIN_TOP, MARGIN_BOTTOM, MARGIN_LEFT, MARGIN_RIGHT } = MARGINS;
+  const { detailsBoxDisplay } = store;
 
   let rightOffset = 0;
   let bottomOffset = 0;
@@ -44,7 +51,7 @@ const DetailsBox = ({
   return (
     <div
       id="details-box"
-      className={`absolute flex flex-col ${curveY ? 'block' : 'hidden'}`}
+      className={cx('absolute flex flex-col', { block: curveY, hidden: !curveY })}
       style={{
         marginTop: boxY,
         marginLeft: boxX,
@@ -55,13 +62,23 @@ const DetailsBox = ({
         <span>--</span>
         <span>±--</span>
       </div>
-      {(modeText || effortText) && <hr />}
-      {modeText && <span id="mode-text">{modeText}</span>}
-      {effortText && <span id="effort-text">{effortText}</span>}
-      {electricalProfileText && <span id="electrical-profile-text">{electricalProfileText}</span>}
-      <span id="power-restriction">--</span>
-      <hr />
-      <span id="previous-gradient-text">{`${previousGradientText} ‰`}</span>
+      {(detailsBoxDisplay.energySource || detailsBoxDisplay.tractionStatus) &&
+        (modeText || effortText) && <hr />}
+      {detailsBoxDisplay.energySource && modeText && <span id="mode-text">{modeText}</span>}
+      {detailsBoxDisplay.tractionStatus && effortText && <span id="effort-text">{effortText}</span>}
+      {electricalModeText && (
+        <div id="electrical-mode-text">
+          <p>{electricalModeText}</p>
+          {detailsBoxDisplay.electricalProfiles && <p>{electricalProfileText}</p>}
+        </div>
+      )}
+      {detailsBoxDisplay.powerRestrictions && <span id="power-restriction">--</span>}
+      {detailsBoxDisplay.declivities && (
+        <>
+          <hr />
+          <span id="previous-gradient-text">{`${previousGradientText} ‰`}</span>
+        </>
+      )}
     </div>
   );
 };

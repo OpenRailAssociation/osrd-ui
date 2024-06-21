@@ -14,15 +14,43 @@ import { resetZoom } from './helpers/layersManager';
 import StepNamesLayer from './layers/StepNamesLayer';
 import { getGraphOffsets, getAdaptiveHeight } from './utils';
 import ElectricalProfileLayer from './layers/ElectricalProfileLayer';
+import SettingsPanel from './common/SettingsPanel';
+import InteractionButtons from './common/InteractionButtons';
 
 export type SpeedSpaceChartProps = {
   width: number;
   height: number;
   backgroundColor: string;
   data: OsrdSimulationState;
+  translations?: {
+    detailsBoxDisplay: {
+      reticleInfos: string;
+      energySource: string;
+      tractionStatus: string;
+      declivities: string;
+      electricalProfiles: string;
+      powerRestrictions: string;
+    };
+    layersDisplay: {
+      context: string;
+      steps: string;
+      declivities: string;
+      speedLimits: string;
+      temporarySpeedLimits: string;
+      electricalProfiles: string;
+      powerRestrictions: string;
+      speedLimitTags: string;
+    };
+  };
 };
 
-const SpeedSpaceChart = ({ width, height, backgroundColor, data }: SpeedSpaceChartProps) => {
+const SpeedSpaceChart = ({
+  width,
+  height,
+  backgroundColor,
+  data,
+  translations,
+}: SpeedSpaceChartProps) => {
   const [store, setStore] = useState<Store>({
     speed: [],
     stops: [],
@@ -47,7 +75,7 @@ const SpeedSpaceChart = ({ width, height, backgroundColor, data }: SpeedSpaceCha
       declivities: false,
       speedLimits: false,
       temporarySpeedLimits: false,
-      electricalProfiles: true,
+      electricalProfiles: false,
       powerRestrictions: false,
       speedLimitTags: false,
     },
@@ -69,6 +97,13 @@ const SpeedSpaceChart = ({ width, height, backgroundColor, data }: SpeedSpaceCha
     resetZoom();
   };
 
+  const openSettingsPanel = () => {
+    setStore((prev) => ({
+      ...prev,
+      isSettingsPanelOpened: true,
+    }));
+  };
+
   useEffect(() => {
     const storeData = {
       speed: (data.consolidatedSimulation[0].speed as ConsolidatedPositionSpeedTime[]) || [],
@@ -78,16 +113,12 @@ const SpeedSpaceChart = ({ width, height, backgroundColor, data }: SpeedSpaceCha
       electricalProfiles: data.electricalProfiles,
     };
 
-    const { speed, stops, electrification, slopes, electricalProfiles } = storeData;
+    const { speed, stops, electrification, slopes } = storeData;
 
     if (speed && stops && electrification && slopes) {
       setStore((prev) => ({
         ...prev,
-        speed: speed,
-        stops: stops,
-        electrification: electrification,
-        slopes: slopes,
-        electricalProfiles: electricalProfiles,
+        ...storeData,
       }));
     }
   }, [data]);
@@ -101,20 +132,34 @@ const SpeedSpaceChart = ({ width, height, backgroundColor, data }: SpeedSpaceCha
       }}
       tabIndex={0}
     >
-      <div className="flex justify-end absolute mt-8 ml-2" style={{ width: width }}>
-        <button
-          className="bg-blue-600 hover:bg-blue-700 text-white-100 p-1 mr-6 z-10 rounded-full w-8 h-8"
-          onClick={() => reset()}
-        >
-          &#8617;
-        </button>
+      <div className="flex justify-end absolute base-margin-top" style={{ width: width }}>
+        <InteractionButtons reset={reset} openSettingsPanel={openSettingsPanel} store={store} />
       </div>
+      {store.isSettingsPanelOpened && (
+        <div className="flex justify-end absolute ml-2 base-margin-top" style={{ width: width }}>
+          <SettingsPanel
+            color={backgroundColor}
+            store={store}
+            setStore={setStore}
+            translations={translations}
+          />
+        </div>
+      )}
       <CurveLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
       <AxisLayerY width={width} height={height} store={store} />
       <MajorGridY width={width} height={height} store={store} />
       <AxisLayerX width={width} height={height} store={store} />
-      <StepLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
-      <StepNamesLayer key={stop.name} width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
+      {store.layersDisplay.steps && (
+        <>
+          <StepLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
+          <StepNamesLayer
+            key={stop.name}
+            width={WIDTH_OFFSET}
+            height={HEIGHT_OFFSET}
+            store={store}
+          />
+        </>
+      )}
       <TickLayerY width={width} height={height} store={store} />
       <TickLayerX width={width} height={dynamicHeight} store={store} />
       {store.layersDisplay.electricalProfiles && (
