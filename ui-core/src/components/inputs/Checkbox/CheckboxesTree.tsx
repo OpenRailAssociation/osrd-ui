@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckboxList from './CheckboxList';
-import { buildRelationshipMaps, flattenArray, updateItemStatesOptimized } from './updateItemState';
+import { buildRelationshipMaps, updateItemStatesOptimized } from './updateItemState';
 import FieldWrapper, { FieldWrapperProps } from '../FieldWrapper';
 import { CheckboxTreeItem, ItemState } from './type';
 
@@ -27,7 +27,7 @@ const CheckboxesTree = ({
   computeNewState,
 }: CheckboxesTreeProps) => {
   const defaultComputeNewState = (prevItemState: ItemState[], item: CheckboxTreeItem) => {
-    const [parentChildrenMap, childrenParentMap] = buildRelationshipMaps(flattenArray(items));
+    const [parentChildrenMap, childrenParentMap] = buildRelationshipMaps(items);
     return updateItemStatesOptimized(prevItemState, item.id, parentChildrenMap, childrenParentMap);
   };
 

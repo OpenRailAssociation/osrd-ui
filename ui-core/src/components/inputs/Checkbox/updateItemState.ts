@@ -24,21 +24,29 @@ export function flattenArray(
 }
 
 export const buildRelationshipMaps = (
-  items: CheckboxListItem[]
+  items: CheckboxTreeItem[]
 ): [ParentChildrenMap, ChildParentMap] => {
   const parentChildrenMap: ParentChildrenMap = {};
   const childParentMap: ChildParentMap = {};
 
-  items.forEach((item) => {
-    if (item.parentId !== undefined) {
-      if (!parentChildrenMap[item.parentId]) {
-        parentChildrenMap[item.parentId] = [];
-      }
-      parentChildrenMap[item.parentId].push(item.id);
+  const buildMaps = (items: CheckboxTreeItem[], parentId?: number) => {
+    items.forEach((item) => {
+      if (parentId !== undefined) {
+        if (!parentChildrenMap[parentId]) {
+          parentChildrenMap[parentId] = [];
+        }
+        parentChildrenMap[parentId].push(item.id);
 
-      childParentMap[item.id] = item.parentId;
-    }
-  });
+        childParentMap[item.id] = parentId;
+      }
+
+      if (item.items && item.items.length > 0) {
+        buildMaps(item.items, item.id);
+      }
+    });
+  };
+
+  buildMaps(items);
 
   return [parentChildrenMap, childParentMap];
 };
