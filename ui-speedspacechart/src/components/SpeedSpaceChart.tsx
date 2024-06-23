@@ -13,6 +13,7 @@ import ReticleLayer from './layers/ReticleLayer';
 import { resetZoom } from './helpers/layersManager';
 import StepNamesLayer from './layers/StepNamesLayer';
 import { getGraphOffsets } from './utils';
+import { useTranslation } from 'react-i18next';
 
 export type SpeedSpaceChartProps = {
   width: number;
@@ -22,6 +23,7 @@ export type SpeedSpaceChartProps = {
 };
 
 const SpeedSpaceChart = ({ width, height, backgroundColor, data }: SpeedSpaceChartProps) => {
+  const { t } = useTranslation();
   const [store, setStore] = useState<Store>({
     speed: [],
     stops: [],
@@ -76,6 +78,7 @@ const SpeedSpaceChart = ({ width, height, backgroundColor, data }: SpeedSpaceCha
       }}
       tabIndex={0}
     >
+      {t('speedSpaceChart.title')}
       <div className="flex justify-end absolute mt-8 ml-2" style={{ width: width }}>
         <button
           className="bg-blue-600 hover:bg-blue-700 text-white-100 p-1 mr-6 z-10 rounded-full w-8 h-8"
