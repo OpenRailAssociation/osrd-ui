@@ -16,13 +16,19 @@
 #step-layer {
   margin-left: 3rem;
   margin-top: 1.6875rem;
-  box-shadow: 0 0.0625rem 0,125rem 0 rgba(0, 0, 0, 0.19);
-  box-shadow: 0 0.25rem 0.5625rem 0 rgba(0, 0, 0, 0.06);
+}
+
+#curve-layer {
+  background-color: rgb(255, 255, 255);
 }
 
 #front-interactivity-layer {
   margin-left: 3rem;
   margin-top: 1.6875rem;
+  box-shadow:
+    0 0.0625rem 0,
+    125rem 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 0.25rem 0.5625rem 0 rgba(0, 0, 0, 0.06);
 }
 
 #details-box {
@@ -47,29 +53,28 @@
     border-top: 0.0313rem solid rgba(255, 255, 255, 0.5);
     margin-top: 0.4375rem;
     margin-bottom: 0.1875rem;
-
   }
-  
+
   #mareco-speed-text {
     font-weight: 600;
   }
-  
+
   #base-speed-text {
     display: flex;
     justify-content: space-between;
     color: rgba(255, 255, 255, 0.75);
   }
-  
+
   #mode-text {
     font-family: 'IBM Plex Sans', sans-serif;
     color: rgb(255, 247, 0);
   }
-  
+
   #effort-text {
     font-family: 'IBM Plex Sans', sans-serif;
     color: rgb(112, 193, 229);
   }
-  
+
   #previous-gradient-text {
     font-family: 'IBM Plex Sans';
   }

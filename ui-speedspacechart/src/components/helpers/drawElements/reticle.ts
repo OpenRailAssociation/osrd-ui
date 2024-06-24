@@ -1,4 +1,4 @@
-import { clearCanvas, maxPositionValues, speedRangeValues } from '../../utils';
+import { clearCanvas, getAdaptiveHeight, maxPositionValues, speedRangeValues } from '../../utils';
 import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
 import { ConsolidatedPositionSpeedTime, GradientPosition } from '../../../types/simulationTypes';
@@ -20,6 +20,18 @@ export const drawCursor = (
 ) => {
   clearCanvas(ctx, width, height);
 
+  const {
+    cursor,
+    layersDisplay,
+    ratioX,
+    leftOffset,
+    speed,
+    stops,
+    electrification,
+    slopes,
+    electricalProfiles,
+  } = store;
+
   ctx.strokeStyle = 'rgb(0, 0, 0)';
   ctx.lineWidth = 1;
   ctx.font = 'normal 12px IBM Plex Sans';
@@ -32,7 +44,7 @@ export const drawCursor = (
   let electricalProfileText = '';
   let previousGradientText = 0;
   let modeText = '';
-  let curveX = store.cursor.x!;
+  let curveX = cursor.x!;
   let curveY = 0;
   let x = {
     a: 0,
@@ -46,31 +58,44 @@ export const drawCursor = (
   const { minSpeed, speedRange } = speedRangeValues(store);
   const { maxPosition } = maxPositionValues(store);
 
-  const cursorBoxHeight = height - MARGIN_BOTTOM - MARGIN_TOP;
+  const heightWithoutLayers = getAdaptiveHeight(height, layersDisplay, false);
+  const cursorBoxHeight = heightWithoutLayers - MARGIN_BOTTOM - MARGIN_TOP;
   const cursorBoxWidth = width - MARGIN_LEFT - MARGIN_RIGHT;
+
   const xPositionReference = (ref: number) =>
-    ref * ((cursorBoxWidth - CURVE_MARGIN_SIDES) / maxPosition) * store.ratioX +
-    store.leftOffset +
+    ref * ((cursorBoxWidth - CURVE_MARGIN_SIDES) / maxPosition) * ratioX +
+    leftOffset +
     CURVE_MARGIN_SIDES / 2;
 
-  if (store.cursor.x && store.cursor.y) {
+  if (cursor.x && cursor.y) {
     // get the nearest previous and next speed values of the curve based on pointer position
-    const previousCurvePosition = store.speed.findLast(
-      (speed: ConsolidatedPositionSpeedTime) =>
-        xPositionReference(speed.position) <= store.cursor.x!
+    const previousCurvePosition = speed.findLast(
+      (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) <= cursor.x!
     );
-    const nextCurvePosition = store.speed.find(
-      (speed: ConsolidatedPositionSpeedTime) =>
-        xPositionReference(speed.position) >= store.cursor.x!
+    const nextCurvePosition = speed.find(
+      (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) >= cursor.x!
     );
 
     // get the nearest previous and next stop values of the curve based on pointer position
-    const previousStop = store.stops.findLast(
-      (stop) => xPositionReference(stop.position) <= store.cursor.x!
-    );
-    const nextStop = store.stops.find(
-      (stop) => xPositionReference(stop.position) >= store.cursor.x!
-    );
+    const previousStop = stops.findLast((stop) => xPositionReference(stop.position) <= cursor.x!);
+    const nextStop = stops.find((stop) => xPositionReference(stop.position) >= cursor.x!);
+
+    // Get the electrical profile name based on the position of the cursor
+    let electricalProfileName = '--';
+    if (electricalProfiles) {
+      const { values, boundaries } = electricalProfiles;
+      const currentBoundaryProfileIndex = boundaries.findIndex(
+        (boundary) => cursor.x! <= xPositionReference(boundary)
+      );
+      const electricalProfileValue = values[currentBoundaryProfileIndex];
+      if (
+        electricalProfileValue &&
+        'profile' in electricalProfileValue &&
+        electricalProfileValue.profile !== 'incompatible'
+      ) {
+        electricalProfileName = electricalProfileValue.profile;
+      }
+    }
 
     // calculate the y position of the curve based on pointer position beetwen two points
     // adapt texts based on the position of the cursor
@@ -91,7 +116,7 @@ export const drawCursor = (
         b: cursorBoxHeight - normalizedNextSpeed * (cursorBoxHeight - CURVE_MARGIN_TOP),
       };
 
-      const previousElectrification = store.electrification.findLast(
+      const previousElectrification = electrification.findLast(
         (data) => data.start <= previousCurvePosition.position
       );
 
@@ -99,7 +124,7 @@ export const drawCursor = (
       if (electrificationUsage) {
         const isElectrified = electrificationUsage.object_type === 'Electrified';
         modeText = isElectrified ? 'electric' : '--';
-        electricalProfileText = `${isElectrified ? electrificationUsage.mode : electrificationUsage.object_type} --`;
+        electricalProfileText = `${isElectrified ? electrificationUsage.mode : electrificationUsage.object_type} ${electricalProfileName}`;
       }
 
       // find out if the cursor isn't close to the previous stop or the next stop based on 20px
@@ -125,7 +150,7 @@ export const drawCursor = (
           effortText = 'decelerating';
         }
 
-        previousGradientText = store.slopes.findLast(
+        previousGradientText = slopes.findLast(
           (data: GradientPosition) => xPositionReference(data.position) <= curveX!
         )!.gradient;
       } else {
@@ -139,10 +164,10 @@ export const drawCursor = (
           curveX = xPositionReference(nextStop.position);
         }
 
-        const nextSpeed = store.speed.findLast(
+        const nextSpeed = speed.findLast(
           (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) <= curveX
         )!.speed;
-        const previousSpeed = store.speed.find(
+        const previousSpeed = speed.find(
           (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) >= curveX
         )!.speed;
 
@@ -161,7 +186,7 @@ export const drawCursor = (
           effortText = 'decelerating';
         }
 
-        previousGradientText = store.slopes.findLast(
+        previousGradientText = slopes.findLast(
           (data: GradientPosition) => xPositionReference(data.position) <= curveX!
         )!.gradient;
       }
@@ -169,6 +194,7 @@ export const drawCursor = (
       ctx.beginPath();
       // lines along the curve
       // horizontal
+      // TODO: add const for 12.75
       ctx.moveTo(curveX + MARGIN_LEFT - 12.75, curveY + MARGIN_TOP);
       ctx.lineTo(curveX + MARGIN_LEFT + 12.75, curveY + MARGIN_TOP);
       ctx.stroke();

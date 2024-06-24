@@ -95,4 +95,14 @@ export const drawTickX = (
   // prevent overlapping with margins left and right
   ctx.clearRect(0, 0, MARGIN_LEFT, height);
   ctx.clearRect(width - MARGIN_RIGHT, 0, width, height);
+
+  // text for x axis
+  ctx.fillStyle = 'rgb(182, 179, 175)';
+  ctx.textAlign = 'center';
+  ctx.shadowOffsetY = 0;
+  ctx.shadowBlur = 0;
+  ctx.beginPath();
+  ctx.fillText('km', width - MARGIN_RIGHT + CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM + 24);
+  ctx.closePath();
+  ctx.stroke();
 };

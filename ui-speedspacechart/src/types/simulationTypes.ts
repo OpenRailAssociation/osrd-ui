@@ -413,4 +413,19 @@ export interface OsrdSimulationState {
     present: SimulationSnapshot;
     future: SimulationHistory;
   };
+  electricalProfiles?: {
+    boundaries: number[];
+    values: (
+      | {
+          electrical_profile_type: 'no_profile';
+        }
+      | {
+          electrical_profile_type: 'profile';
+          handled: true;
+          profile: string;
+          profileColor: string;
+          heightLevel: number;
+        }
+    )[];
+  };
 }

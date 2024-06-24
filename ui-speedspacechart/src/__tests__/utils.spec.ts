@@ -4,9 +4,12 @@ import {
   speedRangeValues,
   maxPositionValues,
   clearCanvas,
+  getAdaptiveHeight,
+  positionOnGraphScale,
 } from '../components/utils';
 import type { Store } from '../types/chartTypes';
 import type { ConsolidatedPositionSpeedTime } from '../types/simulationTypes';
+import { MARGINS } from '../components/const';
 
 const time = new Date();
 
@@ -27,6 +30,29 @@ const store: Store = {
     x: null,
     y: null,
   },
+
+  // TODO: Create test for detailsBoxDisplay, linearDisplay and electricalProfiles
+  detailsBoxDisplay: {
+    energySource: true,
+    tractionStatus: true,
+    electricalProfiles: true,
+    powerRestrictions: true,
+    declivities: true,
+  },
+  layersDisplay: {
+    speedLimits: false,
+    electricalProfiles: true,
+    powerRestrictions: false,
+    declivities: false,
+    speedLimitTags: false,
+    steps: true,
+    temporarySpeedLimits: false,
+  },
+  electricalProfiles: {
+    boundaries: [],
+    values: [],
+  },
+  isSettingsPanelOpened: false,
 };
 
 describe('getGraphOffsets', () => {
@@ -75,5 +101,83 @@ describe('clearCanvas', () => {
     } as unknown as CanvasRenderingContext2D;
     clearCanvas(ctx, 100, 200);
     expect(ctx.clearRect).toHaveBeenCalledWith(0, 0, 100, 200);
+  });
+});
+
+describe('getAdaptiveHeight', () => {
+  it('should return the correct adaptive height with one linear layer', () => {
+    const height = 100;
+    const layersDisplay = {
+      fastestDrive: false,
+      speedLimits: false,
+      speedAnomalies: false,
+      electricalProfiles: true,
+      powerRestrictions: false,
+      declivities: false,
+      speedLimitTags: false,
+      signals: false,
+      steps: false,
+      temporarySpeedLimits: false,
+    };
+    const adaptiveHeight = getAdaptiveHeight(height, layersDisplay);
+    expect(adaptiveHeight).toBe(156);
+  });
+
+  it('should return the correct adaptive height with multiple linear layers', () => {
+    const height = 100;
+    const layersDisplay = {
+      fastestDrive: false,
+      speedLimits: false,
+      speedAnomalies: false,
+      electricalProfiles: true,
+      powerRestrictions: true,
+      declivities: false,
+      speedLimitTags: true,
+      signals: false,
+      steps: false,
+      temporarySpeedLimits: false,
+    };
+    const adaptiveHeight = getAdaptiveHeight(height, layersDisplay);
+    expect(adaptiveHeight).toBe(236);
+  });
+
+  it('should return the correct adaptive height with one linear layer removed', () => {
+    const height = 100;
+    const layersDisplay = {
+      fastestDrive: false,
+      speedLimits: false,
+      speedAnomalies: false,
+      electricalProfiles: true,
+      powerRestrictions: false,
+      declivities: false,
+      speedLimitTags: false,
+      signals: false,
+      steps: false,
+      temporarySpeedLimits: false,
+    };
+    const adaptiveHeight = getAdaptiveHeight(height, layersDisplay, false);
+    expect(adaptiveHeight).toBe(44);
+  });
+});
+
+describe('positionOnGraphScale', () => {
+  it('should return the correct position on the graph scale', () => {
+    const position = 300;
+    const maxPosition = 600;
+    const width = 1000;
+    const ratioX = 1;
+
+    const positionOnScale = positionOnGraphScale(position, maxPosition, width, ratioX, MARGINS);
+    expect(positionOnScale).toBe(518);
+  });
+
+  it('should return the correct position on the graph scale with ratioX = 2', () => {
+    const position = 300;
+    const maxPosition = 600;
+    const width = 1000;
+    const ratioX = 2;
+
+    const positionOnScale = positionOnGraphScale(position, maxPosition, width, ratioX, MARGINS);
+    expect(positionOnScale).toBe(980);
   });
 });
