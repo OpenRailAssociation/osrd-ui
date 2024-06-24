@@ -2,20 +2,12 @@ import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
 import CheckboxesTree, { CheckboxesTreeProps } from '../components/inputs/Checkbox/CheckboxesTree';
-import { CheckboxState, ItemState } from '../components/inputs/Checkbox/type';
-import { flattenArray } from '../components/inputs/Checkbox/updateItemState';
+import { ItemStates } from '../components/inputs/Checkbox/type';
 
 const CheckboxesTreeStory = (props: CheckboxesTreeProps) => {
-  const initialItemsStates: ItemState[] = flattenArray(props.items).map(({ id, props }) => {
-    let state = CheckboxState.UNCHECKED;
-    if (props.isIndeterminate) state = CheckboxState.INDETERMINATE;
-    if (props.checked) state = CheckboxState.CHECKED;
-    return { id, state };
-  });
+  const handleOnChange = (newItemStates: ItemStates) => setItemStates(newItemStates);
 
-  const handleOnChange = (newItemStates: ItemState[]) => setItemStates(newItemStates);
-
-  const [itemStates, setItemStates] = useState<ItemState[]>(initialItemsStates);
+  const [itemStates, setItemStates] = useState<ItemStates | undefined>(undefined);
   return <CheckboxesTree {...props} itemStates={itemStates} onChange={handleOnChange} />;
 };
 

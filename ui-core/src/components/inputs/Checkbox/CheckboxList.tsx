@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckboxState, CheckboxTreeItem, ItemState } from './type';
+import { CheckboxState, CheckboxTreeItem, ItemStates } from './type';
 import Checkbox from './Checkbox';
 
 import cx from 'classnames';
@@ -7,7 +7,7 @@ import cx from 'classnames';
 export type CheckboxListProps = {
   items: CheckboxTreeItem[];
   onClickItem: (e: React.MouseEvent<HTMLInputElement, MouseEvent>, item: CheckboxTreeItem) => void;
-  itemStates: ItemState[];
+  itemStates?: ItemStates;
   small?: boolean;
   label?: string;
   readOnly?: boolean;
@@ -18,7 +18,7 @@ const CheckboxList: React.FC<CheckboxListProps> = (checkBoxListprops) => {
   const {
     items,
     onClickItem,
-    itemStates,
+    itemStates = {},
     small = false,
     label = '',
     readOnly = false,
@@ -31,7 +31,7 @@ const CheckboxList: React.FC<CheckboxListProps> = (checkBoxListprops) => {
       <ul className={cx('checkbox-list', { small: small })}>
         {items.map((item) => {
           const { id, props, items: subItems } = item;
-          const itemState = itemStates.find((i) => i.id === id)?.state;
+          const itemState = itemStates[id] || CheckboxState.UNCHECKED;
           return (
             <li key={id}>
               <Checkbox

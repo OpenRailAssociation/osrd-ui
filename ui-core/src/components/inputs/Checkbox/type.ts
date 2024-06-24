@@ -12,13 +12,13 @@ export enum CheckboxState {
   INDETERMINATE,
 }
 
-export type ItemState = {
-  id: number;
-  state: CheckboxState;
-};
+export type ItemStates = Record<number, CheckboxState>;
 
 export type CheckboxTreeItem = {
   id: number;
   props: CheckboxProps;
   items?: CheckboxTreeItem[];
 };
+
+export type ParentChildrenMap = Record<number, number[]>; // Maps parent ID to child IDs
+export type ChildParentMap = Record<number, number>; // Maps child ID to parent ID

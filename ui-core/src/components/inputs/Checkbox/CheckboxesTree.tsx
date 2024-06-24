@@ -1,15 +1,18 @@
 import React from 'react';
 import CheckboxList from './CheckboxList';
-import { buildRelationshipMaps, updateItemStatesOptimized } from './updateItemState';
+import {
+  completeOrInitializeItemStates,
+  computeNextItemStates as defaultComputeNextItemStates,
+} from './utils';
 import FieldWrapper, { FieldWrapperProps } from '../FieldWrapper';
-import { CheckboxTreeItem, ItemState } from './type';
+import { CheckboxTreeItem, ItemStates } from './type';
 
 export type CheckboxesTreeProps = Omit<FieldWrapperProps, 'children'> & {
   readOnly?: boolean;
   items: CheckboxTreeItem[];
-  itemStates: ItemState[];
-  onChange?: (newItemStates: ItemState[], item: CheckboxTreeItem) => void;
-  computeNewState?: (prevItemState: ItemState[], item: CheckboxTreeItem) => ItemState[];
+  itemStates?: ItemStates;
+  onChange?: (newItemStates: ItemStates, item: CheckboxTreeItem) => void;
+  computeNextItemStates?: (prevItemState: ItemStates, item: CheckboxTreeItem) => ItemStates;
 };
 
 const CheckboxesTree = ({
@@ -24,20 +27,19 @@ const CheckboxesTree = ({
   readOnly,
   itemStates,
   onChange,
-  computeNewState,
+  computeNextItemStates,
 }: CheckboxesTreeProps) => {
-  const defaultComputeNewState = (prevItemState: ItemState[], item: CheckboxTreeItem) => {
-    const [parentChildrenMap, childrenParentMap] = buildRelationshipMaps(items);
-    return updateItemStatesOptimized(prevItemState, item.id, parentChildrenMap, childrenParentMap);
-  };
-
   const handleClick = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>,
     item: CheckboxTreeItem
   ) => {
-    const newItemStates = computeNewState
-      ? computeNewState(itemStates, item)
-      : defaultComputeNewState(itemStates, item);
+    // As we want to send back the state of all the itmes even if in input,
+    // the user can send only some of them, we need to ensure that we have the state of all the items.
+    // So we need to compute the state of all the items.
+    const prevItemStates = completeOrInitializeItemStates(items, itemStates);
+    const newItemStates = computeNextItemStates
+      ? computeNextItemStates(prevItemStates, item)
+      : defaultComputeNextItemStates(items, item.id, prevItemStates);
     onChange?.(newItemStates, item);
     item.props.onClick?.(e);
   };
