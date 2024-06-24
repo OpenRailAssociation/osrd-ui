@@ -50,10 +50,4 @@ export const drawGridX = (
   ctx.textAlign = 'center';
   ctx.shadowOffsetY = 0;
   ctx.shadowBlur = 0;
-
-  // text for x axis
-  ctx.beginPath();
-  ctx.fillText('km', width - MARGIN_RIGHT, height - MARGIN_BOTTOM + 24);
-  ctx.closePath();
-  ctx.stroke();
 };
