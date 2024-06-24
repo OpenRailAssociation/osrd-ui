@@ -10,6 +10,11 @@ import { CheckboxTreeItem, ItemStates } from './type';
 export type CheckboxesTreeProps = Omit<FieldWrapperProps, 'children'> & {
   readOnly?: boolean;
   items: CheckboxTreeItem[];
+  // This code may contain a partial/complete state of items. The states of items not provided are computed according to the following rules:
+  // - If the item is a leaf:
+  //   - If the item.props.checked property is defined, it is used to set the state.
+  //   - Otherwise, the state defaults to UNCHECKED.
+  // - If the item is a parent, its state is computed from the states of its children, regardless of whether the state is provided or not.
   itemStates?: ItemStates;
   onChange?: (newItemStates: ItemStates, item: CheckboxTreeItem) => void;
   computeNextItemStates?: (prevItemState: ItemStates, item: CheckboxTreeItem) => ItemStates;

@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { CheckboxListItem, CheckboxState, CheckboxTreeItem, ItemStates } from '../type';
+import { CheckboxState, CheckboxTreeItem, ItemStates } from '../type';
 import {
   buildRelationshipMaps,
-  flattenTree,
   updateItemStatesOptimized,
   completeOrInitializeItemStates,
 } from '../utils';
@@ -15,17 +14,6 @@ describe('utils', () => {
   const item1 = { id: 1, props: buildItemProps(1, false), items: [item2, item3] };
 
   const mockItems: CheckboxTreeItem[] = [item1];
-  describe('flattenTree', () => {
-    it('should flatten a tree structure into a list', () => {
-      const expected: CheckboxListItem[] = [
-        { id: 1, props: buildItemProps(1, false) },
-        { id: 2, props: buildItemProps(2, false), parentId: 1 },
-        { id: 3, props: buildItemProps(3, true), parentId: 1 },
-        { id: 4, props: buildItemProps(4, false), parentId: 3 },
-      ];
-      expect(flattenTree(mockItems)).toEqual(expected);
-    });
-  });
 
   describe('buildRelationshipMaps', () => {
     it('should create parent-children and child-parent maps', () => {
