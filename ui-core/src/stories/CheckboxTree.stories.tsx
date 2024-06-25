@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
-import CheckboxesTree, { CheckboxesTreeProps } from '../components/inputs/Checkbox/CheckboxesTree';
+import CheckboxesTree, { CheckboxesTreeProps } from '../components/inputs/Checkbox/CheckboxTree';
 import { CheckboxTreeItem } from '../components/inputs/Checkbox/type';
 
 const CheckboxesTreeStory = (props: CheckboxesTreeProps) => {
@@ -132,7 +132,7 @@ export const Required: Story = {
 export const Information: Story = {
   args: {
     items: milkButterCream.map((item, index) =>
-      index === 1 ? { ...item, checkboxProps: { ...item.props, checked: true } } : { ...item }
+      index === 1 ? { ...item, props: { ...item.props, checked: true } } : { ...item }
     ),
     disabled: true,
     statusWithMessage: { status: 'info', message: 'These controls are disabled' },
