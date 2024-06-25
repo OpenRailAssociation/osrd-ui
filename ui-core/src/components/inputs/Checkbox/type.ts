@@ -1,11 +1,5 @@
 import { CheckboxProps } from './Checkbox';
 
-export type CheckboxListItem = {
-  id: number;
-  parentId?: number; // Make parentId optional for root items
-  props: CheckboxProps;
-};
-
 export enum CheckboxState {
   UNCHECKED,
   CHECKED,
@@ -21,4 +15,4 @@ export type CheckboxTreeItem = {
 };
 
 export type ParentChildrenMap = Record<number, number[]>; // Maps parent ID to child IDs
-export type ChildParentMap = Record<number, number>; // Maps child ID to parent ID
+export type ChildrenParentMap = Record<number, number>; // Maps child ID to parent ID

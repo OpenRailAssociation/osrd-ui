@@ -1,172 +1,196 @@
-import { describe, expect, it } from 'vitest';
-import { CheckboxState, CheckboxTreeItem, ItemStates } from '../type';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import {
+  CheckboxState,
+  CheckboxTreeItem,
+  ItemStates,
+  ParentChildrenMap,
+  ChildrenParentMap,
+} from '../type';
+import {
+  traverseTree,
   buildRelationshipMaps,
-  updateItemStatesOptimized,
-  completeOrInitializeItemStates,
+  updateItemAndDescendantsStates,
+  updateAscendantsStates,
+  computeInitialItemStates,
+  updateItemStates,
+  applyStateToItem,
+  computeNewItemsTree,
 } from '../utils';
 
 describe('utils', () => {
-  const buildItemProps = (id: number, checked?: boolean) => ({ label: id.toString(), checked });
+  const buildItemProps = (id: number, checked: boolean, isIndeterminate?: boolean) => ({
+    label: id.toString(),
+    checked,
+    isIndeterminate,
+  });
   const item2 = { id: 2, props: buildItemProps(2, false) };
-  const item4 = { id: 4, props: buildItemProps(4, false) };
+  const item4 = { id: 4, props: buildItemProps(4, true) };
   const item3 = { id: 3, props: buildItemProps(3, true), items: [item4] };
-  const item1 = { id: 1, props: buildItemProps(1, false), items: [item2, item3] };
+  const item1 = { id: 1, props: buildItemProps(1, false, true), items: [item2, item3] };
+  const item5 = { id: 5, props: buildItemProps(5, false) };
 
-  const mockItems: CheckboxTreeItem[] = [item1];
+  let tree: CheckboxTreeItem[];
+  let parentChildrenMap: ParentChildrenMap;
+  let childrenParentMap: ChildrenParentMap;
 
-  describe('buildRelationshipMaps', () => {
-    it('should create parent-children and child-parent maps', () => {
-      const [parentChildrenMap, childParentMap] = buildRelationshipMaps(mockItems);
-      expect(parentChildrenMap).toEqual({ 1: [2, 3], 3: [4] });
-      expect(childParentMap).toEqual({ 2: 1, 3: 1, 4: 3 });
+  beforeEach(() => {
+    tree = [item1, item5];
+    const relationShips = buildRelationshipMaps(tree);
+    parentChildrenMap = relationShips.parentChildrenMap;
+    childrenParentMap = relationShips.childrenParentMap;
+  });
+
+  describe('traverseTree', () => {
+    it('visit all the items', () => {
+      const visitedItemIds: number[] = [];
+      const onVisit = vi.fn((item: CheckboxTreeItem) => visitedItemIds.push(item.id));
+
+      traverseTree(tree, onVisit);
+
+      expect(onVisit).toHaveBeenCalledTimes(5);
+      expect(visitedItemIds.every((item) => [1, 2, 3, 4, 5].includes(item))).toBe(true);
     });
   });
 
-  describe('updateItemStatesOptimized', () => {
-    let oldState: ItemStates, clickedId: number;
-    const [parentChildrenMap, childParentMap] = buildRelationshipMaps(mockItems);
+  describe('buildRelationshipMaps', () => {
+    it('build correctly relationships maps', () => {
+      expect(parentChildrenMap).toEqual({
+        1: [2, 3],
+        3: [4],
+      });
 
-    it('should uncheck a checked item and update related states', () => {
-      oldState = {
-        1: CheckboxState.UNCHECKED,
-        2: CheckboxState.CHECKED,
+      expect(childrenParentMap).toEqual({
+        2: 1,
+        3: 1,
+        4: 3,
+      });
+    });
+  });
+
+  describe('computeInitialItemStates', () => {
+    it('compute correctly initial item states', () => {
+      const itemStates = computeInitialItemStates(tree);
+
+      expect(itemStates).toEqual({
+        1: CheckboxState.INDETERMINATE,
+        2: CheckboxState.UNCHECKED,
         3: CheckboxState.CHECKED,
         4: CheckboxState.CHECKED,
-      };
-      clickedId = 3;
-      const newState = updateItemStatesOptimized(
-        oldState,
-        clickedId,
-        parentChildrenMap,
-        childParentMap
-      );
-      expect(newState[3]).toEqual(CheckboxState.UNCHECKED);
-      expect(newState[4]).toEqual(CheckboxState.UNCHECKED); // Child should also be unchecked
-      expect(newState[1]).toEqual(CheckboxState.INDETERMINATE); // Parent state should be indeterminate
-      expect(newState[2]).toEqual(CheckboxState.CHECKED); // Sibling state should not change
+        5: CheckboxState.UNCHECKED,
+      });
     });
+  });
 
-    it('should check an unchecked item and update related states', () => {
-      oldState = {
-        1: CheckboxState.INDETERMINATE,
-        2: CheckboxState.CHECKED,
-        3: CheckboxState.UNCHECKED,
-        4: CheckboxState.UNCHECKED,
-      };
-      clickedId = 2;
-      const newState = updateItemStatesOptimized(
-        oldState,
-        clickedId,
-        parentChildrenMap,
-        childParentMap
-      );
-      expect(newState[1]).toEqual(CheckboxState.UNCHECKED);
-      expect(newState[2]).toEqual(CheckboxState.UNCHECKED);
-      expect(newState[3]).toEqual(CheckboxState.UNCHECKED);
-      expect(newState[4]).toEqual(CheckboxState.UNCHECKED);
-    });
-
-    it('should update parent state to checked if all children are checked', () => {
-      oldState = {
-        1: CheckboxState.INDETERMINATE,
-        2: CheckboxState.CHECKED,
-        3: CheckboxState.UNCHECKED,
-        4: CheckboxState.UNCHECKED,
-      };
-      clickedId = 3;
-      const newState = updateItemStatesOptimized(
-        oldState,
-        clickedId,
-        parentChildrenMap,
-        childParentMap
-      );
-      expect(newState[1]).toEqual(CheckboxState.CHECKED);
-      expect(newState[2]).toEqual(CheckboxState.CHECKED);
-      expect(newState[3]).toEqual(CheckboxState.CHECKED);
-      expect(newState[4]).toEqual(CheckboxState.CHECKED);
-    });
-
-    it('should leave parent state indeterminate if at least one child is in a different state', () => {
-      oldState = {
+  describe('updateItemAndDescendantsStates', () => {
+    it('update the state of the item and its descendants', () => {
+      const itemStates: ItemStates = {
         1: CheckboxState.UNCHECKED,
         2: CheckboxState.UNCHECKED,
         3: CheckboxState.UNCHECKED,
         4: CheckboxState.UNCHECKED,
+        5: CheckboxState.UNCHECKED,
       };
-      clickedId = 2;
-      const newState = updateItemStatesOptimized(
-        oldState,
-        clickedId,
-        parentChildrenMap,
-        childParentMap
-      );
-      expect(newState[1]).toEqual(CheckboxState.INDETERMINATE);
-      expect(newState[2]).toEqual(CheckboxState.CHECKED);
-      expect(newState[3]).toEqual(CheckboxState.UNCHECKED);
-      expect(newState[4]).toEqual(CheckboxState.UNCHECKED);
+      updateItemAndDescendantsStates(3, CheckboxState.CHECKED, parentChildrenMap, itemStates);
+
+      expect(itemStates).toEqual({
+        1: CheckboxState.UNCHECKED,
+        2: CheckboxState.UNCHECKED,
+        3: CheckboxState.CHECKED,
+        4: CheckboxState.CHECKED,
+        5: CheckboxState.UNCHECKED,
+      });
     });
   });
 
-  describe('completeOrInitializeItemStates', () => {
-    it('initializes states for leaf items correctly', () => {
-      const items: CheckboxTreeItem[] = [
-        { id: 1, props: buildItemProps(1, true) },
-        { id: 2, props: buildItemProps(2) },
-      ];
-      const nextItemStates = completeOrInitializeItemStates(items);
-      expect(nextItemStates).toEqual({ 1: CheckboxState.CHECKED, 2: CheckboxState.UNCHECKED });
-    });
+  describe('updateAscendantsStates', () => {
+    it('update the state of its ascendants', () => {
+      const itemStates: ItemStates = {
+        1: CheckboxState.UNCHECKED,
+        2: CheckboxState.UNCHECKED,
+        3: CheckboxState.CHECKED,
+        4: CheckboxState.CHECKED,
+        5: CheckboxState.UNCHECKED,
+      };
 
-    it('computes parent states based on children states', () => {
-      const items: CheckboxTreeItem[] = [
-        {
-          id: 1,
-          props: buildItemProps(1),
-          items: [
-            { id: 11, props: buildItemProps(11, true) },
-            { id: 12, props: buildItemProps(12, true) },
-          ],
-        },
-      ];
-      const nextItemStates = completeOrInitializeItemStates(items);
-      expect(nextItemStates).toEqual({
-        1: CheckboxState.CHECKED,
-        11: CheckboxState.CHECKED,
-        12: CheckboxState.CHECKED,
-      });
-    });
+      updateAscendantsStates(4, itemStates, { parentChildrenMap, childrenParentMap });
 
-    it('assigns INDETERMINATE state to parents with mixed children states', () => {
-      const items: CheckboxTreeItem[] = [
-        {
-          id: 1,
-          props: buildItemProps(1),
-          items: [
-            { id: 11, props: buildItemProps(11, true) },
-            { id: 12, props: buildItemProps(12, false) },
-          ],
-        },
-      ];
-      const nextItemStates = completeOrInitializeItemStates(items);
-      expect(nextItemStates).toEqual({
+      expect(itemStates).toEqual({
         1: CheckboxState.INDETERMINATE,
-        11: CheckboxState.CHECKED,
-        12: CheckboxState.UNCHECKED,
+        2: CheckboxState.UNCHECKED,
+        3: CheckboxState.CHECKED,
+        4: CheckboxState.CHECKED,
+        5: CheckboxState.UNCHECKED,
       });
     });
+  });
 
-    it('handles an empty items array', () => {
-      const items: CheckboxTreeItem[] = [];
-      const result = completeOrInitializeItemStates(items);
-      expect(result).toEqual({});
+  describe('updateItemStates', () => {
+    it('update correctly items ascendants and descendants state according to the new state of the clicked item', () => {
+      const initialItemStates: ItemStates = {
+        1: CheckboxState.UNCHECKED,
+        2: CheckboxState.UNCHECKED,
+        3: CheckboxState.UNCHECKED,
+        4: CheckboxState.UNCHECKED,
+        5: CheckboxState.UNCHECKED,
+      };
+      const newItemStates = updateItemStates(tree, initialItemStates, 3);
+      expect(newItemStates).toEqual({
+        1: CheckboxState.INDETERMINATE,
+        2: CheckboxState.UNCHECKED,
+        3: CheckboxState.CHECKED,
+        4: CheckboxState.CHECKED,
+        5: CheckboxState.UNCHECKED,
+      });
     });
+  });
 
-    it('does not overwrite existing states', () => {
-      const items: CheckboxTreeItem[] = [{ id: 1, props: buildItemProps(1) }];
-      const existingStates = { 1: CheckboxState.UNCHECKED };
-      const nextItemStates = completeOrInitializeItemStates(items, existingStates);
-      expect(nextItemStates).toEqual({ 1: CheckboxState.UNCHECKED });
+  describe('applyStateToItem', () => {
+    it('apply correctly item states to tree items', () => {
+      const itemStates: ItemStates = {
+        1: CheckboxState.INDETERMINATE,
+        2: CheckboxState.CHECKED,
+        3: CheckboxState.CHECKED,
+        4: CheckboxState.CHECKED,
+        5: CheckboxState.UNCHECKED,
+      };
+      const updatedTree = applyStateToItem(tree, itemStates);
+      expect(updatedTree).toEqual([
+        {
+          id: 1,
+          props: { label: '1', isIndeterminate: true },
+          items: [
+            { id: 2, props: { label: '2', checked: true } },
+            {
+              id: 3,
+              props: { label: '3', checked: true },
+              items: [{ id: 4, props: { label: '4', checked: true } }],
+            },
+          ],
+        },
+        { id: 5, props: { label: '5', checked: false } },
+      ]);
+    });
+  });
+
+  describe('computeNewItemsTree', () => {
+    it('correctly updates the item tree after a click', () => {
+      const clickedItem = { id: 3, props: { label: '3', checked: true } };
+      const newItemsTree = computeNewItemsTree(tree, clickedItem);
+      expect(newItemsTree).toEqual([
+        {
+          id: 1,
+          props: { label: '1', checked: false },
+          items: [
+            { id: 2, props: { label: '2', checked: false } },
+            {
+              id: 3,
+              props: { label: '3', checked: false },
+              items: [{ id: 4, props: { label: '4', checked: false } }],
+            },
+          ],
+        },
+        { id: 5, props: { label: '5', checked: false } },
+      ]);
     });
   });
 });

@@ -1,97 +1,69 @@
 import {
   CheckboxState,
   CheckboxTreeItem,
+  ChildrenParentMap,
   ItemStates,
   ParentChildrenMap,
-  ChildParentMap,
 } from './type';
 
-/**
- * Traverse a tree of CheckboxTreeItems and call a function on each item.
- * @param items The tree of CheckboxTreeItems
- * @param onVisit A function to call on each item
- * @param parentId The ID of the parent item (if any) of the current item being visited
- */
-function traverseTree(
+export const traverseTree = (
   items: CheckboxTreeItem[],
-  onVisit: (item: CheckboxTreeItem, parentId?: number) => void,
-  parentId?: number
-) {
+  onVisit: (item: CheckboxTreeItem, parent?: CheckboxTreeItem) => void,
+  parent?: CheckboxTreeItem
+) => {
   items.forEach((item) => {
-    onVisit(item, parentId);
+    onVisit(item, parent);
 
     if (item.items && item.items.length > 0) {
-      traverseTree(item.items, onVisit, item.id);
+      traverseTree(item.items, onVisit, item);
     }
   });
-}
+};
 
-/**
- *  Build parent-children and child-parent maps from a tree of CheckboxTreeItems.
- * @param items The tree of CheckboxTreeItems
- * @returns A tuple containing the parent-children and child-parent maps
- */
-export const buildRelationshipMaps = (
-  items: CheckboxTreeItem[]
-): [ParentChildrenMap, ChildParentMap] => {
+export const buildRelationshipMaps = (items: CheckboxTreeItem[]) => {
   const parentChildrenMap: ParentChildrenMap = {};
-  const childParentMap: ChildParentMap = {};
+  const childrenParentMap: ChildrenParentMap = {};
 
-  traverseTree(items, (item, parentId) => {
-    if (parentId !== undefined) {
-      if (!parentChildrenMap[parentId]) {
-        parentChildrenMap[parentId] = [];
+  traverseTree(items, (item, parent) => {
+    if (parent?.id !== undefined) {
+      if (!parentChildrenMap[parent.id]) {
+        parentChildrenMap[parent.id] = [];
       }
-      parentChildrenMap[parentId].push(item.id);
-
-      childParentMap[item.id] = parentId;
+      parentChildrenMap[parent.id].push(item.id);
+      childrenParentMap[item.id] = parent.id;
     }
   });
 
-  return [parentChildrenMap, childParentMap];
+  return { parentChildrenMap, childrenParentMap };
 };
 
-/**
- * Set the state of an item and all its children to a given state.
- * @param id The ID of the item to set the state for
- * @param newState The new state to set
- * @param parentChildrenMap A map of parent IDs to children IDs
- * @param checkboxState The state to set the item to
- */
-const setCheckboxStateOptimized = (
-  id: number,
-  newState: ItemStates,
+export const updateItemAndDescendantsStates = (
+  itemId: number,
+  newItemStates: CheckboxState,
   parentChildrenMap: ParentChildrenMap,
-  checkboxState: CheckboxState
+  itemStates: ItemStates
 ) => {
-  newState[id] = checkboxState;
-  const children = parentChildrenMap[id];
-  if (children) {
-    children.forEach((childId) =>
-      setCheckboxStateOptimized(childId, newState, parentChildrenMap, checkboxState)
-    );
+  itemStates[itemId] = newItemStates;
+  parentChildrenMap[itemId]?.forEach((child) =>
+    updateItemAndDescendantsStates(child, newItemStates, parentChildrenMap, itemStates)
+  );
+};
+
+export const updateAscendantsStates = (
+  childId: number,
+  itemStates: ItemStates,
+  relastionShipMap: {
+    parentChildrenMap: ParentChildrenMap;
+    childrenParentMap: ChildrenParentMap;
   }
-};
-
-/**
- * Update the state of a parent item based on the states of its children.
- * @param id The ID of the item to update
- * @param newState The new state of the item
- * @param parentChildrenMap A map of parent IDs to children IDs
- * @param childParentMap A map of child IDs to parent IDs
- * @returns The new state of the parent item
- */
-const updateParentOptimized = (
-  id: number,
-  newState: ItemStates,
-  parentChildrenMap: ParentChildrenMap,
-  childParentMap: ChildParentMap
 ) => {
-  const parentId = childParentMap[id];
+  const { parentChildrenMap, childrenParentMap } = relastionShipMap;
+  const parentId = childrenParentMap[childId];
   if (parentId === undefined) return;
 
   const siblings = parentChildrenMap[parentId];
-  const siblingStates = siblings.map((siblingId) => newState[siblingId]);
+
+  const siblingStates = siblings.map((siblingId) => itemStates[siblingId]);
 
   let parentState: CheckboxState;
   if (siblingStates.every((state) => state === CheckboxState.CHECKED)) {
@@ -101,87 +73,60 @@ const updateParentOptimized = (
   } else {
     parentState = CheckboxState.INDETERMINATE;
   }
-  newState[parentId] = parentState;
-  updateParentOptimized(parentId, newState, parentChildrenMap, childParentMap);
+  itemStates[parentId] = parentState;
+  updateAscendantsStates(parentId, itemStates, { parentChildrenMap, childrenParentMap });
 };
 
-/**
- * Update the states of items in a tree based on a clicked item.
- * @param oldState  The previous state of the items
- * @param clickedId The ID of the item that was clicked
- * @param parentChildrenMap A map of parent IDs to children IDs
- * @param childParentMap A map of child IDs to parent IDs
- * @returns The new state of the items
- */
-export const updateItemStatesOptimized = (
-  oldState: ItemStates,
-  clickedId: number,
-  parentChildrenMap: ParentChildrenMap,
-  childParentMap: ChildParentMap
+export const updateItemStates = (
+  itemsTree: CheckboxTreeItem[],
+  initialItemStates: ItemStates,
+  clickedItemId: number
 ): ItemStates => {
-  const newState = { ...oldState };
-
-  const currentItemState = newState[clickedId];
-  const newCheckboxState =
-    currentItemState === CheckboxState.CHECKED ? CheckboxState.UNCHECKED : CheckboxState.CHECKED;
-  setCheckboxStateOptimized(clickedId, newState, parentChildrenMap, newCheckboxState);
-  updateParentOptimized(clickedId, newState, parentChildrenMap, childParentMap);
-
-  return newState;
-};
-
-/**
- * Compute the next state of items in a tree based on a clicked item.
- * @param items The tree of CheckboxTreeItems
- * @param clickedItemId The ID of the item that was clicked
- * @param prevItemState The previous state of the items
- * @returns The new state of the items
- */
-export const computeNextItemStates = (
-  items: CheckboxTreeItem[],
-  clickedItemId: number,
-  prevItemState: ItemStates
-) => {
-  const [parentChildrenMap, childrenParentMap] = buildRelationshipMaps(items);
-  return updateItemStatesOptimized(
-    prevItemState,
+  const newItemStates = { ...initialItemStates };
+  const newClickedItemState =
+    newItemStates[clickedItemId] === CheckboxState.CHECKED
+      ? CheckboxState.UNCHECKED
+      : CheckboxState.CHECKED;
+  const { parentChildrenMap, childrenParentMap } = buildRelationshipMaps(itemsTree);
+  updateItemAndDescendantsStates(
     clickedItemId,
+    newClickedItemState,
     parentChildrenMap,
-    childrenParentMap
+    newItemStates
   );
+  updateAscendantsStates(clickedItemId, newItemStates, { parentChildrenMap, childrenParentMap });
+
+  return newItemStates;
 };
 
-/**
- * Complete or initialize the states of items in a tree.
- * @param items The tree of CheckboxTreeItems
- * @param itemStates The states of the items
- * @returns The completed or initialized states of the items
- */
-export function completeOrInitializeItemStates(
-  items: CheckboxTreeItem[],
-  itemStates: ItemStates = {}
-): ItemStates {
-  const nextStates = { ...itemStates };
-  const [parentChildrenMap] = buildRelationshipMaps(items);
-
-  // Initialize states for leaf items.
+export const computeInitialItemStates = (items: CheckboxTreeItem[]): ItemStates => {
+  const itemStates: ItemStates = {};
   traverseTree(items, (item) => {
-    if (item.id in parentChildrenMap) return;
-    if (!(item.id in itemStates))
-      nextStates[item.id] = item.props.checked ? CheckboxState.CHECKED : CheckboxState.UNCHECKED;
+    if (item.props.isIndeterminate) itemStates[item.id] = CheckboxState.INDETERMINATE;
+    else itemStates[item.id] = item.props.checked ? CheckboxState.CHECKED : CheckboxState.UNCHECKED;
+  });
+  return itemStates;
+};
+
+export const applyStateToItem = (itemsTree: CheckboxTreeItem[], itemStates: ItemStates) => {
+  const clonedItemsTree = JSON.parse(JSON.stringify(itemsTree));
+  traverseTree(clonedItemsTree, (item) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { checked, isIndeterminate, ...otherProps } = item.props;
+    item.props = otherProps;
+    if (itemStates[item.id] === CheckboxState.INDETERMINATE) item.props.isIndeterminate = true;
+    else if (itemStates[item.id] === CheckboxState.CHECKED) item.props.checked = true;
+    else item.props.checked = false;
   });
 
-  // Compute states for parent items.
-  for (const parentId in parentChildrenMap) {
-    const childrenStates = parentChildrenMap[parentId].map((childId) => nextStates[childId]);
-    if (childrenStates.every((state) => state === CheckboxState.CHECKED)) {
-      nextStates[parentId] = CheckboxState.CHECKED;
-    } else if (childrenStates.every((state) => state === CheckboxState.UNCHECKED)) {
-      nextStates[parentId] = CheckboxState.UNCHECKED;
-    } else {
-      nextStates[parentId] = CheckboxState.INDETERMINATE;
-    }
-  }
+  return clonedItemsTree;
+};
 
-  return nextStates;
-}
+export const computeNewItemsTree = (
+  itemsTree: CheckboxTreeItem[],
+  clickedItem: CheckboxTreeItem
+): CheckboxTreeItem[] => {
+  const initialItemStates = computeInitialItemStates(itemsTree);
+  const updatedItemStates = updateItemStates(itemsTree, initialItemStates, clickedItem.id);
+  return applyStateToItem(itemsTree, updatedItemStates);
+};
