@@ -384,6 +384,7 @@ export enum SPEED_SPACE_SETTINGS_KEYS {
   SLOPES = 'slopes',
   ELECTRICAL_PROFILES = 'electricalProfiles',
   POWER_RESTRICTION = 'powerRestriction',
+  SPEED_LIMIT_TAGS = 'speedLimitTags',
 }
 export type SpeedSpaceSettingKey =
   | SPEED_SPACE_SETTINGS_KEYS.ALTITUDE
@@ -429,4 +430,17 @@ export interface OsrdSimulationState {
     )[];
   };
   powerRestrictions?: SimulationPowerRestrictionRange[];
+  speedLimitTags?: {
+    boundaries: number[];
+    values: (
+      | {
+          speed_limit_tags_type: 'no-tag';
+        }
+      | {
+          speed_limit_tags_type: 'tag';
+          tag_name: string;
+          color: string;
+        }
+    )[];
+  };
 }
