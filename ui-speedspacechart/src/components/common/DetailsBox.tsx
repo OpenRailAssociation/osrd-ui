@@ -33,7 +33,8 @@ const DetailsBox = ({
   modeText,
 }: DetailsBoxProps) => {
   const { MARGIN_TOP, MARGIN_BOTTOM, MARGIN_LEFT, MARGIN_RIGHT } = MARGINS;
-  const { detailsBoxDisplay } = store;
+  const { energySource, tractionStatus, declivities, electricalProfiles, powerRestrictions } =
+    store.detailsBoxDisplay;
 
   let rightOffset = 0;
   let bottomOffset = 0;
@@ -62,20 +63,17 @@ const DetailsBox = ({
         <span>--</span>
         <span>±--</span>
       </div>
-      {(detailsBoxDisplay.energySource || detailsBoxDisplay.tractionStatus) &&
-        (modeText || effortText) && <hr />}
-      {detailsBoxDisplay.energySource && modeText && <span id="mode-text">{modeText}</span>}
-      {detailsBoxDisplay.tractionStatus && effortText && <span id="effort-text">{effortText}</span>}
+      {(energySource || tractionStatus) && (modeText || effortText) && <hr />}
+      {energySource && modeText && <span id="mode-text">{modeText}</span>}
+      {tractionStatus && effortText && <span id="effort-text">{effortText}</span>}
       {electricalModeText && (
         <div id="electrical-mode-text">
           <p>{electricalModeText}</p>
-          {detailsBoxDisplay.electricalProfiles && <p>{electricalProfileText}</p>}
+          {electricalProfiles && <p>{electricalProfileText}</p>}
         </div>
       )}
-      {detailsBoxDisplay.powerRestrictions && (
-        <span id="power-restriction">{powerRestrictionText}</span>
-      )}
-      {detailsBoxDisplay.declivities && (
+      {powerRestrictions && <span id="power-restriction">{powerRestrictionText}</span>}
+      {declivities && (
         <>
           <hr />
           <span id="previous-gradient-text">{`${previousGradientText} ‰`}</span>

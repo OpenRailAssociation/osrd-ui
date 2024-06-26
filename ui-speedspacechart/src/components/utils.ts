@@ -190,9 +190,11 @@ export const drawLinearLayerBackground = (
  * Optional datas : electricalProfiles, powerRestrictions, speedLimitTags
  */
 export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION)[number]) => {
-  // TODO : add speedLimitsTags check
   return (
-    (selection === 'electricalProfiles' || selection === 'powerRestrictions') && !store[selection]
+    (selection === 'electricalProfiles' ||
+      selection === 'powerRestrictions' ||
+      selection === 'speedLimitTags') &&
+    !store[selection]
   );
 };
 /**
@@ -206,4 +208,71 @@ export const slopesValues = (store: Store): SlopesValues => {
   const slopesRange = maxGradient - minGradient;
   const maxPosition = Math.max(...slopes.map((data) => data.position));
   return { minGradient, maxGradient, slopesRange, maxPosition };
+};
+
+// Draws an image on a canvas context with a specified color.
+export const drawSvgImageWithColor = (
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  color: string
+) => {
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+
+  if (!tempCtx) return;
+
+  tempCanvas.width = width;
+  tempCanvas.height = height;
+
+  // Draw the image on the temporary canvas
+  tempCtx.drawImage(image, 0, 0, width, height);
+
+  // Set the composite mode to "source-in" to color the image
+  tempCtx.globalCompositeOperation = 'source-in';
+  tempCtx.fillStyle = color;
+  tempCtx.fillRect(0, 0, width, height);
+
+  // Draw the colored image back to the main canvas
+  ctx.drawImage(tempCanvas, x, y);
+};
+
+export const drawRoundedRect = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number
+) => {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+};
+
+export const loadSvgImage = (svgUrl: string): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = (error) => reject(error);
+    img.src = svgUrl;
+  });
+};
+
+export const createSvgBlobUrl = (svgString: string): string => {
+  const blob = new Blob([svgString], { type: 'image/svg+xml' });
+  return URL.createObjectURL(blob);
 };

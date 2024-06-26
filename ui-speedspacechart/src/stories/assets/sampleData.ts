@@ -33137,6 +33137,22 @@ export const SAMPLE_DATA: OsrdSimulationState = {
       stop: 201408.607,
     },
   ],
+
+  speedLimitTags: {
+    boundaries: [0, 25000, 65000, 95000, 125000, 201408.607],
+
+    values: [
+      { speed_limit_tags_type: 'tag', tag_name: 'MA100', color: '#494641' },
+      { speed_limit_tags_type: 'tag', tag_name: 'EVO', color: '#216482' },
+      { speed_limit_tags_type: 'tag', tag_name: 'incompatible', color: '#EAA72B' },
+      {
+        speed_limit_tags_type: 'tag',
+        tag_name: 'UU',
+        color: '#D91C1C',
+      },
+      { speed_limit_tags_type: 'tag', tag_name: 'missing_from_train', color: '#94918E' },
+    ],
+  },
 };
 
 export default SAMPLE_DATA;

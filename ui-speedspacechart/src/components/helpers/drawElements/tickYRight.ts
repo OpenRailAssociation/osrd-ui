@@ -51,9 +51,7 @@ export const drawTickYRight = (
     ctx.fillStyle = `rgba(182, 179, 175, ${opacity})`;
     ctx.fillText(text, textOffsetX, textPositionYRight);
 
-    const maxTickY = centerY - 6 * tickSpacing;
     ctx.fillText('‰', width - MARGIN_LEFT, height / 12); // 12 ticks intervals
-    console.log({ maxTickY, tickSpacing, height }, 'for ticks');
   }
   ctx.stroke();
 

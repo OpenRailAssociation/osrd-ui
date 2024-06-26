@@ -15,6 +15,7 @@ export type Store = {
   slopes: GradientPosition[] | Slope[];
   electricalProfiles?: OsrdSimulationState['electricalProfiles'];
   powerRestrictions?: SimulationPowerRestrictionRange[];
+  speedLimitTags?: OsrdSimulationState['speedLimitTags'];
   ratioX: number;
   leftOffset: number;
   cursor: {
@@ -50,4 +51,14 @@ export type TrainDetails = {
   powerRestrictionText: string;
   previousGradientText: number;
   modeText: string;
+};
+
+export type tooltipInfos = {
+  cursorX: number;
+  cursorY: number;
+  text: string;
+};
+
+export type ColorDictionary = {
+  [key: string]: string;
 };

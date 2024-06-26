@@ -59,9 +59,7 @@ export const drawElectricalProfile = (
     let topRect = topLayer - MARGIN_BOTTOM + ELECTRICAL_PROFILES_MARGIN_TOP;
 
     const profileWidth =
-      index === values.length - 1
-        ? positionOnGraphScale(boundaries[index], maxPosition, width, ratioX, MARGINS) - x
-        : positionOnGraphScale(boundaries[index], maxPosition, width, ratioX, MARGINS) - x;
+      positionOnGraphScale(boundaries[index], maxPosition, width, ratioX, MARGINS) - x;
 
     if ('profile' in data) {
       const { profile, profileColor, heightLevel } = data;

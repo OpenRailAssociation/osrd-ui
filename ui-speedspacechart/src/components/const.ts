@@ -1,4 +1,4 @@
-import { Store } from '../types/chartTypes';
+import { ColorDictionary, Store } from '../types/chartTypes';
 
 export const SLOPE_FILL_COLOR = '#CFDDCE';
 
@@ -55,3 +55,14 @@ export const LAYERS_SELECTION: Array<keyof Store['layersDisplay']> = [
   'powerRestrictions',
   'speedLimitTags',
 ];
+
+/**
+ * COLOR_DICTIONARY maps specific colors to their corresponding secondary colors used for speed limit tags.
+ */
+export const COLOR_DICTIONARY: ColorDictionary = {
+  '#216482': '#E5F7FF',
+  '#D91C1C': '#F15981',
+  '#494641': '#F2F0E4',
+  '#EAA72B': '#EAA72B',
+  '#94918E': '#94918E',
+};

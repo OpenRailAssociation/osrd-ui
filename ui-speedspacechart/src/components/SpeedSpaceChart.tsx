@@ -21,6 +21,7 @@ import { LINEAR_LAYERS_HEIGHTS } from './const';
 import TickLayerYRight from './layers/TickLayerYRight';
 import DeclivityLayer from './layers/DeclivityLayer';
 import { MARGINS } from './const';
+import SpeedLimitTagsLayer from './layers/SpeedLimitTagsLayer';
 
 export type SpeedSpaceChartProps = {
   width: number;
@@ -63,6 +64,7 @@ const SpeedSpaceChart = ({
     powerRestrictions: undefined,
     slopes: [],
     electricalProfiles: undefined,
+    speedLimitTags: undefined,
     ratioX: 1,
     leftOffset: 0,
     cursor: {
@@ -127,6 +129,7 @@ const SpeedSpaceChart = ({
       slopes: data.simulation.present.trains[0].slopes || [],
       electricalProfiles: data.electricalProfiles,
       powerRestrictions: data.powerRestrictions,
+      speedLimitTags: data.speedLimitTags,
     };
 
     const { speed, stops, electrification, slopes } = storeData;
@@ -201,8 +204,18 @@ const SpeedSpaceChart = ({
           store={store}
         />
       )}
+      {store.layersDisplay.speedLimitTags && (
+        <SpeedLimitTagsLayer
+          width={adjustedWidthRightAxis}
+          marginTop={getLinearLayerMarginTop(
+            height,
+            store.layersDisplay,
+            store.layersDisplay.speedLimitTags
+          )}
+          store={store}
+        />
+      )}
       <TickLayerX width={adjustedWidthRightAxis} height={dynamicHeight} store={store} />
-
       {store.layersDisplay.declivities && (
         <TickLayerYRight width={width} height={height} store={store} />
       )}
