@@ -1,48 +1,67 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import InputModal from '../Modal';
 import Input, { InputProps } from './Input';
+import cx from 'classnames';
 
-const TimePicker: React.FC<InputProps> = (props) => {
-  const [selectedHour, setSelectedHour] = useState<string>('00');
-  const [selectedMinute, setSelectedMinute] = useState<string>('00');
+export type TimePickerProps = InputProps & {
+  hours?: number;
+  minutes?: number;
+  onTimeChange: ({ hours, minutes }: { hours: number; minutes: number }) => void;
+};
+
+type TimeRangeProps = {
+  range: number[];
+  selectedItem: number;
+  className: string;
+  onSelectItem: (item: number) => void;
+};
+
+const TimeRange: React.FC<TimeRangeProps> = ({ range, selectedItem, className, onSelectItem }) => {
+  return (
+    <div className="time-grid">
+      {range.map((item) => (
+        <div
+          key={item}
+          className={cx(className, { selected: selectedItem === item })}
+          onClick={() => onSelectItem(item)}
+        >
+          {item.toString().padStart(2, '0')}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const TimePicker: React.FC<TimePickerProps> = ({
+  onTimeChange,
+  hours = 0,
+  minutes = 0,
+  ...otherProps
+}) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleHourClick = useCallback((hour: string) => {
-    setSelectedHour(hour);
-  }, []);
-
-  const handleMinuteClick = useCallback((minute: string) => {
-    setSelectedMinute(minute);
-  }, []);
-
-  const handleMinuteButtonClick = useCallback((action: 'UP' | 'DOWN') => {
-    setSelectedMinute((prevMinute) => {
-      let newMinute = prevMinute !== null ? parseInt(prevMinute) : 0;
-      if (action === 'UP' && newMinute < 59) {
-        newMinute++;
-      } else if (action === 'DOWN' && newMinute > 0) {
-        newMinute--;
-      }
-      return newMinute.toString().padStart(2, '0');
-    });
-  }, []);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const [hour, minute] = value.split(':');
-    if (hour !== undefined && minute !== undefined) {
-      setSelectedHour(hour);
-      setSelectedMinute(minute);
+  const incrementMinute = (increment: number) => {
+    const newMinutes = minutes + increment;
+    if (newMinutes >= 0 && newMinutes <= 59) {
+      onTimeChange({ hours, minutes: newMinutes });
     }
   };
 
-  const formattedHour = selectedHour.padStart(2, '0');
-  const formattedMinute = selectedMinute.padStart(2, '0');
-  const selectedTime = `${formattedHour}:${formattedMinute}`;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const [h, m] = value.split(':');
+    if (h !== undefined && m !== undefined) {
+      onTimeChange({ hours: parseInt(h), minutes: parseInt(m) });
+    }
+  };
 
-  const hours = [...Array(24).keys()].map((hour) => hour.toString().padStart(2, '0'));
-  const minutes = [...Array(12).keys()].map((minute) => (minute * 5).toString().padStart(2, '0'));
+  const formatTimeValue = (value: number, max: number) =>
+    Math.max(0, Math.min(max, value)).toString().padStart(2, '0');
+
+  const selectedTime = `${formatTimeValue(hours, 23)}:${formatTimeValue(minutes, 59)}`;
+  const hoursRange = [...Array(24).keys()];
+  const minutesRange = [...Array(12).keys()].map((i) => i * 5);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -59,41 +78,31 @@ const TimePicker: React.FC<InputProps> = (props) => {
         onClick={openModal}
         onChange={handleChange}
         ref={inputRef}
-        {...props}
+        {...otherProps}
       />
       <InputModal inputRef={inputRef} isOpen={isModalOpen} onClose={closeModal}>
         <div className="time-picker-container">
-          <div className="time-grid">
-            {hours.map((hour) => (
-              <div
-                key={hour}
-                className={`hour ${selectedHour === hour ? 'selected' : ''}`}
-                onClick={() => handleHourClick(hour)}
-              >
-                {hour}
-              </div>
-            ))}
-          </div>
+          <TimeRange
+            range={hoursRange}
+            selectedItem={hours}
+            className="hour"
+            onSelectItem={(h) => onTimeChange({ hours: h, minutes })}
+          />
 
           <div className="time-separator">:</div>
 
           <div className="minute-container">
-            <div className="time-grid">
-              {minutes.map((minute) => (
-                <div
-                  key={minute}
-                  className={`minute ${selectedMinute === minute ? 'selected' : ''}`}
-                  onClick={() => handleMinuteClick(minute)}
-                >
-                  {minute}
-                </div>
-              ))}
-            </div>
+            <TimeRange
+              range={minutesRange}
+              selectedItem={minutes}
+              className="minute"
+              onSelectItem={(m) => onTimeChange({ hours: hours, minutes: m })}
+            />
             <div className="minute-buttons">
-              <button onClick={() => handleMinuteButtonClick('DOWN')} className="minute-button">
+              <button onClick={() => incrementMinute(-1)} className="minute-button">
                 -1mn
               </button>
-              <button onClick={() => handleMinuteButtonClick('UP')} className="minute-button">
+              <button onClick={() => incrementMinute(1)} className="minute-button">
                 +1mn
               </button>
             </div>
