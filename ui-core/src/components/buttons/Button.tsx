@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import { Gear } from '@osrd-project/ui-icons';
 
 type ButtonVariant = 'Normal' | 'Cancel' | 'Quiet' | 'Destructive' | 'Primary';
+type ButtonSize = 'large' | 'medium' | 'small';
 
 export interface ButtonProps {
   label: string;
@@ -11,7 +12,7 @@ export interface ButtonProps {
   isDisabled?: boolean;
   leadingIcon?: ReactNode;
   counter?: number;
-  size?: 'large' | 'medium' | 'small';
+  size?: ButtonSize;
   onClick?: () => void;
 }
 
