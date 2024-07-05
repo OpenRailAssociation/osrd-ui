@@ -18,8 +18,15 @@ type MaxPositionValues = {
   intermediateTicksPosition: number;
 };
 
-export const getGraphOffsets = (width: number, height: number) => {
-  const WIDTH_OFFSET = width - 60;
+type SlopesValues = {
+  minGradient: number;
+  maxGradient: number;
+  slopesRange: number;
+  maxPosition: number;
+};
+
+export const getGraphOffsets = (width: number, height: number, declivities?: boolean) => {
+  const WIDTH_OFFSET = declivities ? width - 102 : width - 60; // +2px so that the tick appears on the right of the chart
   const HEIGHT_OFFSET = height - 80;
   return { WIDTH_OFFSET, HEIGHT_OFFSET };
 };
@@ -187,4 +194,16 @@ export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION
   return (
     (selection === 'electricalProfiles' || selection === 'powerRestrictions') && !store[selection]
   );
+};
+/**
+ * Given a store including a list of slopes, return the position and value of min and max slopes
+ * @param store
+ */
+export const slopesValues = (store: Store): SlopesValues => {
+  const slopes = store.slopes;
+  const minGradient = Math.min(...slopes.map((data) => data.gradient));
+  const maxGradient = Math.max(...slopes.map((data) => data.gradient));
+  const slopesRange = maxGradient - minGradient;
+  const maxPosition = Math.max(...slopes.map((data) => data.position));
+  return { minGradient, maxGradient, slopesRange, maxPosition };
 };

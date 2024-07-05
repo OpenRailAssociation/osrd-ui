@@ -18,6 +18,9 @@ import PowerRestrictionsLayer from './layers/PowerRestrictionsLayer';
 import SettingsPanel from './common/SettingsPanel';
 import InteractionButtons from './common/InteractionButtons';
 import { LINEAR_LAYERS_HEIGHTS } from './const';
+import TickLayerYRight from './layers/TickLayerYRight';
+import DeclivityLayer from './layers/DeclivityLayer';
+import { MARGINS } from './const';
 
 export type SpeedSpaceChartProps = {
   width: number;
@@ -85,9 +88,17 @@ const SpeedSpaceChart = ({
     isSettingsPanelOpened: false,
   });
 
-  const { WIDTH_OFFSET, HEIGHT_OFFSET } = getGraphOffsets(width, height);
+  const { WIDTH_OFFSET, HEIGHT_OFFSET } = getGraphOffsets(
+    width,
+    height,
+    store.layersDisplay.declivities
+  );
   const dynamicHeight = getAdaptiveHeight(height, store.layersDisplay);
   const dynamicHeightOffset = getAdaptiveHeight(HEIGHT_OFFSET, store.layersDisplay);
+  const { OFFSET_RIGHT_AXIS } = MARGINS;
+  const adjustedWidthRightAxis = store.layersDisplay.declivities
+    ? width - OFFSET_RIGHT_AXIS
+    : width;
 
   const [showDetailsBox, setShowDetailsBox] = useState(false);
 
@@ -136,11 +147,17 @@ const SpeedSpaceChart = ({
       }}
       tabIndex={0}
     >
-      <div className="flex justify-end absolute base-margin-top" style={{ width: width }}>
+      <div
+        className="flex justify-end absolute base-margin-top"
+        style={{ width: adjustedWidthRightAxis }}
+      >
         <InteractionButtons reset={reset} openSettingsPanel={openSettingsPanel} store={store} />
       </div>
       {store.isSettingsPanelOpened && (
-        <div className="flex justify-end absolute ml-2 base-margin-top" style={{ width: width }}>
+        <div
+          className="flex justify-end absolute ml-2 base-margin-top"
+          style={{ width: adjustedWidthRightAxis }}
+        >
           <SettingsPanel
             color={backgroundColor}
             store={store}
@@ -149,10 +166,13 @@ const SpeedSpaceChart = ({
           />
         </div>
       )}
+      {store.layersDisplay.declivities && (
+        <DeclivityLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
+      )}
       <CurveLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
-      <AxisLayerY width={width} height={height} store={store} />
-      <MajorGridY width={width} height={height} store={store} />
-      <AxisLayerX width={width} height={height} store={store} />
+      <AxisLayerY width={adjustedWidthRightAxis} height={height} store={store} />
+      <MajorGridY width={adjustedWidthRightAxis} height={height} store={store} />
+      <AxisLayerX width={adjustedWidthRightAxis} height={height} store={store} />
       {store.layersDisplay.steps && (
         <>
           <StepLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
@@ -179,15 +199,20 @@ const SpeedSpaceChart = ({
           store={store}
         />
       )}
-      <TickLayerX width={width} height={dynamicHeight} store={store} />
+      <TickLayerX width={adjustedWidthRightAxis} height={dynamicHeight} store={store} />
+
+      {store.layersDisplay.declivities && (
+        <TickLayerYRight width={width} height={height} store={store} />
+      )}
       <ReticleLayer
-        width={width}
+        width={adjustedWidthRightAxis}
         height={dynamicHeight}
         heightOffset={dynamicHeightOffset}
         store={store}
         showDetailsBox={showDetailsBox}
         setShowDetailsBox={setShowDetailsBox}
       />
+
       <FrontInteractivityLayer
         width={WIDTH_OFFSET}
         height={dynamicHeightOffset}
