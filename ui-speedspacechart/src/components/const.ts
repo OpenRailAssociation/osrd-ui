@@ -1,5 +1,9 @@
 import { Store } from '../types/chartTypes';
 
+export const SLOPE_FILL_COLOR = '#CFDDCE';
+
+export const RIGHT_TICK_HEIGHT_OFFSET = 2;
+
 export const MARGINS = {
   MARGIN_LEFT: 48,
   MARGIN_RIGHT: 12,
@@ -8,6 +12,8 @@ export const MARGINS = {
   CURVE_MARGIN_TOP: 40,
   CURVE_MARGIN_SIDES: 16,
   ELECTRICAL_PROFILES_MARGIN_TOP: 8,
+  RIGHT_TICK_MARGINS: 60,
+  OFFSET_RIGHT_AXIS: 42,
 };
 
 export const LINEAR_LAYERS_HEIGHTS = {

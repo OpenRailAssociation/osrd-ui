@@ -13,23 +13,18 @@
 }
 
 .base-margin-top {
-margin-top: 1.6875rem;
+  margin-top: 1.6875rem;
 }
 
 #curve-layer,
 #step-layer,
+#declivity-layer,
 #front-interactivity-layer {
   margin-left: 3rem;
   margin-top: 1.6875rem;
 }
 
-#curve-layer {
-  background-color: rgb(255, 255, 255);
-}
-
 #front-interactivity-layer {
-  margin-left: 3rem;
-  margin-top: 1.6875rem;
   box-shadow:
     0 0.0625rem 0,
     125rem 0 rgba(0, 0, 0, 0.19);

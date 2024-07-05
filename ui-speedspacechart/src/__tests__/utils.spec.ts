@@ -7,6 +7,7 @@ import {
   getAdaptiveHeight,
   positionOnGraphScale,
   getLinearLayerMarginTop,
+  slopesValues,
 } from '../components/utils';
 import type { Store } from '../types/chartTypes';
 import type { ConsolidatedPositionSpeedTime } from '../types/simulationTypes';
@@ -57,12 +58,34 @@ const store: Store = {
 };
 
 describe('getGraphOffsets', () => {
-  it('should return the correct width and height offsets', () => {
-    const width = 100;
-    const height = 200;
-    const { WIDTH_OFFSET, HEIGHT_OFFSET } = getGraphOffsets(width, height);
-    expect(WIDTH_OFFSET).toBe(40);
-    expect(HEIGHT_OFFSET).toBe(120);
+  const width = 200;
+  const height = 150;
+
+  it('should return correct width and height offsets when declivities is true', () => {
+    const result = getGraphOffsets(width, height, true);
+
+    expect(result).toEqual({
+      WIDTH_OFFSET: 98,
+      HEIGHT_OFFSET: 70,
+    });
+  });
+
+  it('should return correct width and height offsets when declivities is false', () => {
+    const result = getGraphOffsets(width, height, false);
+
+    expect(result).toEqual({
+      WIDTH_OFFSET: 140,
+      HEIGHT_OFFSET: 70,
+    });
+  });
+
+  it('should return correct width and height offsets when declivities is undefined', () => {
+    const result = getGraphOffsets(width, height);
+
+    expect(result).toEqual({
+      WIDTH_OFFSET: 140,
+      HEIGHT_OFFSET: 70,
+    });
   });
 });
 
@@ -91,6 +114,40 @@ describe('maxPositionValues', () => {
     expect(maxPosition).toBe(0);
     expect(RoundMaxPosition).toBe(0);
     expect(intermediateTicksPosition).toBe(0);
+  });
+});
+
+describe('slopesValues', () => {
+  it('should return correct minGradient, maxGradient, slopesRange, and maxPosition', () => {
+    const storeWithSlopes: Store = {
+      ...store,
+      slopes: [
+        { gradient: 1, position: 10 },
+        { gradient: 3, position: 20 },
+        { gradient: 2, position: 15 },
+        { gradient: 5, position: 25 },
+      ],
+    };
+    const result = slopesValues(storeWithSlopes);
+    expect(result).toEqual({
+      minGradient: 1,
+      maxGradient: 5,
+      slopesRange: 4,
+      maxPosition: 25,
+    });
+  });
+  it('should handle empty slopes array', () => {
+    const storeWithoutSlopes: Store = {
+      ...store,
+      slopes: [],
+    };
+    const result = slopesValues(storeWithoutSlopes);
+    expect(result).toEqual({
+      minGradient: Infinity,
+      maxGradient: -Infinity,
+      slopesRange: -Infinity,
+      maxPosition: -Infinity,
+    });
   });
 });
 
