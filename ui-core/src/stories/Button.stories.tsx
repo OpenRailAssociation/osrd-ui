@@ -33,6 +33,41 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
+export const Normal: Story = {
+  args: {
+    label: 'Normal',
+    variant: 'Normal',
+  },
+};
+
+export const Primary: Story = {
+  args: {
+    label: 'Primary',
+    variant: 'Primary',
+  },
+};
+
+export const Quiet: Story = {
+  args: {
+    label: 'Quiet',
+    variant: 'Quiet',
+  },
+};
+
+export const Destructive: Story = {
+  args: {
+    label: 'Destructive',
+    variant: 'Destructive',
+  },
+};
+
+export const Cancel: Story = {
+  args: {
+    label: 'Cancel',
+    variant: 'Cancel',
+  },
+};
+
 export const Default: Story = {
   args: {
     label: 'Click me',
@@ -57,27 +92,6 @@ export const Counter: Story = {
   args: {
     label: 'Counter',
     counter: 5,
-  },
-};
-
-export const Quiet: Story = {
-  args: {
-    label: 'Quiet',
-    variant: 'Quiet',
-  },
-};
-
-export const Destructive: Story = {
-  args: {
-    label: 'Destructive',
-    variant: 'Destructive',
-  },
-};
-
-export const Cancel: Story = {
-  args: {
-    label: 'Cancel',
-    variant: 'Cancel',
   },
 };
 
