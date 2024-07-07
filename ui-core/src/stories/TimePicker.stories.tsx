@@ -66,13 +66,13 @@ type Story = StoryObj<typeof TimePicker>;
 
 export const Default: Story = {
   args: {
-    label: 'Heure',
+    label: 'Time',
   },
 };
 
 export const DisabledTimePicker: Story = {
   args: {
     disabled: true,
-    label: 'Heure',
+    label: 'Time',
   },
 };
