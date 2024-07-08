@@ -12,7 +12,7 @@ const CheckboxesTreeStory = (props: CheckboxesTreeProps) => {
 
 const meta: Meta<typeof CheckboxesTree> = {
   component: CheckboxesTree,
-  title: 'CheckboxesTree',
+  title: 'Core/CheckboxesTree',
   tags: ['autodocs'],
   argTypes: {
     disabled: { control: 'boolean' },

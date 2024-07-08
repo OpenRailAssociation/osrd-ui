@@ -9,7 +9,7 @@ const meta: Meta<typeof PasswordInput> = {
     label: 'Password',
     hint: 'You can uses spaces',
   },
-  title: 'PasswordInput',
+  title: 'Core/PasswordInput',
   tags: ['autodocs'],
 };
 

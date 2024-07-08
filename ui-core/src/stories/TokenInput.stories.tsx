@@ -17,7 +17,7 @@ const meta: Meta<typeof TokenInput> = {
       </div>
     ),
   ],
-  title: 'TokenInput',
+  title: 'Core/TokenInput',
   tags: ['autodocs'],
 };
 
