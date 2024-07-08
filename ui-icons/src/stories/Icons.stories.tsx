@@ -3,7 +3,7 @@ import { SearchIcons } from './SearchIcons';
 
 const meta: Meta<typeof SearchIcons> = {
   component: SearchIcons,
-  title: 'Icons',
+  title: 'Icons/SearchIcons',
   tags: ['autodocs'],
   argTypes: {
     size: {

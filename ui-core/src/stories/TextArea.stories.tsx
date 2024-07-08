@@ -18,7 +18,7 @@ const meta: Meta<typeof TextArea> = {
       </div>
     ),
   ],
-  title: 'TextArea',
+  title: 'Core/TextArea',
   tags: ['autodocs'],
 };
 

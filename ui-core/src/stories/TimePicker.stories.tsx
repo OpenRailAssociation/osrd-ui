@@ -49,7 +49,7 @@ const meta: Meta<typeof TimePicker> = {
       },
     },
   },
-  title: 'TimePicker',
+  title: 'Core/TimePicker',
   tags: ['autodocs'],
   decorators: [
     (Story) => (

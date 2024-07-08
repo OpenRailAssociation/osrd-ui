@@ -5,7 +5,7 @@ import { PATH_EXTRA_LONG, PATH_LONG, PATH_MEDIUM, PATH_NAMES, PATH_SHORT } from 
 
 const meta: Meta<typeof SampleMap> = {
   component: SampleMap,
-  title: 'WarpedMap component',
+  title: 'WarpedMap/Sample Maps',
   argTypes: {
     path: {
       options: PATH_NAMES,

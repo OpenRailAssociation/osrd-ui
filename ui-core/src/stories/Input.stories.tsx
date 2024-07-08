@@ -19,7 +19,7 @@ const meta: Meta<typeof Input> = {
       </div>
     ),
   ],
-  title: 'Input',
+  title: 'Core/Input',
   tags: ['autodocs'],
 };
 

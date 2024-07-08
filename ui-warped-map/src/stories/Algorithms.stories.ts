@@ -6,7 +6,7 @@ import { PATH_LONG, PATH_NAMES } from './helpers';
 
 const meta: Meta<typeof Algorithms> = {
   component: Algorithms,
-  title: 'WarpedMap algorithms',
+  title: 'WarpedMap/Algorithms',
   argTypes: {
     path: {
       name: 'Path',

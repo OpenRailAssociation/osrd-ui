@@ -37,7 +37,7 @@ const meta: Meta<typeof SelectWrapper> = {
       </div>
     ),
   ],
-  title: 'core/Select',
+  title: 'Core/Select',
   tags: ['autodocs'],
 };
 

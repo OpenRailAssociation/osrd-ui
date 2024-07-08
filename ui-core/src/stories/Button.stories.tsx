@@ -10,7 +10,7 @@ const icons = { archive: <Archive />, bookmark: <Bookmark />, cloud: <Cloud />, 
 
 const meta: Meta<typeof Button> = {
   component: Button,
-  title: 'Button',
+  title: 'Core/Button',
   tags: ['autodocs'],
   argTypes: {
     leadingIcon: {

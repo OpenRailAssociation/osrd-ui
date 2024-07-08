@@ -10,7 +10,7 @@ const meta: Meta<typeof RadioButton> = {
     label: 'One way or the other',
     value: 'option',
   },
-  title: 'RadioButton',
+  title: 'Core/RadioButton',
   tags: ['autodocs'],
 };
 

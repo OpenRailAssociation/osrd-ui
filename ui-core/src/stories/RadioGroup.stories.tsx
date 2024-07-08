@@ -35,7 +35,7 @@ const meta: Meta<typeof RadioGroup> = {
     readOnly: false,
   },
   tags: ['autodocs'],
-  title: 'RadioGroup',
+  title: 'Core/RadioGroup',
 };
 
 export default meta;
