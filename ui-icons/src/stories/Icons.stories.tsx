@@ -16,7 +16,7 @@ const meta: Meta<typeof SearchIcons> = {
       options: ['base', 'fill'],
       control: { type: 'radio' },
     },
-    color: {
+    iconColor: {
       description: 'Choose the color of the font',
       control: { type: 'color' },
     },
@@ -31,7 +31,7 @@ export const Default: Story = {
   args: {
     size: 'lg',
     variant: 'base',
-    color: '#000',
+    iconColor: '#000',
   },
   parameters: {},
 };
