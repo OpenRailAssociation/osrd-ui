@@ -101,6 +101,7 @@ const SpeedSpaceChart = ({
     : width;
 
   const [showDetailsBox, setShowDetailsBox] = useState(false);
+  const [isMouseHoveringSettingsPanel, setIsMouseHoveringSettingsPanel] = useState(false);
 
   const reset = () => {
     setStore((prev) => ({
@@ -162,6 +163,7 @@ const SpeedSpaceChart = ({
             color={backgroundColor}
             store={store}
             setStore={setStore}
+            setIsMouseHoveringSettingsPanel={setIsMouseHoveringSettingsPanel}
             translations={translations}
           />
         </div>
@@ -187,14 +189,14 @@ const SpeedSpaceChart = ({
       <TickLayerY width={width} height={height} store={store} />
       {store.layersDisplay.electricalProfiles && (
         <ElectricalProfileLayer
-          width={width}
+          width={adjustedWidthRightAxis}
           height={height + LINEAR_LAYERS_HEIGHTS.ELECTRICAL_PROFILES_HEIGHT}
           store={store}
         />
       )}
       {store.layersDisplay.powerRestrictions && (
         <PowerRestrictionsLayer
-          width={width}
+          width={adjustedWidthRightAxis}
           marginTop={getLinearLayerMarginTop(height, store.layersDisplay)}
           store={store}
         />
@@ -204,15 +206,16 @@ const SpeedSpaceChart = ({
       {store.layersDisplay.declivities && (
         <TickLayerYRight width={width} height={height} store={store} />
       )}
-      <ReticleLayer
-        width={adjustedWidthRightAxis}
-        height={dynamicHeight}
-        heightOffset={dynamicHeightOffset}
-        store={store}
-        showDetailsBox={showDetailsBox}
-        setShowDetailsBox={setShowDetailsBox}
-      />
-
+      {!isMouseHoveringSettingsPanel && (
+        <ReticleLayer
+          width={adjustedWidthRightAxis}
+          height={dynamicHeight}
+          heightOffset={dynamicHeightOffset}
+          store={store}
+          showDetailsBox={showDetailsBox}
+          setShowDetailsBox={setShowDetailsBox}
+        />
+      )}
       <FrontInteractivityLayer
         width={WIDTH_OFFSET}
         height={dynamicHeightOffset}

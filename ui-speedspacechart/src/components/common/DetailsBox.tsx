@@ -38,14 +38,12 @@ const DetailsBox = ({
   let rightOffset = 0;
   let bottomOffset = 0;
 
+  const adaptedOffset = store.isSettingsPanelOpened ? 641 : 115;
+
   // find out if the box is going out off the right side of the canvas
-  if (curveX + MARGIN_LEFT + 115 > width - MARGIN_RIGHT - 10) {
-    rightOffset = 127;
-  }
+  if (curveX + MARGIN_LEFT + adaptedOffset > width - MARGIN_RIGHT - 10) rightOffset = 127;
   // find out if the box is going out off the bottom side of the canvas
-  if (curveY + MARGIN_TOP + 180 > height - MARGIN_BOTTOM - 10) {
-    bottomOffset = 192;
-  }
+  if (curveY + MARGIN_TOP + 180 > height - MARGIN_BOTTOM - 10) bottomOffset = 192;
 
   const boxX = curveX + MARGIN_LEFT + 6 - rightOffset;
   const boxY = curveY + MARGIN_TOP + 6 - bottomOffset;

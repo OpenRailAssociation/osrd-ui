@@ -130,7 +130,7 @@
 #settings-panel {
   position: absolute;
   display: flex;
-  height: 27.5rem;
+  height: 27.625rem;
   width: 32.875rem;
   margin-right: 20px;
   color: rgb(49, 46, 43);

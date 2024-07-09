@@ -10,11 +10,19 @@ type SettingsPanelProps = {
   color: string;
   store: Store;
   setStore: React.Dispatch<React.SetStateAction<Store>>;
+  setIsMouseHoveringSettingsPanel: React.Dispatch<React.SetStateAction<boolean>>;
   translations?: SpeedSpaceChartProps['translations'];
 };
 
-const SettingsPanel = ({ color, store, setStore, translations }: SettingsPanelProps) => {
+const SettingsPanel = ({
+  color,
+  store,
+  setStore,
+  setIsMouseHoveringSettingsPanel,
+  translations,
+}: SettingsPanelProps) => {
   const closeSettingsPanel = () => {
+    setIsMouseHoveringSettingsPanel(false);
     setStore((prev) => ({
       ...prev,
       isSettingsPanelOpened: false,
@@ -26,6 +34,8 @@ const SettingsPanel = ({ color, store, setStore, translations }: SettingsPanelPr
       id="settings-panel"
       style={{ background: `rgba(${color.substring(4, color.length - 1)}, 0.4)` }}
       className="font-sans"
+      onMouseEnter={() => setIsMouseHoveringSettingsPanel(true)}
+      onMouseLeave={() => setIsMouseHoveringSettingsPanel(false)}
     >
       <div className="settings-panel-section">
         <div className="settings-panel-section-title">
