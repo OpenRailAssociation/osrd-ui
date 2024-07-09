@@ -2,7 +2,6 @@
   "name": "@osrd-project/ui-spacetimechart",
   "version": "0.0.18",
   "license": "LGPL-3.0-or-later",
-  "private": true,
   "bugs": "https://github.com/osrd-project/osrd-ui/issues",
   "repository": {
     "type": "git",
