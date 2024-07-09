@@ -8,66 +8,69 @@ export const positionMmToKm = (position: number) => {
 
 export const calcOperationalPointsToDisplay = (
   operationalPoints: OperationalPointType[],
-  isProportionnal: boolean,
+  isProportional: boolean,
   zoom: number
-) => {
-  if (isProportionnal) {
-    const result = operationalPoints.reduce(
-      (acc, nextOp) => {
-        let op = { ...acc[acc.length - 1] };
-        const newOp = { ...nextOp, display: true, styles: {} };
-        const diff = positionMmToKm(nextOp.position - op.position);
-        if (diff * 8 * zoom >= BASE_OP_HEIGHT) {
-          acc.push(newOp);
-          op = nextOp;
-        } else {
-          newOp.display = false;
-          acc.push(newOp);
-        }
-        return acc;
-      },
-      [{ ...operationalPoints[0], display: true, styles: {} } as StyledOperationalPointType]
-    );
+): StyledOperationalPointType[] => {
+  // For proportional display, we only display points that do not overlap with
+  // the last displayed point:
+  if (isProportional && operationalPoints.length >= 0) {
+    // We start with the first operational point:
+    const result: StyledOperationalPointType[] = [
+      { ...operationalPoints[0], display: true, styles: {} },
+    ];
+    let lastDisplayedOP = result[0];
 
-    const lastElement = operationalPoints[operationalPoints.length - 1];
-    if (result[result.length - 1] !== lastElement) {
-      result.push(lastElement);
+    // We iterate through all points, and only add them if they don't collide
+    // with the last visible point:
+    for (let i = 1, l = operationalPoints.length; i < l; i++) {
+      const op = operationalPoints[i];
+      const diff = positionMmToKm(op.position - lastDisplayedOP.position);
+      const display = diff * 8 * zoom >= BASE_OP_HEIGHT;
+      result.push({
+        ...op,
+        display,
+        styles: {},
+      });
+
+      if (display) lastDisplayedOP = result[i];
     }
 
-    const secondLastIndex = result.length - 2;
-    if (secondLastIndex >= 0) {
-      const secondLastElement = result[secondLastIndex];
-      const lastDiff = positionMmToKm(lastElement.position - secondLastElement.position);
-      if (lastDiff * 8 * zoom < BASE_OP_HEIGHT) {
-        result.splice(secondLastIndex, 1);
+    // In the end, to make sure the last point is visible, if it's not, we swap
+    // it with the last visible item:
+    const lastItem = result[result.length - 1];
+    if (!lastItem.display) {
+      const lastVisibleItem = result.findLast((op) => op.display);
+      if (lastVisibleItem) {
+        lastVisibleItem.display = false;
+        lastItem.display = true;
       }
     }
-    result.shift();
+
     return result;
-  } else {
-    return operationalPoints as StyledOperationalPointType[];
+  }
+  // For non-proportional display, we always display all the operational points:
+  else {
+    return operationalPoints.map((op) => ({ ...op, styles: {}, display: true }));
   }
 };
 
 export const operationalPointsHeight = (
   operationalPoints: StyledOperationalPointType[],
   zoom: number,
-  isProportionnal: boolean
+  isProportional: boolean
 ) => {
   return operationalPoints.map((op, index) => {
     const nextOp = operationalPoints[index + 1];
     if (!nextOp) {
-      op.styles = { height: `${BASE_OP_HEIGHT}px` };
-      return op;
+      return { ...op, styles: { height: `${BASE_OP_HEIGHT}px` } };
     }
-    if (isProportionnal) {
-      op.styles = {
-        height: `${positionMmToKm(nextOp.position - op.position) * zoom * 8}px`,
+    if (isProportional) {
+      return {
+        ...op,
+        styles: { height: `${positionMmToKm(nextOp.position - op.position) * zoom * 8}px` },
       };
-      return op;
     } else {
-      op.styles = { height: `${BASE_OP_HEIGHT * zoom}px` };
-      return op;
+      return { ...op, styles: { height: `${BASE_OP_HEIGHT * zoom}px` } };
     }
   });
 };
@@ -83,12 +86,12 @@ export const getOperationalPointsWithPosition = (
   }));
 };
 
-export const getScales = (ops: OperationalPoint[], isProportionnal: boolean, zoomY: number) => {
+export const getScales = (ops: OperationalPoint[], isProportional: boolean, zoomY: number) => {
   const scales = ops.slice(0, -1).map((point, i) => {
     return {
       from: point.position,
       to: ops[i + 1].position,
-      ...(!isProportionnal
+      ...(!isProportional
         ? { size: BASE_OP_HEIGHT * zoomY }
         : { coefficient: ((1000 / BASE_KM_HEIGHT) * 1000) / zoomY }),
     };

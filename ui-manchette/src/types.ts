@@ -1,4 +1,4 @@
-import React from 'react';
+import { type CSSProperties } from 'react';
 
 export type PathProperties = {
   electrifications?: {
@@ -84,7 +84,7 @@ export type ArrayElement<ArrayType extends readonly unknown[] | null | undefined
 export type OperationalPointType = ArrayElement<PathProperties['operational_points'] | null>;
 
 export type StyledOperationalPointType = OperationalPointType & {
-  styles?: React.CSSProperties;
+  styles?: CSSProperties;
   display?: boolean;
 };
 
@@ -114,7 +114,6 @@ export type ProjectPathTrainResult = {
     positions: number[];
     times: number[];
   }[];
-} & {
   /** Departure time of the train */
   departure_time: string;
   /** Rolling stock length in mm */

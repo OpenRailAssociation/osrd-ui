@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import OperationalPointList from './OperationalPointList';
 import type {
@@ -15,7 +15,13 @@ import {
   operationalPointsHeight,
 } from './helpers';
 import type { OperationalPoint, SpaceScale } from '@osrd-project/ui-spacetimechart/dist/lib/types';
-import { INITIAL_OP_LIST_HEIGHT, INITIAL_SPACE_TIME_CHART_HEIGHT } from './consts';
+import {
+  INITIAL_OP_LIST_HEIGHT,
+  INITIAL_SPACE_TIME_CHART_HEIGHT,
+  MAX_ZOOM_Y,
+  MIN_ZOOM_Y,
+  ZOOM_Y_DELTA,
+} from './consts';
 import { getDiff } from '../utils/vector';
 import { useIsOverflow } from '../hooks/useIsOverFlow';
 type ManchetteProps = {
@@ -24,57 +30,72 @@ type ManchetteProps = {
 };
 import usePaths from '../hooks/usePaths';
 
-const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResult }) => {
+const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResult }) => {
   const manchette = useRef<HTMLDivElement>(null);
 
-  const [zoomY, setZoomY] = useState(1);
-
-  const xZoomLevel = 1;
-
-  const [xOffset, setXOffset] = useState(0);
-
-  const [yOffset, setYOffset] = useState(0);
-  const [panning, setPanning] = useState<{ initialOffset: { x: number; y: number } } | null>(null);
-
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  const [operationalPointsToDisplay, setOperationalPointsToDisplay] = useState<
-    StyledOperationalPointType[]
-  >([]);
-
-  const [operationalPointsChart, setOperationalPointsChart] = useState<OperationalPoint[]>([]);
-  const [isProportionnal, setIsProportionnal] = useState<boolean>(false);
-
-  const [panY, setPanY] = useState<boolean>(false);
-
-  const [scales, setScales] = useState<SpaceScale[]>([]);
-
-  useIsOverflow(manchette, (isOverflowFromCallback) => {
-    setPanY(isOverflowFromCallback);
+  const [state, setState] = useState<{
+    xZoom: number;
+    yZoom: number;
+    xOffset: number;
+    yOffset: number;
+    panY: boolean;
+    panning: { initialOffset: { x: number; y: number } } | null;
+    scrollPosition: number;
+    isProportional: boolean;
+    operationalPointsChart: OperationalPoint[];
+    operationalPointsToDisplay: StyledOperationalPointType[];
+    scales: SpaceScale[];
+  }>({
+    xZoom: 1,
+    yZoom: 1,
+    xOffset: 0,
+    yOffset: 0,
+    panning: null,
+    scrollPosition: 0,
+    isProportional: false,
+    operationalPointsChart: [],
+    operationalPointsToDisplay: [],
+    panY: false,
+    scales: [],
   });
+  const {
+    xZoom,
+    yZoom,
+    xOffset,
+    yOffset,
+    panY,
+    panning,
+    scrollPosition,
+    isProportional,
+    operationalPointsChart,
+    operationalPointsToDisplay,
+    scales,
+  } = state;
 
   const paths = usePaths(projectPathTrainResult);
 
-  const zoomYIn = () => {
-    if (zoomY < 10.5) setZoomY(zoomY + 0.5);
-  };
-
-  const zoomYOut = () => {
-    if (zoomY > 1) setZoomY(zoomY - 0.5);
-  };
-  const handleScroll = () => {
+  const zoomYIn = useCallback(() => {
+    if (yZoom < MAX_ZOOM_Y) setState((state) => ({ ...state, yZoom: yZoom + ZOOM_Y_DELTA }));
+  }, [yZoom]);
+  const zoomYOut = useCallback(() => {
+    if (yZoom > MIN_ZOOM_Y) setState((state) => ({ ...state, yZoom: yZoom - ZOOM_Y_DELTA }));
+  }, [yZoom]);
+  const handleScroll = useCallback(() => {
     if (manchette.current) {
       const { scrollTop } = manchette.current;
       if (scrollTop || scrollTop === 0) {
-        setScrollPosition(scrollTop);
-        setYOffset(scrollTop);
+        setState((state) => ({ ...state, scrollPosition: scrollTop, yOffset: scrollTop }));
       }
     }
-  };
+  }, []);
+  const toggleMode = useCallback(() => {
+    setState((state) => ({ ...state, isProportional: !state.isProportional }));
+  }, []);
+  const checkOverflow = useCallback((isOverflowFromCallback: boolean) => {
+    setState((state) => ({ ...state, panY: isOverflowFromCallback }));
+  }, []);
 
-  const toggleMode = () => {
-    setIsProportionnal(!isProportionnal);
-  };
+  useIsOverflow(manchette, checkOverflow);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -82,23 +103,31 @@ const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, projectPathTra
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [handleScroll]);
 
   useEffect(() => {
     const computedOperationalPoints = calcOperationalPointsToDisplay(
       operationalPoints,
-      isProportionnal,
-      zoomY
+      isProportional,
+      yZoom
     );
 
-    setOperationalPointsToDisplay(
-      operationalPointsHeight(computedOperationalPoints, zoomY, isProportionnal)
-    );
-    setOperationalPointsChart(getOperationalPointsWithPosition(computedOperationalPoints));
-  }, [operationalPoints, isProportionnal, zoomY]);
+    setState((state) => ({
+      ...state,
+      operationalPointsChart: getOperationalPointsWithPosition(computedOperationalPoints),
+      operationalPointsToDisplay: operationalPointsHeight(
+        computedOperationalPoints,
+        yZoom,
+        isProportional
+      ),
+    }));
+  }, [operationalPoints, isProportional, yZoom]);
 
   useEffect(() => {
-    setScales(getScales(operationalPointsChart, isProportionnal, zoomY));
+    setState((state) => ({
+      ...state,
+      scales: getScales(operationalPointsChart, isProportional, yZoom),
+    }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [operationalPointsChart]);
 
@@ -121,7 +150,7 @@ const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, projectPathTra
               <button
                 className="h-full px-3 w-full zoom-out"
                 onClick={zoomYOut}
-                disabled={zoomY === 1}
+                disabled={yZoom <= MIN_ZOOM_Y}
               >
                 <ZoomOut />
               </button>
@@ -129,7 +158,7 @@ const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, projectPathTra
             <div className=" flex items-center  border-x border-black-25  h-full">
               <button
                 className="h-full px-3 w-full zoom-in"
-                disabled={zoomY === 10}
+                disabled={yZoom >= MAX_ZOOM_Y}
                 onClick={zoomYIn}
               >
                 <ZoomIn />
@@ -138,9 +167,9 @@ const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, projectPathTra
             <div className="flex items-center ml-auto text-sans font-semibold">
               <button className="toggle-mode" onClick={toggleMode}>
                 <div className="flex flex-col items-end pr-2">
-                  <span className={cx({ 'text-grey-30': !isProportionnal })}>Km</span>
+                  <span className={cx({ 'text-grey-30': !isProportional })}>Km</span>
 
-                  <span className={cx({ 'text-grey-30': isProportionnal })}>Linéaire</span>
+                  <span className={cx({ 'text-grey-30': isProportional })}>Linéaire</span>
                 </div>
               </button>
             </div>
@@ -160,18 +189,20 @@ const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, projectPathTra
               timeOrigin={Math.min(
                 ...projectPathTrainResult.map((p) => +new Date(p.departure_time))
               )}
-              timeScale={60000 / xZoomLevel}
+              timeScale={60000 / xZoom}
               xOffset={xOffset}
               yOffset={-scrollPosition + 14}
               onPan={({ initialPosition, position, isPanning }) => {
                 const diff = getDiff(initialPosition, position);
+                const newState = { ...state };
+
                 if (!isPanning) {
-                  setPanning(null);
+                  newState.panning = null;
                 } else if (!panning) {
-                  setPanning({ initialOffset: { x: xOffset, y: yOffset } });
+                  newState.panning = { initialOffset: { x: xOffset, y: yOffset } };
                 } else {
                   const { initialOffset } = panning;
-                  setXOffset(initialOffset.x + diff.x);
+                  newState.xOffset = initialOffset.x + diff.x;
                   if (panY) {
                     const newYPos = initialOffset.y - diff.y;
 
@@ -180,14 +211,16 @@ const Manchette: React.FC<ManchetteProps> = ({ operationalPoints, projectPathTra
                       newYPos >= 0 &&
                       newYPos + INITIAL_SPACE_TIME_CHART_HEIGHT <= manchette.current?.scrollHeight
                     ) {
-                      setYOffset(newYPos);
-                      setScrollPosition(yOffset);
+                      newState.yOffset = newYPos;
+                      newState.scrollPosition = newYPos;
                       if (manchette.current && manchette.current.scrollHeight) {
                         manchette.current.scrollTop = newYPos;
                       }
                     }
                   }
                 }
+
+                setState(newState);
               }}
             >
               {paths.map((path, i) => (
