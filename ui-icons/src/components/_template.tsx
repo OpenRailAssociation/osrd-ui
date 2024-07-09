@@ -6,7 +6,13 @@ const iconData: IconData = {};
 
 //ReplaceWithTypes
 
-const IconReplaceName: IconReplaceNameIcon = ({ variant = 'base', size = 'sm', title }) => {
+const IconReplaceName: IconReplaceNameIcon = ({
+  variant = 'base',
+  size = 'sm',
+  title,
+  iconColor,
+  className = '',
+}) => {
   const currentSize = sizes[size];
   if (!iconData[variant]) {
     throw new Error(`IconReplaceName: variant ${variant} not found.`);
@@ -19,15 +25,17 @@ const IconReplaceName: IconReplaceNameIcon = ({ variant = 'base', size = 'sm', t
     data = `<title>${title}</title>${data}`;
   }
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      {...(title ? {} : { 'aria-hidden': true })}
-      width={currentSize}
-      height={currentSize}
-      fill="currentColor"
-      viewBox={`0 0 ${currentSize} ${currentSize}`}
-      dangerouslySetInnerHTML={{ __html: data }}
-    />
+    <span className={className}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        {...(title ? {} : { 'aria-hidden': true })}
+        width={currentSize}
+        height={currentSize}
+        fill={iconColor || 'currentColor'}
+        viewBox={`0 0 ${currentSize} ${currentSize}`}
+        dangerouslySetInnerHTML={{ __html: data }}
+      />
+    </span>
   );
 };
 

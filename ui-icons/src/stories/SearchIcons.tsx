@@ -13,7 +13,7 @@ export const SearchIcons: FC<{
   size: 'sm' | 'lg';
   variant: 'base' | 'fill';
   title?: string;
-  color: string;
+  iconColor: string;
 }> = (args) => {
   console.log(args);
   const [search, setSearch] = useState('');
@@ -55,9 +55,7 @@ export const SearchIcons: FC<{
                 alignItems: 'center',
               }}
             >
-              <span style={{ color: args.color }}>
-                <i.icon {...args} />
-              </span>
+              <i.icon {...args} />
               <span style={{ fontSize: '0.5em' }}>{i.name}</span>
             </div>
           </ErrorBoundary>

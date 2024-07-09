@@ -152,10 +152,10 @@ for (const [name, currentData] of Object.entries(representation)) {
 
     return [
       `IconReplaceName${variant}Props`,
-      `interface IconReplaceName${variant}Props { size?: ${sizeStr}; variant?: "${variant}"; title?: string; };`,
+      `interface IconReplaceName${variant}Props { size?: ${sizeStr}; variant?: "${variant}"; title?: string; iconColor?: string; className?: string; };`,
     ];
   });
-  const iconPropsContent = definitions.map(([name, content]) => `${content}\n`).join('\n');
+  const iconPropsContent = definitions.map(([_, content]) => `${content}\n`).join('\n');
   const iconsPropsTypeUnion = definitions.map(([name]) => name).join(' | ');
   const iconPropsExport =
     `export type IconReplaceNameProps = ${iconsPropsTypeUnion};` +
