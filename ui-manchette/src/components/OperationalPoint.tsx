@@ -1,9 +1,16 @@
 import React from 'react';
-import { OperationalPointType } from '../types';
+import { StyledOperationalPointType } from '../types';
 import '@osrd-project/ui-core/dist/theme.css';
 import { positionMmToKm } from './helpers';
 
-const OperationalPoint: React.FC<OperationalPointType> = ({ extensions, id, position }) => {
+const OperationalPoint: React.FC<StyledOperationalPointType> = ({
+  extensions,
+  id,
+  position,
+  display,
+}) => {
+  if (!display) return null;
+
   return (
     <div className="flex op items-baseline" id={id}>
       <div className="op-position justify-self-start text-end">{positionMmToKm(position)}</div>
