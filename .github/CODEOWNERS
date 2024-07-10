@@ -1,3 +1,5 @@
+*                                                        @openrailassociation/OSRD-Front
+
 # --- CI - CODEOWNERS - Dependabot - Template ---
 /.github                                                 @openrailassociation/OSRD-DevOps
 /.github/CODEOWNERS                                      @openrailassociation/OSRD-Admins
