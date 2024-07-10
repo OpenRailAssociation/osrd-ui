@@ -34,4 +34,4 @@ jobs:
         run: |
           VERSION=${GITHUB_REF/refs\/tags\//}
           npm ci
-          npm run lerna -- publish ${VERSION} --force-publish --yes --no-push --no-git-tag-version
+          npm run lerna -- publish ${VERSION} --yes --no-push --no-git-tag-version

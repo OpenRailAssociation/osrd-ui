@@ -4,29 +4,37 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     alejandra = {
       url = "github:kamadorueda/alejandra/3.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }@inputs:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    alejandra,
+    ...
+  } @ inputs:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
         pkgs = import nixpkgs {
           inherit system;
           overlays = [];
         };
-        fixedNode = pkgs.nodejs-18_x;
+        fixedNode = pkgs.nodejs_20;
         fixedNodePackages = pkgs.nodePackages.override {
           nodejs = fixedNode;
         };
-      in
-      {
+      in {
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ 
-            fixedNode 
+          buildInputs = with pkgs; [
+            # Nix formatter
+            alejandra.defaultPackage.${system}
+
+            # Node version
+            fixedNode
             fixedNodePackages.npm
             fixedNodePackages.yarn
           ];
