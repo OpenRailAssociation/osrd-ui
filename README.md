@@ -6,7 +6,7 @@ Icons, fonts, colors, components and all user interface items for OSRD project.
 
 Development will leverage preconstruct. **Documentation yet to come**.
 
-## Publishing versions
+## Publishing versions
 
 In a nutshell: we consider our version numbers metadata of the project. We use [Semantic Versioning](https://semver.org/).
 
