@@ -1,7 +1,12 @@
-import { clearCanvas, getAdaptiveHeight, maxPositionValues, speedRangeValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
+import {
+  clearCanvas,
+  findPreviousAndNextPosition,
+  getAdaptiveHeight,
+  maxPositionValues,
+  speedRangeValues,
+} from '../../utils';
 import { MARGINS } from '../../const';
-import { ConsolidatedPositionSpeedTime, GradientPosition } from '../../../types/simulationTypes';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const {
   MARGIN_LEFT,
@@ -12,12 +17,9 @@ const {
   CURVE_MARGIN_SIDES,
 } = MARGINS;
 
-export const drawCursor = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+const RETICLE_LINE = 12.75;
+
+export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) => {
   clearCanvas(ctx, width, height);
 
   const {
@@ -25,9 +27,10 @@ export const drawCursor = (
     layersDisplay,
     ratioX,
     leftOffset,
-    speed,
+    speeds,
+    ecoSpeeds,
     stops,
-    electrification,
+    electrifications,
     slopes,
     electricalProfiles,
     powerRestrictions,
@@ -40,7 +43,8 @@ export const drawCursor = (
   ctx.shadowOffsetY = 0;
   ctx.shadowBlur = 0;
 
-  let marecoSpeedText = '';
+  let speedText = '';
+  let ecoSpeedText = '';
   let effortText = 'coasting';
   let electricalModeText = '';
   let electricalProfileText = '';
@@ -72,41 +76,41 @@ export const drawCursor = (
 
   if (cursor.x && cursor.y) {
     // get the nearest previous and next speed values of the curve based on pointer position
-    const previousCurvePosition = speed.findLast(
-      (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) <= cursor.x!
-    );
-    const nextCurvePosition = speed.find(
-      (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) >= cursor.x!
-    );
+    const { previousPosition: previousCurvePosition, nextPosition: nextCurvePosition } =
+      findPreviousAndNextPosition(speeds, cursor.x!, xPositionReference);
+
+    // get the nearest previous and next speed values of the curve based on pointer position
+    const { previousPosition: previousEcoCurvePosition, nextPosition: nextEcoCurvePosition } =
+      findPreviousAndNextPosition(ecoSpeeds, cursor.x!, xPositionReference);
 
     // get the nearest previous and next stop values of the curve based on pointer position
-    const previousStop = stops.findLast((stop) => xPositionReference(stop.position) <= cursor.x!);
-    const nextStop = stops.find((stop) => xPositionReference(stop.position) >= cursor.x!);
+    const { previousPosition: previousStop, nextPosition: nextStop } = findPreviousAndNextPosition(
+      stops,
+      cursor.x!,
+      xPositionReference
+    );
 
     // Get the electrical profile name based on the position of the cursor
     if (electricalProfiles) {
-      const { values, boundaries } = electricalProfiles;
-      const currentBoundaryProfileIndex = boundaries.findIndex(
-        (boundary) => cursor.x! <= xPositionReference(boundary)
-      );
-      const electricalProfileValue = values[currentBoundaryProfileIndex];
-      if (
-        electricalProfileValue &&
-        'profile' in electricalProfileValue &&
-        electricalProfileValue.profile !== 'incompatible'
-      ) {
-        electricalProfileText = electricalProfileValue.profile;
+      const electricalProfileValue = electricalProfiles.find(
+        ({ position }) =>
+          xPositionReference(position.start) <= cursor.x! &&
+          xPositionReference(position.end!) >= cursor.x!
+      )?.value.electricalProfile;
+
+      if (electricalProfileValue) {
+        electricalProfileText = electricalProfileValue;
       }
     }
 
     // Get the power restriction code based on the position of the cursor
     if (powerRestrictions) {
       const currentPowerRestriction = powerRestrictions.find(
-        (range) =>
-          cursor.x! >= xPositionReference(range.start) &&
-          cursor.x! <= xPositionReference(range.stop)
+        ({ position }) =>
+          cursor.x! >= xPositionReference(position.start) &&
+          cursor.x! <= xPositionReference(position.end!)
       );
-      powerRestrictionText = currentPowerRestriction?.code || '';
+      powerRestrictionText = currentPowerRestriction?.value.powerRestriction || '';
     }
 
     // calculate the y position of the curve based on pointer position between two points
@@ -117,102 +121,108 @@ export const drawCursor = (
       previousStop !== undefined &&
       nextStop !== undefined
     ) {
-      const normalizedPreviousSpeed = (previousCurvePosition!.speed - minSpeed) / speedRange;
-      const normalizedNextSpeed = (nextCurvePosition!.speed - minSpeed) / speedRange;
+      const normalizedPreviousSpeed = (previousCurvePosition.value - minSpeed) / speedRange;
+      const normalizedNextSpeed = (nextCurvePosition.value - minSpeed) / speedRange;
       x = {
-        a: xPositionReference(previousCurvePosition!.position),
-        b: xPositionReference(nextCurvePosition!.position),
+        a: xPositionReference(previousCurvePosition.position.start),
+        b: xPositionReference(nextCurvePosition.position.start),
       };
       y = {
         a: cursorBoxHeight - normalizedPreviousSpeed * (cursorBoxHeight - CURVE_MARGIN_TOP),
         b: cursorBoxHeight - normalizedNextSpeed * (cursorBoxHeight - CURVE_MARGIN_TOP),
       };
 
-      const previousElectrification = electrification.findLast(
-        (data) => data.start <= previousCurvePosition.position
+      const previousElectrification = electrifications.findLast(
+        ({ position }) => position.start <= previousCurvePosition.position.start
       );
 
-      const electrificationUsage = previousElectrification?.electrificationUsage;
+      const electrificationUsage = previousElectrification?.value;
       if (electrificationUsage) {
-        const isElectrified = electrificationUsage.object_type === 'Electrified';
+        const isElectrified = electrificationUsage.type === 'electrification';
         modeText = isElectrified ? 'electric' : '--';
-        electricalModeText = `${isElectrified ? electrificationUsage.mode : electrificationUsage.object_type}`;
+        electricalModeText = electrificationUsage.voltage!;
       }
 
       // find out if the cursor isn't close to the previous stop or the next stop based on 20px
       if (
-        curveX - xPositionReference(previousStop.position) > 20 &&
-        xPositionReference(nextStop.position) - curveX > 20
+        curveX - xPositionReference(previousStop.position.start) > 20 &&
+        xPositionReference(nextStop.position.start) - curveX > 20
       ) {
         const drop = (y.b! - y.a!) / (x.b! - x.a!);
         const deltaX = curveX - x.a;
         const deltaY = drop * deltaX;
         curveY = y.a! + deltaY;
 
-        marecoSpeedText = (
-          previousCurvePosition.speed +
-            ((nextCurvePosition.speed - previousCurvePosition.speed) * (curveX - x.a)) /
+        speedText = (
+          previousCurvePosition.value +
+            ((nextCurvePosition.value - previousCurvePosition.value) * (curveX - x.a)) /
               (x.b - x.a) || 0
         ).toFixed(1);
 
-        if (previousCurvePosition.speed < nextCurvePosition.speed) {
+        ecoSpeedText = (
+          previousEcoCurvePosition!.value +
+            ((nextEcoCurvePosition!.value - previousEcoCurvePosition!.value) * (curveX - x.a)) /
+              (x.b - x.a) || 0
+        ).toFixed(1);
+
+        if (previousCurvePosition.value < nextCurvePosition.value) {
           effortText = 'accelerating';
         }
-        if (previousCurvePosition.speed > nextCurvePosition.speed) {
+        if (previousCurvePosition.value > nextCurvePosition.value) {
           effortText = 'decelerating';
         }
 
         previousGradientText = slopes.findLast(
-          (data: GradientPosition) => xPositionReference(data.position) <= curveX!
-        )!.gradient;
+          ({ position }) => xPositionReference(position.start) <= curveX!
+        )!.value;
       } else {
         // find out from wich side the cursor is closer to the stop
         if (
-          curveX - xPositionReference(previousStop.position) <=
-          xPositionReference(nextStop.position) - curveX
+          curveX - xPositionReference(previousStop.position.start) <=
+          xPositionReference(nextStop.position.start) - curveX
         ) {
-          curveX = xPositionReference(previousStop.position);
+          curveX = xPositionReference(previousStop.position.start);
         } else {
-          curveX = xPositionReference(nextStop.position);
+          curveX = xPositionReference(nextStop.position.start);
         }
 
-        const nextSpeed = speed.findLast(
-          (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) <= curveX
-        )!.speed;
-        const previousSpeed = speed.find(
-          (speed: ConsolidatedPositionSpeedTime) => xPositionReference(speed.position) >= curveX
-        )!.speed;
+        const { previousPosition: nextSpeed, nextPosition: previousSpeed } =
+          findPreviousAndNextPosition(speeds, curveX, xPositionReference);
+
+        const { previousPosition: nextEcoSpeed, nextPosition: previousEcoSpeed } =
+          findPreviousAndNextPosition(ecoSpeeds, curveX, xPositionReference);
 
         // find curveY based on the average speed between the previous and next speed values
         curveY =
           cursorBoxHeight -
-          (((previousSpeed + nextSpeed) / 2 - minSpeed) / speedRange) *
+          (((previousSpeed!.value + nextSpeed!.value) / 2 - minSpeed) / speedRange) *
             (cursorBoxHeight - CURVE_MARGIN_TOP);
 
-        marecoSpeedText = ((previousSpeed + nextSpeed) / 2).toFixed(1);
+        speedText = ((previousSpeed!.value + nextSpeed!.value) / 2).toFixed(1);
 
-        if (nextSpeed < previousSpeed) {
+        ecoSpeedText = ((previousEcoSpeed!.value + nextEcoSpeed!.value) / 2).toFixed(1);
+
+        if (nextSpeed!.value < previousSpeed!.value) {
           effortText = 'accelerating';
         }
-        if (nextSpeed > previousSpeed) {
+        if (nextSpeed!.value > previousSpeed!.value) {
           effortText = 'decelerating';
         }
 
         previousGradientText = slopes.findLast(
-          (data: GradientPosition) => xPositionReference(data.position) <= curveX!
-        )!.gradient;
+          ({ position }) => xPositionReference(position.start) <= curveX!
+        )!.value;
       }
 
       ctx.beginPath();
       // lines along the curve
       // horizontal
-      // TODO: add const for 12.75
-      ctx.moveTo(curveX + MARGIN_LEFT - 12.75, curveY + MARGIN_TOP);
-      ctx.lineTo(curveX + MARGIN_LEFT + 12.75, curveY + MARGIN_TOP);
+      ctx.moveTo(curveX + MARGIN_LEFT - RETICLE_LINE, curveY + MARGIN_TOP);
+      ctx.lineTo(curveX + MARGIN_LEFT + RETICLE_LINE, curveY + MARGIN_TOP);
       ctx.stroke();
       // vertical
-      ctx.moveTo(curveX + MARGIN_LEFT, curveY + MARGIN_TOP - 12.75);
-      ctx.lineTo(curveX + MARGIN_LEFT, curveY + MARGIN_TOP + 12.75);
+      ctx.moveTo(curveX + MARGIN_LEFT, curveY + MARGIN_TOP - RETICLE_LINE);
+      ctx.lineTo(curveX + MARGIN_LEFT, curveY + MARGIN_TOP + RETICLE_LINE);
 
       // lines along the axis
       // horizontal
@@ -232,19 +242,19 @@ export const drawCursor = (
       // calculate the position value between x.a and x.b
       const position = Math.round(
         ((curveX - x.a) / (x.b - x.a)) *
-          (nextCurvePosition!.position - previousCurvePosition!.position) +
-          previousCurvePosition!.position
+          (nextCurvePosition!.position.start - previousCurvePosition!.position.start) +
+          previousCurvePosition!.position.start
       );
       let textPosition = '';
-      if (previousCurvePosition.position === 0 && nextCurvePosition.position === 0) {
+      if (previousCurvePosition.position.start === 0 && nextCurvePosition.position.start === 0) {
         textPosition = '0';
       } else if (
-        previousCurvePosition.position === maxPosition &&
-        nextCurvePosition.position === maxPosition
+        previousCurvePosition.position.start === maxPosition &&
+        nextCurvePosition.position.start === maxPosition
       ) {
-        textPosition = (maxPosition / 1000).toFixed(1).toString();
+        textPosition = maxPosition.toFixed(1).toString();
       } else {
-        textPosition = (position / 1000).toFixed(1).toString();
+        textPosition = position.toFixed(1).toString();
       }
 
       ctx.textAlign = 'center';
@@ -260,7 +270,8 @@ export const drawCursor = (
   return {
     curveX,
     curveY,
-    marecoSpeedText,
+    speedText,
+    ecoSpeedText,
     effortText,
     electricalModeText,
     electricalProfileText,

@@ -1,16 +1,11 @@
 import { clearCanvas, maxPositionValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM, CURVE_MARGIN_SIDES } = MARGINS;
 
-export const drawTickX = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
-  const { speed, ratioX, leftOffset, cursor } = store;
+export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => {
+  const { speeds, ratioX, leftOffset, cursor } = store;
 
   clearCanvas(ctx, width, height);
 
@@ -38,7 +33,7 @@ export const drawTickX = (
 
   ctx.beginPath();
 
-  speed.forEach((_, i) => {
+  speeds.forEach((_, i) => {
     if (i <= Math.ceil(ratioX) * 40 && i % 2 !== 0) {
       ctx.moveTo(
         MARGIN_LEFT + intermediateXPosition * i + CURVE_MARGIN_SIDES / 2,
@@ -51,7 +46,7 @@ export const drawTickX = (
     }
   });
 
-  speed.forEach((_, i) => {
+  speeds.forEach((_, i) => {
     if (i <= Math.ceil(ratioX) * 20) {
       ctx.moveTo(MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM);
       ctx.lineTo(
@@ -61,10 +56,7 @@ export const drawTickX = (
 
       if (i % 2 === 0) {
         ctx.textAlign = 'center';
-        const text =
-          (i * RoundMaxPosition) / 1000
-            ? ((i * RoundMaxPosition) / 1000).toFixed(1).toString()
-            : '0';
+        const text = i * RoundMaxPosition ? (i * RoundMaxPosition).toFixed(1).toString() : '0';
         const textPositionX = MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2;
         let opacity = 1;
 

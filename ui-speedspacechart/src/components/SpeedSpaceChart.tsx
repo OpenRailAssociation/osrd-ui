@@ -1,33 +1,34 @@
-import CurveLayer from './layers/CurveLayer';
-import FrontInteractivityLayer from './layers/FrontInteractivityLayer';
-import { type ConsolidatedPositionSpeedTime, OsrdSimulationState } from '../types/simulationTypes';
 import React, { useEffect, useState } from 'react';
-import type { Store } from '../types/chartTypes';
-import AxisLayerX from './layers/AxisLayerX';
-import AxisLayerY from './layers/AxisLayerY';
-import TickLayerX from './layers/TickLayerX';
-import TickLayerY from './layers/TickLayerY';
-import MajorGridY from './layers/MajorGridY';
-import StepLayer from './layers/StepLayer';
-import ReticleLayer from './layers/ReticleLayer';
-import { resetZoom } from './helpers/layersManager';
-import StepNamesLayer from './layers/StepNamesLayer';
-import { getGraphOffsets, getAdaptiveHeight, getLinearLayerMarginTop } from './utils';
-import ElectricalProfileLayer from './layers/ElectricalProfileLayer';
-import PowerRestrictionsLayer from './layers/PowerRestrictionsLayer';
+import {
+  AxisLayerX,
+  AxisLayerY,
+  CurveLayer,
+  DeclivityLayer,
+  ElectricalProfileLayer,
+  FrontInteractivityLayer,
+  MajorGridY,
+  PowerRestrictionsLayer,
+  ReticleLayer,
+  SpeedLimitTagsLayer,
+  StepLayer,
+  StepNamesLayer,
+  TickLayerX,
+  TickLayerY,
+  TickLayerYRight,
+} from './layers/index';
 import SettingsPanel from './common/SettingsPanel';
 import InteractionButtons from './common/InteractionButtons';
-import { LINEAR_LAYERS_HEIGHTS } from './const';
-import TickLayerYRight from './layers/TickLayerYRight';
-import DeclivityLayer from './layers/DeclivityLayer';
+import { resetZoom } from './helpers/layersManager';
+import { getGraphOffsets, getAdaptiveHeight, getLinearLayerMarginTop } from './utils';
 import { MARGINS } from './const';
-import SpeedLimitTagsLayer from './layers/SpeedLimitTagsLayer';
+import { LINEAR_LAYERS_HEIGHTS } from './const';
+import type { Data, Store } from '../types/chartTypes';
 
 export type SpeedSpaceChartProps = {
   width: number;
   height: number;
   backgroundColor: string;
-  data: OsrdSimulationState;
+  data: Data;
   translations?: {
     detailsBoxDisplay: {
       reticleInfos: string;
@@ -58,11 +59,12 @@ const SpeedSpaceChart = ({
   translations,
 }: SpeedSpaceChartProps) => {
   const [store, setStore] = useState<Store>({
-    speed: [],
+    speeds: [],
+    ecoSpeeds: [],
     stops: [],
-    electrification: [],
-    powerRestrictions: undefined,
+    electrifications: [],
     slopes: [],
+    powerRestrictions: undefined,
     electricalProfiles: undefined,
     speedLimitTags: undefined,
     ratioX: 1,
@@ -123,18 +125,19 @@ const SpeedSpaceChart = ({
 
   useEffect(() => {
     const storeData = {
-      speed: (data.consolidatedSimulation[0].speed as ConsolidatedPositionSpeedTime[]) || [],
-      stops: data.simulation.present.trains[0].base.stops || [],
-      electrification: data.simulation.present.trains[0].electrification_ranges || [],
-      slopes: data.simulation.present.trains[0].slopes || [],
+      speeds: data.speeds || [],
+      ecoSpeeds: data.ecoSpeeds || [],
+      stops: data.stops || [],
+      electrifications: data.electrifications || [],
+      slopes: data.slopes || [],
       electricalProfiles: data.electricalProfiles,
       powerRestrictions: data.powerRestrictions,
       speedLimitTags: data.speedLimitTags,
     };
 
-    const { speed, stops, electrification, slopes } = storeData;
+    const { speeds, ecoSpeeds, stops, electrifications, slopes } = storeData;
 
-    if (speed && stops && electrification && slopes) {
+    if (speeds && ecoSpeeds && stops && electrifications && slopes) {
       setStore((prev) => ({
         ...prev,
         ...storeData,

@@ -11,7 +11,7 @@ type DeclivityLayerProps = {
 };
 
 const DeclivityLayer = ({ width, height, store }: DeclivityLayerProps) => {
-  const canvas = useCanvas(drawDeclivity, width, height, store);
+  const canvas = useCanvas(drawDeclivity, { width, height, store });
 
   return (
     <canvas

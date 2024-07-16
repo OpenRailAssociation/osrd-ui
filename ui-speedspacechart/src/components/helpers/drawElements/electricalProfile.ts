@@ -5,8 +5,8 @@ import {
   maxPositionValues,
   positionOnGraphScale,
 } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { LINEAR_LAYERS_BACKGROUND_COLOR, MARGINS, LINEAR_LAYERS_HEIGHTS } from '../../const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const PROFILE_HEIGHT_MAX = 40;
 const MARGIN_POSITION_TEXT = 12;
@@ -14,12 +14,7 @@ const SELECTION_BAR_HEIGHT_AJUSTEMENT = 30;
 
 const maxHeightLevel = (heightLevel: number) => (heightLevel > 7 ? 7 : heightLevel);
 
-export const drawElectricalProfile = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawElectricalProfile = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { electricalProfiles, ratioX, leftOffset, cursor } = store;
   const { ELECTRICAL_PROFILES_HEIGHT } = LINEAR_LAYERS_HEIGHTS;
 
@@ -31,7 +26,6 @@ export const drawElectricalProfile = (
   ctx.save();
   ctx.translate(leftOffset, 0);
   const { maxPosition } = maxPositionValues(store);
-  const { values, boundaries } = electricalProfiles;
   const {
     MARGIN_TOP,
     MARGIN_BOTTOM,
@@ -50,33 +44,36 @@ export const drawElectricalProfile = (
     ELECTRICAL_PROFILES_HEIGHT
   );
 
-  values.forEach((data, index) => {
-    const x =
-      index === 0
-        ? MARGIN_LEFT + CURVE_MARGIN_SIDES / 2
-        : positionOnGraphScale(boundaries[index - 1], maxPosition, width, ratioX, MARGINS);
+  electricalProfiles.forEach((data) => {
+    const xStart = positionOnGraphScale(data.position.start, maxPosition, width, ratioX, MARGINS);
+
+    const xEnd = positionOnGraphScale(data.position.end!, maxPosition, width, ratioX, MARGINS);
 
     let topRect = topLayer - MARGIN_BOTTOM + ELECTRICAL_PROFILES_MARGIN_TOP;
 
-    const profileWidth =
-      positionOnGraphScale(boundaries[index], maxPosition, width, ratioX, MARGINS) - x;
+    const profileWidth = xEnd - xStart;
 
-    if ('profile' in data) {
-      const { profile, profileColor, heightLevel } = data;
-      const heightLevelMax = maxHeightLevel(heightLevel);
-      ctx.fillStyle = profileColor;
+    if (data.value.electricalProfile === 'neutral') {
+      ctx.fillStyle = '#1F1B17';
+      ctx.fillRect(xStart, topRect + 28, profileWidth, 9);
+      ctx.clearRect(xStart, topRect + 31, profileWidth, 3);
+    } else {
+      const { start, end } = data.position;
+      const { electricalProfile, color, heightLevel } = data.value;
+      const heightLevelMax = maxHeightLevel(heightLevel!);
+      ctx.fillStyle = color!;
 
-      if (profile === 'incompatible') {
+      if (electricalProfile === 'incompatible') {
         // Incompatible profile
         for (let i = 0; i < 9; i++) {
-          ctx.fillRect(x, topRect + 15 + i * 3, profileWidth, 1);
+          ctx.fillRect(xStart, topRect + 15 + i * 3, profileWidth, 1);
         }
       } else {
         topRect += heightLevelMax * 4;
 
         const profileHeight = PROFILE_HEIGHT_MAX - heightLevelMax * 4;
 
-        ctx.fillRect(x, topRect, profileWidth, profileHeight);
+        ctx.fillRect(xStart, topRect, profileWidth, profileHeight);
 
         // Draw only if cursor hover a profile
         if (
@@ -84,15 +81,20 @@ export const drawElectricalProfile = (
           cursor.x &&
           cursor.y <= topLayer - MARGIN_BOTTOM + MARGIN_TOP &&
           cursor.y >= topLayer - MARGIN_BOTTOM + MARGIN_TOP - ELECTRICAL_PROFILES_HEIGHT &&
-          cursor.x - leftOffset >= x - MARGIN_LEFT &&
-          cursor.x - leftOffset <= x + profileWidth - MARGIN_LEFT
+          cursor.x - leftOffset >= xStart - MARGIN_LEFT &&
+          cursor.x - leftOffset <= xStart + profileWidth - MARGIN_LEFT
         ) {
           // Draw selection bar
           ctx.globalAlpha = 0.2;
-          ctx.fillRect(x, MARGIN_TOP, profileWidth, topLayer - SELECTION_BAR_HEIGHT_AJUSTEMENT);
+          ctx.fillRect(
+            xStart,
+            MARGIN_TOP,
+            profileWidth,
+            topLayer - SELECTION_BAR_HEIGHT_AJUSTEMENT
+          );
           ctx.globalAlpha = 1;
 
-          const profilNameWidth = Math.floor(ctx.measureText(profile).width);
+          const profilNameWidth = Math.floor(ctx.measureText(electricalProfile).width);
           const marginProfilName = 20;
 
           // Draw profile name
@@ -100,72 +102,57 @@ export const drawElectricalProfile = (
             ctx.fillStyle = '#000';
             ctx.font = '600 14px IBM Plex Sans';
             ctx.textAlign = 'center';
-            ctx.fillText(`${profile}`, x + profileWidth / 2, topLayer / 2);
+            ctx.fillText(`${electricalProfile}`, xStart + profileWidth / 2, topLayer / 2);
           }
 
           // Draw begin and end position
           ctx.fillStyle = 'rgb(49, 46, 43)';
           ctx.font = '400 14px IBM Plex Sans';
           ctx.textAlign = 'right';
-          ctx.fillText(
-            `${(boundaries[index - 1] / 1000 || 0).toFixed(1)}`,
-            x - MARGIN_POSITION_TEXT,
-            topLayer / 2
-          );
+          ctx.fillText(`${(start || 0).toFixed(1)}`, xStart - MARGIN_POSITION_TEXT, topLayer / 2);
           ctx.textAlign = 'left';
           ctx.fillText(
-            `${(boundaries[index] / 1000).toFixed(1)}`,
-            x + profileWidth + MARGIN_POSITION_TEXT,
+            `${end!.toFixed(1)}`,
+            xStart + profileWidth + MARGIN_POSITION_TEXT,
             topLayer / 2
           );
         }
       }
-    } else {
-      ctx.fillStyle = '#1F1B17';
-      ctx.fillRect(x, topRect + 28, profileWidth, 9);
-      ctx.clearRect(x, topRect + 31, profileWidth, 3);
     }
   });
 
   // Draw stroke around the selected profile
-  const currentBoundaryProfileIndex = boundaries.findIndex(
-    (boundary) =>
+  const currentBoundaryProfileIndex = electricalProfiles.findIndex(
+    ({ position }) =>
       cursor.x! - leftOffset <=
-      positionOnGraphScale(boundary, maxPosition, width, ratioX, MARGINS) - MARGIN_LEFT
+      positionOnGraphScale(position.end!, maxPosition, width, ratioX, MARGINS) - MARGIN_LEFT
   );
+
   if (
     cursor.y &&
     cursor.y <= topLayer - MARGIN_BOTTOM + MARGIN_TOP &&
-    cursor.y >= topLayer - MARGIN_BOTTOM + MARGIN_TOP - ELECTRICAL_PROFILES_HEIGHT
+    cursor.y >= topLayer - MARGIN_BOTTOM + MARGIN_TOP - ELECTRICAL_PROFILES_HEIGHT &&
+    currentBoundaryProfileIndex !== -1
   ) {
-    const electricalProfileValue = values[currentBoundaryProfileIndex];
-    if (
-      electricalProfileValue &&
-      'profile' in electricalProfileValue &&
-      electricalProfileValue.profile !== 'incompatible'
-    ) {
-      const { heightLevel } = electricalProfileValue;
-      const heightLevelMax = maxHeightLevel(heightLevel);
+    const { start, end } = electricalProfiles[currentBoundaryProfileIndex].position;
+
+    const { electricalProfile, heightLevel } =
+      electricalProfiles[currentBoundaryProfileIndex].value;
+
+    if (electricalProfile && electricalProfile !== 'incompatible') {
+      const heightLevelMax = maxHeightLevel(heightLevel!);
       const startHoverStrokeHeight =
         topLayer - MARGIN_BOTTOM + ELECTRICAL_PROFILES_MARGIN_TOP + heightLevelMax * 4;
 
-      const x =
-        positionOnGraphScale(
-          boundaries[currentBoundaryProfileIndex - 1],
-          maxPosition,
-          width,
-          ratioX,
-          MARGINS
-        ) || MARGIN_LEFT + CURVE_MARGIN_SIDES / 2;
+      const xStart =
+        positionOnGraphScale(start, maxPosition, width, ratioX, MARGINS) ||
+        MARGIN_LEFT + CURVE_MARGIN_SIDES / 2;
 
-      const profileWidth =
-        positionOnGraphScale(
-          boundaries[currentBoundaryProfileIndex],
-          maxPosition,
-          width,
-          ratioX,
-          MARGINS
-        ) - x;
+      const xEnd =
+        positionOnGraphScale(end!, maxPosition, width, ratioX, MARGINS) ||
+        width - MARGIN_RIGHT - CURVE_MARGIN_SIDES / 2;
+
+      const profileWidth = xEnd - xStart;
       const profileHeight = PROFILE_HEIGHT_MAX - heightLevelMax * 4;
 
       ctx.shadowColor = 'rgba(0, 0, 0, 0.19)';
@@ -173,7 +160,7 @@ export const drawElectricalProfile = (
 
       ctx.strokeStyle = '#FFF';
       ctx.lineWidth = 2;
-      ctx.strokeRect(x - 1, startHoverStrokeHeight - 1, profileWidth + 2, profileHeight + 2);
+      ctx.strokeRect(xStart - 1, startHoverStrokeHeight - 1, profileWidth + 2, profileHeight + 2);
       ctx.stroke();
     }
   }

@@ -100,6 +100,11 @@
     font-weight: 600;
   }
 
+  #speed-difference-text {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
   #base-speed-text {
     display: flex;
     justify-content: space-between;

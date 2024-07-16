@@ -35,6 +35,8 @@
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
+    "@osrd-project/ui-core": "0.0.1-dev",
+    "@osrd-project/ui-icons": "0.0.1-dev",
     "@types/d3": "^7.4.3",
     "classnames": "^2.5.1",
     "d3": "^7.9.0",

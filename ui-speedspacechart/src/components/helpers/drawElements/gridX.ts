@@ -1,15 +1,10 @@
 import { clearCanvas, maxPositionValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_SIDES } = MARGINS;
 
-export const drawGridX = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawGridX = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { stops, ratioX, leftOffset } = store;
 
   clearCanvas(ctx, width, height);
@@ -26,9 +21,9 @@ export const drawGridX = (
   // vertical lines based on ratio and round max position
 
   ctx.beginPath();
-  stops.forEach((stop) => {
+  stops.forEach(({ position }) => {
     const x =
-      stop.position *
+      position.start *
         ((width - CURVE_MARGIN_SIDES - MARGIN_LEFT - MARGIN_RIGHT) / maxPosition) *
         ratioX +
       CURVE_MARGIN_SIDES / 2;

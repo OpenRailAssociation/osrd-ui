@@ -1,4 +1,4 @@
-import { type Store } from '../types/chartTypes';
+import type { LayerData, Store } from '../types/chartTypes';
 import {
   MARGINS,
   LINEAR_LAYER_SEPARATOR_HEIGHT,
@@ -37,9 +37,9 @@ export const getGraphOffsets = (width: number, height: number, declivities?: boo
  * @param store
  */
 export const speedRangeValues = (store: Store): SpeedRangeValues => {
-  const speed = store.speed;
-  const minSpeed = Math.min(...speed.map((data) => data.speed));
-  const maxSpeed = Math.max(...speed.map((data) => data.speed));
+  const speeds = store.speeds;
+  const minSpeed = Math.min(...speeds.map(({ value }) => value));
+  const maxSpeed = Math.max(...speeds.map(({ value }) => value));
   const speedRange = maxSpeed - minSpeed;
   return { minSpeed, maxSpeed, speedRange };
 };
@@ -49,10 +49,10 @@ export const speedRangeValues = (store: Store): SpeedRangeValues => {
  * @param store
  */
 export const maxPositionValues = (store: Store): MaxPositionValues => {
-  if (store.speed.length === 0) {
+  if (store.speeds.length === 0) {
     return { maxPosition: 0, RoundMaxPosition: 0, intermediateTicksPosition: 0 };
   }
-  const maxPosition = store.speed[store.speed.length - 1].position;
+  const maxPosition = store.speeds[store.speeds.length - 1].position.start;
   const RoundMaxPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 20));
   const intermediateTicksPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 40));
 
@@ -203,10 +203,10 @@ export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION
  */
 export const slopesValues = (store: Store): SlopesValues => {
   const slopes = store.slopes;
-  const minGradient = Math.min(...slopes.map((data) => data.gradient));
-  const maxGradient = Math.max(...slopes.map((data) => data.gradient));
+  const minGradient = Math.min(...slopes.map(({ value }) => value));
+  const maxGradient = Math.max(...slopes.map(({ value }) => value));
   const slopesRange = maxGradient - minGradient;
-  const maxPosition = Math.max(...slopes.map((data) => data.position));
+  const maxPosition = Math.max(...slopes.map(({ position }) => position.start));
   return { minGradient, maxGradient, slopesRange, maxPosition };
 };
 
@@ -275,4 +275,17 @@ export const loadSvgImage = (svgUrl: string): Promise<HTMLImageElement> => {
 export const createSvgBlobUrl = (svgString: string): string => {
   const blob = new Blob([svgString], { type: 'image/svg+xml' });
   return URL.createObjectURL(blob);
+};
+
+export const findPreviousAndNextPosition = <T = string | number>(
+  data: LayerData<T>[],
+  cursorX: number,
+  xPositionReference: (ref: number) => number
+) => {
+  const previousPosition = data.findLast(
+    ({ position }) => xPositionReference(position.start) <= cursorX!
+  );
+  const nextPosition = data.find(({ position }) => xPositionReference(position.start) >= cursorX!);
+
+  return { previousPosition, nextPosition };
 };

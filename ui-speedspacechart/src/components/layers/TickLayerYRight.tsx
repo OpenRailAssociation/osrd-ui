@@ -11,7 +11,7 @@ type TickLayerYRightProps = {
 };
 
 const TickLayerYRight = ({ width, height, store }: TickLayerYRightProps) => {
-  const canvas = useCanvas(drawTickYRight, width, height, store);
+  const canvas = useCanvas(drawTickYRight, { width, height, store });
 
   return (
     <canvas

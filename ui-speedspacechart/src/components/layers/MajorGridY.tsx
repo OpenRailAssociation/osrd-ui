@@ -10,7 +10,7 @@ type MajorGridYProps = {
 };
 
 const MajorGridY = ({ width, height, store }: MajorGridYProps) => {
-  const canvas = useCanvas(drawMajorGridY, width, height, store);
+  const canvas = useCanvas(drawMajorGridY, { width, height, store });
 
   return (
     <canvas

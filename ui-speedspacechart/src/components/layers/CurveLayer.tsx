@@ -11,7 +11,12 @@ type CurveLayerProps = {
 };
 
 const CurveLayer = ({ width, height, store }: CurveLayerProps) => {
-  const canvas = useCanvas(drawCurve, width, height, store);
+  const canvas = useCanvas(drawCurve, {
+    width,
+    height,
+    store,
+    isEco: false,
+  });
 
   return (
     <canvas

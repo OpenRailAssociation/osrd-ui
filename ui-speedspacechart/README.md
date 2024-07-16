@@ -1,33 +1,125 @@
-### SpeedSpaceChart
-The `SpeedSpaceChart` is a component that visualizes the speed and position data of a simulation. It's part of the `ui-speedspacechart` module in your workspace.
+# ui-speedspacechart
 
-### How it works
-The `SpeedSpaceChart` component takes mainly three props: `width`, `height`, and `data`. The `width` and `height` props define the size of the chart, while the `data` prop is an `OsrdSimulationState` object that contains the simulation data to be visualized.
+The `ui-speedspacechart` package is part of the OSRD project, providing a specialized chart component designed to visualize speed and space data in a dynamic and interactive way. It leverages modern web technologies to offer a rich user experience for data analysis and presentation.
 
-The `OsrdSimulationState` object includes various properties such as `consolidatedSimulation`wich is an array of SimulationTrain objects, each representing a train in the simulation.
+## Features
 
-The `SpeedSpaceChart` component uses a `useState` hook to create a `store` state variable. This `store` contains the speed, stops, electrification, and slopes data extracted from the `data` prop, as well as the `ratioX` and `leftOffset` properties for scaling and positioning the chart, and a `cursor` property for tracking the cursor position.
+- **Dynamic Visualization**: Offers a comprehensive view of speed and space data over time.
+- **Interactive Controls**: Users can interact with the chart to explore different aspects of the data.
+- **Customizable Appearance**: Supports theming and customization to match different UI requirements.
+- **High Performance**: Optimized for performance, even with large datasets.
 
-The `SpeedSpaceChart` component renders a `div` element that contains various layers for different parts of the chart. These layers include `CurveLayer`, `AxisLayerY`, `MajorGridY`, and others. Each layer is a separate and independant component that takes the `width`, `height`, and `store` props and is responsible for rendering a specific part of the chart.
+## Installation
 
-The `useCanvas` hook takes a drawing function, the `width` and `height` of the canvas, the `store`, and optionally a function to set the `store`. It returns a reference to the canvas element. The drawing function is called with the `canvas` context, the `width` and `height`, the `store`, and the `setStore` function (if provided).
+To install the `ui-speedspacechart` package, run the following command in your project directory:
 
-### Usage
-Here is an example of how to use the `SpeedSpaceChart` component:
+```sh
+npm install @osrd-project/ui-speedspacechart
+```
+
+## Usage
+
+To use the `SpeedSpaceChart` component in your project:
 
 ```js
-import SpeedSpaceChart from 'ui-speedspacechart/src/components/SpeedSpaceChart';
-import OSRD_SAMPLE from 'ui-speedspacechart/src/stories/assets/sampleData';
+import SpeedSpaceChart from '@osrd-project/ui-speedspacechart';
 
-const MyComponent = () => {
+const App = () => {
   return (
     <SpeedSpaceChart
       width={1440}
       height={521.5}
-      data={OSRD_SAMPLE}
+      backgroundColor="rgb(247, 246, 238)"
+      data={yourData}
+      translations={yourTranslations}
     />
   );
 };
+
+export default App;
 ```
 
-In this example, `OSRD_SAMPLE` is a sample `OsrdSimulationState` object imported from `ui-speedspacechart/src/stories/assets/sampleData.ts`. In a real application, you would replace OSRD_SAMPLE with your actual simulation data.
+## Types
+
+| Field Name | Type | Description |
+|-|-|-|
+| `speeds` | `LayerData<number>[]` | Array with numerical values representing speeds. |
+| `ecoSpeeds` | `LayerData<number>[]` | Array with numerical values representing eco speeds. |
+| `stops` | `LayerData<string>[]` | Array with string values representing stops. |
+| `electrifications` | `LayerData<ElectrificationValues>[]` | Array with electrification values. |
+| `slopes` | `LayerData<number>[]` | Array with numerical values representing slopes. |
+| `electricalProfiles` | `LayerData<ElectricalPofilelValues>[]` (optional) | Optional array with electrical profile values. |
+| `powerRestrictions` | `LayerData<PowerRestrictionValues>[]` (optional) | Optional array with power restriction values. |
+| `speedLimitTags` | `LayerData<SpeedLimitTagValues>[]` (optional) | Optional array with speed limit tag values. |
+
+LayerData<T> is a generic type that encapsulates a layer's data, where T is the type of the value contained in the layer. It is defined as follows:
+
+| Field Name | Type | Description |
+|-|-|-|
+| `position` | `Object` | Object containing start and optionally end numbers representing the layer's position. |
+| `value` | `T` | The value of the layer, where T can be any of the specific types mentioned above. |
+
+Specific types for LayerData values:
+
+- `PowerRestrictionValues`
+
+    - `powerRestriction`: string
+    - `handled`: boolean
+
+- `ElectricalPofilelValues`
+
+    - `electricalProfile`: string
+    - `color?`: string (optional)
+    - `heightLevel?`: number (optional)
+
+- `SpeedLimitTagValues`
+
+    - `tag`: string
+    - `color`: string
+
+- `ElectrificationValues`
+
+    - `type`: 'electrification' | 'neutral_section'
+    - `voltage?`: '1500V' | '25000V' (optional)
+    - `lowerPantograph?`: boolean (optional)
+
+Make sure to replace yourData and yourTranslations with your actual data and translation objects.
+
+## Adding Translations
+
+The `SpeedSpaceChart` component supports internationalization by allowing you to provide custom translations for various UI elements. This feature enables you to tailor the chart to different languages and locales, enhancing the user experience for a global audience.
+
+### Define Your Translations
+
+ Create an object that contains key-value pairs for each text string you wish to override. The keys should match the expected identifiers used by the `SpeedSpaceChart` component, and the values should be the translated strings.
+
+Example translation object for French:
+
+```js
+const yourTranslations = {
+  detailsBoxDisplay: {
+    reticleInfos: 'Infos Réticule',
+    energySource: 'Source d Energie',
+    tractionStatus: 'Etat de la traction',
+    // Add more keys as needed
+  },
+  layersDisplay: {
+    context: 'Contexte',
+    steps: 'Paliers',
+    declivities: 'Declivités',
+    // Add more keys as needed
+  },
+};
+```
+
+## Visualization
+
+The `ui-speedspacechart` component can be observed and manipulated on Storybook at this address: [storybook/speedspacechart](https://openrailassociation.github.io/osrd-ui/?path=/story/speedspacechart-rendering--speed-space-chart-default)
+
+## Contributing
+
+Contributions are welcome! Please refer to the repository's main README.md and CODE_OF_CONDUCT.md for more details on how to contribute.
+
+## License
+
+This project is licensed under the GNU LESSER GENERAL PUBLIC LICENSE Version 3, 29 June 2007 - see the LICENSE file for details.

@@ -1,16 +1,11 @@
 import { clearCanvas, slopesValues, maxPositionValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
 import { SLOPE_FILL_COLOR } from '../../../components/const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { CURVE_MARGIN_SIDES, MARGIN_TOP, MARGIN_BOTTOM, RIGHT_TICK_MARGINS } = MARGINS;
 
-export const drawDeclivity = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawDeclivity = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { slopes, ratioX, leftOffset } = store;
 
   const { maxGradient } = slopesValues(store);
@@ -38,17 +33,17 @@ export const drawDeclivity = (
     const coef = ((width - CURVE_MARGIN_SIDES) / maxPosition) * ratioX;
 
     for (let i = 0; i < slopes.length - 1; i++) {
-      const current = slopes[i];
-      const next = slopes[i + 1];
+      const { position: currentPosition, value: currentValue } = slopes[i];
+      const { position: nextPosition } = slopes[i + 1];
 
-      const x1 = current.position * coef + CURVE_MARGIN_SIDES / 2;
-      const x2 = next.position * coef + CURVE_MARGIN_SIDES / 2;
+      const x1 = currentPosition.start * coef + CURVE_MARGIN_SIDES / 2;
+      const x2 = nextPosition.start * coef + CURVE_MARGIN_SIDES / 2;
 
       const rectWidth = x2 - x1;
 
-      const rectHeight = (current.gradient / maxGradient) * (availableHeight / 2);
+      const rectHeight = (currentValue / maxGradient) * (availableHeight / 2);
 
-      const rectY = current.gradient >= 0 ? centerY - rectHeight : centerY;
+      const rectY = currentValue >= 0 ? centerY - rectHeight : centerY;
 
       ctx.fillRect(x1, rectY, rectWidth, Math.abs(rectHeight));
     }

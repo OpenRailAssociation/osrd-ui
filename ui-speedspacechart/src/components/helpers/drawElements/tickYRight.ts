@@ -1,15 +1,10 @@
 import { clearCanvas, slopesValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS, RIGHT_TICK_HEIGHT_OFFSET } from '../../const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { MARGIN_LEFT, MARGIN_TOP, MARGIN_BOTTOM, RIGHT_TICK_MARGINS } = MARGINS;
 
-export const drawTickYRight = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawTickYRight = ({ ctx, width, height, store }: DrawFunctionParams) => {
   clearCanvas(ctx, width, height);
 
   const { minGradient, maxGradient } = slopesValues(store);

@@ -8,25 +8,26 @@ import {
   positionOnGraphScale,
   getLinearLayerMarginTop,
   slopesValues,
+  findPreviousAndNextPosition,
 } from '../components/utils';
-import type { Store } from '../types/chartTypes';
-import type { ConsolidatedPositionSpeedTime } from '../types/simulationTypes';
+import type { LayerData, Store } from '../types/chartTypes';
 import { MARGINS } from '../components/const';
 
-const time = new Date();
-
-const speed: ConsolidatedPositionSpeedTime[] = [
-  { speed: 10, position: 200, time },
-  { speed: 20, position: 350, time },
-  { speed: 30, position: 600, time },
+const speeds: LayerData<number>[] = [
+  { value: 10, position: { start: 200 } },
+  { value: 20, position: { start: 350 } },
+  { value: 30, position: { start: 600 } },
 ];
 
 const store: Store = {
-  speed,
+  speeds,
+  ecoSpeeds: [],
   stops: [],
-  electrification: [],
+  electrifications: [],
   slopes: [],
   powerRestrictions: [],
+  electricalProfiles: [],
+  speedLimitTags: [],
   ratioX: 1,
   leftOffset: 0,
   cursor: {
@@ -49,10 +50,6 @@ const store: Store = {
     speedLimitTags: false,
     steps: true,
     temporarySpeedLimits: false,
-  },
-  electricalProfiles: {
-    boundaries: [],
-    values: [],
   },
   isSettingsPanelOpened: false,
 };
@@ -109,7 +106,7 @@ describe('maxPositionValues', () => {
   it('should return 0 for maxPosition, RoundMaxPosition and intermediateTicksPosition when speed array is empty', () => {
     const { maxPosition, RoundMaxPosition, intermediateTicksPosition } = maxPositionValues({
       ...store,
-      speed: [],
+      speeds: [],
     });
     expect(maxPosition).toBe(0);
     expect(RoundMaxPosition).toBe(0);
@@ -122,10 +119,10 @@ describe('slopesValues', () => {
     const storeWithSlopes: Store = {
       ...store,
       slopes: [
-        { gradient: 1, position: 10 },
-        { gradient: 3, position: 20 },
-        { gradient: 2, position: 15 },
-        { gradient: 5, position: 25 },
+        { value: 1, position: { start: 10 } },
+        { value: 3, position: { start: 20 } },
+        { value: 2, position: { start: 15 } },
+        { value: 5, position: { start: 25 } },
       ],
     };
     const result = slopesValues(storeWithSlopes);
@@ -267,6 +264,43 @@ describe('getLinearLayerMarginTop', () => {
         powerRestrictions: true,
       })
     ).toBe(103.5);
+  });
+});
+
+describe('findPreviousAndNextPosition', () => {
+  const xPositionReference = (ref: number) => ref;
+
+  it('should return the correct previous and next positions', () => {
+    const cursor = { x: 400, y: 0 };
+    const { previousPosition, nextPosition } = findPreviousAndNextPosition(
+      speeds,
+      cursor.x!,
+      xPositionReference
+    );
+    expect(previousPosition).toEqual({ value: 20, position: { start: 350 } });
+    expect(nextPosition).toEqual({ value: 30, position: { start: 600 } });
+  });
+
+  it('should not return previous position if cursor is at the start of the array', () => {
+    const cursor = { x: 200, y: 0 };
+    const { previousPosition, nextPosition } = findPreviousAndNextPosition(
+      speeds,
+      cursor.x!,
+      xPositionReference
+    );
+    expect(previousPosition).toEqual(nextPosition);
+    expect(previousPosition).toEqual({ value: 10, position: { start: 200 } });
+  });
+
+  it('should not return next position if cursor is at the end of the array', () => {
+    const cursor = { x: 600, y: 0 };
+    const { previousPosition, nextPosition } = findPreviousAndNextPosition(
+      speeds,
+      cursor.x!,
+      xPositionReference
+    );
+    expect(nextPosition).toEqual(previousPosition);
+    expect(nextPosition).toEqual({ value: 30, position: { start: 600 } });
   });
 });
 
