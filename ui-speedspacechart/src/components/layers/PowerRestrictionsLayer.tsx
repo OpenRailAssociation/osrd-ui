@@ -11,12 +11,11 @@ type PowerRestrictionsLayerProps = {
 };
 
 const PowerRestrictionsLayer = ({ width, marginTop, store }: PowerRestrictionsLayerProps) => {
-  const canvas = useCanvas(
-    drawPowerRestrictions,
+  const canvas = useCanvas(drawPowerRestrictions, {
     width,
-    LINEAR_LAYERS_HEIGHTS.POWER_RESTRICTIONS_HEIGHT,
-    store
-  );
+    height: LINEAR_LAYERS_HEIGHTS.POWER_RESTRICTIONS_HEIGHT,
+    store,
+  });
 
   return (
     <canvas

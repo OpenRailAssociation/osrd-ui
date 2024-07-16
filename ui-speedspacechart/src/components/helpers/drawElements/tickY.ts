@@ -1,16 +1,11 @@
 import { clearCanvas, speedRangeValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { MARGIN_LEFT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_TOP } = MARGINS;
 
-export const drawTickY = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
-  const { speed } = store;
+export const drawTickY = ({ ctx, width, height, store }: DrawFunctionParams) => {
+  const { speeds } = store;
 
   clearCanvas(ctx, width, height);
 
@@ -28,7 +23,7 @@ export const drawTickY = (
   const yPosition = (height - MARGIN_BOTTOM - MARGIN_TOP - CURVE_MARGIN_TOP) / maxSpeed;
 
   ctx.beginPath();
-  speed.forEach((_, i) => {
+  speeds.forEach((_, i) => {
     if (i >= 0 && i * 10 <= maxSpeed + 10) {
       ctx.moveTo(43, height - MARGIN_BOTTOM - yPosition * i * 10);
       ctx.lineTo(MARGIN_LEFT, height - MARGIN_BOTTOM - yPosition * i * 10);

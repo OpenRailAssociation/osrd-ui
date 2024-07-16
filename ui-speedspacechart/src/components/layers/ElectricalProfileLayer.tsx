@@ -10,7 +10,7 @@ type ElectricalProfileLayerProps = {
 };
 
 const ElectricalProfileLayer = ({ width, height, store }: ElectricalProfileLayerProps) => {
-  const canvas = useCanvas(drawElectricalProfile, width, height, store);
+  const canvas = useCanvas(drawElectricalProfile, { width, height, store });
 
   return (
     <canvas

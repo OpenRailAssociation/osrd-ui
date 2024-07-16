@@ -1,16 +1,38 @@
 import { clearCanvas, maxPositionValues, speedRangeValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
+import type {
+  CanvasConfig,
+  CurveConfig,
+  DrawFunctionParams,
+  LayerData,
+} from '../../../types/chartTypes';
 
 const { CURVE_MARGIN_TOP, CURVE_MARGIN_SIDES } = MARGINS;
 
-export const drawCurve = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
+const drawSpecificCurve = (
+  curveConfig: CurveConfig,
+  canvasConfig: CanvasConfig,
+  specificSpeeds: LayerData<number>[]
 ) => {
-  const { speed, ratioX, leftOffset } = store;
+  const { minSpeed, speedRange, maxPosition, ratioX } = curveConfig;
+  const { width, height, ctx } = canvasConfig;
+
+  const adjustedWidth = width - CURVE_MARGIN_SIDES;
+  const halfCurveMarginSides = CURVE_MARGIN_SIDES / 2;
+  const adjustedHeight = height - CURVE_MARGIN_TOP;
+  const xcoef = (adjustedWidth / maxPosition) * ratioX;
+
+  return specificSpeeds.forEach(({ position, value }) => {
+    // normalize speed based on range of values
+    const normalizedSpeed = (value - minSpeed) / speedRange;
+    const x = position.start * xcoef + halfCurveMarginSides;
+    const y = height - normalizedSpeed * adjustedHeight;
+    ctx.lineTo(x, y);
+  });
+};
+
+export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => {
+  const { speeds, ecoSpeeds, ratioX, leftOffset } = store;
 
   clearCanvas(ctx, width, height);
 
@@ -20,23 +42,30 @@ export const drawCurve = (
   const { minSpeed, speedRange } = speedRangeValues(store);
   const { maxPosition } = maxPositionValues(store);
 
-  ctx.fillStyle = 'rgba(17, 101, 180, 0.02)';
-  ctx.strokeStyle = 'rgb(0, 0, 0)';
   ctx.lineWidth = 0.5;
+  ctx.fillStyle = 'rgba(17, 101, 180, 0.02)';
+  ctx.strokeStyle = 'rgb(17, 101, 180, 0.5)';
 
   ctx.beginPath();
-  speed.forEach((data) => {
-    // normalize speed based on range of values
-    const normalizedSpeed = (data.speed - minSpeed) / speedRange;
-    const x =
-      data.position * ((width - CURVE_MARGIN_SIDES) / maxPosition) * ratioX +
-      CURVE_MARGIN_SIDES / 2;
-    const y = height - normalizedSpeed * (height - CURVE_MARGIN_TOP);
-    ctx.lineTo(x, y);
-  });
-
-  // add fill() before stroke() to avoid overlapping while filling the area
+  drawSpecificCurve({ minSpeed, speedRange, maxPosition, ratioX }, { width, height, ctx }, speeds);
+  ctx.closePath();
   ctx.fill();
+
+  ctx.stroke();
+
+  ctx.fillStyle = 'rgba(255, 255, 255)';
+  ctx.strokeStyle = 'rgb(17, 101, 180)';
+  ctx.globalCompositeOperation = 'destination-out';
+
+  ctx.beginPath();
+  drawSpecificCurve(
+    { minSpeed, speedRange, maxPosition, ratioX },
+    { width, height, ctx },
+    ecoSpeeds
+  );
+  ctx.closePath();
+  ctx.fill();
+  ctx.globalCompositeOperation = 'source-over';
 
   ctx.stroke();
 

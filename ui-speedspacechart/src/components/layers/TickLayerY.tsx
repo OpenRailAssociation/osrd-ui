@@ -10,7 +10,7 @@ type TickLayerYProps = {
 };
 
 const TickLayerY = ({ width, height, store }: TickLayerYProps) => {
-  const canvas = useCanvas(drawTickY, width, height, store);
+  const canvas = useCanvas(drawTickY, { width, height, store });
 
   return (
     <canvas

@@ -9,7 +9,8 @@ type DetailsBoxProps = {
   store: Store;
   curveX: number;
   curveY: number;
-  marecoSpeedText: string;
+  speedText: string;
+  ecoSpeedText: string;
   effortText: string;
   electricalModeText: string;
   electricalProfileText: string;
@@ -24,7 +25,8 @@ const DetailsBox = ({
   store,
   curveX,
   curveY,
-  marecoSpeedText,
+  speedText,
+  ecoSpeedText,
   effortText,
   electricalModeText,
   electricalProfileText,
@@ -49,6 +51,10 @@ const DetailsBox = ({
   const boxX = curveX + MARGIN_LEFT + 6 - rightOffset;
   const boxY = curveY + MARGIN_TOP + 6 - bottomOffset;
 
+  const speedDifference = Number(speedText) - Number(ecoSpeedText);
+  const speedDifferenceText =
+    speedDifference < 0 ? speedDifference.toFixed(1) : `-${speedDifference.toFixed(1)}`;
+
   return (
     <div
       id="details-box"
@@ -58,10 +64,10 @@ const DetailsBox = ({
         marginLeft: boxX,
       }}
     >
-      {marecoSpeedText && <span id="details-box-text mareco-speed-text">{marecoSpeedText}</span>}
-      <div id="base-speed-text">
-        <span>--</span>
-        <span>±--</span>
+      {speedText && <span id="details-box-text base-speed-text">{speedText}</span>}
+      <div>
+        <span id="mareco-speed-text">{ecoSpeedText}</span>
+        <span id="speed-difference-text">{speedDifferenceText}</span>
       </div>
       {(energySource || tractionStatus) && (modeText || effortText) && <hr />}
       {energySource && modeText && <span id="mode-text">{modeText}</span>}
@@ -69,7 +75,7 @@ const DetailsBox = ({
       {electricalModeText && (
         <div id="electrical-mode-text">
           <p>{electricalModeText}</p>
-          {electricalProfiles && <p>{electricalProfileText}</p>}
+          {electricalProfiles && <p className="ml-2">{electricalProfileText}</p>}
         </div>
       )}
       {powerRestrictions && <span id="power-restriction">{powerRestrictionText}</span>}

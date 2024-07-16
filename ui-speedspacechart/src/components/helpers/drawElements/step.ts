@@ -1,15 +1,10 @@
 import { clearCanvas, maxPositionValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { CURVE_MARGIN_SIDES } = MARGINS;
 
-export const drawStep = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawStep = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { stops, ratioX, leftOffset } = store;
 
   clearCanvas(ctx, width, height);
@@ -23,9 +18,9 @@ export const drawStep = (
   ctx.strokeStyle = 'rgb(121, 118, 113)';
   ctx.lineWidth = 2;
 
-  stops.forEach((stop) => {
+  stops.forEach(({ position }) => {
     const x =
-      stop.position * ((width - CURVE_MARGIN_SIDES) / maxPosition) * ratioX +
+      position.start * ((width - CURVE_MARGIN_SIDES) / maxPosition) * ratioX +
       CURVE_MARGIN_SIDES / 2;
     ctx.beginPath();
     ctx.roundRect(x - 0.5, height - 6, 1, 6, [0.3, 0.3, 0, 0]);
@@ -37,12 +32,7 @@ export const drawStep = (
   ctx.restore();
 };
 
-export const drawStepText = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
+export const drawStepText = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { stops, ratioX, leftOffset } = store;
 
   clearCanvas(ctx, width, height);
@@ -58,12 +48,12 @@ export const drawStepText = (
     // ctx.rotate(-Math.PI / 4);
     // ctx.save();
     const x =
-      stop.position *
+      stop.position.start *
         ((width - CURVE_MARGIN_SIDES) / maxPositionValues(store).maxPosition) *
         ratioX +
       CURVE_MARGIN_SIDES / 2;
     const y = height - 12;
-    ctx.fillText(stop.name!, x, y);
+    ctx.fillText(stop.value!, x, y);
     // ctx.restore();
   });
 

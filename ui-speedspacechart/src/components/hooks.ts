@@ -1,27 +1,28 @@
 import { useEffect, useRef } from 'react';
-import type { Store } from '../types/chartTypes';
+import type { DrawFunctionParams, Store } from '../types/chartTypes';
 
-type DrawFunction = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store,
-  setStore?: React.Dispatch<React.SetStateAction<Store>>
-) => void;
+type DrawFunction = (params: DrawFunctionParams) => void;
 
-export const useCanvas = (
+type UseCanvasParams = {
+  width: number;
+  height: number;
+  store: Store;
+  setStore?: React.Dispatch<React.SetStateAction<Store>>;
+  isEco?: boolean;
+};
+
+type UseCanvas = (
   draw: DrawFunction,
-  width: number,
-  height: number,
-  store: Store,
-  setStore?: React.Dispatch<React.SetStateAction<Store>>
-) => {
+  params: UseCanvasParams
+) => React.RefObject<HTMLCanvasElement>;
+
+export const useCanvas: UseCanvas = (draw, { width, height, store, setStore, isEco = false }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const currentCanvas = canvas.current as HTMLCanvasElement;
     const ctx = currentCanvas.getContext('2d') as CanvasRenderingContext2D;
-    draw(ctx, width, height, store, setStore);
+    draw({ ctx, width, height, store, setStore, isEco });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height, store]);
 

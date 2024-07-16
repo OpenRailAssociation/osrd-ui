@@ -1,4 +1,3 @@
-import { Store } from '../../../types/chartTypes';
 import {
   clearCanvas,
   drawLinearLayerBackground,
@@ -12,7 +11,7 @@ import {
   LINEAR_LAYER_SEPARATOR_HEIGHT,
   MARGINS,
 } from '../../const';
-import { SimulationPowerRestrictionRange } from '../../../types/simulationTypes';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { MARGIN_LEFT, MARGIN_RIGHT } = MARGINS;
 const LEFT_VERTICAL_LINE_HEIGHT = 24;
@@ -24,12 +23,12 @@ const HORIZONTAL_LINE_PADDING_TOP = 11;
 const TEXT_PADDING_HORIZONTAL = 2;
 const TEXT_DISPLAY_MARGIN = 4;
 
-export const drawPowerRestrictions = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  marginTop: number,
-  store: Store
-) => {
+export const drawPowerRestrictions = ({
+  ctx,
+  width,
+  height: marginTop,
+  store,
+}: DrawFunctionParams) => {
   const {
     powerRestrictions,
     ratioX,
@@ -37,6 +36,7 @@ export const drawPowerRestrictions = (
     layersDisplay: { electricalProfiles },
   } = store;
 
+  if (!powerRestrictions) return;
   clearCanvas(ctx, width, LINEAR_LAYERS_HEIGHTS.POWER_RESTRICTIONS_HEIGHT);
 
   ctx.save();
@@ -75,8 +75,8 @@ export const drawPowerRestrictions = (
     LINEAR_LAYERS_HEIGHTS.POWER_RESTRICTIONS_HEIGHT - LINEAR_LAYER_SEPARATOR_HEIGHT
   );
 
-  (powerRestrictions as SimulationPowerRestrictionRange[]).forEach((range, i) => {
-    if (range.handled) {
+  powerRestrictions.forEach(({ position, value }, i) => {
+    if (value.handled) {
       ctx.strokeStyle = 'rgb(121, 118, 113)';
       ctx.fillStyle = 'rgb(121, 118, 113)';
     } else {
@@ -84,16 +84,16 @@ export const drawPowerRestrictions = (
       ctx.fillStyle = 'rgb(217, 28, 28)';
     }
     // Draw vertical line
-    const startX = positionOnGraphScale(range.start, maxPosition, width, ratioX, MARGINS);
+    const startX = positionOnGraphScale(position.start, maxPosition, width, ratioX, MARGINS);
     const verticalStartY = LEFT_VERTICAL_LINE_PADDING_TOP;
     ctx.beginPath();
     ctx.moveTo(startX, verticalStartY);
     ctx.lineTo(startX, verticalStartY + LEFT_VERTICAL_LINE_HEIGHT);
 
     // Draw horizontal line around text
-    const textWidth = Math.floor(ctx.measureText(range.code).width);
-    let horizontalEndX = positionOnGraphScale(range.stop, maxPosition, width, ratioX, MARGINS);
-    if (i === (powerRestrictions as SimulationPowerRestrictionRange[]).length - 1) {
+    const textWidth = Math.floor(ctx.measureText(value.powerRestriction).width);
+    let horizontalEndX = positionOnGraphScale(position.end!, maxPosition, width, ratioX, MARGINS);
+    if (i === powerRestrictions.length - 1) {
       horizontalEndX -= MARGINS.CURVE_MARGIN_SIDES / 2;
     }
     const horizontalY = verticalStartY + HORIZONTAL_LINE_PADDING_TOP;
@@ -113,7 +113,7 @@ export const drawPowerRestrictions = (
 
       const textX = (startX + horizontalEndX) / 2;
       ctx.textBaseline = 'middle';
-      ctx.fillText(range.code, textX, horizontalY + ctx.lineWidth / 2);
+      ctx.fillText(value.powerRestriction, textX, horizontalY + ctx.lineWidth / 2);
     }
 
     // Draw vertical line

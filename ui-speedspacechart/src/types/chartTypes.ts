@@ -1,21 +1,45 @@
-import type {
-  ConsolidatedPositionSpeedTime,
-  ElectrificationRange,
-  GradientPosition,
-  OsrdSimulationState,
-  SimulationPowerRestrictionRange,
-  Slope,
-  Stop,
-} from './simulationTypes';
+export type ElectricalPofilelValues = {
+  electricalProfile: string;
+  color?: string;
+  heightLevel?: number;
+};
 
-export type Store = {
-  speed: ConsolidatedPositionSpeedTime[];
-  stops: Stop[];
-  electrification: ElectrificationRange[];
-  slopes: GradientPosition[] | Slope[];
-  electricalProfiles?: OsrdSimulationState['electricalProfiles'];
-  powerRestrictions?: SimulationPowerRestrictionRange[];
-  speedLimitTags?: OsrdSimulationState['speedLimitTags'];
+export type PowerRestrictionValues = {
+  powerRestriction: string;
+  handled: boolean;
+};
+
+export type SpeedLimitTagValues = {
+  tag: string;
+  color: string;
+};
+
+export type ElectrificationValues = {
+  type: 'electrification' | 'neutral_section';
+  voltage?: '1500V' | '25000V';
+  lowerPantograph?: boolean;
+};
+
+export type LayerData<T> = {
+  position: {
+    start: number;
+    end?: number;
+  };
+  value: T;
+};
+
+export type Data = {
+  speeds: LayerData<number>[];
+  ecoSpeeds: LayerData<number>[];
+  stops: LayerData<string>[];
+  electrifications: LayerData<ElectrificationValues>[];
+  slopes: LayerData<number>[];
+  electricalProfiles?: LayerData<ElectricalPofilelValues>[];
+  powerRestrictions?: LayerData<PowerRestrictionValues>[];
+  speedLimitTags?: LayerData<SpeedLimitTagValues>[];
+};
+
+export type Store = Data & {
   ratioX: number;
   leftOffset: number;
   cursor: {
@@ -41,10 +65,33 @@ export type Store = {
   isSettingsPanelOpened: boolean;
 };
 
+export type CurveConfig = {
+  minSpeed: number;
+  speedRange: number;
+  maxPosition: number;
+  ratioX: number;
+};
+
+export type CanvasConfig = {
+  width: number;
+  height: number;
+  ctx: CanvasRenderingContext2D;
+};
+
+export type DrawFunctionParams = {
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
+  store: Store;
+  setStore?: React.Dispatch<React.SetStateAction<Store>>;
+  isEco?: boolean;
+};
+
 export type TrainDetails = {
   curveX: number;
   curveY: number;
-  marecoSpeedText: string;
+  speedText: string;
+  ecoSpeedText: string;
   effortText: string;
   electricalModeText: string;
   electricalProfileText: string;

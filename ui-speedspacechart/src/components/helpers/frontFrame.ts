@@ -1,16 +1,10 @@
 import * as d3 from 'd3';
 import { clearCanvas } from '../utils';
-import type { Store } from '../../types/chartTypes';
 import { zoom } from './layersManager';
 import { FRONT_INTERACTIVITY_LAYER_ID } from '../const';
+import type { DrawFunctionParams } from '../../types/chartTypes';
 
-export const drawFrame = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store,
-  setStore?: React.Dispatch<React.SetStateAction<Store>>
-) => {
+export const drawFrame = ({ ctx, width, height, store, setStore }: DrawFunctionParams) => {
   clearCanvas(ctx, width, height);
 
   const canvas = d3.select(FRONT_INTERACTIVITY_LAYER_ID) as d3.Selection<

@@ -10,7 +10,7 @@ type StepLayerProps = {
 };
 
 const StepLayer = ({ width, height, store }: StepLayerProps) => {
-  const canvas = useCanvas(drawStep, width, height, store);
+  const canvas = useCanvas(drawStep, { width, height, store });
 
   return <canvas id="step-layer" className="absolute" ref={canvas} width={width} height={height} />;
 };

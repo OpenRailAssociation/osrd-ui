@@ -10,7 +10,7 @@ type AxisLayerXProps = {
 };
 
 const AxisLayerX = ({ width, height, store }: AxisLayerXProps) => {
-  const canvas = useCanvas(drawGridX, width, height, store);
+  const canvas = useCanvas(drawGridX, { width, height, store });
 
   return (
     <canvas

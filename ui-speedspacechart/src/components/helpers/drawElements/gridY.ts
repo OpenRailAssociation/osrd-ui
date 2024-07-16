@@ -1,16 +1,11 @@
 import { clearCanvas, speedRangeValues } from '../../utils';
-import type { Store } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
+import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_TOP } = MARGINS;
 
-export const drawGridY = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
-  const { speed } = store;
+export const drawGridY = ({ ctx, width, height, store }: DrawFunctionParams) => {
+  const { speeds } = store;
 
   clearCanvas(ctx, width, height);
 
@@ -24,7 +19,7 @@ export const drawGridY = (
   const yPosition = (height - MARGIN_BOTTOM - MARGIN_TOP - CURVE_MARGIN_TOP) / maxSpeed;
 
   ctx.beginPath();
-  speed.forEach((_, i) => {
+  speeds.forEach((_, i) => {
     if (i >= 0 && i * 10 <= maxSpeed + 10) {
       ctx.moveTo(MARGIN_LEFT, height - MARGIN_BOTTOM - yPosition * i * 10);
       ctx.lineTo(width - MARGIN_RIGHT, height - MARGIN_BOTTOM - yPosition * i * 10);
@@ -38,13 +33,8 @@ export const drawGridY = (
   ctx.clearRect(0, height - MARGIN_BOTTOM, width, MARGIN_BOTTOM);
 };
 
-export const drawMajorGridY = (
-  ctx: CanvasRenderingContext2D,
-  width: number,
-  height: number,
-  store: Store
-) => {
-  const { speed } = store;
+export const drawMajorGridY = ({ ctx, width, height, store }: DrawFunctionParams) => {
+  const { speeds } = store;
 
   clearCanvas(ctx, width, height);
 
@@ -58,7 +48,7 @@ export const drawMajorGridY = (
   const yPosition = (height - MARGIN_BOTTOM - MARGIN_TOP - CURVE_MARGIN_TOP) / maxSpeed;
 
   ctx.beginPath();
-  speed.forEach((_, i) => {
+  speeds.forEach((_, i) => {
     if (i >= 1 && i * 10 <= (maxSpeed + 10) / 3) {
       ctx.moveTo(MARGIN_LEFT, height - MARGIN_BOTTOM - yPosition * i * 30);
       ctx.lineTo(width - MARGIN_RIGHT, height - MARGIN_BOTTOM - yPosition * i * 30);

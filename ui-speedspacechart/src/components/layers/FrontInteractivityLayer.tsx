@@ -18,7 +18,7 @@ const FrontInteractivityLayer = ({
   setStore,
   setShowDetailsBox,
 }: FrontInteractivityLayerProps) => {
-  const canvas = useCanvas(drawFrame, width, height, store, setStore);
+  const canvas = useCanvas(drawFrame, { width, height, store, setStore });
 
   return (
     <canvas
