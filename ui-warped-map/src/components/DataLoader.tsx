@@ -37,6 +37,7 @@ const DataLoader: FC<{
       if (log) console.time(TIME_LABEL);
       setState('render');
     }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapRef, bbox]);
 
   useEffect(() => {
@@ -98,6 +99,7 @@ const DataLoader: FC<{
     }
 
     return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   return state !== 'loaded'
