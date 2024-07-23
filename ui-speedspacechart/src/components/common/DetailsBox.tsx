@@ -74,8 +74,8 @@ const DetailsBox = ({
       {tractionStatus && effortText && <span id="effort-text">{effortText}</span>}
       {electricalModeText && (
         <div id="electrical-mode-text">
-          <p>{electricalModeText}</p>
-          {electricalProfiles && <p className="ml-2">{electricalProfileText}</p>}
+          <span>{electricalModeText}</span>
+          {electricalProfiles && <span className="ml-2">{electricalProfileText}</span>}
         </div>
       )}
       {powerRestrictions && <span id="power-restriction">{powerRestrictionText}</span>}

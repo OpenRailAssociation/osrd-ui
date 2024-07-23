@@ -28,6 +28,7 @@ export type SpeedSpaceChartProps = {
   width: number;
   height: number;
   backgroundColor: string;
+  setHeight: React.Dispatch<React.SetStateAction<number>>;
   data: Data;
   translations?: {
     detailsBoxDisplay: {
@@ -56,6 +57,7 @@ const SpeedSpaceChart = ({
   height,
   backgroundColor,
   data,
+  setHeight,
   translations,
 }: SpeedSpaceChartProps) => {
   const [store, setStore] = useState<Store>({
@@ -145,6 +147,10 @@ const SpeedSpaceChart = ({
     }
   }, [data]);
 
+  useEffect(() => {
+    setHeight(dynamicHeight);
+  }, [setHeight, dynamicHeight]);
+
   return (
     <div
       style={{
@@ -166,6 +172,7 @@ const SpeedSpaceChart = ({
           style={{ width: adjustedWidthRightAxis }}
         >
           <SettingsPanel
+            globalHeight={dynamicHeight}
             color={backgroundColor}
             store={store}
             setStore={setStore}

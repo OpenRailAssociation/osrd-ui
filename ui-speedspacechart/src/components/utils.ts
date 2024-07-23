@@ -4,6 +4,7 @@ import {
   LINEAR_LAYER_SEPARATOR_HEIGHT,
   LINEAR_LAYERS_HEIGHTS_BY_NAME,
   LAYERS_SELECTION,
+  LINEAR_LAYERS_HEIGHTS,
 } from './const';
 
 type SpeedRangeValues = {
@@ -75,17 +76,13 @@ export const getAdaptiveHeight = (
   layersDisplay: Store['layersDisplay'],
   isIncludingLinearLayers: boolean = true
 ): number => {
-  let adjustment = 0;
+  const adjustment = [
+    layersDisplay.electricalProfiles ? LINEAR_LAYERS_HEIGHTS.ELECTRICAL_PROFILES_HEIGHT : 0,
+    layersDisplay.powerRestrictions ? LINEAR_LAYERS_HEIGHTS.POWER_RESTRICTIONS_HEIGHT : 0,
+    layersDisplay.speedLimitTags ? LINEAR_LAYERS_HEIGHTS.SPEED_LIMIT_TAGS_HEIGHT : 0,
+  ].reduce((acc, curr) => acc + curr, 0);
 
-  Object.keys(LINEAR_LAYERS_HEIGHTS_BY_NAME).forEach((key) => {
-    const layer = key as keyof typeof LINEAR_LAYERS_HEIGHTS_BY_NAME;
-    if (layersDisplay[layer]) {
-      adjustment += isIncludingLinearLayers
-        ? LINEAR_LAYERS_HEIGHTS_BY_NAME[layer]
-        : -LINEAR_LAYERS_HEIGHTS_BY_NAME[layer];
-    }
-  });
-  return height + adjustment;
+  return (height += isIncludingLinearLayers ? adjustment : -adjustment);
 };
 
 /**
@@ -107,6 +104,13 @@ export const getLinearLayerMarginTop = (
 
   return height + adjustment - MARGINS.MARGIN_BOTTOM;
 };
+
+export const getLinearLayersDisplayedHeight = (layersDisplay: Store['layersDisplay']) =>
+  [
+    layersDisplay.electricalProfiles ? LINEAR_LAYERS_HEIGHTS.ELECTRICAL_PROFILES_HEIGHT : 0,
+    layersDisplay.powerRestrictions ? LINEAR_LAYERS_HEIGHTS.POWER_RESTRICTIONS_HEIGHT : 0,
+    layersDisplay.speedLimitTags ? LINEAR_LAYERS_HEIGHTS.SPEED_LIMIT_TAGS_HEIGHT : 0,
+  ].reduce((acc, curr) => acc + curr, 0);
 
 /**
  * Calculates the position on the graph scale based on the given parameters.
@@ -191,7 +195,9 @@ export const drawLinearLayerBackground = (
  */
 export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION)[number]) => {
   return (
-    (selection === 'electricalProfiles' ||
+    (selection === 'speedLimits' ||
+      selection === 'temporarySpeedLimits' ||
+      selection === 'electricalProfiles' ||
       selection === 'powerRestrictions' ||
       selection === 'speedLimitTags') &&
     !store[selection]
