@@ -2,6 +2,7 @@ export type ElectricalPofilelValues = {
   electricalProfile: string;
   color?: string;
   heightLevel?: number;
+  handled?: boolean;
 };
 
 export type PowerRestrictionValues = {
@@ -15,7 +16,7 @@ export type SpeedLimitTagValues = {
 };
 
 export type ElectrificationValues = {
-  type: 'electrification' | 'neutral_section';
+  type: 'electrification' | 'neutral_section' | 'non_electrified';
   voltage?: '1500V' | '25000V';
   lowerPantograph?: boolean;
 };
@@ -37,6 +38,8 @@ export type Data = {
   electricalProfiles?: LayerData<ElectricalPofilelValues>[];
   powerRestrictions?: LayerData<PowerRestrictionValues>[];
   speedLimitTags?: LayerData<SpeedLimitTagValues>[];
+  speedLimits?: LayerData<number>[];
+  temporarySpeedLimits?: LayerData<number>[];
 };
 
 export type Store = Data & {

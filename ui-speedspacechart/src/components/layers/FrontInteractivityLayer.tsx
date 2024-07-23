@@ -23,7 +23,7 @@ const FrontInteractivityLayer = ({
   return (
     <canvas
       id="front-interactivity-layer"
-      className="absolute ml-10 mt-2"
+      className="absolute"
       ref={canvas}
       width={width}
       height={height}

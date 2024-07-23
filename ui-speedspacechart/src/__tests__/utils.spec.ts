@@ -7,6 +7,7 @@ import {
   getAdaptiveHeight,
   positionOnGraphScale,
   getLinearLayerMarginTop,
+  getLinearLayersDisplayedHeight,
   slopesValues,
   findPreviousAndNextPosition,
 } from '../components/utils';
@@ -264,6 +265,48 @@ describe('getLinearLayerMarginTop', () => {
         powerRestrictions: true,
       })
     ).toBe(103.5);
+  });
+});
+
+describe('getLinearLayersDisplayedHeight', () => {
+  let layersDisplay = {
+    steps: false,
+    declivities: false,
+    speedLimits: false,
+    temporarySpeedLimits: false,
+    electricalProfiles: false,
+    powerRestrictions: false,
+    speedLimitTags: false,
+  };
+
+  it('should return the sum of the heights of the linear layers that are displayed', () => {
+    layersDisplay = {
+      ...layersDisplay,
+      electricalProfiles: true,
+      powerRestrictions: true,
+      speedLimitTags: true,
+    };
+    expect(getLinearLayersDisplayedHeight(layersDisplay)).toBe(136);
+  });
+
+  it('should return one linear layer height', () => {
+    layersDisplay = {
+      ...layersDisplay,
+      electricalProfiles: true,
+      powerRestrictions: false,
+      speedLimitTags: false,
+    };
+
+    expect(getLinearLayersDisplayedHeight(layersDisplay)).toBe(56);
+  });
+
+  it('should return 0 if no linear layers are displayed', () => {
+    layersDisplay = {
+      ...layersDisplay,
+      electricalProfiles: false,
+    };
+
+    expect(getLinearLayersDisplayedHeight(layersDisplay)).toBe(0);
   });
 });
 
