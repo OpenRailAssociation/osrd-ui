@@ -13,7 +13,7 @@ const meta: Meta<typeof TextArea> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '25rem' }}>
+      <div style={{ maxWidth: 'fit-content' }}>
         <Story />
       </div>
     ),
