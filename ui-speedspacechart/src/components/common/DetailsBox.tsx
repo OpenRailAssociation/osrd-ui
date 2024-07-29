@@ -1,7 +1,9 @@
 import React from 'react';
-import { MARGINS } from '../const';
-import type { Store } from '../../types/chartTypes';
+
 import cx from 'classnames';
+
+import type { Store } from '../../types/chartTypes';
+import { MARGINS } from '../const';
 
 type DetailsBoxProps = {
   width: number;

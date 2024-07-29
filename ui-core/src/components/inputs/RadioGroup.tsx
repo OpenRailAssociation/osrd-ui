@@ -1,10 +1,11 @@
-import React, { ChangeEvent, useState } from 'react';
-import RadioButton, { RadioButtonProps } from './RadioButton';
-import InputStatusIcon from './InputStatusIcon';
-import { RequiredInput } from '@osrd-project/ui-icons';
-import { StatusWithMessage } from './StatusMessage';
+import React, { type ChangeEvent, useState } from 'react';
 
+import { RequiredInput } from '@osrd-project/ui-icons';
 import cx from 'classnames';
+
+import InputStatusIcon from './InputStatusIcon';
+import RadioButton, { type RadioButtonProps } from './RadioButton';
+import { type StatusWithMessage } from './StatusMessage';
 
 export type RadioGroupProps = {
   label?: string;

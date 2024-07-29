@@ -1,6 +1,7 @@
-import cx from 'classnames';
-import React, { type ButtonHTMLAttributes, ReactNode } from 'react';
+import React, { type ButtonHTMLAttributes, type ReactNode } from 'react';
+
 import { Gear } from '@osrd-project/ui-icons';
+import cx from 'classnames';
 
 type ButtonVariant = 'Normal' | 'Cancel' | 'Quiet' | 'Destructive' | 'Primary';
 type ButtonSize = 'large' | 'medium' | 'small';
@@ -49,11 +50,9 @@ const Button: React.FC<ButtonProps> = ({
       disabled={isDisabled || isLoading}
     >
       {isLoading ? (
-        <>
-          <span className="icon">
-            <Gear variant="fill" size="lg" />
-          </span>
-        </>
+        <span className="icon">
+          <Gear variant="fill" size="lg" />
+        </span>
       ) : (
         <>
           {leadingIcon && <span className="leading-icon mr-2">{leadingIcon}</span>}

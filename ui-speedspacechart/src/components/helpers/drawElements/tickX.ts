@@ -1,6 +1,6 @@
-import { clearCanvas, maxPositionValues } from '../../utils';
-import { MARGINS } from '../../const';
 import type { DrawFunctionParams } from '../../../types/chartTypes';
+import { MARGINS } from '../../const';
+import { clearCanvas, maxPositionValues } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM, CURVE_MARGIN_SIDES } = MARGINS;
 

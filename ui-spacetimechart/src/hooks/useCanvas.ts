@@ -1,22 +1,23 @@
-import { isEqual } from 'lodash';
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import {
-  CanvasContextType,
-  DrawingFunction,
-  DrawingFunctionHandler,
-  HoveredItem,
-  LAYERS,
-  LayerType,
-  PICKING_LAYERS,
-  PickingDrawingFunction,
-  PickingLayerType,
-  Point,
-  SpaceTimeChartContextType,
-} from '../lib/types';
+import { isEqual } from 'lodash';
+
 import { useSize } from './useSize';
-import { colorToIndex, rgbToHex } from '../utils/colors';
 import { CanvasContext } from '../lib/context';
+import {
+  type CanvasContextType,
+  type DrawingFunction,
+  type DrawingFunctionHandler,
+  type HoveredItem,
+  LAYERS,
+  type LayerType,
+  PICKING_LAYERS,
+  type PickingDrawingFunction,
+  type PickingLayerType,
+  type Point,
+  type SpaceTimeChartContextType,
+} from '../lib/types';
+import { colorToIndex, rgbToHex } from '../utils/colors';
 
 const PICKING = 'picking';
 const RENDERING = 'rendering';

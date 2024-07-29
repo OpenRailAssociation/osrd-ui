@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { CalendarPickerProps } from './CalendarPicker';
+
+import { type CalendarPickerProps } from './CalendarPicker';
 import { generateSequentialDates, validateSlots } from './utils';
 
 export default function useCalendarPicker({

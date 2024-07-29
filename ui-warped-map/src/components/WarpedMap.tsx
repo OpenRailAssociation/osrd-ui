@@ -1,16 +1,23 @@
-import React, { ComponentType, FC, PropsWithChildren, useEffect, useState } from 'react';
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
-import bbox from '@turf/bbox';
-import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { Feature, FeatureCollection, LineString } from 'geojson';
-import { isNil, mapValues, omitBy } from 'lodash';
-import { LineLayer } from 'react-map-gl/maplibre';
+import React, {
+  type ComponentType,
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+  useState,
+} from 'react';
 
-import getWarping, { WarpingFunction, WarpingOptions } from '../core/getWarping';
-import { SourceDefinition } from '../core/types';
+import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import bbox from '@turf/bbox';
+import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import { type Feature, type FeatureCollection, type LineString } from 'geojson';
+import { isNil, mapValues, omitBy } from 'lodash';
+import { type LineLayer } from 'react-map-gl/maplibre';
+
 import DataLoader from './DataLoader';
 import Loader from './Loader';
 import TransformedDataMap from './TransformedDataMap';
+import getWarping, { type WarpingFunction, type WarpingOptions } from '../core/getWarping';
+import { type SourceDefinition } from '../core/types';
 
 const TIME_LABEL = 'Warping data';
 

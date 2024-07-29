@@ -1,8 +1,8 @@
 import React from 'react';
-import type { Store } from '../../types/chartTypes';
 
-import { useCanvas } from '../hooks';
+import type { Store } from '../../types/chartTypes';
 import { drawTickYRight } from '../helpers/drawElements/tickYRight';
+import { useCanvas } from '../hooks';
 
 type TickLayerYRightProps = {
   width: number;

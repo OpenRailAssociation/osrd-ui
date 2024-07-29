@@ -1,8 +1,19 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { type FC, useEffect, useMemo, useState } from 'react';
+
 import cx from 'classnames';
 
+import SpaceGraduations from './SpaceGraduations';
+import TimeCaptions from './TimeCaptions';
+import TimeGraduations from './TimeGraduations';
+import { useCanvas } from '../hooks/useCanvas';
+import { useMouse } from '../hooks/useMouse';
+import { useSize } from '../hooks/useSize';
 import { CanvasContext, MouseContext, SpaceTimeChartContext } from '../lib/context';
-import { MouseContextType, SpaceTimeChartContextType, SpaceTimeChartProps } from '../lib/types';
+import {
+  type MouseContextType,
+  type SpaceTimeChartContextType,
+  type SpaceTimeChartProps,
+} from '../lib/types';
 import {
   getDataToPoint,
   getPixelToSpace,
@@ -12,12 +23,6 @@ import {
   getTimeToPixel,
   spaceScalesToBinaryTree,
 } from '../utils/scales';
-import TimeGraduations from './TimeGraduations';
-import TimeCaptions from './TimeCaptions';
-import SpaceGraduations from './SpaceGraduations';
-import { useSize } from '../hooks/useSize';
-import { useMouse } from '../hooks/useMouse';
-import { useCanvas } from '../hooks/useCanvas';
 
 export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartProps) => {
   const {
@@ -43,18 +48,20 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
   const [canvasesRoot, setCanvasesRoot] = useState<HTMLDivElement | null>(null);
   const { width, height } = useSize(root);
 
-  const fingerprint = useMemo(() => {
-    return JSON.stringify({
-      width,
-      height,
-      spaceOrigin,
-      spaceScales,
-      timeOrigin,
-      timeScale,
-      xOffset,
-      yOffset,
-    });
-  }, [width, height, spaceOrigin, spaceScales, timeOrigin, timeScale, xOffset, yOffset]);
+  const fingerprint = useMemo(
+    () =>
+      JSON.stringify({
+        width,
+        height,
+        spaceOrigin,
+        spaceScales,
+        timeOrigin,
+        timeScale,
+        xOffset,
+        yOffset,
+      }),
+    [width, height, spaceOrigin, spaceScales, timeOrigin, timeScale, xOffset, yOffset]
+  );
 
   const contextState: SpaceTimeChartContextType = useMemo(() => {
     const spaceScaleTree = spaceScalesToBinaryTree(spaceOrigin, spaceScales);
@@ -89,14 +96,15 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
   }, [fingerprint]);
 
   const { position, down, isHover } = useMouse(root, props, contextState.getData);
-  const mouseContext = useMemo<MouseContextType>(() => {
-    return {
+  const mouseContext = useMemo<MouseContextType>(
+    () => ({
       position,
       down,
       isHover,
       data: contextState.getData(position),
-    };
-  }, [position, down, isHover, contextState]);
+    }),
+    [position, down, isHover, contextState]
+  );
   const { canvasContext, hoveredItem } = useCanvas(canvasesRoot, contextState, position);
 
   // Handle onHoveredChildUpdate:

@@ -1,7 +1,8 @@
 import React from 'react';
+
+import { type Store } from '../../types/chartTypes';
 import { drawStepText } from '../helpers/drawElements/step';
 import { useCanvas } from '../hooks';
-import { Store } from '../../types/chartTypes';
 
 type StepNamesLayerProps = {
   width: number;

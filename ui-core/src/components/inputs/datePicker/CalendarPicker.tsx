@@ -1,8 +1,10 @@
 import React from 'react';
-import cx from 'classnames';
+
 import { ChevronLeft, ChevronRight } from '@osrd-project/ui-icons';
+import cx from 'classnames';
+
 import Calendar from './Calendar';
-import { CalendarSlot } from './type';
+import { type CalendarSlot } from './type';
 import useCalendarPicker from './useCalendarPicker';
 
 export type CalendarPickerPrivateProps = {
@@ -59,17 +61,15 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
         </span>
       )}
       <div className={cx('calendar-list', { 'navigation-btn-hidden': !showNavigationBtn })}>
-        {displayedMonthsStartDates.map((date, index) => {
-          return (
-            <Calendar
-              key={index}
-              displayedMonthStartDate={date}
-              selectableSlot={selectableSlot}
-              selectedSlot={selectedSlot}
-              onDayClick={onDayClick}
-            />
-          );
-        })}
+        {displayedMonthsStartDates.map((date, index) => (
+          <Calendar
+            key={index}
+            displayedMonthStartDate={date}
+            selectableSlot={selectableSlot}
+            selectedSlot={selectedSlot}
+            onDayClick={onDayClick}
+          />
+        ))}
       </div>
       {showNavigationBtn && (
         <span

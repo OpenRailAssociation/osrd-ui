@@ -9,20 +9,18 @@ type TooltipProps = {
   text: string;
 };
 
-const Tooltip = ({ cursorX, cursorY, height, text }: TooltipProps) => {
-  return (
-    <div
-      id="tooltip"
-      className="absolute"
-      style={{
-        marginTop: cursorY,
-        marginLeft: cursorX - TOOLTIP_WIDTH / 2,
-        maxHeight: height,
-      }}
-    >
-      <span>{text}</span>
-    </div>
-  );
-};
+const Tooltip = ({ cursorX, cursorY, height, text }: TooltipProps) => (
+  <div
+    id="tooltip"
+    className="absolute"
+    style={{
+      marginTop: cursorY,
+      marginLeft: cursorX - TOOLTIP_WIDTH / 2,
+      maxHeight: height,
+    }}
+  >
+    <span>{text}</span>
+  </div>
+);
 
 export default Tooltip;

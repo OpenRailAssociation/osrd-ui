@@ -1,4 +1,5 @@
 import React from 'react';
+
 import type { Store } from '../../types/chartTypes';
 import { drawStep } from '../helpers/drawElements/step';
 import { useCanvas } from '../hooks';

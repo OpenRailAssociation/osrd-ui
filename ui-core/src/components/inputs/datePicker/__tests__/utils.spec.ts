@@ -1,4 +1,6 @@
-import { RangeDatePickerProps, SingleDatePickerProps } from '../DatePicker';
+import { describe, expect, it } from 'vitest';
+
+import { type RangeDatePickerProps, type SingleDatePickerProps } from '../DatePicker';
 import {
   isValidSlot,
   getDatesFromPreviousMonthInFirstWeek,
@@ -13,7 +15,6 @@ import {
   formatInputValue,
   formatValueToSlot,
 } from '../utils';
-import { describe, expect, it } from 'vitest';
 
 const january = 0;
 const february = 1;

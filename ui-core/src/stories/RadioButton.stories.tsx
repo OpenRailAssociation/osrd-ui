@@ -1,4 +1,4 @@
-import { StoryObj, Meta } from '@storybook/react';
+import { type StoryObj, type Meta } from '@storybook/react';
 
 import '@osrd-project/ui-core/dist/theme.css';
 

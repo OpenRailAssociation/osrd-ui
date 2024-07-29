@@ -1,8 +1,14 @@
 import bbox from '@turf/bbox';
 import { lineString } from '@turf/helpers';
-import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import simplify from '@turf/simplify';
-import { Feature, FeatureCollection, Geometry, LineString, Position } from 'geojson';
+import {
+  type Feature,
+  type FeatureCollection,
+  type Geometry,
+  type LineString,
+  type Position,
+} from 'geojson';
 
 import {
   featureToPointsGrid,

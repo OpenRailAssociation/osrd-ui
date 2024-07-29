@@ -1,12 +1,19 @@
-import React, { FC, PropsWithChildren, useEffect, useMemo, useState } from 'react';
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
-import { featureCollection } from '@turf/helpers';
-import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { Feature, FeatureCollection, LineString } from 'geojson';
-import { omit } from 'lodash';
-import ReactMapGL, { Layer, LayerProps, LineLayer, MapRef, Source } from 'react-map-gl/maplibre';
+import React, { type FC, type PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
-import { SourceDefinition } from '../core/types';
+import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { featureCollection } from '@turf/helpers';
+import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import { type Feature, type FeatureCollection, type LineString } from 'geojson';
+import { omit } from 'lodash';
+import ReactMapGL, {
+  Layer,
+  type LayerProps,
+  type LineLayer,
+  type MapRef,
+  Source,
+} from 'react-map-gl/maplibre';
+
+import { type SourceDefinition } from '../core/types';
 
 /**
  * This component handles displaying warped data. The data must be warped before being given to this component.

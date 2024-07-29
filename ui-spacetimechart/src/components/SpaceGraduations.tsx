@@ -1,8 +1,8 @@
-import { FC, useCallback } from 'react';
+import { type FC, useCallback } from 'react';
 
-import { DrawingFunction } from '../lib/types';
-import { BLUE, GREY_10 } from '../lib/consts';
 import { useDraw } from '../hooks/useCanvas';
+import { BLUE, GREY_10 } from '../lib/consts';
+import { type DrawingFunction } from '../lib/types';
 
 const STYLES: Record<
   number,

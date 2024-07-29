@@ -1,13 +1,14 @@
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import React, { type FC, useEffect, useState } from 'react';
+
+import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
-import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { Feature, FeatureCollection } from 'geojson';
-import React, { FC, useEffect, useState } from 'react';
+import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import { type Feature, type FeatureCollection } from 'geojson';
 import { createPortal } from 'react-dom';
-import ReactMapGL, { Layer, LayerProps, MapRef, Source } from 'react-map-gl/maplibre';
+import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-map-gl/maplibre';
 
 import { simplifyFeature } from '../core/helpers';
-import { SourceDefinition } from '../core/types';
+import { type SourceDefinition } from '../core/types';
 
 const TIME_LABEL = 'Loading data around warped path';
 

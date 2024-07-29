@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
-  DataPoint,
-  MouseState,
-  Point,
-  SpaceTimeChartContextType,
-  SpaceTimeChartProps,
+  type DataPoint,
+  type MouseState,
+  type Point,
+  type SpaceTimeChartContextType,
+  type SpaceTimeChartProps,
 } from '../lib/types';
 import { getEventPosition, getEventWheelDelta } from '../utils/events';
 

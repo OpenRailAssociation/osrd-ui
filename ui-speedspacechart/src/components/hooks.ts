@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+
 import type { DrawFunctionParams, Store } from '../types/chartTypes';
 
 type DrawFunction = (params: DrawFunctionParams) => void;

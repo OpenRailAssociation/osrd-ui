@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from 'react';
+
+import InteractionButtons from './common/InteractionButtons';
+import SettingsPanel from './common/SettingsPanel';
+import { MARGINS, LINEAR_LAYERS_HEIGHTS } from './const';
+import { resetZoom } from './helpers/layersManager';
 import {
   AxisLayerX,
   AxisLayerY,
@@ -16,12 +21,7 @@ import {
   TickLayerY,
   TickLayerYRight,
 } from './layers/index';
-import SettingsPanel from './common/SettingsPanel';
-import InteractionButtons from './common/InteractionButtons';
-import { resetZoom } from './helpers/layersManager';
 import { getGraphOffsets, getAdaptiveHeight, getLinearLayerMarginTop } from './utils';
-import { MARGINS } from './const';
-import { LINEAR_LAYERS_HEIGHTS } from './const';
 import type { Data, Store } from '../types/chartTypes';
 
 export type SpeedSpaceChartProps = {

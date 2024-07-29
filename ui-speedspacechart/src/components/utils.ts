@@ -1,11 +1,11 @@
-import type { LayerData, Store } from '../types/chartTypes';
 import {
   MARGINS,
   LINEAR_LAYER_SEPARATOR_HEIGHT,
   LINEAR_LAYERS_HEIGHTS_BY_NAME,
-  LAYERS_SELECTION,
+  type LAYERS_SELECTION,
   LINEAR_LAYERS_HEIGHTS,
 } from './const';
+import type { LayerData, Store } from '../types/chartTypes';
 
 type SpeedRangeValues = {
   minSpeed: number;
@@ -127,16 +127,13 @@ export const positionOnGraphScale = (
   width: number,
   ratioX: number,
   margins: typeof MARGINS
-) => {
-  return (
-    position *
-      ((width - margins.CURVE_MARGIN_SIDES - margins.MARGIN_LEFT - margins.MARGIN_RIGHT) /
-        maxPosition) *
-      ratioX +
-    margins.MARGIN_LEFT +
-    margins.CURVE_MARGIN_SIDES / 2
-  );
-};
+) =>
+  position *
+    ((width - margins.CURVE_MARGIN_SIDES - margins.MARGIN_LEFT - margins.MARGIN_RIGHT) /
+      maxPosition) *
+    ratioX +
+  margins.MARGIN_LEFT +
+  margins.CURVE_MARGIN_SIDES / 2;
 
 /**
  * Draws a separator line on a canvas context.
@@ -193,16 +190,13 @@ export const drawLinearLayerBackground = (
  * Check if an optional layer data is missing in the store.
  * Optional datas : electricalProfiles, powerRestrictions, speedLimitTags
  */
-export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION)[number]) => {
-  return (
-    (selection === 'speedLimits' ||
-      selection === 'temporarySpeedLimits' ||
-      selection === 'electricalProfiles' ||
-      selection === 'powerRestrictions' ||
-      selection === 'speedLimitTags') &&
-    !store[selection]
-  );
-};
+export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION)[number]) =>
+  (selection === 'speedLimits' ||
+    selection === 'temporarySpeedLimits' ||
+    selection === 'electricalProfiles' ||
+    selection === 'powerRestrictions' ||
+    selection === 'speedLimitTags') &&
+  !store[selection];
 /**
  * Given a store including a list of slopes, return the position and value of min and max slopes
  * @param store
@@ -269,14 +263,13 @@ export const drawRoundedRect = (
   ctx.stroke();
 };
 
-export const loadSvgImage = (svgUrl: string): Promise<HTMLImageElement> => {
-  return new Promise((resolve, reject) => {
+export const loadSvgImage = (svgUrl: string): Promise<HTMLImageElement> =>
+  new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = (error) => reject(error);
     img.src = svgUrl;
   });
-};
 
 export const createSvgBlobUrl = (svgString: string): string => {
   const blob = new Blob([svgString], { type: 'image/svg+xml' });

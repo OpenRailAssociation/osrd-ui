@@ -1,10 +1,11 @@
 import React from 'react';
-import { StoryObj, Meta } from '@storybook/react';
+
+import { type StoryObj, type Meta } from '@storybook/react';
 
 import '@osrd-project/ui-core/dist/theme.css';
 
+import { type RadioButtonProps } from '../components/inputs/RadioButton';
 import RadioGroup from '../components/inputs/RadioGroup';
-import { RadioButtonProps } from '../components/inputs/RadioButton';
 
 const buildFruitsOptions: (prefixId: string) => RadioButtonProps[] = (prefixId) => [
   {
@@ -26,9 +27,7 @@ const buildFruitsOptions: (prefixId: string) => RadioButtonProps[] = (prefixId) 
 
 const meta: Meta<typeof RadioGroup> = {
   component: RadioGroup,
-  render: (props) => {
-    return <RadioGroup {...props} options={buildFruitsOptions('doc')} />;
-  },
+  render: (props) => <RadioGroup {...props} options={buildFruitsOptions('doc')} />,
   args: {
     small: false,
     disabled: false,
@@ -53,9 +52,7 @@ export const GroupWithLabel: Story = {
     label: 'Choose a flavour',
     options: buildFruitsOptions('groupWithLabel'),
   },
-  render: (currentArgs) => {
-    return <RadioGroup {...currentArgs} />;
-  },
+  render: (currentArgs) => <RadioGroup {...currentArgs} />,
 };
 
 export const GroupLabelCaption: Story = {
@@ -77,9 +74,7 @@ export const GroupLabelCaption: Story = {
       },
     ],
   },
-  render: (currentArgs) => {
-    return <RadioGroup {...currentArgs} />;
-  },
+  render: (currentArgs) => <RadioGroup {...currentArgs} />,
 };
 
 export const LabelOverflow: Story = {
@@ -99,9 +94,7 @@ export const LabelOverflow: Story = {
       },
     ],
   },
-  render: (currentArgs) => {
-    return <RadioGroup {...currentArgs} />;
-  },
+  render: (currentArgs) => <RadioGroup {...currentArgs} />,
 };
 
 export const RequiredRadioButton: Story = {
@@ -110,9 +103,7 @@ export const RequiredRadioButton: Story = {
     required: true,
     options: buildFruitsOptions('required'),
   },
-  render: (currentArgs) => {
-    return <RadioGroup {...currentArgs} />;
-  },
+  render: (currentArgs) => <RadioGroup {...currentArgs} />,
 };
 
 export const InfoRadioButton: Story = {
@@ -123,9 +114,7 @@ export const InfoRadioButton: Story = {
       message: 'We made this choice for you',
     },
   },
-  render: (currentArgs) => {
-    return <RadioGroup {...currentArgs} />;
-  },
+  render: (currentArgs) => <RadioGroup {...currentArgs} />,
 };
 
 export const WarningRadioButton: Story = {
@@ -151,9 +140,7 @@ export const WarningRadioButton: Story = {
       message: 'Lemon and coffee is a rare match',
     },
   },
-  render: (currentArgs) => {
-    return <RadioGroup {...currentArgs} />;
-  },
+  render: (currentArgs) => <RadioGroup {...currentArgs} />,
 };
 
 export const ErrorRadioButton: Story = {
@@ -177,7 +164,5 @@ export const ErrorRadioButton: Story = {
       message: 'The Chef refuses to cook omelettes with garlic',
     },
   },
-  render: (currentArgs) => {
-    return <RadioGroup {...currentArgs} />;
-  },
+  render: (currentArgs) => <RadioGroup {...currentArgs} />,
 };

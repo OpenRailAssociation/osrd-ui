@@ -1,3 +1,5 @@
+import type { DrawFunctionParams } from '../../../types/chartTypes';
+import { LINEAR_LAYERS_BACKGROUND_COLOR, MARGINS, LINEAR_LAYERS_HEIGHTS } from '../../const';
 import {
   clearCanvas,
   drawLinearLayerBackground,
@@ -5,8 +7,6 @@ import {
   maxPositionValues,
   positionOnGraphScale,
 } from '../../utils';
-import { LINEAR_LAYERS_BACKGROUND_COLOR, MARGINS, LINEAR_LAYERS_HEIGHTS } from '../../const';
-import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const PROFILE_HEIGHT_MAX = 40;
 const MARGIN_POSITION_TEXT = 12;

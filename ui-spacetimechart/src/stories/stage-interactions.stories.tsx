@@ -1,9 +1,9 @@
-import cx from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
+
 import type { Meta } from '@storybook/react';
+import cx from 'classnames';
 
 import { OPERATIONAL_POINTS, PATHS } from './assets/paths';
-import { SpaceTimeChart, PathLayer } from '../';
 import {
   MAX_X_ZOOM,
   MAX_Y_ZOOM,
@@ -12,8 +12,9 @@ import {
   X_ZOOM_LEVEL,
   Y_ZOOM_LEVEL,
 } from './utils';
+import { SpaceTimeChart, PathLayer } from '../';
+import { type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
-import { Point } from '../lib/types';
 
 import './tailwind-mockup.css';
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { RequiredInput } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
@@ -18,19 +19,17 @@ const Label: React.FC<LabelProps> = ({
   hasHint,
   disabled,
   small = false,
-}) => {
-  return (
-    <div className={cx('base-label-wrapper', { 'has-hint': hasHint, small })}>
-      {required && (
-        <span className="required">
-          <RequiredInput />
-        </span>
-      )}
-      <label className={cx('label', { disabled: disabled })} htmlFor={htmlFor}>
-        {text}
-      </label>
-    </div>
-  );
-};
+}) => (
+  <div className={cx('base-label-wrapper', { 'has-hint': hasHint, small })}>
+    {required && (
+      <span className="required">
+        <RequiredInput />
+      </span>
+    )}
+    <label className={cx('label', { disabled: disabled })} htmlFor={htmlFor}>
+      {text}
+    </label>
+  </div>
+);
 
 export default Label;

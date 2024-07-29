@@ -3,12 +3,18 @@ import center from '@turf/center';
 import destination from '@turf/destination';
 import { featureCollection, lineString, polygon } from '@turf/helpers';
 import length from '@turf/length';
-import { Feature, LineString, Position } from 'geojson';
+import { type Feature, type LineString, type Position } from 'geojson';
 import { clamp, cloneDeep, keyBy, meanBy } from 'lodash';
 
-import { GridFeature, GridIndex, Grids, PointsGrid, Triangle } from './helpers';
-import { PolygonZone } from './types';
-import vec, { Vec2 } from './vec-lib';
+import {
+  type GridFeature,
+  type GridIndex,
+  type Grids,
+  type PointsGrid,
+  type Triangle,
+} from './helpers';
+import { type PolygonZone } from './types';
+import vec, { type Vec2 } from './vec-lib';
 
 /*
  * Base helpers to manipulate grids:

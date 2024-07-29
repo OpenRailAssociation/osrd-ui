@@ -1,20 +1,16 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import cx from 'classnames';
-import OperationalPointList from './OperationalPointList';
+import React, { type FC, useCallback, useEffect, useRef, useState } from 'react';
+
 import type {
   OperationalPointType,
   ProjectPathTrainResult,
   StyledOperationalPointType,
 } from '../types';
+
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import { SpaceTimeChart, PathLayer } from '@osrd-project/ui-spacetimechart';
-import {
-  calcOperationalPointsToDisplay,
-  getOperationalPointsWithPosition,
-  getScales,
-  operationalPointsHeight,
-} from './helpers';
 import type { OperationalPoint, SpaceScale } from '@osrd-project/ui-spacetimechart/dist/lib/types';
+import cx from 'classnames';
+
 import {
   INITIAL_OP_LIST_HEIGHT,
   INITIAL_SPACE_TIME_CHART_HEIGHT,
@@ -22,13 +18,20 @@ import {
   MIN_ZOOM_Y,
   ZOOM_Y_DELTA,
 } from './consts';
-import { getDiff } from '../utils/vector';
+import {
+  calcOperationalPointsToDisplay,
+  getOperationalPointsWithPosition,
+  getScales,
+  operationalPointsHeight,
+} from './helpers';
+import OperationalPointList from './OperationalPointList';
 import { useIsOverflow } from '../hooks/useIsOverFlow';
 type ManchetteProps = {
   operationalPoints: OperationalPointType[];
   projectPathTrainResult: ProjectPathTrainResult[];
 };
 import usePaths from '../hooks/usePaths';
+import { getDiff } from '../utils/vector';
 
 const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResult }) => {
   const manchette = useRef<HTMLDivElement>(null);

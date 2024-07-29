@@ -1,12 +1,13 @@
-import cx from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { type FC, useState } from 'react';
+
 import type { Meta } from '@storybook/react';
+import cx from 'classnames';
 
 import { OPERATIONAL_POINTS, PATHS } from './assets/paths';
-import { SpaceTimeChart, PathLayer } from '../';
-import { HoveredItem, PathData, Point } from '../lib/types';
-import { getDiff } from '../utils/vectors';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './utils';
+import { SpaceTimeChart, PathLayer } from '../';
+import { type HoveredItem, type PathData, type Point } from '../lib/types';
+import { getDiff } from '../utils/vectors';
 
 import './tailwind-mockup.css';
 

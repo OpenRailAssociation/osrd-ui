@@ -1,15 +1,17 @@
 import { featureCollection } from '@turf/helpers';
-import { Feature, LineString } from 'geojson';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import React, { FC, useMemo } from 'react';
-import { Layer, LineLayer, Source } from 'react-map-gl/maplibre';
+import { type Feature, type LineString } from 'geojson';
 
+import 'maplibre-gl/dist/maplibre-gl.css';
+import React, { type FC, useMemo } from 'react';
+
+import { Layer, type LineLayer, Source } from 'react-map-gl/maplibre';
+
+import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers';
 import BaseMap from '../components/BaseMap';
 import Loader from '../components/Loader';
 import WarpedMap from '../components/WarpedMap';
-import { SourceDefinition } from '../core/types';
+import { type SourceDefinition } from '../core/types';
 import { useAsyncMemo } from '../core/useAsyncMemo';
-import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers';
 
 const SOURCES: SourceDefinition[] = [OSM_SOURCE];
 

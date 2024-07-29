@@ -1,17 +1,17 @@
 import { clamp } from 'lodash';
 
 import {
-  NormalizedScaleTree,
-  NormalizedScale,
-  SpaceScale,
-  SpaceToPixel,
-  TimeToPixel,
-  PixelToTime,
-  PixelToSpace,
-  PointToData,
-  Point,
-  DataToPoint,
-  DataPoint,
+  type NormalizedScaleTree,
+  type NormalizedScale,
+  type SpaceScale,
+  type SpaceToPixel,
+  type TimeToPixel,
+  type PixelToTime,
+  type PixelToSpace,
+  type PointToData,
+  type Point,
+  type DataToPoint,
+  type DataPoint,
 } from '../lib/types';
 
 /**

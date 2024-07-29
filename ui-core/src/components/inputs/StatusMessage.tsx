@@ -1,5 +1,7 @@
 import React from 'react';
+
 import cx from 'classnames';
+
 import InputStatusIcon from './InputStatusIcon';
 
 export type Status = 'success' | 'info' | 'error' | 'warning' | 'loading';

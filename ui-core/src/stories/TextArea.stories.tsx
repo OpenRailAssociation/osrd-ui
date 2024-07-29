@@ -1,5 +1,7 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+
+import { type Meta, type StoryObj } from '@storybook/react';
+
 import TextArea from '../components/inputs/TextArea';
 
 import '@osrd-project/ui-core/dist/theme.css';

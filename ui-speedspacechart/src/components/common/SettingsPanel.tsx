@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import type { Store } from '../../types/chartTypes';
-import type { SpeedSpaceChartProps } from '../SpeedSpaceChart';
-import { DETAILS_BOX_SELECTION, LAYERS_SELECTION } from '../const';
-import { X } from '@osrd-project/ui-icons';
+
 import { Checkbox } from '@osrd-project/ui-core';
+import { X } from '@osrd-project/ui-icons';
+
+import type { Store } from '../../types/chartTypes';
+import { DETAILS_BOX_SELECTION, LAYERS_SELECTION } from '../const';
+import type { SpeedSpaceChartProps } from '../SpeedSpaceChart';
 import { checkLayerData, getAdaptiveHeight } from '../utils';
 
 const SETTINGS_PANEL_BASE_HEIGHT = 442;

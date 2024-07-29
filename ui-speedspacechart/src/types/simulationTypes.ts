@@ -1,4 +1,4 @@
-import { electricalProfilesDesignValues } from '../stories/assets/const';
+import { type electricalProfilesDesignValues } from '../stories/assets/const';
 
 export type Simulation = {
   status: string;

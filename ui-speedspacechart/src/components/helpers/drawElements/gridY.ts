@@ -1,6 +1,6 @@
-import { clearCanvas, speedRangeValues } from '../../utils';
-import { MARGINS } from '../../const';
 import type { DrawFunctionParams } from '../../../types/chartTypes';
+import { MARGINS } from '../../const';
+import { clearCanvas, speedRangeValues } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_TOP } = MARGINS;
 

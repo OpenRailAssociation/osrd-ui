@@ -1,8 +1,9 @@
 import React from 'react';
-import { CheckboxTreeItem } from './type';
-import Checkbox from './Checkbox';
 
 import cx from 'classnames';
+
+import Checkbox from './Checkbox';
+import { type CheckboxTreeItem } from './type';
 
 export type CheckboxListProps = {
   items: CheckboxTreeItem[];

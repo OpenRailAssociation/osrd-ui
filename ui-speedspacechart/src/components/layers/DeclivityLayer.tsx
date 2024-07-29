@@ -1,8 +1,10 @@
 import React from 'react';
+
+import cx from 'classnames';
+
 import type { Store } from '../../types/chartTypes';
 import { drawDeclivity } from '../helpers/drawElements/declivity';
 import { useCanvas } from '../hooks';
-import cx from 'classnames';
 
 type DeclivityLayerProps = {
   width: number;

@@ -1,10 +1,10 @@
 import {
   useState,
   useCallback,
-  FocusEvent,
-  KeyboardEvent,
-  FocusEventHandler,
-  KeyboardEventHandler,
+  type FocusEvent,
+  type KeyboardEvent,
+  type FocusEventHandler,
+  type KeyboardEventHandler,
 } from 'react';
 
 type UseFocusByTabProps = {

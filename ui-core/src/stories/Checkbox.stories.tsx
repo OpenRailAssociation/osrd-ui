@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+
 import '@osrd-project/ui-core/dist/theme.css';
 import Checkbox from '../components/inputs/Checkbox/Checkbox';
 

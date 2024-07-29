@@ -1,13 +1,12 @@
 import * as d3 from 'd3';
+
 import type { Store } from '../../types/chartTypes';
 import { FRONT_INTERACTIVITY_LAYER_ID } from '../const';
 
 export const zoom = (setStore: React.Dispatch<React.SetStateAction<Store>>) =>
   d3
     .zoom()
-    .filter((event) => {
-      return event.shiftKey;
-    })
+    .filter((event) => event.shiftKey)
     .on('zoom', () => {
       const canvas = d3.select(FRONT_INTERACTIVITY_LAYER_ID) as d3.Selection<
         Element,

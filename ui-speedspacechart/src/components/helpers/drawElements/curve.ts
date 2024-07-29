@@ -1,11 +1,11 @@
-import { clearCanvas, maxPositionValues, speedRangeValues } from '../../utils';
-import { MARGINS } from '../../const';
 import type {
   CanvasConfig,
   CurveConfig,
   DrawFunctionParams,
   LayerData,
 } from '../../../types/chartTypes';
+import { MARGINS } from '../../const';
+import { clearCanvas, maxPositionValues, speedRangeValues } from '../../utils';
 
 const { CURVE_MARGIN_TOP, CURVE_MARGIN_SIDES } = MARGINS;
 

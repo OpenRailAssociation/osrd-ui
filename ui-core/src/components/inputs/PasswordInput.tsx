@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Eye, EyeClosed } from '@osrd-project/ui-icons';
 
-import Input, { InputProps } from './Input';
+import { Eye, EyeClosed } from '@osrd-project/ui-icons';
 import cx from 'classnames';
+
+import Input, { type InputProps } from './Input';
 
 export type PasswordInputProps = InputProps;
 export const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(

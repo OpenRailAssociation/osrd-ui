@@ -1,10 +1,12 @@
 import React from 'react';
-import cx from 'classnames';
+
 import { Calendar as CalendarIcon } from '@osrd-project/ui-icons';
-import Input, { InputProps } from '../Input';
-import CalendarPicker, { CalendarPickerPublicProps } from './CalendarPicker';
+import cx from 'classnames';
+
+import { type CalendarSlot } from '.';
+import CalendarPicker, { type CalendarPickerPublicProps } from './CalendarPicker';
 import useDatePicker from './useDatePicker';
-import { CalendarSlot } from '.';
+import Input, { type InputProps } from '../Input';
 
 type BaseDatePickerProps = {
   inputProps: InputProps;

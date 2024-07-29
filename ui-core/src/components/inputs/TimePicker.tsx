@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
-import InputModal from '../Modal';
-import Input, { InputProps } from './Input';
+
 import cx from 'classnames';
+
+import Input, { type InputProps } from './Input';
+import InputModal from '../Modal';
 
 export type TimePickerProps = InputProps & {
   hours?: number;
@@ -16,21 +18,19 @@ type TimeRangeProps = {
   onSelectItem: (item: number) => void;
 };
 
-const TimeRange: React.FC<TimeRangeProps> = ({ range, selectedItem, className, onSelectItem }) => {
-  return (
-    <div className="time-grid">
-      {range.map((item) => (
-        <div
-          key={item}
-          className={cx(className, { selected: selectedItem === item })}
-          onClick={() => onSelectItem(item)}
-        >
-          {item.toString().padStart(2, '0')}
-        </div>
-      ))}
-    </div>
-  );
-};
+const TimeRange: React.FC<TimeRangeProps> = ({ range, selectedItem, className, onSelectItem }) => (
+  <div className="time-grid">
+    {range.map((item) => (
+      <div
+        key={item}
+        className={cx(className, { selected: selectedItem === item })}
+        onClick={() => onSelectItem(item)}
+      >
+        {item.toString().padStart(2, '0')}
+      </div>
+    ))}
+  </div>
+);
 
 const TimePicker: React.FC<TimePickerProps> = ({
   onTimeChange,

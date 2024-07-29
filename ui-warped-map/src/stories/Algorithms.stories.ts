@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { DEFAULT_WARPING_OPTIONS } from '../core/getWarping';
 import Algorithms from './Algorithms';
 import { PATH_LONG, PATH_NAMES } from './helpers';
+import { DEFAULT_WARPING_OPTIONS } from '../core/getWarping';
 
 const meta: Meta<typeof Algorithms> = {
   component: Algorithms,

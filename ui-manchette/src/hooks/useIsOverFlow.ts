@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect, RefObject } from 'react';
+import { useState, useLayoutEffect, type RefObject } from 'react';
 
 type CallbackFunction = {
   (hasOverflow: boolean): void;

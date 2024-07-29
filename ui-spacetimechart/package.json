@@ -29,7 +29,9 @@
     "clean": "rimraf dist",
     "build": "npm run rollup",
     "test": "vitest run --dir src/__tests__",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "lint": "eslint src --ext .ts,.tsx  --max-warnings 0",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
   "peerDependencies": {
     "classnames": ">=2.5",
