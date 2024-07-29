@@ -1,4 +1,4 @@
-import { CheckboxProps } from './Checkbox';
+import { type CheckboxProps } from './Checkbox';
 
 export enum CheckboxState {
   UNCHECKED,

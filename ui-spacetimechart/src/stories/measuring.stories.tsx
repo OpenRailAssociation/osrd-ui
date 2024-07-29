@@ -1,15 +1,16 @@
-import cx from 'classnames';
-import React, { FC, useContext, useState } from 'react';
+import React, { type FC, useContext, useState } from 'react';
+
 import type { Meta } from '@storybook/react';
+import cx from 'classnames';
 import { round } from 'lodash';
 
 import { OPERATIONAL_POINTS, PATHS } from './assets/paths';
-import { SpaceTimeChart, PathLayer } from '../';
-import { DataPoint, Point } from '../lib/types';
-import { getDiff } from '../utils/vectors';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './utils';
-import { MouseContext, SpaceTimeChartContext } from '../lib/context';
+import { SpaceTimeChart, PathLayer } from '../';
 import { WHITE_75 } from '../lib/consts';
+import { MouseContext, SpaceTimeChartContext } from '../lib/context';
+import { type DataPoint, type Point } from '../lib/types';
+import { getDiff } from '../utils/vectors';
 
 const Line: FC<{
   p1: Point;
@@ -55,32 +56,30 @@ const DataLabel: FC<{ data: DataPoint; position: Point; isDiff?: boolean; margin
   position,
   isDiff,
   marginTop = 0,
-}) => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: position.y + marginTop,
-        left: position.x,
-        whiteSpace: 'nowrap',
-        background: WHITE_75,
-        fontSize: '0.7em',
-      }}
-    >
-      {isDiff ? (
-        <>
-          <div>Time difference: {formatTimeLength(new Date(data.time))}</div>
-          <div>Distance to mark: {round(data.position).toLocaleString()} m</div>
-        </>
-      ) : (
-        <>
-          <div>Time: {new Date(data.time).toLocaleTimeString()}</div>
-          <div>Distance: {round(data.position).toLocaleString()} m</div>
-        </>
-      )}
-    </div>
-  );
-};
+}) => (
+  <div
+    style={{
+      position: 'absolute',
+      top: position.y + marginTop,
+      left: position.x,
+      whiteSpace: 'nowrap',
+      background: WHITE_75,
+      fontSize: '0.7em',
+    }}
+  >
+    {isDiff ? (
+      <>
+        <div>Time difference: {formatTimeLength(new Date(data.time))}</div>
+        <div>Distance to mark: {round(data.position).toLocaleString()} m</div>
+      </>
+    ) : (
+      <>
+        <div>Time: {new Date(data.time).toLocaleTimeString()}</div>
+        <div>Distance: {round(data.position).toLocaleString()} m</div>
+      </>
+    )}
+  </div>
+);
 
 const MouseTracker: FC<{ reference?: DataPoint }> = ({ reference }) => {
   const { getPoint } = useContext(SpaceTimeChartContext);

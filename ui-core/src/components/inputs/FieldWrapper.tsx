@@ -1,10 +1,11 @@
 import React from 'react';
+
 import cx from 'classnames';
 
-import Label from './Label';
 import Hint from './Hint';
-import StatusMessage, { StatusWithMessage } from './StatusMessage';
 import InputStatusIcon from './InputStatusIcon';
+import Label from './Label';
+import StatusMessage, { type StatusWithMessage } from './StatusMessage';
 
 export type FieldWrapperProps = {
   id: string;

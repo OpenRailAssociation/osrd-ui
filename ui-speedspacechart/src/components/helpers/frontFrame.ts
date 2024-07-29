@@ -1,8 +1,9 @@
 import * as d3 from 'd3';
-import { clearCanvas } from '../utils';
+
 import { zoom } from './layersManager';
-import { FRONT_INTERACTIVITY_LAYER_ID } from '../const';
 import type { DrawFunctionParams } from '../../types/chartTypes';
+import { FRONT_INTERACTIVITY_LAYER_ID } from '../const';
+import { clearCanvas } from '../utils';
 
 export const drawFrame = ({ ctx, width, height, store, setStore }: DrawFunctionParams) => {
   clearCanvas(ctx, width, height);

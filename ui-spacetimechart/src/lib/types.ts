@@ -1,4 +1,4 @@
-import { HTMLProps, ReactNode } from 'react';
+import { type HTMLProps, type ReactNode } from 'react';
 
 // GLOBAL UTILITY TYPES:
 export type Point = {

@@ -1,6 +1,6 @@
 import { clamp } from 'lodash';
 
-import { PathEnd, Point, RGBAColor, RGBColor } from '../lib/types';
+import { type PathEnd, type Point, type RGBAColor, type RGBColor } from '../lib/types';
 
 /**
  * This function draws a thick lines from "from" to "to" on the given ImageData, with no

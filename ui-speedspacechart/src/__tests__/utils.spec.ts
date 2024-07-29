@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
+
+import { MARGINS } from '../components/const';
 import {
   getGraphOffsets,
   speedRangeValues,
@@ -12,7 +14,6 @@ import {
   findPreviousAndNextPosition,
 } from '../components/utils';
 import type { LayerData, Store } from '../types/chartTypes';
-import { MARGINS } from '../components/const';
 
 const speeds: LayerData<number>[] = [
   { value: 10, position: { start: 200 } },

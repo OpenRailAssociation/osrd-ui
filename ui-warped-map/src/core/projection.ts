@@ -1,16 +1,16 @@
-import { Feature, FeatureCollection, Geometry, Position } from 'geojson';
+import { type Feature, type FeatureCollection, type Geometry, type Position } from 'geojson';
 import { keyBy } from 'lodash';
 
 import {
-  GridIndex,
-  Triangle,
+  type GridIndex,
+  type Triangle,
   clip,
   getBarycentricCoordinates,
   getPointInTriangle,
   isInTriangle,
 } from './helpers';
-import { Quad, getElements } from './quadtree';
-import { Zone } from './types';
+import { type Quad, getElements } from './quadtree';
+import { type Zone } from './types';
 
 export type Projection = (position: Position) => Position | null;
 

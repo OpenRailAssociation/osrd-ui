@@ -1,8 +1,10 @@
 import React from 'react';
+
+import cx from 'classnames';
+
 import type { Store } from '../../types/chartTypes';
 import { drawCurve } from '../helpers/drawElements/curve';
 import { useCanvas } from '../hooks';
-import cx from 'classnames';
 
 type CurveLayerProps = {
   width: number;

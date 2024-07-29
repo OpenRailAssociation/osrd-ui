@@ -1,4 +1,4 @@
-import { ColorDictionary, Store } from '../types/chartTypes';
+import { type ColorDictionary, type Store } from '../types/chartTypes';
 
 export const SLOPE_FILL_COLOR = '#CFDDCE';
 

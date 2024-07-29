@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
+
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-speedspacechart/dist/theme.css';
-import SpeedSpaceChart, { type SpeedSpaceChartProps } from '../components/SpeedSpaceChart';
-import { pathPropertiesPmpLm } from './assets/path_properties_PMP_LM';
-import { simulationPmpLm } from './assets/simulation_PMP_LM';
-import { formatData } from './utils';
 import { translations } from './assets/const';
+import { pathPropertiesPmpLm } from './assets/path_properties_PMP_LM';
 import { powerRestrictionsPmpLm } from './assets/power_restrictions_PMP_LM';
+import { simulationPmpLm } from './assets/simulation_PMP_LM';
 import { speedLimitTags } from './assets/speed_limit_tags_PMP_LM';
+import { formatData } from './utils';
+import SpeedSpaceChart, { type SpeedSpaceChartProps } from '../components/SpeedSpaceChart';
 
 const data = formatData(
   simulationPmpLm,

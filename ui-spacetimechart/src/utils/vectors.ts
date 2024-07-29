@@ -1,4 +1,4 @@
-import { Point } from '../lib/types';
+import { type Point } from '../lib/types';
 
 export function getDiff(a: Point, b: Point): Point {
   return {

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import type { Store } from '../../types/chartTypes';
 import { drawTickY } from '../helpers/drawElements/tickY';
 import { useCanvas } from '../hooks';

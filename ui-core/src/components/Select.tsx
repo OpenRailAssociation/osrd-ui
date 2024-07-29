@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import FieldWrapper, { FieldWrapperProps } from './inputs/FieldWrapper';
+
 import cx from 'classnames';
+
+import FieldWrapper, { type FieldWrapperProps } from './inputs/FieldWrapper';
 
 export type SelectProps<T> = Omit<
   React.InputHTMLAttributes<HTMLSelectElement>,

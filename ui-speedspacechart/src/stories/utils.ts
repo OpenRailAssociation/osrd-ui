@@ -1,8 +1,8 @@
-import type { PathProperties, Simulation } from '../types/simulationTypes';
+import { electricalProfilesDesignValues } from './assets/const';
 import type { PowerRestriction } from './assets/power_restrictions_PMP_LM';
 import type { SpeedLimitTags } from './assets/speed_limit_tags_PMP_LM';
 import type { Data } from '../types/chartTypes';
-import { electricalProfilesDesignValues } from './assets/const';
+import type { PathProperties, Simulation } from '../types/simulationTypes';
 
 const convertMsToKmh = (value: number) => value * 3.6;
 
@@ -28,17 +28,16 @@ const formatEcoSpeeds = (simulationFinalOutput: Simulation['final_output']) => {
   }));
 };
 
-const formatStops = (operationalPoints: PathProperties['operational_points']) => {
-  return operationalPoints.map(({ position, extensions }) => ({
+const formatStops = (operationalPoints: PathProperties['operational_points']) =>
+  operationalPoints.map(({ position, extensions }) => ({
     position: {
       start: convertMmToKM(position),
     },
     value: `${extensions.identifier.name} ${extensions.ch !== ('' || '00') ? extensions.ch : ''}`,
   }));
-};
 
-const formatElectrifications = (electrifications: PathProperties['electrifications']) => {
-  return electrifications.values.map((electrification, index) => ({
+const formatElectrifications = (electrifications: PathProperties['electrifications']) =>
+  electrifications.values.map((electrification, index) => ({
     position: {
       start: convertMmToKM(index === 0 ? 0 : electrifications.boundaries[index - 1]),
       end: convertMmToKM(electrifications.boundaries[index]),
@@ -49,24 +48,19 @@ const formatElectrifications = (electrifications: PathProperties['electrificatio
       lowerPantograph: electrification.lower_pantograph,
     },
   }));
-};
 
-const formatSlopes = (slopes: PathProperties['slopes']) => {
-  return slopes.values.map((value, index) => ({
+const formatSlopes = (slopes: PathProperties['slopes']) =>
+  slopes.values.map((value, index) => ({
     position: {
       start: convertMmToKM(index === 0 ? 0 : slopes.boundaries[index - 1]),
       end: convertMmToKM(slopes.boundaries[index]),
     },
     value,
   }));
-};
 
-const isNotCompatible = (electrification: string, profile: string) => {
-  return (
-    (electrification === '1500V' && profile?.startsWith('BB')) ||
-    (electrification === '25000V' && profile?.startsWith('AA'))
-  );
-};
+const isNotCompatible = (electrification: string, profile: string) =>
+  (electrification === '1500V' && profile?.startsWith('BB')) ||
+  (electrification === '25000V' && profile?.startsWith('AA'));
 
 const getProfileValue = (
   electricalProfileType: 'profile' | 'no_profile',
@@ -91,34 +85,29 @@ const getProfileValue = (
 const formatElectricalProfiles = (
   simulation: Simulation,
   electrifications: Data['electrifications']
-) => {
-  return simulation.electrical_profiles.values.map(
-    ({ electrical_profile_type, profile }, index) => {
-      const electrification = electrifications.find(
-        (electrification) =>
-          electrification.position.start >=
-            (index === 0
-              ? 0
-              : convertMmToKM(simulation.electrical_profiles.boundaries[index - 1])) &&
-          electrification.position.end! <=
-            convertMmToKM(simulation.electrical_profiles.boundaries[index])
-      );
+) =>
+  simulation.electrical_profiles.values.map(({ electrical_profile_type, profile }, index) => {
+    const electrification = electrifications.find(
+      (electrification) =>
+        electrification.position.start >=
+          (index === 0 ? 0 : convertMmToKM(simulation.electrical_profiles.boundaries[index - 1])) &&
+        electrification.position.end! <=
+          convertMmToKM(simulation.electrical_profiles.boundaries[index])
+    );
 
-      return {
-        position: {
-          start: convertMmToKM(
-            index === 0 ? 0 : simulation.electrical_profiles.boundaries[index - 1]
-          ),
-          end: convertMmToKM(simulation.electrical_profiles.boundaries[index]),
-        },
-        value: getProfileValue(electrical_profile_type, profile!, electrification!.value.voltage!),
-      };
-    }
-  );
-};
+    return {
+      position: {
+        start: convertMmToKM(
+          index === 0 ? 0 : simulation.electrical_profiles.boundaries[index - 1]
+        ),
+        end: convertMmToKM(simulation.electrical_profiles.boundaries[index]),
+      },
+      value: getProfileValue(electrical_profile_type, profile!, electrification!.value.voltage!),
+    };
+  });
 
-const formatPowerRestrictions = (powerRestrictions: PowerRestriction[]) => {
-  return powerRestrictions.map(({ code, handled, start, stop }) => ({
+const formatPowerRestrictions = (powerRestrictions: PowerRestriction[]) =>
+  powerRestrictions.map(({ code, handled, start, stop }) => ({
     position: {
       start: convertMmToKM(start),
       end: convertMmToKM(stop),
@@ -128,10 +117,9 @@ const formatPowerRestrictions = (powerRestrictions: PowerRestriction[]) => {
       handled,
     },
   }));
-};
 
-const formatSpeedLimitTags = (speedLimitTags: SpeedLimitTags) => {
-  return speedLimitTags.values.map(({ tag_name, color }, index) => ({
+const formatSpeedLimitTags = (speedLimitTags: SpeedLimitTags) =>
+  speedLimitTags.values.map(({ tag_name, color }, index) => ({
     position: {
       start: convertMmToKM(speedLimitTags.boundaries[index]),
       end: convertMmToKM(speedLimitTags.boundaries[index + 1]),
@@ -141,7 +129,6 @@ const formatSpeedLimitTags = (speedLimitTags: SpeedLimitTags) => {
       color,
     },
   }));
-};
 
 export const formatData = (
   simulation: Simulation,

@@ -1,5 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { beforeEach, afterEach, describe, expect, it } from 'vitest';
+
+import { august, december, february, january, july, june } from './useCalendar.spec';
 import useCalendarPicker from '../useCalendarPicker';
 import {
   generateSequentialDates,
@@ -8,7 +10,6 @@ import {
   INVALID_SELECTED_SLOT_BASED_ON_SELECTABLE_SLOT_ERROR,
   INVALID_INITIAL_DATE_ERROR,
 } from '../utils';
-import { august, december, february, january, july, june } from './useCalendar.spec';
 
 const errorsToIgnore = [
   INVALID_SELECTED_SLOT_ERROR,

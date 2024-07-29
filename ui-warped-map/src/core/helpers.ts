@@ -9,22 +9,22 @@ import length from '@turf/length';
 import lineIntersect from '@turf/line-intersect';
 import lineSlice from '@turf/line-slice';
 import {
-  BBox,
-  Feature,
-  FeatureCollection,
-  LineString,
-  MultiLineString,
-  MultiPoint,
-  MultiPolygon,
-  Point,
-  Polygon,
-  Position,
+  type BBox,
+  type Feature,
+  type FeatureCollection,
+  type LineString,
+  type MultiLineString,
+  type MultiPoint,
+  type MultiPolygon,
+  type Point,
+  type Polygon,
+  type Position,
 } from 'geojson';
 import { chunk, first, last } from 'lodash';
-import { MapGeoJSONFeature } from 'maplibre-gl';
+import { type MapGeoJSONFeature } from 'maplibre-gl';
 
-import { Zone } from './types';
-import vec, { Vec2 } from './vec-lib';
+import { type Zone } from './types';
+import vec, { type Vec2 } from './vec-lib';
 
 /*
  * Useful types:

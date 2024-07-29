@@ -1,9 +1,10 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
+
 import type { Meta } from '@storybook/react';
 
 import { OPERATIONAL_POINTS, PATHS } from './assets/paths';
-import { SpaceTimeChart, PathLayer } from '../';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './utils';
+import { SpaceTimeChart, PathLayer } from '../';
 
 import './tailwind-mockup.css';
 
@@ -16,30 +17,28 @@ const Wrapper: FC<{
   xOffset: number;
   yOffset: number;
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ xZoomLevel, yZoomLevel, xOffset, yOffset, spaceScaleType }) => {
-  return (
-    <SpaceTimeChart
-      className="inset-0 absolute"
-      operationalPoints={OPERATIONAL_POINTS}
-      spaceOrigin={0}
-      spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
-        from: point.position,
-        to: OPERATIONAL_POINTS[i + 1].position,
-        ...(spaceScaleType === 'linear'
-          ? { size: 50 * yZoomLevel }
-          : { coefficient: 150 / yZoomLevel }),
-      }))}
-      timeOrigin={+new Date('2024/04/02')}
-      timeScale={60000 / xZoomLevel}
-      xOffset={xOffset}
-      yOffset={yOffset}
-    >
-      {PATHS.map((path, i) => (
-        <PathLayer key={path.id} index={i} path={path} color={path.color} />
-      ))}
-    </SpaceTimeChart>
-  );
-};
+}> = ({ xZoomLevel, yZoomLevel, xOffset, yOffset, spaceScaleType }) => (
+  <SpaceTimeChart
+    className="inset-0 absolute"
+    operationalPoints={OPERATIONAL_POINTS}
+    spaceOrigin={0}
+    spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
+      from: point.position,
+      to: OPERATIONAL_POINTS[i + 1].position,
+      ...(spaceScaleType === 'linear'
+        ? { size: 50 * yZoomLevel }
+        : { coefficient: 150 / yZoomLevel }),
+    }))}
+    timeOrigin={+new Date('2024/04/02')}
+    timeScale={60000 / xZoomLevel}
+    xOffset={xOffset}
+    yOffset={yOffset}
+  >
+    {PATHS.map((path, i) => (
+      <PathLayer key={path.id} index={i} path={path} color={path.color} />
+    ))}
+  </SpaceTimeChart>
+);
 
 export default {
   title: 'SpaceTimeChart/Rendering',

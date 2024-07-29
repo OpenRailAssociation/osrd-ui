@@ -1,7 +1,6 @@
-import { clearCanvas, slopesValues, maxPositionValues } from '../../utils';
-import { MARGINS } from '../../const';
-import { SLOPE_FILL_COLOR } from '../../../components/const';
+import { SLOPE_FILL_COLOR, MARGINS } from '../../../components/const';
 import type { DrawFunctionParams } from '../../../types/chartTypes';
+import { clearCanvas, slopesValues, maxPositionValues } from '../../utils';
 
 const { CURVE_MARGIN_SIDES, MARGIN_TOP, MARGIN_BOTTOM, RIGHT_TICK_MARGINS } = MARGINS;
 

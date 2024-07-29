@@ -1,8 +1,9 @@
-import { Store, tooltipInfos } from '../../types/chartTypes';
-import { drawSpeedLimitTags } from '../helpers/drawElements/speedLimitTags';
 import React, { useEffect, useRef } from 'react';
-import { LINEAR_LAYERS_HEIGHTS } from '../const';
+
+import { type Store, type tooltipInfos } from '../../types/chartTypes';
 import Tooltip from '../common/Tooltip';
+import { LINEAR_LAYERS_HEIGHTS } from '../const';
+import { drawSpeedLimitTags } from '../helpers/drawElements/speedLimitTags';
 
 type SpeedLimitTagsLayerProps = {
   width: number;

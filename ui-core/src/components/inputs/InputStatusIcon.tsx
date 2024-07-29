@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Gear, CheckCircle, Info, Alert, Blocked } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 

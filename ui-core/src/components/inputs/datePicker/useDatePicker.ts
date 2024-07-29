@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import useOutsideClick from '../../../hooks/useOutsideClick';
+
+import type { DatePickerProps } from './DatePicker';
 import { computeNewSelectedSlot, formatInputValue, formatValueToSlot } from './utils';
-import { DatePickerProps } from './DatePicker';
 import { useModalPosition } from '../../../hooks/useModalPosition';
+import useOutsideClick from '../../../hooks/useOutsideClick';
 
 const MODAL_HORIZONTAL_OFFSET = -24;
 const MODAL_VERTICAL_OFFSET = 3;

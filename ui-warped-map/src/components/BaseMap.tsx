@@ -1,12 +1,13 @@
-import React, { FC, PropsWithChildren, useEffect, useMemo, useState } from 'react';
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import React, { type FC, type PropsWithChildren, useEffect, useMemo, useState } from 'react';
+
+import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
 import { featureCollection } from '@turf/helpers';
-import { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { Feature, LineString } from 'geojson';
-import ReactMapGL, { Layer, LayerProps, MapRef, Source } from 'react-map-gl/maplibre';
+import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import { type Feature, type LineString } from 'geojson';
+import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-map-gl/maplibre';
 
-import { SourceDefinition } from '../core/types';
+import { type SourceDefinition } from '../core/types';
 
 /**
  * This component is for testing purpose only. It displays data as they appear in the DataLoader component.

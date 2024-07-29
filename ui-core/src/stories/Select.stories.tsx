@@ -1,7 +1,8 @@
 import React from 'react';
-import { StoryObj, Meta } from '@storybook/react';
 
-import Select, { SelectProps } from '../components/Select';
+import { type StoryObj, type Meta } from '@storybook/react';
+
+import Select, { type SelectProps } from '../components/Select';
 import '@osrd-project/ui-core/dist/theme.css';
 
 type Option = { value: string; label: string };
@@ -12,9 +13,7 @@ const options = [
   { value: 'green', label: 'Green' },
 ] as Option[];
 
-const SelectWrapper = (props: SelectProps<Option>) => {
-  return <Select {...props} />;
-};
+const SelectWrapper = (props: SelectProps<Option>) => <Select {...props} />;
 
 const meta: Meta<typeof SelectWrapper> = {
   component: Select,

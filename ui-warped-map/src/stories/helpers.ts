@@ -1,7 +1,7 @@
-import { StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
-import { LayerProps } from 'react-map-gl';
+import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { type LayerProps } from 'react-map-gl';
 
-import { SourceDefinition } from '../core/types';
+import { type SourceDefinition } from '../core/types';
 
 export const PATH_SHORT = 'nantes-ancenis';
 export const PATH_MEDIUM = 'nantes-angers';

@@ -1,5 +1,6 @@
 import React from 'react';
-import { CalendarSlot } from './type';
+
+import { type CalendarSlot } from './type';
 import useCalendar from './useCalendar';
 
 const WEEKDAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -49,18 +50,16 @@ const Calendar: React.FC<CalendarProps> = (props) => {
             ))}
           </div>
           <div className="calendar-days-grid">
-            {days.map((date, index) => {
-              return (
-                <Day
-                  key={index}
-                  date={date}
-                  isToday={isToday(date)}
-                  isSelectable={isDateSelectable(date)}
-                  dayWrapperClassName={buildDayWrapperClassName(date)}
-                  onClick={onDayClick}
-                />
-              );
-            })}
+            {days.map((date, index) => (
+              <Day
+                key={index}
+                date={date}
+                isToday={isToday(date)}
+                isSelectable={isDateSelectable(date)}
+                dayWrapperClassName={buildDayWrapperClassName(date)}
+                onClick={onDayClick}
+              />
+            ))}
           </div>
         </div>
       </div>

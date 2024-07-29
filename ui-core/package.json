@@ -32,7 +32,9 @@
     "build": "npm run rollup",
     "watch": "NODE_ENV=development rollup -c -w",
     "test": "vitest run",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "lint": "eslint src --ext .ts,.tsx  --max-warnings 0",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
   "peerDependencies": {
     "react": ">=18.0"

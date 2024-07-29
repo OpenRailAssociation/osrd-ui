@@ -1,13 +1,13 @@
 import { pick } from 'lodash';
 import { describe, expect, it } from 'vitest';
 
+import { type NormalizedScale } from '../lib/types';
 import {
   getNormalizedScaleAtPixel,
   getNormalizedScaleAtPosition,
   getSpaceBreakpoints,
   spaceScalesToBinaryTree,
 } from '../utils/scales';
-import { NormalizedScale } from '../lib/types';
 
 const ORIGIN = 0;
 const VALID_SCALES = [

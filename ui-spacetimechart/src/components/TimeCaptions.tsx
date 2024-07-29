@@ -1,8 +1,8 @@
-import { FC, useCallback } from 'react';
+import { type FC, useCallback } from 'react';
 
-import { DrawingFunction } from '../lib/types';
-import { BREAKPOINTS, MINUTE, TIME_RANGES, FONT, GREY_30, GREY_50 } from '../lib/consts';
 import { useDraw } from '../hooks/useCanvas';
+import { BREAKPOINTS, MINUTE, TIME_RANGES, FONT, GREY_30, GREY_50 } from '../lib/consts';
+import { type DrawingFunction } from '../lib/types';
 
 // The following matrix indicate, for various zoom levels, what time marks should be represented,
 // and with which priority level:
@@ -19,9 +19,7 @@ const LABELS_PRIORITIES = [
   [0, 0, 3, 2, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const MINUTES_FORMATTER = (t: number) => {
-  return `:${new Date(t).getMinutes().toString().padStart(2, '0')}`;
-};
+const MINUTES_FORMATTER = (t: number) => `:${new Date(t).getMinutes().toString().padStart(2, '0')}`;
 const HOURS_FORMATTER = (t: number, pixelsPerMinute: number) => {
   const date = new Date(t);
   if (pixelsPerMinute > 1) {

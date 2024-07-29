@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import type { TrainDetails, Store } from '../../types/chartTypes';
-import { drawCursor } from '../helpers/drawElements/reticle';
 import DetailsBox from '../common/DetailsBox';
+import { drawCursor } from '../helpers/drawElements/reticle';
 import { getAdaptiveHeight } from '../utils';
 
 type ReticleLayerProps = {

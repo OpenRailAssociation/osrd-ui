@@ -1,4 +1,6 @@
-import { CalendarProps } from './Calendar';
+import cx from 'classnames';
+
+import { type CalendarProps } from './Calendar';
 import {
   getAllDatesInMonth,
   getDatesFromNextMonthInLastWeek,
@@ -7,7 +9,6 @@ import {
   isWithinInterval,
   normalizeDate,
 } from './utils';
-import cx from 'classnames';
 
 export default function useCalendar({
   displayedMonthStartDate,

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyledOperationalPointType } from '../types';
+
+import { type StyledOperationalPointType } from '../types';
 import '@osrd-project/ui-core/dist/theme.css';
 import { positionMmToKm } from './helpers';
 

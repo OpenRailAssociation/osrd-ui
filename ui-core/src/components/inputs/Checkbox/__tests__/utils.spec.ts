@@ -1,10 +1,11 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
+
 import {
   CheckboxState,
-  CheckboxTreeItem,
-  ItemStates,
-  ParentChildrenMap,
-  ChildrenParentMap,
+  type CheckboxTreeItem,
+  type ItemStates,
+  type ParentChildrenMap,
+  type ChildrenParentMap,
 } from '../type';
 import {
   traverseTree,

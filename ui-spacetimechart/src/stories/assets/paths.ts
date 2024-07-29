@@ -1,4 +1,4 @@
-import { OperationalPoint, PathData } from '../../lib/types';
+import { type OperationalPoint, type PathData } from '../../lib/types';
 
 const KM = 1000;
 const MIN = 60 * 1000;

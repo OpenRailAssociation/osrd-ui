@@ -1,20 +1,21 @@
-import { inRange, last } from 'lodash';
-import { FC, useCallback } from 'react';
+import { type FC, useCallback } from 'react';
 
-import {
-  DataPoint,
-  DEFAULT_PATH_END,
-  DrawingFunction,
-  PathData,
-  PickingDrawingFunction,
-  Point,
-  SpaceTimeChartContextType,
-} from '../lib/types';
-import { getSpaceBreakpoints } from '../utils/scales';
-import { indexToColor, hexToRgb } from '../utils/colors';
-import { drawAliasedLine, drawPathExtremity } from '../utils/canvas';
-import { FONT_SIZE, WHITE_75 } from '../lib/consts';
+import { inRange, last } from 'lodash';
+
 import { useDraw, usePicking } from '../hooks/useCanvas';
+import { FONT_SIZE, WHITE_75 } from '../lib/consts';
+import {
+  type DataPoint,
+  DEFAULT_PATH_END,
+  type DrawingFunction,
+  type PathData,
+  type PickingDrawingFunction,
+  type Point,
+  type SpaceTimeChartContextType,
+} from '../lib/types';
+import { drawAliasedLine, drawPathExtremity } from '../utils/canvas';
+import { indexToColor, hexToRgb } from '../utils/colors';
+import { getSpaceBreakpoints } from '../utils/scales';
 
 function getDirection({ points }: PathData, reverse?: boolean): 'up' | 'down' {
   if (points.length < 2) return 'down';

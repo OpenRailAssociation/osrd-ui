@@ -1,6 +1,6 @@
-import { clearCanvas, slopesValues } from '../../utils';
-import { MARGINS, RIGHT_TICK_HEIGHT_OFFSET } from '../../const';
 import type { DrawFunctionParams } from '../../../types/chartTypes';
+import { MARGINS, RIGHT_TICK_HEIGHT_OFFSET } from '../../const';
+import { clearCanvas, slopesValues } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_TOP, MARGIN_BOTTOM, RIGHT_TICK_MARGINS } = MARGINS;
 

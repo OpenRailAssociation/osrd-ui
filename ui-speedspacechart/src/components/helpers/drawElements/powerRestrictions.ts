@@ -1,3 +1,10 @@
+import type { DrawFunctionParams } from '../../../types/chartTypes';
+import {
+  LINEAR_LAYERS_BACKGROUND_COLOR,
+  LINEAR_LAYERS_HEIGHTS,
+  LINEAR_LAYER_SEPARATOR_HEIGHT,
+  MARGINS,
+} from '../../const';
 import {
   clearCanvas,
   drawLinearLayerBackground,
@@ -5,13 +12,6 @@ import {
   maxPositionValues,
   positionOnGraphScale,
 } from '../../utils';
-import {
-  LINEAR_LAYERS_BACKGROUND_COLOR,
-  LINEAR_LAYERS_HEIGHTS,
-  LINEAR_LAYER_SEPARATOR_HEIGHT,
-  MARGINS,
-} from '../../const';
-import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const { MARGIN_LEFT, MARGIN_RIGHT } = MARGINS;
 const LEFT_VERTICAL_LINE_HEIGHT = 24;

@@ -1,7 +1,8 @@
 import React from 'react';
+
 import cx from 'classnames';
 
-import FieldWrapper, { FieldWrapperProps } from './FieldWrapper';
+import FieldWrapper, { type FieldWrapperProps } from './FieldWrapper';
 import useFocusByTab from '../../hooks/useFocusByTab';
 
 type InputAffixProps = {

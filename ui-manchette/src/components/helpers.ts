@@ -1,10 +1,9 @@
 import type { OperationalPoint } from '@osrd-project/ui-spacetimechart/dist/lib/types';
-import type { OperationalPointType, StyledOperationalPointType } from '../types';
-import { BASE_KM_HEIGHT, BASE_OP_HEIGHT } from './consts';
 
-export const positionMmToKm = (position: number) => {
-  return Math.round((position / 1000000) * 10) / 10;
-};
+import { BASE_KM_HEIGHT, BASE_OP_HEIGHT } from './consts';
+import type { OperationalPointType, StyledOperationalPointType } from '../types';
+
+export const positionMmToKm = (position: number) => Math.round((position / 1000000) * 10) / 10;
 
 export const calcOperationalPointsToDisplay = (
   operationalPoints: OperationalPointType[],
@@ -58,8 +57,8 @@ export const operationalPointsHeight = (
   operationalPoints: StyledOperationalPointType[],
   zoom: number,
   isProportional: boolean
-) => {
-  return operationalPoints.map((op, index) => {
+) =>
+  operationalPoints.map((op, index) => {
     const nextOp = operationalPoints[index + 1];
     if (!nextOp) {
       return { ...op, styles: { height: `${BASE_OP_HEIGHT}px` } };
@@ -73,28 +72,24 @@ export const operationalPointsHeight = (
       return { ...op, styles: { height: `${BASE_OP_HEIGHT * zoom}px` } };
     }
   });
-};
 
 export const getOperationalPointsWithPosition = (
   operationalPoints: StyledOperationalPointType[]
-): OperationalPoint[] => {
-  return operationalPoints.map((point) => ({
+): OperationalPoint[] =>
+  operationalPoints.map((point) => ({
     id: point.id,
     label: point.id,
     position: point.position,
     importanceLevel: 1,
   }));
-};
 
 export const getScales = (ops: OperationalPoint[], isProportional: boolean, zoomY: number) => {
-  const scales = ops.slice(0, -1).map((point, i) => {
-    return {
-      from: point.position,
-      to: ops[i + 1].position,
-      ...(!isProportional
-        ? { size: BASE_OP_HEIGHT * zoomY }
-        : { coefficient: ((1000 / BASE_KM_HEIGHT) * 1000) / zoomY }),
-    };
-  });
+  const scales = ops.slice(0, -1).map((point, i) => ({
+    from: point.position,
+    to: ops[i + 1].position,
+    ...(!isProportional
+      ? { size: BASE_OP_HEIGHT * zoomY }
+      : { coefficient: ((1000 / BASE_KM_HEIGHT) * 1000) / zoomY }),
+  }));
   return scales;
 };

@@ -1,4 +1,4 @@
-import { PathProperties, ProjectPathTrainResult } from '../../types';
+import { type PathProperties, type ProjectPathTrainResult } from '../../types';
 
 export const SAMPLE_PATH_PROPERTIES_DATA: PathProperties = {
   slopes: {

@@ -1,3 +1,5 @@
+import type { DrawFunctionParams } from '../../../types/chartTypes';
+import { MARGINS } from '../../const';
 import {
   clearCanvas,
   findPreviousAndNextPosition,
@@ -5,8 +7,6 @@ import {
   maxPositionValues,
   speedRangeValues,
 } from '../../utils';
-import { MARGINS } from '../../const';
-import type { DrawFunctionParams } from '../../../types/chartTypes';
 
 const {
   MARGIN_LEFT,

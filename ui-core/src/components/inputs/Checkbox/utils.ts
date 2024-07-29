@@ -1,9 +1,9 @@
 import {
   CheckboxState,
-  CheckboxTreeItem,
-  ChildrenParentMap,
-  ItemStates,
-  ParentChildrenMap,
+  type CheckboxTreeItem,
+  type ChildrenParentMap,
+  type ItemStates,
+  type ParentChildrenMap,
 } from './type';
 
 export const traverseTree = (

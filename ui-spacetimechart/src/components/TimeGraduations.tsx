@@ -1,8 +1,8 @@
-import { FC, useCallback } from 'react';
+import { type FC, useCallback } from 'react';
 
-import { DrawingFunction } from '../lib/types';
-import { BREAKPOINTS, MINUTE, TIME_RANGES, BLACK, BLUE } from '../lib/consts';
 import { useDraw } from '../hooks/useCanvas';
+import { BREAKPOINTS, MINUTE, TIME_RANGES, BLACK, BLUE } from '../lib/consts';
+import { type DrawingFunction } from '../lib/types';
 
 // The following matrix indicate, for various zoom levels, what time marks should be represented,
 // and with which priority level:

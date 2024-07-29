@@ -32,7 +32,9 @@
     "build": "npm run rollup",
     "watch": "NODE_ENV=development rollup -c -w",
     "test": "vitest run --dir src/__tests__",
-    "prepublishOnly": "npm run clean && npm run build"
+    "prepublishOnly": "npm run clean && npm run build",
+    "lint": "eslint src --ext .ts,.tsx  --max-warnings 0",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "@osrd-project/ui-core": "0.0.1-dev",

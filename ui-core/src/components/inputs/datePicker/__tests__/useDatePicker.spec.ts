@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { RangeDatePickerProps, SingleDatePickerProps } from '..';
+
+import { type RangeDatePickerProps, type SingleDatePickerProps } from '..';
 import useDatePicker from '../useDatePicker';
 
 describe('useDatePicker', () => {

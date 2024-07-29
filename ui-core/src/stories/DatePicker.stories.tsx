@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { StoryObj, Meta } from '@storybook/react';
+
+import { type StoryObj, type Meta } from '@storybook/react';
+
 import {
   DatePicker,
-  DatePickerProps,
-  RangeDatePickerProps,
-  SingleDatePickerProps,
+  type DatePickerProps,
+  type RangeDatePickerProps,
+  type SingleDatePickerProps,
+  type CalendarSlot,
 } from '../components/inputs/datePicker';
 import '@osrd-project/ui-core/dist/theme.css';
-import { CalendarSlot } from '../components/inputs/datePicker';
 
 const now = new Date();
 const endSelectableDate = new Date(now);
