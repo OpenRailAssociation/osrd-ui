@@ -13,18 +13,18 @@ export const august = 7;
 export const november = 10;
 export const december = 11;
 
-const displayedMonthStartDate = new Date(2024, july, 1);
+let displayedMonthStartDate = new Date(2024, july, 1);
 const selectedSlot = { start: new Date(2024, july, 10), end: new Date(2024, july, 20) };
 const selectableSlot = { start: new Date(2024, july, 5), end: new Date(2024, july, 25) };
 
-const { result } = renderHook(() =>
+const { result: defaultResult } = renderHook(() =>
   useCalendar({ displayedMonthStartDate, selectedSlot, selectableSlot, onDayClick: () => {} })
 );
 
 describe('useCalendar', () => {
   describe('day calculation', () => {
     it('should include days from the previous month when the first day of the displayed month is not a Monday', () => {
-      const displayedMonthStartDate = new Date(2024, march, 1); //friday
+      displayedMonthStartDate = new Date(2024, march, 1); //friday
       const { result } = renderHook(() =>
         useCalendar({ displayedMonthStartDate, onDayClick: () => {} })
       );
@@ -34,7 +34,7 @@ describe('useCalendar', () => {
 
     it('should include days from the next month when the last day of the displayed month is not a Sunday', () => {
       //the last day of november 2024 is a saturday
-      const displayedMonthStartDate = new Date(2024, november, 1); //friday
+      displayedMonthStartDate = new Date(2024, november, 1); //friday
       const { result } = renderHook(() =>
         useCalendar({ displayedMonthStartDate, onDayClick: () => {} })
       );
@@ -43,7 +43,7 @@ describe('useCalendar', () => {
     });
 
     it('should not include days from the previous month when the displayed month starts on a Monday', () => {
-      const displayedMonthStartDate = new Date(2024, july, 1); //monday
+      displayedMonthStartDate = new Date(2024, july, 1); //monday
       const { result } = renderHook(() =>
         useCalendar({ displayedMonthStartDate, onDayClick: () => {} })
       );
@@ -52,7 +52,7 @@ describe('useCalendar', () => {
     });
 
     it('should not include days from the next month when the displayed month ends on a Sunday', () => {
-      const displayedMonthStartDate = new Date(2024, june, 1); //saturday
+      displayedMonthStartDate = new Date(2024, june, 1); //saturday
       const { result } = renderHook(() =>
         useCalendar({ displayedMonthStartDate, onDayClick: () => {} })
       );
@@ -63,20 +63,20 @@ describe('useCalendar', () => {
 
   describe('day wrapper classnames', () => {
     it('should have "day-wrapper" classname for all days', () => {
-      expect(result.current.buildDayWrapperClassName(new Date(2024, july, 15))).toContain(
+      expect(defaultResult.current.buildDayWrapperClassName(new Date(2024, july, 15))).toContain(
         'day-wrapper'
       );
     });
 
     describe('selectable slot classname', () => {
       it('should have "outside-selectable-slot" classname for days outside the selectable slot', () => {
-        expect(result.current.buildDayWrapperClassName(new Date(2024, april, 1))).toContain(
+        expect(defaultResult.current.buildDayWrapperClassName(new Date(2024, april, 1))).toContain(
           'outside-selectable-slot'
         );
       });
 
       it('should have "inside-selectable-slot" classname for days inside the selectable slot', () => {
-        expect(result.current.buildDayWrapperClassName(new Date(2024, july, 10))).toContain(
+        expect(defaultResult.current.buildDayWrapperClassName(new Date(2024, july, 10))).toContain(
           'inside-selectable-slot'
         );
       });
@@ -84,39 +84,43 @@ describe('useCalendar', () => {
 
     describe('selected slot classname', () => {
       it('should have "start" classname for the start day of the selected slot', () => {
-        expect(result.current.buildDayWrapperClassName(selectedSlot.start)).toContain('start');
+        expect(defaultResult.current.buildDayWrapperClassName(selectedSlot.start)).toContain(
+          'start'
+        );
       });
 
       it('should have "end" classname for the end day of the selected slot', () => {
-        expect(result.current.buildDayWrapperClassName(selectedSlot.end)).toContain('end');
+        expect(defaultResult.current.buildDayWrapperClassName(selectedSlot.end)).toContain('end');
       });
 
       it('should have "within-selected-slot" classname for days within the selected slot', () => {
-        expect(result.current.buildDayWrapperClassName(new Date(2024, july, 15))).toContain(
+        expect(defaultResult.current.buildDayWrapperClassName(new Date(2024, july, 15))).toContain(
           'within-selected-slot'
         );
       });
 
       it('should not have "within-selected-slot" classname for days within the selected slot', () => {
-        expect(result.current.buildDayWrapperClassName(new Date(2024, july, 21))).not.toContain(
-          'within-selected-slot'
-        );
+        expect(
+          defaultResult.current.buildDayWrapperClassName(new Date(2024, july, 21))
+        ).not.toContain('within-selected-slot');
       });
     });
 
     describe('other classnames', () => {
       it('should have "past" classname for days before today', () => {
-        expect(result.current.buildDayWrapperClassName(new Date(1900, june, 30))).toContain('past');
-      });
-
-      it('should not assign past if the day is after selected start', () => {
-        expect(result.current.buildDayWrapperClassName(new Date(2024, august, 1))).not.toContain(
+        expect(defaultResult.current.buildDayWrapperClassName(new Date(1900, june, 30))).toContain(
           'past'
         );
       });
 
+      it('should not assign past if the day is after selected start', () => {
+        expect(
+          defaultResult.current.buildDayWrapperClassName(new Date(2024, august, 1))
+        ).not.toContain('past');
+      });
+
       it('should have "current-month" classname for days in the displayed month', () => {
-        expect(result.current.buildDayWrapperClassName(new Date(2024, july, 15))).toContain(
+        expect(defaultResult.current.buildDayWrapperClassName(new Date(2024, july, 15))).toContain(
           'current-month'
         );
       });
@@ -125,15 +129,15 @@ describe('useCalendar', () => {
 
   describe('isDateSelectable', () => {
     it('should return false for days outside the selectable slot', () => {
-      expect(result.current.isDateSelectable(new Date(2024, april, 1))).toBe(false);
+      expect(defaultResult.current.isDateSelectable(new Date(2024, april, 1))).toBe(false);
     });
 
     it('should return false for days outside the displayed month', () => {
-      expect(result.current.isDateSelectable(new Date(2024, june, 1))).toBe(false);
+      expect(defaultResult.current.isDateSelectable(new Date(2024, june, 1))).toBe(false);
     });
 
     it('should return true for days within the selectable slot and in the displayed month', () => {
-      expect(result.current.isDateSelectable(new Date(2024, july, 15))).toBe(true);
+      expect(defaultResult.current.isDateSelectable(new Date(2024, july, 15))).toBe(true);
     });
   });
 
