@@ -35,7 +35,7 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
   "dependencies": {
-    "@turf/along": "^6.5.0",
+    "@turf/along": "^7.0.0",
     "@turf/bbox": "^6.5.0",
     "@turf/bbox-clip": "^6.5.0",
     "@turf/bearing": "^6.5.0",
