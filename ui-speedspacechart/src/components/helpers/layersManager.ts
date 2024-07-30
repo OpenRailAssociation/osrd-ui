@@ -3,6 +3,9 @@ import * as d3 from 'd3';
 import type { Store } from '../../types/chartTypes';
 import { FRONT_INTERACTIVITY_LAYER_ID } from '../const';
 
+export const resetZoom = () =>
+  d3.zoom().transform(d3.select(FRONT_INTERACTIVITY_LAYER_ID), d3.zoomIdentity);
+
 export const zoom = (setStore: React.Dispatch<React.SetStateAction<Store>>) =>
   d3
     .zoom()
@@ -32,6 +35,3 @@ export const zoom = (setStore: React.Dispatch<React.SetStateAction<Store>>) =>
         canvas.call(resetZoom);
       }
     });
-
-export const resetZoom = () =>
-  d3.zoom().transform(d3.select(FRONT_INTERACTIVITY_LAYER_ID), d3.zoomIdentity);

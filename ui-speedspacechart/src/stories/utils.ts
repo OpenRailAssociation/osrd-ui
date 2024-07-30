@@ -88,11 +88,10 @@ const formatElectricalProfiles = (
 ) =>
   simulation.electrical_profiles.values.map(({ electrical_profile_type, profile }, index) => {
     const electrification = electrifications.find(
-      (electrification) =>
-        electrification.position.start >=
+      ({ position }) =>
+        position.start >=
           (index === 0 ? 0 : convertMmToKM(simulation.electrical_profiles.boundaries[index - 1])) &&
-        electrification.position.end! <=
-          convertMmToKM(simulation.electrical_profiles.boundaries[index])
+        position.end! <= convertMmToKM(simulation.electrical_profiles.boundaries[index])
     );
 
     return {
