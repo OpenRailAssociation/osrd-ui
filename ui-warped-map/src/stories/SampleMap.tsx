@@ -26,7 +26,7 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
 
 const SampleMap: FC<{ path: string }> = ({ path: pathName }) => {
   const pathState = useAsyncMemo(
-    () => fetch(`/${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
+    () => fetch(`./${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
     [pathName]
   );
   const path = pathState.type === 'ready' ? pathState.data : null;

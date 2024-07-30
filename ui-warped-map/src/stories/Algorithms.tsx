@@ -100,7 +100,7 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
 const Algorithms: FC<{ path: string } & WarpingOptions> = (props) => {
   const { path: pathName, ...warpingOptions } = props;
   const pathState = useAsyncMemo(
-    () => fetch(`/${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
+    () => fetch(`./${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
     [pathName]
   );
   const path = pathState.type === 'ready' ? pathState.data : null;
