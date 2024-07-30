@@ -80,7 +80,7 @@ const Wrapper: FC<{
           // Unselect everything when clicking stage (unless multi-selection is enabled and the ctrl key is down):
           if (!hoveredPath) {
             if (!enableMultiSelection || !event.ctrlKey)
-              setState((state) => ({ ...state, selection: null }));
+              setState((prev) => ({ ...prev, selection: null }));
           }
           // Select item when nothing is selected:
           else if (!selection) {
@@ -107,7 +107,7 @@ const Wrapper: FC<{
           }
         }}
         onHoveredChildUpdate={({ item }) => {
-          setState((state) => ({ ...state, hoveredPath: item }));
+          setState((prev) => ({ ...prev, hoveredPath: item }));
         }}
         onPan={({ initialPosition, position, initialData, data, isPanning }) => {
           const { panTarget, hoveredPath, selection } = state;
@@ -115,8 +115,8 @@ const Wrapper: FC<{
 
           // Stop dragging or panning:
           if (!isPanning) {
-            setState((state) => ({
-              ...state,
+            setState((prev) => ({
+              ...prev,
               panTarget: null,
             }));
           }
@@ -125,8 +125,8 @@ const Wrapper: FC<{
             const newSelection = selection?.has(hoveredPath.index)
               ? selection
               : new Set([hoveredPath.index]);
-            setState((state) => ({
-              ...state,
+            setState((prev) => ({
+              ...prev,
               selection: newSelection,
               panTarget: {
                 type: 'items',
@@ -142,8 +142,8 @@ const Wrapper: FC<{
           }
           // Start panning stage
           else if (!panTarget) {
-            setState((state) => ({
-              ...state,
+            setState((prev) => ({
+              ...prev,
               panTarget: {
                 type: 'stage',
                 initialOffset: {
@@ -158,8 +158,8 @@ const Wrapper: FC<{
             const xOffset = panTarget.initialOffset.x + diff.x;
             const yOffset = panTarget.initialOffset.y + diff.y;
 
-            setState((state) => ({
-              ...state,
+            setState((prev) => ({
+              ...prev,
               xOffset,
               yOffset,
             }));
@@ -168,16 +168,16 @@ const Wrapper: FC<{
           else if (panTarget.type === 'items') {
             const { initialTimeOrigins } = panTarget;
             const timeDiff = data.time - initialData.time;
-            setPaths((paths) =>
-              paths.map((path, i) =>
+            setPaths((prev) =>
+              prev.map((path, i) =>
                 initialTimeOrigins[i] ? delayPath(path, initialTimeOrigins[i] + timeDiff) : path
               )
             );
           }
         }}
         onZoom={(payload) => {
-          setState((state) => ({
-            ...state,
+          setState((prev) => ({
+            ...prev,
             ...zoom(state, payload),
           }));
         }}

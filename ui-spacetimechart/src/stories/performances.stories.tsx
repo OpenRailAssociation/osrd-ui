@@ -106,15 +106,15 @@ const Wrapper: FC<{
         onPan={({ initialPosition, position, isPanning }) => {
           const { panning } = state;
           const diff = getDiff(initialPosition, position);
-          setState((state) => {
+          setState((prev) => {
             // Stop panning:
             if (!isPanning) {
-              return { ...state, panning: null };
+              return { ...prev, panning: null };
             }
             // Start panning:
             else if (!panning) {
               return {
-                ...state,
+                ...prev,
                 panning: {
                   initialOffset: {
                     x: state.xOffset,
@@ -137,8 +137,8 @@ const Wrapper: FC<{
           });
         }}
         onZoom={(payload) => {
-          setState((state) => ({
-            ...state,
+          setState((prev) => ({
+            ...prev,
             ...zoom(state, payload),
           }));
         }}

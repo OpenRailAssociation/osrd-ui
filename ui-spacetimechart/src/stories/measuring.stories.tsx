@@ -178,20 +178,20 @@ const Wrapper: FC<{
 
           // Stop panning:
           if (!isPanning) {
-            setState((state) => ({
-              ...state,
+            setState((prev) => ({
+              ...prev,
               panTarget: null,
             }));
           }
           // Start panning stage
           else if (!panTarget) {
-            setState((state) => ({
-              ...state,
+            setState((prev) => ({
+              ...prev,
               panTarget: {
                 type: 'stage',
                 initialOffset: {
-                  x: state.xOffset,
-                  y: state.yOffset,
+                  x: prev.xOffset,
+                  y: prev.yOffset,
                 },
               },
             }));
@@ -201,16 +201,16 @@ const Wrapper: FC<{
             const xOffset = panTarget.initialOffset.x + diff.x;
             const yOffset = panTarget.initialOffset.y + diff.y;
 
-            setState((state) => ({
-              ...state,
+            setState((prev) => ({
+              ...prev,
               xOffset,
               yOffset,
             }));
           }
         }}
         onZoom={(payload) => {
-          setState((state) => ({
-            ...state,
+          setState((prev) => ({
+            ...prev,
             ...zoom(state, payload),
           }));
         }}

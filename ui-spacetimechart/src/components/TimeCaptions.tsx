@@ -76,7 +76,7 @@ const STYLES: Record<
   },
 };
 
-export const TimeCaptions: FC = () => {
+const TimeCaptions: FC = () => {
   const drawingFunction = useCallback<DrawingFunction>(
     (ctx, { timeScale, timeOrigin, xOffset, getX }) => {
       const width = ctx.canvas.width;

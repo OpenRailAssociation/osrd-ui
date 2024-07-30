@@ -147,7 +147,7 @@ export const PathLayer: FC<PathLayerProps> = ({
    * This function draws the label of the path.
    */
   const drawLabel = useCallback(
-    (ctx: CanvasRenderingContext2D, label: string, color: string, points: Point[]) => {
+    (ctx: CanvasRenderingContext2D, label: string, labelColor: string, points: Point[]) => {
       if (!label) return;
 
       const width = ctx.canvas.width;
@@ -193,7 +193,7 @@ export const PathLayer: FC<PathLayerProps> = ({
       const h = FONT_SIZE + 2 * padding;
       ctx.fillStyle = WHITE_75;
       ctx.fillRect(dx - padding, dy - h + padding, w, h);
-      ctx.fillStyle = color;
+      ctx.fillStyle = labelColor;
       ctx.fillText(label, dx, dy - FONT_SIZE / 4);
       ctx.restore();
     },
@@ -259,7 +259,7 @@ export const PathLayer: FC<PathLayerProps> = ({
 
   const drawPicking = useCallback<PickingDrawingFunction>(
     (imageData, stcContext) => {
-      const color = hexToRgb(indexToColor(index));
+      const lineColor = hexToRgb(indexToColor(index));
       getPathSegments(stcContext).forEach((point, i, a) => {
         if (i) {
           const previousPoint = a[i - 1];
@@ -267,7 +267,7 @@ export const PathLayer: FC<PathLayerProps> = ({
             imageData,
             previousPoint,
             point,
-            color,
+            lineColor,
             STYLES[level].width + pickingTolerance
           );
         }
