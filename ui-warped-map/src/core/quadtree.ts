@@ -1,12 +1,6 @@
 import bbox from '@turf/bbox';
 import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import {
-  type Feature,
-  type FeatureCollection,
-  type GeoJsonProperties,
-  type Geometry,
-  type Position,
-} from 'geojson';
+import type { Feature, FeatureCollection, GeoJsonProperties, Geometry, Position } from 'geojson';
 
 // The following types help describing a full QuadTree:
 export type Leaf<T> = {

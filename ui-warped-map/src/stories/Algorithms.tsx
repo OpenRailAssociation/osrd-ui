@@ -1,7 +1,7 @@
 import React, { type FC, useMemo } from 'react';
 
 import { featureCollection } from '@turf/helpers';
-import { type Feature, type LineString } from 'geojson';
+import type { Feature, LineString } from 'geojson';
 import { Layer, type LineLayer, Source } from 'react-map-gl/maplibre';
 
 import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers';

@@ -3,8 +3,8 @@ import React, { type FC, type PropsWithChildren, useEffect, useMemo, useState } 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
 import { featureCollection } from '@turf/helpers';
-import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { type Feature, type LineString } from 'geojson';
+import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import type { Feature, LineString } from 'geojson';
 import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-map-gl/maplibre';
 
 import { type SourceDefinition } from '../core/types';
@@ -33,6 +33,7 @@ const BaseMap: FC<
       mapRef.fitBounds(bbox(path) as BBox2d, { animate: false });
       mapRef.resize();
     }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapRef]);
 
   return (
@@ -43,6 +44,7 @@ const BaseMap: FC<
       interactiveLayerIds={interactiveLayerIds}
       onClick={({ features }) => {
         if (features?.length)
+          // eslint-disable-next-line no-console
           console.log(
             'Click base map',
             !features?.length

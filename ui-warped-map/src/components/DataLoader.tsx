@@ -2,8 +2,8 @@ import React, { type FC, useEffect, useState } from 'react';
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
-import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { type Feature, type FeatureCollection } from 'geojson';
+import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import type { Feature, FeatureCollection } from 'geojson';
 import { createPortal } from 'react-dom';
 import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-map-gl/maplibre';
 
@@ -35,6 +35,7 @@ const DataLoader: FC<{
 
     mapRef.fitBounds(bbox, { animate: false });
     setTimeout(() => {
+      // eslint-disable-next-line no-console
       if (log) console.time(TIME_LABEL);
       setState('render');
     }, 0);
@@ -75,10 +76,13 @@ const DataLoader: FC<{
           featuresCount += features.length || 0;
         });
 
+        // eslint-disable-next-line no-console
         if (log) console.timeEnd(TIME_LABEL);
+        // eslint-disable-next-line no-console
         if (log) console.log('  - Features: ', featuresCount);
 
         // Finalize:
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         clean();
         onDataLoaded(sourcesData);
         setState('loaded');
