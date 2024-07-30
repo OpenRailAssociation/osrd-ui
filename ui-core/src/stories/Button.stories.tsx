@@ -95,3 +95,13 @@ export const LeadingIconCounter: Story = {
     counter: 5,
   },
 };
+
+export const GenericButtonProps: Story = {
+  args: {
+    label: 'Generic properties',
+    type: 'button',
+    className: 'my-super-class',
+    // eslint-disable-next-line no-console
+    onMouseEnter: (e) => console.log('mouve enter', e),
+  },
+};

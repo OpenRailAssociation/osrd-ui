@@ -1,11 +1,11 @@
 import cx from 'classnames';
-import React, { ReactNode } from 'react';
+import React, { type ButtonHTMLAttributes, ReactNode } from 'react';
 import { Gear } from '@osrd-project/ui-icons';
 
 type ButtonVariant = 'Normal' | 'Cancel' | 'Quiet' | 'Destructive' | 'Primary';
 type ButtonSize = 'large' | 'medium' | 'small';
 
-export interface ButtonProps {
+export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick' | 'disabled'> & {
   label: string;
   variant?: ButtonVariant;
   isLoading?: boolean;
@@ -13,8 +13,8 @@ export interface ButtonProps {
   leadingIcon?: ReactNode;
   counter?: number;
   size?: ButtonSize;
-  onClick?: () => void;
-}
+  onClick: () => void;
+};
 
 const Button: React.FC<ButtonProps> = ({
   label,
@@ -25,6 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   counter = null,
   size = 'large',
   onClick,
+  ...btnAttrs
 }) => {
   const handleClick = () => {
     if (!isLoading && !isDisabled && onClick) {
@@ -34,9 +35,16 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={cx('button flex items-center', variant.toLowerCase(), size.toLowerCase(), {
-        loading: isLoading,
-      })}
+      {...btnAttrs}
+      className={cx(
+        'button flex items-center',
+        btnAttrs.className,
+        variant.toLowerCase(),
+        size.toLowerCase(),
+        {
+          loading: isLoading,
+        }
+      )}
       onClick={handleClick}
       disabled={isDisabled || isLoading}
     >
