@@ -23,6 +23,13 @@ jobs:
           npm ci
           npm run build
 
+      - name: Check code linting
+        run: |
+          if ! npm run lint; then
+            echo "Linting failed"
+            exit 1
+          fi
+
   check_commits:
     runs-on: ubuntu-latest
     steps:
@@ -65,5 +72,20 @@ jobs:
           # search multiple final newlines
           if rg -Ul '\n\n\z' .; then
             echo "Found multiple final newlines on listed file(s)"
+            exit 1
+          fi    
+
+  check_unit_tests:
+    runs-on: ubuntu-latest
+    name: Check unit tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install vitest
+        run: npm install vitest
+      - name: Check tests
+        run: |
+          if ! npm run test; then
+            echo "Tests failed"
             exit 1
           fi
