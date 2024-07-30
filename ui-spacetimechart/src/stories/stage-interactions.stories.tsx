@@ -63,15 +63,15 @@ const Wrapper: FC<{
           if (!xPan && !yPan) return;
 
           const diff = getDiff(initialPosition, position);
-          setState((state) => {
+          setState((prev) => {
             // Stop panning:
             if (!isPanning) {
-              return { ...state, panning: null };
+              return { ...prev, panning: null };
             }
             // Start panning:
-            else if (!state.panning) {
+            else if (!prev.panning) {
               return {
-                ...state,
+                ...prev,
                 panning: {
                   initialOffset: {
                     x: state.xOffset,
@@ -82,7 +82,7 @@ const Wrapper: FC<{
             }
             // Keep panning:
             else {
-              const { initialOffset } = state.panning;
+              const { initialOffset } = prev.panning;
               const newState: typeof state = {
                 ...state,
               };
@@ -97,8 +97,8 @@ const Wrapper: FC<{
           // mouse. There is a shorter version in ./utils.ts, used by the other stories.
           if (!xZoom && !yZoom) return;
 
-          setState((state) => {
-            const newState = { ...state };
+          setState((prev) => {
+            const newState = { ...prev };
             if (xZoom) {
               newState.xZoomLevel = Math.min(
                 Math.max(newState.xZoomLevel * (1 + delta / 10), MIN_X_ZOOM),

@@ -57,7 +57,7 @@ const STYLES: Record<
   },
 };
 
-export const TimeGraduations: FC = () => {
+const TimeGraduations: FC = () => {
   const drawingFunction = useCallback<DrawingFunction>(
     (ctx, { timeScale, timeOrigin, xOffset, yOffset, getX }) => {
       const width = ctx.canvas.width;

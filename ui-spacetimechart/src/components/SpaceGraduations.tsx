@@ -24,7 +24,7 @@ const STYLES: Record<
   },
 };
 
-export const SpaceGraduations: FC = () => {
+const SpaceGraduations: FC = () => {
   const drawingFunction = useCallback<DrawingFunction>(
     (ctx, { xOffset, getY, operationalPoints }) => {
       const width = ctx.canvas.width;

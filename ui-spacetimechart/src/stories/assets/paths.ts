@@ -30,9 +30,9 @@ export function getPaths<T extends object>(
       ...additionalAttributes,
     };
 
-    points.forEach((point, i) => {
-      if (i) {
-        const previousPoint = points[i - 1];
+    points.forEach((point, index) => {
+      if (index) {
+        const previousPoint = points[index - 1];
         // Travel:
         const travelDistance = point.position - previousPoint.position;
         const travelTime = travelDistance / speed;

@@ -41,14 +41,15 @@ export function useMouse(
 
       const { onClick } = handlersRef.current;
       if (onClick) {
-        const position = getEventPosition(event, dom);
+        const mousePosition = getEventPosition(event, dom);
         onClick({
           event,
           position,
-          data: getData(position),
+          data: getData(mousePosition),
         });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dom, getData]
   );
   const downHandler = useCallback(
@@ -71,14 +72,14 @@ export function useMouse(
     (event: MouseEvent) => {
       if (!dom) return;
 
-      const position = getEventPosition(event, dom);
+      const mousePosition = getEventPosition(event, dom);
       const { x, y } = position;
       const width = dom.offsetWidth;
       const height = dom.offsetHeight;
       const isHover = x >= 0 && x <= width && y >= 0 && y <= height;
       setMouseState((state) => ({
         ...state,
-        position,
+        position: mousePosition,
         isHover,
       }));
 
@@ -92,6 +93,7 @@ export function useMouse(
           data: { position: NaN, time: NaN },
         });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dom]
   );
   const wheelHandler = useCallback(
