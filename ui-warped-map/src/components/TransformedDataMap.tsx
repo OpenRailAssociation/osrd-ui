@@ -2,8 +2,8 @@ import React, { type FC, type PropsWithChildren, useEffect, useMemo, useState } 
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
-import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { type Feature, type FeatureCollection, type LineString } from 'geojson';
+import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import type { Feature, FeatureCollection, LineString } from 'geojson';
 import { omit } from 'lodash';
 import ReactMapGL, {
   Layer,
@@ -68,6 +68,7 @@ const TransformedDataMap: FC<
       interactiveLayerIds={log ? interactiveLayerIds : []}
       onClick={({ features }) => {
         if (log)
+          // eslint-disable-next-line no-console
           console.log(
             'Click transformed data map',
             !features?.length

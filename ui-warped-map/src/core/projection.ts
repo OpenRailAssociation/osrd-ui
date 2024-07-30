@@ -1,4 +1,4 @@
-import { type Feature, type FeatureCollection, type Geometry, type Position } from 'geojson';
+import type { Feature, FeatureCollection, Geometry, Position } from 'geojson';
 import { keyBy } from 'lodash';
 
 import {

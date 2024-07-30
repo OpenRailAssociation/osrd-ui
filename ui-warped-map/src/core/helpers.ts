@@ -8,17 +8,17 @@ import intersect from '@turf/intersect';
 import length from '@turf/length';
 import lineIntersect from '@turf/line-intersect';
 import lineSlice from '@turf/line-slice';
-import {
-  type BBox,
-  type Feature,
-  type FeatureCollection,
-  type LineString,
-  type MultiLineString,
-  type MultiPoint,
-  type MultiPolygon,
-  type Point,
-  type Polygon,
-  type Position,
+import type {
+  BBox,
+  Feature,
+  FeatureCollection,
+  LineString,
+  MultiLineString,
+  MultiPoint,
+  MultiPolygon,
+  Point,
+  Polygon,
+  Position,
 } from 'geojson';
 import { chunk, first, last } from 'lodash';
 import { type MapGeoJSONFeature } from 'maplibre-gl';

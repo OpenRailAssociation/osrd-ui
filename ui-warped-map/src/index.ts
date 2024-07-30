@@ -1,1 +1,1 @@
-export * from './components/WarpedMap';
+export { default as WarpedMap } from './components/WarpedMap';

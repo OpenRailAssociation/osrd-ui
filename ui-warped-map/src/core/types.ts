@@ -1,4 +1,4 @@
-import { type Position } from 'geojson';
+import type { Position } from 'geojson';
 import { type LayerProps } from 'react-map-gl';
 
 export interface RectangleZone {

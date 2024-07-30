@@ -8,8 +8,8 @@ import React, {
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
-import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
-import { type Feature, type FeatureCollection, type LineString } from 'geojson';
+import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
+import type { Feature, FeatureCollection, LineString } from 'geojson';
 import { isNil, mapValues, omitBy } from 'lodash';
 import { type LineLayer } from 'react-map-gl/maplibre';
 
@@ -98,11 +98,13 @@ const WarpedMap: FC<
           sources={sources}
           timeout={3000}
           onDataLoaded={(data) => {
+            // eslint-disable-next-line no-console
             if (log) console.time(TIME_LABEL);
             const transformedData = omitBy(
               mapValues(data, (collection) => (collection ? state.transform(collection) : null)),
               isNil
             ) as typeof data;
+            // eslint-disable-next-line no-console
             if (log) console.timeEnd(TIME_LABEL);
             setState({ ...state, data, transformedData, type: 'dataLoaded' });
           }}

@@ -35,6 +35,7 @@ export function useAsyncMemo<T>(fn: () => Promise<T>, deps: DependencyList): Asy
     return () => {
       aborted = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return state;
