@@ -1,11 +1,5 @@
 import React, { type FC, useCallback, useEffect, useRef, useState } from 'react';
 
-import type {
-  OperationalPointType,
-  ProjectPathTrainResult,
-  StyledOperationalPointType,
-} from '../types';
-
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import { SpaceTimeChart, PathLayer } from '@osrd-project/ui-spacetimechart';
 import type { OperationalPoint, SpaceScale } from '@osrd-project/ui-spacetimechart/dist/lib/types';
@@ -31,6 +25,11 @@ type ManchetteProps = {
   projectPathTrainResult: ProjectPathTrainResult[];
 };
 import usePaths from '../hooks/usePaths';
+import type {
+  OperationalPointType,
+  ProjectPathTrainResult,
+  StyledOperationalPointType,
+} from '../types';
 import { getDiff } from '../utils/vector';
 
 const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResult }) => {
@@ -78,24 +77,24 @@ const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResu
   const paths = usePaths(projectPathTrainResult);
 
   const zoomYIn = useCallback(() => {
-    if (yZoom < MAX_ZOOM_Y) setState((state) => ({ ...state, yZoom: yZoom + ZOOM_Y_DELTA }));
+    if (yZoom < MAX_ZOOM_Y) setState((prev) => ({ ...prev, yZoom: yZoom + ZOOM_Y_DELTA }));
   }, [yZoom]);
   const zoomYOut = useCallback(() => {
-    if (yZoom > MIN_ZOOM_Y) setState((state) => ({ ...state, yZoom: yZoom - ZOOM_Y_DELTA }));
+    if (yZoom > MIN_ZOOM_Y) setState((prev) => ({ ...prev, yZoom: yZoom - ZOOM_Y_DELTA }));
   }, [yZoom]);
   const handleScroll = useCallback(() => {
     if (manchette.current) {
       const { scrollTop } = manchette.current;
       if (scrollTop || scrollTop === 0) {
-        setState((state) => ({ ...state, scrollPosition: scrollTop, yOffset: scrollTop }));
+        setState((prev) => ({ ...prev, scrollPosition: scrollTop, yOffset: scrollTop }));
       }
     }
   }, []);
   const toggleMode = useCallback(() => {
-    setState((state) => ({ ...state, isProportional: !state.isProportional }));
+    setState((prev) => ({ ...prev, isProportional: !prev.isProportional }));
   }, []);
   const checkOverflow = useCallback((isOverflowFromCallback: boolean) => {
-    setState((state) => ({ ...state, panY: isOverflowFromCallback }));
+    setState((prev) => ({ ...prev, panY: isOverflowFromCallback }));
   }, []);
 
   useIsOverflow(manchette, checkOverflow);
@@ -115,8 +114,8 @@ const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResu
       yZoom
     );
 
-    setState((state) => ({
-      ...state,
+    setState((prev) => ({
+      ...prev,
       operationalPointsChart: getOperationalPointsWithPosition(computedOperationalPoints),
       operationalPointsToDisplay: operationalPointsHeight(
         computedOperationalPoints,
@@ -127,8 +126,8 @@ const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResu
   }, [operationalPoints, isProportional, yZoom]);
 
   useEffect(() => {
-    setState((state) => ({
-      ...state,
+    setState((prev) => ({
+      ...prev,
       scales: getScales(operationalPointsChart, isProportional, yZoom),
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
