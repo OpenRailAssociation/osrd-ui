@@ -24,6 +24,7 @@ const meta: Meta<typeof SelectWrapper> = {
     options,
     getOptionLabel: (option: Option) => option.label,
     getOptionValue: (option: Option) => option.value,
+    // eslint-disable-next-line no-console
     onChange: (option?: Option) => console.log(option),
     small: false,
     disabled: false,

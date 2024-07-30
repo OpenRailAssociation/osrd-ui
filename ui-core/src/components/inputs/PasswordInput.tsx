@@ -6,7 +6,7 @@ import cx from 'classnames';
 import Input, { type InputProps } from './Input';
 
 export type PasswordInputProps = InputProps;
-export const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
+const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
   ({ inputFieldWrapperClassname, ...otherProps }, ref) => {
     const [showPassword, toggleShowPassword] = useState(false);
 

@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { type InputHTMLAttributes, type MouseEvent, type FC } from 'react';
 
 import cx from 'classnames';
 
 import useFocusByTab from '../../../hooks/useFocusByTab';
 
-export type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   small?: boolean;
   hint?: string;
   isIndeterminate?: boolean;
 };
 
-const Checkbox: React.FC<CheckboxProps> = ({
+const Checkbox: FC<CheckboxProps> = ({
   label,
   small,
   hint,
@@ -26,7 +26,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   const { handleKeyUp, handleBlur, isFocusByTab } = useFocusByTab({ onBlur, onKeyUp });
 
-  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  const handleClick = (e: MouseEvent<HTMLInputElement>) => {
     if (readOnly) {
       e.preventDefault();
       e.stopPropagation();

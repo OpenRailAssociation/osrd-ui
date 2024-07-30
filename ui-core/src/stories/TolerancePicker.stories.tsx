@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+
+import { type Meta, type StoryObj } from '@storybook/react';
+
 import TolerancePicker, {
-  TolerancePickerProps,
-  ToleranceValues,
+  type TolerancePickerProps,
+  type ToleranceValues,
 } from '../components/inputs/tolerancePicker/TolerancePicker';
 
 import '@osrd-project/ui-core/dist/theme.css';

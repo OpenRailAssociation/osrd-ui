@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from 'react';
-import Input, { InputProps } from '../Input';
-import Modal from '../../Modal';
-import { StatusWithMessage } from '../StatusMessage';
+
 import ToleranceRangeGrid from './ToleranceRangeGrid';
+import Modal from '../../Modal';
+import Input, { type InputProps } from '../Input';
+import { type StatusWithMessage } from '../StatusMessage';
 
 export const TOLERANCE_RANGES = [
   { label: '00', value: 0 },

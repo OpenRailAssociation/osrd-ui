@@ -9,6 +9,15 @@ export const INVALID_SELECTED_SLOT_BASED_ON_SELECTABLE_SLOT_ERROR =
 export const INVALID_INITIAL_DATE_ERROR = 'initialDate must be within selectableSlot';
 
 /**
+ * Normalize the given date to midnight
+ * @param date The date to normalize
+ * @returns The normalized date
+ */
+export function normalizeDate(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+/**
  * Check if the given slot is valid
  * @param slot The slot to check
  * @returns True if the slot is valid, false otherwise
@@ -107,15 +116,6 @@ export function isSameDay(date1: Date | null, date2: Date | null) {
     date1.getMonth() === date2.getMonth() &&
     date1.getFullYear() === date2.getFullYear()
   );
-}
-
-/**
- * Normalize the given date to midnight
- * @param date The date to normalize
- * @returns The normalized date
- */
-export function normalizeDate(date: Date): Date {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
 /**

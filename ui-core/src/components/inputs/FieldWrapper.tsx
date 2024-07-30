@@ -20,7 +20,7 @@ export type FieldWrapperProps = {
   className?: string;
 };
 
-export const FieldWrapper: React.FC<FieldWrapperProps> = ({
+const FieldWrapper: React.FC<FieldWrapperProps> = ({
   id,
   label,
   hint,

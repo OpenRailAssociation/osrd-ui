@@ -46,7 +46,7 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
     inputFieldWrapperClassname?: string;
   };
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       id,
