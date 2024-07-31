@@ -89,6 +89,10 @@ export type StyledOperationalPointType = OperationalPointType & {
 };
 
 export type ProjectPathTrainResult = {
+  /*Name of train */
+  name: string;
+  /*Id of train */
+  id: number;
   /** List of signal updates along the path */
   signal_updates: {
     /** The labels of the new aspect */

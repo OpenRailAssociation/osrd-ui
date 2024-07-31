@@ -8,18 +8,18 @@ const transformCurve = (curve: SpaceTimeCurves, departureTime: string) =>
     position,
   }));
 
-const usePaths = (projectPathTrainResult: ProjectPathTrainResult[]) =>
+const usePaths = (projectPathTrainResult: ProjectPathTrainResult[], selectedProjection?: number) =>
   useMemo(
     () =>
-      projectPathTrainResult.map((path, index) => ({
-        id: path.departure_time,
-        label: `Train ${index + 1}`,
-        color: '#000000',
+      projectPathTrainResult.map((path) => ({
+        id: `${path.id}`,
+        label: path.name,
+        color: selectedProjection && selectedProjection === path.id ? '#201EDE' : '#000000',
         points: path.space_time_curves.flatMap((curve) =>
           transformCurve(curve, path.departure_time)
         ),
       })),
-    [projectPathTrainResult]
+    [projectPathTrainResult, selectedProjection]
   );
 
 export default usePaths;
