@@ -23,6 +23,7 @@ import { useIsOverflow } from '../hooks/useIsOverFlow';
 type ManchetteProps = {
   operationalPoints: OperationalPointType[];
   projectPathTrainResult: ProjectPathTrainResult[];
+  selectedProjection?: number;
 };
 import usePaths from '../hooks/usePaths';
 import type {
@@ -32,7 +33,11 @@ import type {
 } from '../types';
 import { getDiff } from '../utils/vector';
 
-const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResult }) => {
+const Manchette: FC<ManchetteProps> = ({
+  operationalPoints,
+  projectPathTrainResult,
+  selectedProjection,
+}) => {
   const manchette = useRef<HTMLDivElement>(null);
 
   const [state, setState] = useState<{
@@ -74,7 +79,7 @@ const Manchette: FC<ManchetteProps> = ({ operationalPoints, projectPathTrainResu
     scales,
   } = state;
 
-  const paths = usePaths(projectPathTrainResult);
+  const paths = usePaths(projectPathTrainResult, selectedProjection);
 
   const zoomYIn = useCallback(() => {
     if (yZoom < MAX_ZOOM_Y) setState((prev) => ({ ...prev, yZoom: yZoom + ZOOM_Y_DELTA }));

@@ -23,6 +23,12 @@ const meta: Meta<typeof Manchette> = {
         type: 'object',
       },
     },
+    selectedProjection: {
+      options: [undefined, ...SAMPLE_PATHS_DATA.map((path) => path.id)],
+      control: {
+        type: 'select',
+      },
+    },
   },
 };
 
@@ -33,5 +39,6 @@ export const Default: Story = {
   args: {
     operationalPoints: OperationalPointListData,
     projectPathTrainResult: PathData,
+    selectedProjection: 3,
   },
 };

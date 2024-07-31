@@ -186,6 +186,8 @@ export const SAMPLE_PATH_PROPERTIES_DATA: PathProperties = {
 
 export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
   {
+    id: 1,
+    name: 'Train 1',
     departure_time: '2024-06-26T13:57:56Z',
     rolling_stock_length: 26070,
     space_time_curves: [
@@ -623,6 +625,8 @@ export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
     ],
   },
   {
+    id: 2,
+    name: 'Train 2',
     departure_time: '2024-06-26T13:42:56Z',
     rolling_stock_length: 26070,
     space_time_curves: [
@@ -1060,6 +1064,8 @@ export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
     ],
   },
   {
+    id: 3,
+    name: 'Train 3',
     departure_time: '2024-06-26T14:12:56Z',
     rolling_stock_length: 26070,
     space_time_curves: [
