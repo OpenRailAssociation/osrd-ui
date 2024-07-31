@@ -288,3 +288,12 @@ export const findPreviousAndNextPosition = <T = string | number>(
 
   return { previousPosition, nextPosition };
 };
+
+export const getStopPosition = (
+  position: LayerData<string>['position'],
+  width: number,
+  ratioX: number,
+  maxPosition: number
+) =>
+  position.start * ((width - MARGINS.CURVE_MARGIN_SIDES) / maxPosition) * ratioX +
+  MARGINS.CURVE_MARGIN_SIDES / 2;

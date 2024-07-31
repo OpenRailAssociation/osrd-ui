@@ -1,11 +1,38 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
-import { clearCanvas, maxPositionValues } from '../../utils';
+import { clearCanvas, getStopPosition, maxPositionValues } from '../../utils';
 
-const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_SIDES } = MARGINS;
+const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM } = MARGINS;
 
 export const drawGridX = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { stops, ratioX, leftOffset } = store;
+
+  if (stops.length === 0) {
+    return;
+  }
+
+  const { maxPosition } = maxPositionValues(store);
+
+  let stopPosition = getStopPosition(
+    stops[0].position,
+    width - MARGIN_LEFT - MARGIN_RIGHT,
+    ratioX,
+    maxPosition
+  );
+
+  const filteredStops = stops.filter(({ position }) => {
+    const actualX = getStopPosition(
+      position,
+      width - MARGIN_LEFT - MARGIN_RIGHT,
+      ratioX,
+      maxPosition
+    );
+    if (actualX - stopPosition < 16 && actualX !== stopPosition) {
+      return false;
+    }
+    stopPosition = actualX;
+    return true;
+  });
 
   clearCanvas(ctx, width, height);
 
@@ -16,20 +43,16 @@ export const drawGridX = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.lineWidth = 0.5;
   ctx.setLineDash([2, 4]);
 
-  const { maxPosition } = maxPositionValues(store);
-
   // vertical lines based on ratio and round max position
 
   ctx.beginPath();
-  stops.forEach(({ position }) => {
-    const x =
-      position.start *
-        ((width - CURVE_MARGIN_SIDES - MARGIN_LEFT - MARGIN_RIGHT) / maxPosition) *
-        ratioX +
-      CURVE_MARGIN_SIDES / 2;
+  filteredStops.forEach(({ position }) => {
+    const x = getStopPosition(position, width - MARGIN_LEFT - MARGIN_RIGHT, ratioX, maxPosition);
+
     ctx.moveTo(x + MARGIN_LEFT, height - (height - MARGIN_TOP));
     ctx.lineTo(x + MARGIN_LEFT, height - MARGIN_BOTTOM);
   });
+
   ctx.closePath();
   ctx.stroke();
 

@@ -45,6 +45,7 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
 
   let speedText = '';
   let ecoSpeedText = '';
+  let stopText = '';
   let effortText = 'coasting';
   let electricalModeText = '';
   let electricalProfileText = '';
@@ -83,9 +84,21 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
     const { previousPosition: previousEcoCurvePosition, nextPosition: nextEcoCurvePosition } =
       findPreviousAndNextPosition(ecoSpeeds, cursor.x!, xPositionReference);
 
+    let stopPosition = xPositionReference(stops[0].position.start);
+
+    const filterdStops = stops.filter(({ position }) => {
+      const actualX = xPositionReference(position.start);
+      if (actualX - stopPosition < 16 && actualX !== stopPosition) {
+        return false;
+      } else {
+        stopPosition = actualX;
+        return true;
+      }
+    });
+
     // get the nearest previous and next stop values of the curve based on pointer position
     const { previousPosition: previousStop, nextPosition: nextStop } = findPreviousAndNextPosition(
-      stops,
+      filterdStops,
       cursor.x!,
       xPositionReference
     );
@@ -118,14 +131,16 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
     if (
       previousCurvePosition !== undefined &&
       nextCurvePosition !== undefined &&
+      previousEcoCurvePosition !== undefined &&
+      nextEcoCurvePosition !== undefined &&
       previousStop !== undefined &&
       nextStop !== undefined
     ) {
-      const normalizedPreviousSpeed = (previousCurvePosition.value - minSpeed) / speedRange;
-      const normalizedNextSpeed = (nextCurvePosition.value - minSpeed) / speedRange;
+      const normalizedPreviousSpeed = (previousEcoCurvePosition.value - minSpeed) / speedRange;
+      const normalizedNextSpeed = (nextEcoCurvePosition.value - minSpeed) / speedRange;
       x = {
-        a: xPositionReference(previousCurvePosition.position.start),
-        b: xPositionReference(nextCurvePosition.position.start),
+        a: xPositionReference(previousEcoCurvePosition.position.start),
+        b: xPositionReference(nextEcoCurvePosition.position.start),
       };
       y = {
         a: cursorBoxHeight - normalizedPreviousSpeed * (cursorBoxHeight - CURVE_MARGIN_TOP),
@@ -145,8 +160,8 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
 
       // find out if the cursor isn't close to the previous stop or the next stop based on 20px
       if (
-        curveX - xPositionReference(previousStop.position.start) > 20 &&
-        xPositionReference(nextStop.position.start) - curveX > 20
+        curveX - xPositionReference(previousStop.position.start) > 10 &&
+        xPositionReference(nextStop.position.start) - curveX > 10
       ) {
         const drop = (y.b! - y.a!) / (x.b! - x.a!);
         const deltaX = curveX - x.a;
@@ -182,8 +197,10 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
           xPositionReference(nextStop.position.start) - curveX
         ) {
           curveX = xPositionReference(previousStop.position.start);
+          stopText = previousStop.value;
         } else {
           curveX = xPositionReference(nextStop.position.start);
+          stopText = nextStop.value;
         }
 
         const { previousPosition: nextSpeed, nextPosition: previousSpeed } =
@@ -195,7 +212,7 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
         // find curveY based on the average speed between the previous and next speed values
         curveY =
           cursorBoxHeight -
-          (((previousSpeed!.value + nextSpeed!.value) / 2 - minSpeed) / speedRange) *
+          (((previousEcoSpeed!.value + nextEcoSpeed!.value) / 2 - minSpeed) / speedRange) *
             (cursorBoxHeight - CURVE_MARGIN_TOP);
 
         speedText = ((previousSpeed!.value + nextSpeed!.value) / 2).toFixed(1);
@@ -259,6 +276,13 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
 
       ctx.textAlign = 'center';
       ctx.fillText(textPosition, curveX + MARGIN_LEFT, height - MARGIN_BOTTOM + 20);
+
+      if (curveX < ctx.measureText(stopText).width / 2) {
+        ctx.textAlign = 'start';
+      } else if (curveX > cursorBoxWidth - ctx.measureText(stopText).width / 2) {
+        ctx.textAlign = 'end';
+      }
+      ctx.fillText(stopText, curveX + MARGIN_LEFT, height - MARGIN_BOTTOM + 36);
 
       ctx.closePath();
       ctx.stroke();

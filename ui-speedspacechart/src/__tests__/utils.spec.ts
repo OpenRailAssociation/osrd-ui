@@ -12,6 +12,7 @@ import {
   getLinearLayersDisplayedHeight,
   slopesValues,
   findPreviousAndNextPosition,
+  getStopPosition,
 } from '../components/utils';
 import type { LayerData, Store } from '../types/chartTypes';
 
@@ -345,6 +346,17 @@ describe('findPreviousAndNextPosition', () => {
     );
     expect(nextPosition).toEqual(previousPosition);
     expect(nextPosition).toEqual({ value: 30, position: { start: 600 } });
+  });
+});
+
+describe('getStopPosition', () => {
+  it('should return the correct stop position', () => {
+    const position = { start: 200 };
+    const width = 1000;
+    const ratioX = 1;
+    const maxPosition = 600;
+    const stopPosition = getStopPosition(position, width, ratioX, maxPosition);
+    expect(stopPosition).toBe(336);
   });
 });
 
