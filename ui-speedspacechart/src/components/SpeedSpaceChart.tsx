@@ -16,7 +16,6 @@ import {
   ReticleLayer,
   SpeedLimitTagsLayer,
   StepLayer,
-  StepNamesLayer,
   TickLayerX,
   TickLayerY,
   TickLayerYRight,
@@ -189,15 +188,7 @@ const SpeedSpaceChart = ({
       <MajorGridY width={adjustedWidthRightAxis} height={height} store={store} />
       <AxisLayerX width={adjustedWidthRightAxis} height={height} store={store} />
       {store.layersDisplay.steps && (
-        <>
-          <StepLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
-          <StepNamesLayer
-            key={stop.name}
-            width={WIDTH_OFFSET}
-            height={HEIGHT_OFFSET}
-            store={store}
-          />
-        </>
+        <StepLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
       )}
       <TickLayerY width={width} height={height} store={store} />
       {store.layersDisplay.electricalProfiles && (
