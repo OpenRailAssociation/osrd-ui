@@ -151,7 +151,7 @@ export function generateSequentialDates(startDate: Date, monthsCount: number) {
   const dates = [];
   for (let i = 0; i < monthsCount; i++) {
     const date = new Date(startDate);
-    date.setMonth(startDate.getMonth() + i);
+    date.setMonth(startDate.getMonth() + i, 1);
     dates.push(new Date(date.getFullYear(), date.getMonth(), 1));
   }
   return dates;
