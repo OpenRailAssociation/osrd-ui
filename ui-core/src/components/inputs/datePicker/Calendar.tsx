@@ -9,18 +9,25 @@ export type CalendarProps = {
   selectedSlot?: CalendarSlot;
   selectableSlot?: CalendarSlot;
   displayedMonthStartDate: Date;
+  referenceDate?: Date;
   onDayClick: (date: Date) => void;
 };
 
 type DayProps = {
   date: Date;
   isSelectable: boolean;
-  isToday: boolean;
+  isReferenceDate: boolean;
   dayWrapperClassName: string;
   onClick: (date: Date) => void;
 };
 
-const Day: React.FC<DayProps> = ({ date, isToday, isSelectable, dayWrapperClassName, onClick }) => (
+const Day: React.FC<DayProps> = ({
+  date,
+  isReferenceDate,
+  isSelectable,
+  dayWrapperClassName,
+  onClick,
+}) => (
   <div
     onClick={() => {
       if (isSelectable) onClick(date);
@@ -29,14 +36,14 @@ const Day: React.FC<DayProps> = ({ date, isToday, isSelectable, dayWrapperClassN
   >
     <div className={dayWrapperClassName}>
       <span className="day">{date.getDate()}</span>
-      {isToday && <span className="current-date-highlight" />}
+      {isReferenceDate && <span className="current-date-highlight" />}
     </div>
   </div>
 );
 
 const Calendar: React.FC<CalendarProps> = (props) => {
   const { displayedMonthStartDate, onDayClick } = props;
-  const { days, isToday, isDateSelectable, buildDayWrapperClassName } = useCalendar(props);
+  const { days, isReferenceDate, isDateSelectable, buildDayWrapperClassName } = useCalendar(props);
   return (
     <div className="calendar-wrapper">
       <div className="calendar-anatomy">
@@ -54,7 +61,7 @@ const Calendar: React.FC<CalendarProps> = (props) => {
               <Day
                 key={index}
                 date={date}
-                isToday={isToday(date)}
+                isReferenceDate={isReferenceDate(date)}
                 isSelectable={isDateSelectable(date)}
                 dayWrapperClassName={buildDayWrapperClassName(date)}
                 onClick={onDayClick}

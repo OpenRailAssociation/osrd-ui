@@ -14,9 +14,9 @@ export default function useCalendar({
   displayedMonthStartDate,
   selectableSlot,
   selectedSlot,
+  referenceDate = new Date(),
 }: CalendarProps) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  referenceDate.setHours(0, 0, 0, 0);
   const displayedYear = displayedMonthStartDate.getFullYear();
   const displayedMonth = displayedMonthStartDate.getMonth();
   const daysInMonth = getAllDatesInMonth(displayedMonth, displayedYear);
@@ -40,7 +40,7 @@ export default function useCalendar({
       'inside-selectable-slot': insideSelectableSlot,
       'outside-selectable-slot': !insideSelectableSlot,
       'current-month': date.getMonth() === displayedMonth,
-      past: normalizeDate(date) < normalizeDate(today),
+      past: normalizeDate(date) < normalizeDate(referenceDate),
     } as Record<string, boolean | null>;
 
     if (selectedSlot) {
@@ -67,7 +67,8 @@ export default function useCalendar({
 
   return {
     days: allDays,
-    isToday: (date: Date) => normalizeDate(date).getTime() === normalizeDate(today).getTime(),
+    isReferenceDate: (date: Date) =>
+      normalizeDate(date).getTime() === normalizeDate(referenceDate).getTime(),
     buildDayWrapperClassName,
     isDateSelectable,
   };
