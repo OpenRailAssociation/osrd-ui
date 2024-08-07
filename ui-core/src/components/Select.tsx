@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import cx from 'classnames';
 
@@ -43,6 +43,10 @@ const Select = <T,>({
     setSelectedOption(newSelectedOption);
     onChange(newSelectedOption);
   };
+
+  useEffect(() => {
+    setSelectedOption(value);
+  }, [value]);
 
   return (
     <FieldWrapper
