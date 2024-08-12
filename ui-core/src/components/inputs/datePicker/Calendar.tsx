@@ -9,7 +9,6 @@ export type CalendarProps = {
   selectedSlot?: CalendarSlot;
   selectableSlot?: CalendarSlot;
   displayedMonthStartDate: Date;
-  referenceDate?: Date;
   onDayClick: (date: Date) => void;
 };
 

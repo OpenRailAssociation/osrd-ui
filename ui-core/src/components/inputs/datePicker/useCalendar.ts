@@ -14,8 +14,8 @@ export default function useCalendar({
   displayedMonthStartDate,
   selectableSlot,
   selectedSlot,
-  referenceDate = new Date(),
 }: CalendarProps) {
+  const referenceDate = selectableSlot?.start ?? new Date();
   referenceDate.setHours(0, 0, 0, 0);
   const displayedYear = displayedMonthStartDate.getFullYear();
   const displayedMonth = displayedMonthStartDate.getMonth();
