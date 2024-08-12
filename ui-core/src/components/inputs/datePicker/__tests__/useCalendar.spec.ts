@@ -16,14 +16,12 @@ export const december = 11;
 let displayedMonthStartDate = new Date(2024, july, 1);
 const selectedSlot = { start: new Date(2024, july, 10), end: new Date(2024, july, 20) };
 const selectableSlot = { start: new Date(2024, july, 5), end: new Date(2024, july, 25) };
-const referenceDate = new Date(2024, july, 15);
 
 const { result: defaultResult } = renderHook(() =>
   useCalendar({
     displayedMonthStartDate,
     selectedSlot,
     selectableSlot,
-    referenceDate,
     onDayClick: () => {},
   })
 );
@@ -155,14 +153,16 @@ describe('useCalendar', () => {
       useCalendar({
         displayedMonthStartDate,
         selectedSlot,
-        selectableSlot,
-        referenceDate: today,
         onDayClick: () => {},
       })
     );
 
     it('should return true for today', () => {
       expect(result.current.isReferenceDate(today)).toBe(true);
+    });
+
+    it('should return true for the selectableSlot start date', () => {
+      expect(defaultResult.current.isReferenceDate(selectableSlot.start)).toBe(true);
     });
 
     it('should return false for a day that is not today', () => {
