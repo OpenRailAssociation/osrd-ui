@@ -1,8 +1,9 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { MARGINS } from '../../const';
+import { MARGINS, TICK_ICONS } from '../../const';
 import { clearCanvas, speedRangeValues } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_TOP } = MARGINS;
+const { Y_LEFT_VERTICAL, Y_LEFT_HORIZONTAL } = TICK_ICONS;
 
 export const drawGridY = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { speeds } = store;
@@ -68,7 +69,7 @@ export const drawMajorGridY = ({ ctx, width, height, store }: DrawFunctionParams
 
   // text for y axis
   ctx.beginPath();
-  ctx.fillText('km/h', 22, 30);
+  ctx.fillText('km/h', Y_LEFT_VERTICAL, Y_LEFT_HORIZONTAL);
   ctx.closePath();
   ctx.stroke();
 };
