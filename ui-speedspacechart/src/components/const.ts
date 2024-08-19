@@ -4,6 +4,13 @@ export const SLOPE_FILL_COLOR = '#CFDDCE';
 
 export const RIGHT_TICK_HEIGHT_OFFSET = 2;
 
+export const TICK_ICONS = {
+  Y_LEFT_VERTICAL: 30,
+  Y_LEFT_HORIZONTAL: 22,
+  Y_RIGHT_VERTICAL: 36,
+  Y_RIGHT_HORIZONTAL: 42,
+};
+
 export const MARGINS = {
   MARGIN_LEFT: 48,
   MARGIN_RIGHT: 12,

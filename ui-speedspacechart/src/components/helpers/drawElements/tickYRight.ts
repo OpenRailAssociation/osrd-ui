@@ -1,8 +1,9 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { MARGINS, RIGHT_TICK_HEIGHT_OFFSET } from '../../const';
+import { MARGINS, TICK_ICONS, RIGHT_TICK_HEIGHT_OFFSET } from '../../const';
 import { clearCanvas, slopesValues } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_TOP, MARGIN_BOTTOM, RIGHT_TICK_MARGINS } = MARGINS;
+const { Y_RIGHT_VERTICAL, Y_RIGHT_HORIZONTAL } = TICK_ICONS;
 
 export const drawTickYRight = ({ ctx, width, height, store }: DrawFunctionParams) => {
   clearCanvas(ctx, width, height);
@@ -46,7 +47,7 @@ export const drawTickYRight = ({ ctx, width, height, store }: DrawFunctionParams
     ctx.fillStyle = `rgba(182, 179, 175, ${opacity})`;
     ctx.fillText(text, textOffsetX, textPositionYRight);
 
-    ctx.fillText('‰', width - MARGIN_LEFT, height / 12); // 12 ticks intervals
+    ctx.fillText('‰', width - Y_RIGHT_HORIZONTAL, Y_RIGHT_VERTICAL);
   }
   ctx.stroke();
 
