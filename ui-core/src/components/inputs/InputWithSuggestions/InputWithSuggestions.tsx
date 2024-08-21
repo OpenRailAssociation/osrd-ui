@@ -15,7 +15,7 @@ import cx from 'classnames';
 import { normalizeString } from './utils';
 import Input, { type InputProps } from '../Input';
 
-interface InputWithSuggestionsProps<T> extends Omit<InputProps, 'onChange' | 'value'> {
+export type InputWithSuggestionsProps<T> = Omit<InputProps, 'onChange' | 'value'> & {
   suggestions: Array<T>;
   onChange: (value: T) => void;
   getSuggestionLabel: (option: T) => string;
@@ -23,7 +23,7 @@ interface InputWithSuggestionsProps<T> extends Omit<InputProps, 'onChange' | 'va
   numberOfSuggestionsToShow?: number;
   exactSearch?: boolean;
   value?: T;
-}
+};
 
 const InputWithSuggestions = <T,>({
   suggestions,

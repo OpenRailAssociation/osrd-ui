@@ -1,1 +1,4 @@
-export { default } from './InputWithSuggestions';
+export {
+  default as InputWithSuggestions,
+  type InputWithSuggestionsProps,
+} from './InputWithSuggestions';
