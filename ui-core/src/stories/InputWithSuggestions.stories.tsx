@@ -3,7 +3,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
 
-import InputWithSuggestions from '../components/inputs/InputWithSuggestions';
+import { InputWithSuggestions } from '../components/inputs/InputWithSuggestions';
 
 type Suggestion = { id: string; label: string };
 

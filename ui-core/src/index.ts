@@ -28,3 +28,7 @@ export {
   default as TolerancePicker,
   type TolerancePickerProps,
 } from './components/inputs/tolerancePicker/TolerancePicker';
+export {
+  InputWithSuggestions,
+  type InputWithSuggestionsProps,
+} from './components/inputs/InputWithSuggestions';

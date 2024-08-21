@@ -30,7 +30,8 @@ the repository.
 ### Making a release
 
 1. Create a annotated git tag (let's say `0.0.30`, you would do a `git tag -a 0.0.30`) on the `dev`
-   branch and push it. **Note: we do not tag with a V in front of the version number, on our example
+   branch and push (here it would be `git push origin tag 0.0.30`).
+   **Note: we do not tag with a V in front of the version number, on our example
    the tag would be 0.0.30 and not v0.0.30**.
 2. Create a github release (By convention, we use the same name as the tag with the letter `v` in
    front of it, `v0.0.30`. You can give fancy names to release if you want to :
