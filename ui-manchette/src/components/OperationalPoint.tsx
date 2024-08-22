@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { positionMmToKm } from './helpers';
 import { type StyledOperationalPointType } from '../types';
 import '@osrd-project/ui-core/dist/theme.css';
+import { positionMmToKm } from '../utils';
 
 const OperationalPoint: React.FC<StyledOperationalPointType> = ({
   extensions,
