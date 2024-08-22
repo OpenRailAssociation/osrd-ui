@@ -20,11 +20,6 @@ import {
 } from './helpers';
 import OperationalPointList from './OperationalPointList';
 import { useIsOverflow } from '../hooks/useIsOverFlow';
-type ManchetteProps = {
-  operationalPoints: OperationalPointType[];
-  projectPathTrainResult: ProjectPathTrainResult[];
-  selectedProjection?: number;
-};
 import usePaths from '../hooks/usePaths';
 import type {
   OperationalPointType,
@@ -33,10 +28,20 @@ import type {
 } from '../types';
 import { getDiff } from '../utils/vector';
 
+const DEFAULT_HEIGHT = 561;
+
+type ManchetteProps = {
+  operationalPoints: OperationalPointType[];
+  projectPathTrainResult: ProjectPathTrainResult[];
+  selectedProjection?: number;
+  height?: number;
+};
+
 const Manchette: FC<ManchetteProps> = ({
   operationalPoints,
   projectPathTrainResult,
   selectedProjection,
+  height = DEFAULT_HEIGHT,
 }) => {
   const manchette = useRef<HTMLDivElement>(null);
 
@@ -59,7 +64,7 @@ const Manchette: FC<ManchetteProps> = ({
     yOffset: 0,
     panning: null,
     scrollPosition: 0,
-    isProportional: false,
+    isProportional: true,
     operationalPointsChart: [],
     operationalPointsToDisplay: [],
     panY: false,
@@ -115,6 +120,7 @@ const Manchette: FC<ManchetteProps> = ({
   useEffect(() => {
     const computedOperationalPoints = calcOperationalPointsToDisplay(
       operationalPoints,
+      height,
       isProportional,
       yZoom
     );
@@ -124,19 +130,20 @@ const Manchette: FC<ManchetteProps> = ({
       operationalPointsChart: getOperationalPointsWithPosition(computedOperationalPoints),
       operationalPointsToDisplay: operationalPointsHeight(
         computedOperationalPoints,
+        height,
         yZoom,
         isProportional
       ),
     }));
-  }, [operationalPoints, isProportional, yZoom]);
+  }, [operationalPoints, isProportional, yZoom, height]);
 
   useEffect(() => {
     setState((prev) => ({
       ...prev,
-      scales: getScales(operationalPointsChart, isProportional, yZoom),
+      scales: getScales(operationalPointsChart, height, isProportional, yZoom),
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [operationalPointsChart]);
+  }, [operationalPointsChart, isProportional, height]);
 
   return (
     <div className="manchette-space-time-chart-wrapper">
@@ -144,7 +151,12 @@ const Manchette: FC<ManchetteProps> = ({
         className="header bg-ambientB-5 w-full border-b border-grey-30"
         style={{ height: '40px' }}
       ></div>
-      <div ref={manchette} className="manchette flex" onScroll={handleScroll}>
+      <div
+        ref={manchette}
+        className="manchette flex"
+        style={{ height: `${height}px` }}
+        onScroll={handleScroll}
+      >
         <div className="manchette-container ">
           <div
             className=" bg-ambientB-10 border-r border-grey-30"
