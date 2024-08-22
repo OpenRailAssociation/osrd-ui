@@ -1,4 +1,4 @@
-import React, { type FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { type FC, useCallback, useEffect, useRef, useState, useMemo } from 'react';
 
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import { SpaceTimeChart, PathLayer } from '@osrd-project/ui-spacetimechart';
@@ -14,9 +14,11 @@ import {
 } from './consts';
 import {
   calcOperationalPointsToDisplay,
+  computeTimeWindow,
   getOperationalPointsWithPosition,
   getScales,
   operationalPointsHeight,
+  zoomX,
 } from './helpers';
 import OperationalPointList from './OperationalPointList';
 import { useIsOverflow } from '../hooks/useIsOverFlow';
@@ -44,6 +46,8 @@ const Manchette: FC<ManchetteProps> = ({
   height = DEFAULT_HEIGHT,
 }) => {
   const manchette = useRef<HTMLDivElement>(null);
+
+  const [isShiftPressed, setIsShiftPressed] = useState(false);
 
   const [state, setState] = useState<{
     xZoom: number;
@@ -86,23 +90,44 @@ const Manchette: FC<ManchetteProps> = ({
 
   const paths = usePaths(projectPathTrainResult, selectedProjection);
 
+  const timeWindow = useMemo(
+    () => computeTimeWindow(projectPathTrainResult),
+    [projectPathTrainResult]
+  );
+
   const zoomYIn = useCallback(() => {
     if (yZoom < MAX_ZOOM_Y) setState((prev) => ({ ...prev, yZoom: yZoom + ZOOM_Y_DELTA }));
   }, [yZoom]);
+
   const zoomYOut = useCallback(() => {
     if (yZoom > MIN_ZOOM_Y) setState((prev) => ({ ...prev, yZoom: yZoom - ZOOM_Y_DELTA }));
   }, [yZoom]);
+
   const handleScroll = useCallback(() => {
-    if (manchette.current) {
+    if (!isShiftPressed && manchette.current) {
       const { scrollTop } = manchette.current;
       if (scrollTop || scrollTop === 0) {
         setState((prev) => ({ ...prev, scrollPosition: scrollTop, yOffset: scrollTop }));
       }
     }
+  }, [isShiftPressed]);
+
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Shift') {
+      setIsShiftPressed(true);
+    }
   }, []);
+
+  const handleKeyUp = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Shift') {
+      setIsShiftPressed(false);
+    }
+  }, []);
+
   const toggleMode = useCallback(() => {
     setState((prev) => ({ ...prev, isProportional: !prev.isProportional }));
   }, []);
+
   const checkOverflow = useCallback((isOverflowFromCallback: boolean) => {
     setState((prev) => ({ ...prev, panY: isOverflowFromCallback }));
   }, []);
@@ -111,11 +136,15 @@ const Manchette: FC<ManchetteProps> = ({
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [handleScroll]);
+  }, [handleScroll, handleKeyDown, handleKeyUp]);
 
   useEffect(() => {
     const computedOperationalPoints = calcOperationalPointsToDisplay(
@@ -208,7 +237,7 @@ const Manchette: FC<ManchetteProps> = ({
               timeOrigin={Math.min(
                 ...projectPathTrainResult.map((p) => +new Date(p.departure_time))
               )}
-              timeScale={60000 / xZoom}
+              timeScale={timeWindow / xZoom}
               xOffset={xOffset}
               yOffset={-scrollPosition + 14}
               onPan={({ initialPosition, position, isPanning }) => {
@@ -240,6 +269,14 @@ const Manchette: FC<ManchetteProps> = ({
                 }
 
                 setState(newState);
+              }}
+              onZoom={(payload) => {
+                if (isShiftPressed) {
+                  setState((prev) => ({
+                    ...prev,
+                    ...zoomX(state.xZoom, state.xOffset, payload),
+                  }));
+                }
               }}
             >
               {paths.map((path, i) => (
