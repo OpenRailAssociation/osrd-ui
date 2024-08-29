@@ -3,20 +3,13 @@ import type {
   SpaceTimeChartProps,
 } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 
-import {
-  BASE_OP_HEIGHT,
-  FOOTER_HEIGHT,
-  OP_LINE_HEIGHT,
-  MAX_TIME_WINDOW,
-  MAX_ZOOM_X,
-  MIN_ZOOM_X,
-} from './consts';
+import { BASE_OP_HEIGHT, MAX_TIME_WINDOW, MAX_ZOOM_X, MIN_ZOOM_X } from './consts';
 import type {
   OperationalPointType,
   ProjectPathTrainResult,
   StyledOperationalPointType,
 } from '../types';
-import { getHeightWithoutFooter, msToS } from '../utils';
+import { getHeightWithoutLastWaypoint, msToS } from '../utils';
 
 export const calcOperationalPointsToDisplay = (
   operationalPoints: OperationalPointType[],
@@ -34,7 +27,7 @@ export const calcOperationalPointsToDisplay = (
     const from = operationalPoints.at(0)!.position;
     const to = operationalPoints.at(-1)!.position;
     const totalDistance = to - from;
-    const heightWithoutFinalOp = getHeightWithoutFooter(height) - BASE_OP_HEIGHT;
+    const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
     let lastDisplayedOP = result[0];
 
     // We iterate through all points, and only add them if they don't collide
@@ -81,7 +74,7 @@ export const operationalPointsHeight = (
   const from = operationalPoints.at(0)!.position;
   const to = operationalPoints.at(-1)!.position;
   const totalDistance = to - from;
-  const heightWithoutFinalOp = getHeightWithoutFooter(height) - BASE_OP_HEIGHT;
+  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
 
   return operationalPoints.map((op, index) => {
     const nextOp = operationalPoints.at(index + 1);
@@ -144,7 +137,7 @@ export const getScales = (
   const to = ops.at(-1)!.position;
 
   const totalDistance = to - from;
-  const heightWithoutFinalOp = height - FOOTER_HEIGHT - OP_LINE_HEIGHT / 2;
+  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
 
   const scaleCoeff = isProportional
     ? { coefficient: totalDistance / heightWithoutFinalOp / zoomY }
