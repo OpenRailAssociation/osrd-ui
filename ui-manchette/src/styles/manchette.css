@@ -8,9 +8,6 @@
   .manchette {
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-border-bottom-left-radius: 4px;
-    -moz-border-radius-bottomleft: 4px;
-    border-bottom-left-radius: 4px;
 
     &-actions {
       background-color: rgba(250, 249, 245, 0.6);
