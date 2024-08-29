@@ -4,7 +4,7 @@ import { useDraw } from '../hooks/useCanvas';
 import { MINUTE } from '../lib/consts';
 import { type DrawingFunction } from '../lib/types';
 
-export const TimeGraduations: FC = () => {
+const TimeGraduations: FC = () => {
   const drawingFunction = useCallback<DrawingFunction>(
     (
       ctx,

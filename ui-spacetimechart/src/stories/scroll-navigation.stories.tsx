@@ -74,9 +74,9 @@ const Wrapper: FC<{
           setState((s) => ({
             ...s,
             selected:
-              !hoveredPath || hoveredPath.element.path === selected
+              !hoveredPath || hoveredPath.element.pathId === selected
                 ? null
-                : hoveredPath.element.path,
+                : hoveredPath.element.pathId,
           }));
         }}
         onHoveredChildUpdate={({ item }) => {
@@ -144,8 +144,9 @@ const Wrapper: FC<{
                   const centerTime = getTime(width / 2);
                   const pathPositionAtTime = getSpaceAtTime(path, centerTime);
                   const pathYAtCenter = getSpacePixel(pathPositionAtTime);
+                  const frictionCoefficient = 1 / 4;
 
-                  newState.yOffset -= (pathYAtCenter - height / 2) / 4;
+                  newState.yOffset -= (pathYAtCenter - height / 2) * frictionCoefficient;
                 }
               }
 
@@ -166,7 +167,7 @@ const Wrapper: FC<{
                   : 4
                 : state.selected === path.id
                   ? 1
-                  : state.hoveredPath?.element.path === path.id
+                  : state.hoveredPath?.element.pathId === path.id
                     ? 1
                     : state.selected
                       ? 3

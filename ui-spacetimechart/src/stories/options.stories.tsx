@@ -44,7 +44,9 @@ const ScreenshotButton: FC = () => {
 };
 
 /**
- * This story aims at showcasing how to handle panning and zooming in a SpaceTimeChart.
+ * This story aims at showcasing how to use various specific options in a
+ * SpaceTimeChart, such as `swapAxis`, `enableSnapping`, `hideGrid` or
+ * `hidePathsLabels`.
  */
 const Wrapper: FC<{
   enableSnapping: boolean;

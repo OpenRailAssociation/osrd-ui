@@ -88,25 +88,25 @@ const Wrapper: FC<{
           else if (!selection) {
             setState({
               ...state,
-              selection: new Set([hoveredPath.element.path]),
+              selection: new Set([hoveredPath.element.pathId]),
             });
           }
           // Handle single selection:
           else if (!enableMultiSelection || !event.ctrlKey) {
             setState({
               ...state,
-              selection: selection.has(hoveredPath.element.path)
+              selection: selection.has(hoveredPath.element.pathId)
                 ? null
-                : new Set([hoveredPath.element.path]),
+                : new Set([hoveredPath.element.pathId]),
             });
           }
           // Handle multi selection:
           else {
             const newSelection = new Set(selection);
 
-            if (newSelection.has(hoveredPath.element.path))
-              newSelection.delete(hoveredPath.element.path);
-            else newSelection.add(hoveredPath.element.path);
+            if (newSelection.has(hoveredPath.element.pathId))
+              newSelection.delete(hoveredPath.element.pathId);
+            else newSelection.add(hoveredPath.element.pathId);
 
             setState({ ...state, selection: newSelection.size ? newSelection : null });
           }
@@ -127,9 +127,9 @@ const Wrapper: FC<{
           }
           // Start dragging selection
           else if (!panTarget && enableDragPaths && hoveredPath) {
-            const newSelection = selection?.has(hoveredPath.element.path)
+            const newSelection = selection?.has(hoveredPath.element.pathId)
               ? selection
-              : new Set([hoveredPath.element.path]);
+              : new Set([hoveredPath.element.pathId]);
             setState((s) => ({
               ...s,
               selection: newSelection,
@@ -202,7 +202,7 @@ const Wrapper: FC<{
                   : 4
                 : state.selection?.has(path.id)
                   ? 1
-                  : state.hoveredPath?.element.path === path.id
+                  : state.hoveredPath?.element.pathId === path.id
                     ? 1
                     : state.selection?.size
                       ? 3

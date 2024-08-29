@@ -4,7 +4,6 @@ import { inRange, last } from 'lodash';
 
 import { CAPTION_SIZE } from './TimeCaptions';
 import { useDraw, usePicking } from '../hooks/useCanvas';
-import { FONT_SIZE } from '../lib/consts';
 import {
   type DataPoint,
   DEFAULT_PATH_END,
@@ -199,7 +198,7 @@ export const PathLayer: FC<PathLayerProps> = ({
         swapAxis,
         theme: {
           background,
-          pathsStyles: { font },
+          pathsStyles: { fontSize, fontFamily },
         },
       }: SpaceTimeChartContextType,
       label: string,
@@ -245,7 +244,7 @@ export const PathLayer: FC<PathLayerProps> = ({
       ctx.save();
       ctx.translate(position.x, position.y);
       ctx.rotate(angle);
-      ctx.font = font;
+      ctx.font = `${fontSize}px ${fontFamily}`;
       ctx.textAlign = 'start';
 
       const dx = 5;
@@ -253,13 +252,15 @@ export const PathLayer: FC<PathLayerProps> = ({
       const padding = 2;
       const measure = ctx.measureText(label);
       const w = measure.width + 2 * padding;
-      const h = measure.actualBoundingBoxAscent + measure.actualBoundingBoxDescent + 2 * padding;
+      const actualBoundingBoxHeight =
+        measure.actualBoundingBoxAscent + measure.actualBoundingBoxDescent;
+      const h = actualBoundingBoxHeight + 2 * padding;
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = background;
       ctx.fillRect(dx - padding, dy - h + padding, w, h);
       ctx.fillStyle = labelColor;
       ctx.globalAlpha = 1;
-      ctx.fillText(label, dx, dy - FONT_SIZE / 4);
+      ctx.fillText(label, dx, dy);
       ctx.restore();
     },
     []
@@ -348,7 +349,7 @@ export const PathLayer: FC<PathLayerProps> = ({
           const previousPoint = a[i - 1];
           const index = registerPickingElement({
             type: 'segment',
-            path: path.id,
+            pathId: path.id,
             from: previousPoint,
             to: point,
           });
@@ -368,7 +369,7 @@ export const PathLayer: FC<PathLayerProps> = ({
       getSnapPoints(stcContext).forEach((point) => {
         const index = registerPickingElement({
           type: 'point',
-          path: path.id,
+          pathId: path.id,
           point,
         });
         const lineColor = hexToRgb(indexToColor(index));
