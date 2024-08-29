@@ -135,16 +135,14 @@ const Manchette: FC<ManchetteProps> = ({
   useIsOverflow(manchette, checkOverflow);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [handleScroll, handleKeyDown, handleKeyUp]);
+  }, [handleKeyDown, handleKeyUp]);
 
   useEffect(() => {
     const computedOperationalPoints = calcOperationalPointsToDisplay(
@@ -186,7 +184,7 @@ const Manchette: FC<ManchetteProps> = ({
         style={{ height: `${height}px` }}
         onScroll={handleScroll}
       >
-        <div className="manchette-container ">
+        <div className="manchette-container">
           <div
             className=" bg-ambientB-10 border-r border-grey-30"
             style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px` }}
