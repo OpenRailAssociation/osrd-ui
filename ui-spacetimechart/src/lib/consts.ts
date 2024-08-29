@@ -40,7 +40,8 @@ export const DEFAULT_THEME: SpaceTimeChartTheme = {
     24 * HOUR,
   ],
   pathsStyles: {
-    font: `${FONT_SIZE}px ${FONT}`,
+    fontSize: FONT_SIZE,
+    fontFamily: FONT,
   },
   spaceGraduationsStyles: {
     1: {

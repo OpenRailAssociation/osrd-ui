@@ -120,7 +120,7 @@ export function useMouseInteractions(
     if (onMouseMove) {
       onMouseMove({
         position,
-        isHover: isHover,
+        isHover,
         data: contextRef.current.getData(position),
         hoveredItem,
         context: contextRef.current,

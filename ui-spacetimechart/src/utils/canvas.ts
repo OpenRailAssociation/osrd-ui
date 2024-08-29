@@ -96,17 +96,17 @@ export function drawAliasedLine(
  * Here are some examples to make it clearer what the output should look like:
  *
  * getAliasedDiscShape(0);
- * // [1]
+ * [1]
  * getAliasedDiscShape(1);
- * // [0, 1, 0,
- * //  1, 1, 1,
- * //  0, 1, 0]
+ * [0, 1, 0,
+ *  1, 1, 1,
+ *  0, 1, 0]
  * getAliasedDiscShape(2);
- * // [0, 0, 1, 0, 0,
- * //  0, 1, 1, 1, 0,
- * //  1, 1, 1, 1, 1,
- * //  0, 1, 1, 1, 0,
- * //  0, 0, 1, 0, 0]
+ * [0, 0, 1, 0, 0,
+ *  0, 1, 1, 1, 0,
+ *  1, 1, 1, 1, 1,
+ *  0, 1, 1, 1, 0,
+ *  0, 0, 1, 0, 0]
  */
 const DISCS_CACHE: Map<number, Uint8Array> = new Map();
 export function getAliasedDiscShape(radius: number): Uint8Array {

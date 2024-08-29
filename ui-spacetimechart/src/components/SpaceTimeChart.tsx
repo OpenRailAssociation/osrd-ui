@@ -4,13 +4,14 @@ import cx from 'classnames';
 
 import SpaceGraduations from './SpaceGraduations';
 import TimeCaptions from './TimeCaptions';
-import { TimeGraduations } from './TimeGraduations';
+import TimeGraduations from './TimeGraduations';
 import { useCanvas } from '../hooks/useCanvas';
 import { useMouseInteractions } from '../hooks/useMouseInteractions';
 import { useMouseTracking } from '../hooks/useMouseTracking';
 import { useSize } from '../hooks/useSize';
 import { DEFAULT_THEME } from '../lib/consts';
 import { CanvasContext, MouseContext, SpaceTimeChartContext } from '../lib/context';
+import { validateTheme } from '../lib/theme';
 import {
   type MouseContextType,
   type PickingElement,
@@ -180,6 +181,11 @@ export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartPro
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hoveredItem]);
+
+  // Check theme validity:
+  useEffect(() => {
+    validateTheme(fullTheme);
+  }, [fullTheme]);
 
   return (
     <div

@@ -1,5 +1,6 @@
 import { inRange } from 'lodash';
 
+import { getDiff } from './vectors';
 import { type Point } from '../lib/types';
 
 /**
@@ -7,15 +8,14 @@ import { type Point } from '../lib/types';
  */
 export function intersectsSegments(s1From: Point, s1To: Point, s2From: Point, s2To: Point) {
   const crossProduct = (a: Point, b: Point) => a.x * b.y - a.y * b.x;
-  const subtract = (a: Point, b: Point) => ({ x: a.x - b.x, y: a.y - b.y });
 
-  const d1 = subtract(s1To, s1From);
-  const d2 = subtract(s2To, s2From);
-  const delta = subtract(s2From, s1From);
+  const d1 = getDiff(s1To, s1From);
+  const d2 = getDiff(s2To, s2From);
 
   const crossD1D2 = crossProduct(d1, d2);
   if (crossD1D2 === 0) return false; // Parallel lines
 
+  const delta = getDiff(s2From, s1From);
   const t = crossProduct(delta, d2) / crossD1D2;
   const u = crossProduct(delta, d1) / crossD1D2;
 

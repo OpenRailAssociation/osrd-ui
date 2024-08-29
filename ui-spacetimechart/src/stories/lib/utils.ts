@@ -42,7 +42,7 @@ export function zoom(
 }
 
 /**
- * This function helps to pretty-print a Date as a length:
+ * This function helps to pretty-print a Date as a length.
  */
 export function formatTimeLength(date: Date): string {
   const totalMilliseconds = date.getTime();

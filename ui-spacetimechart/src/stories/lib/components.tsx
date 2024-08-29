@@ -27,11 +27,36 @@ export const Line: FC<{
   </svg>
 );
 
+const CROSS_SIZE = 11;
+const Cross: FC<{ size?: number }> = ({ size = CROSS_SIZE }) => (
+  <>
+    <div
+      style={{
+        position: 'absolute',
+        width: size,
+        height: 1,
+        left: -size / 2,
+        top: -0.5,
+        background: 'black',
+      }}
+    />
+    <div
+      style={{
+        position: 'absolute',
+        width: 1,
+        height: size,
+        left: -0.5,
+        top: -size / 2,
+        background: 'black',
+      }}
+    />
+  </>
+);
+
 /**
  * This component renders a data label, to help bring context to the SpaceTimeChart:
  */
-const CROSS_SIZE = 11;
-export const DataLabel: FC<{
+const DataLabel: FC<{
   data: DataPoint;
   position: Point;
   isDiff?: boolean;
@@ -47,26 +72,7 @@ export const DataLabel: FC<{
       fontSize: '0.7em',
     }}
   >
-    <div
-      style={{
-        position: 'absolute',
-        width: CROSS_SIZE,
-        height: 1,
-        left: -CROSS_SIZE / 2,
-        top: -0.5,
-        background: 'black',
-      }}
-    />
-    <div
-      style={{
-        position: 'absolute',
-        width: 1,
-        height: CROSS_SIZE,
-        left: -0.5,
-        top: -CROSS_SIZE / 2,
-        background: 'black',
-      }}
-    />
+    <Cross />
     <div className="content" style={{ background: WHITE_75 }}>
       {isDiff ? (
         <>

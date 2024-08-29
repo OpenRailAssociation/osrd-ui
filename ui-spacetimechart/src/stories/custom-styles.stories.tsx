@@ -115,7 +115,8 @@ const Wrapper: FC<{
         theme={{
           background: color3,
           pathsStyles: {
-            font: `16px sans-serif`,
+            fontSize: 16,
+            fontFamily: 'sans-serif',
           },
           spaceGraduationsStyles: {
             1: {

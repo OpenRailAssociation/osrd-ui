@@ -98,8 +98,8 @@ export type LayerType = (typeof LAYERS)[number];
 
 // PICKING SPECIFIC TYPES:
 export type PickingElement =
-  | { type: 'point'; path: string; point: Point }
-  | { type: 'segment'; path: string; from: Point; to: Point };
+  | { type: 'point'; pathId: string; point: Point }
+  | { type: 'segment'; pathId: string; from: Point; to: Point };
 export type HoveredItem = { layer: PickingLayerType; element: PickingElement };
 
 export type DrawingFunction = (
@@ -136,18 +136,18 @@ export type MouseContextType = MouseState & {
   hoveredItem: HoveredItem | null;
 };
 
+export type LineStyle = { width: number; color: string; opacity?: number; dashArray?: number[] };
+
 // STYLES:
 export type SpaceTimeChartTheme = {
   background: string;
   breakpoints: number[];
   timeRanges: number[];
   pathsStyles: {
-    font: string;
+    fontSize: number;
+    fontFamily: string;
   };
-  spaceGraduationsStyles: Record<
-    number,
-    { width: number; color: string; opacity?: number; dashArray?: number[] }
-  >;
+  spaceGraduationsStyles: Record<number, LineStyle>;
   timeCaptionsPriorities: number[][];
   timeCaptionsStyles: Record<
     number,
@@ -160,10 +160,7 @@ export type SpaceTimeChartTheme = {
     }
   >;
   timeGraduationsPriorities: number[][];
-  timeGraduationsStyles: Record<
-    number,
-    { width: number; color: string; opacity?: number; dashArray?: number[] }
-  >;
+  timeGraduationsStyles: Record<number, LineStyle>;
 };
 
 // CORE COMPONENT MAIN TYPES:
