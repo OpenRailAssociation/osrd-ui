@@ -36,6 +36,10 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
     powerRestrictions,
   } = store;
 
+  if (stops.length === 0) {
+    return;
+  }
+
   ctx.strokeStyle = 'rgb(0, 0, 0)';
   ctx.lineWidth = 1;
   ctx.font = 'normal 12px IBM Plex Sans';
