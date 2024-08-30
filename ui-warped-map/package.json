@@ -59,7 +59,7 @@
     "@turf/simplify": "^6.5.0",
     "@turf/transform-translate": "^6.5.0",
     "lodash": "^4.17.21",
-    "maplibre-gl": "^3.6.2",
+    "maplibre-gl": "^4.6.0",
     "react-map-gl": "^7.1.7"
   },
   "peerDependencies": {
