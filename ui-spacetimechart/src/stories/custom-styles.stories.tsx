@@ -16,7 +16,7 @@ import { PathLayer, SpaceTimeChart } from '../';
 import { type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './lib/tailwind-mockup.css';
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
 const DEFAULT_COLOR_1 = '#FF511A';
 const DEFAULT_COLOR_2 = '#FF8B61';

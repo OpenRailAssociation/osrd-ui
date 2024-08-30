@@ -15,10 +15,12 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "main": "dist/index.esm.js",
+  "style": "dist/theme.css",
   "files": [
     "/dist"
   ],
   "exports": {
+    "./dist/theme.css": "./dist/theme.css",
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.esm.js"
@@ -28,6 +30,7 @@
     "rollup": "rollup -c",
     "clean": "rimraf dist",
     "build": "npm run rollup",
+    "watch": "NODE_ENV=development rollup -c -w",
     "test": "vitest run --dir src/__tests__",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "eslint src --ext .ts,.tsx  --max-warnings 0",

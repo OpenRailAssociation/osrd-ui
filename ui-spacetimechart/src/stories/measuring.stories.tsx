@@ -10,6 +10,8 @@ import { SpaceTimeChart, PathLayer } from '../';
 import { type DataPoint, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
+
 type WrapperProps = {
   spaceScaleType: 'linear' | 'proportional';
   enableSnapping: boolean;

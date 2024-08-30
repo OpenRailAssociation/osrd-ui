@@ -1,9 +1,10 @@
+import process from 'process';
+
 import eslint from '@rollup/plugin-eslint';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import livereload from 'rollup-plugin-livereload';
 import postcss from 'rollup-plugin-postcss';
-import process from 'process';
 
 const formats = ['esm'];
 const isDev = process.env.NODE_ENV === 'development';
