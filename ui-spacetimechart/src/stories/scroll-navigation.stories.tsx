@@ -12,7 +12,7 @@ import { isPathOnScreen } from '../utils/geometry';
 import { getSpaceAtTime } from '../utils/scales';
 import { getDiff } from '../utils/vectors';
 
-import './lib/tailwind-mockup.css';
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
 const PATHS_DICT = keyBy(PATHS, 'id');
 

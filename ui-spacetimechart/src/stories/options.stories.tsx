@@ -19,8 +19,6 @@ import { CanvasContext } from '../lib/context';
 import { type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './lib/tailwind-mockup.css';
-
 const ScreenshotButton = () => {
   const { captureCanvases } = useContext(CanvasContext);
 

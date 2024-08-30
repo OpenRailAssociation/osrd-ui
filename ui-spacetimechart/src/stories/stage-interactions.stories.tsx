@@ -16,8 +16,6 @@ import { SpaceTimeChart, PathLayer } from '../';
 import { type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './lib/tailwind-mockup.css';
-
 type WrapperProps = {
   xPan: boolean;
   yPan: boolean;

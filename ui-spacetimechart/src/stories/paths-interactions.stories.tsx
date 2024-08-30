@@ -10,7 +10,7 @@ import { SpaceTimeChart, PathLayer } from '../';
 import { type HoveredItem, type PathData, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './lib/tailwind-mockup.css';
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
 function delayPath<T extends PathData>(path: T, newTimeOrigin: number): T {
   const delay = newTimeOrigin - path.points[0].time;

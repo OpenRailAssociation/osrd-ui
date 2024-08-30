@@ -11,7 +11,7 @@ import { KILOMETER, MINUTE } from '../lib/consts';
 import { type OperationalPoint, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './lib/tailwind-mockup.css';
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
 const DATE_OFFSET = +new Date('2024/01/01');
 const COLORS = [

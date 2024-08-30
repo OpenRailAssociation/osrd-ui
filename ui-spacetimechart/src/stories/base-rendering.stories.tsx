@@ -6,7 +6,7 @@ import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
 import { SpaceTimeChart, PathLayer } from '../';
 
-import './lib/tailwind-mockup.css';
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
 type WrapperProps = {
   xZoomLevel: number;

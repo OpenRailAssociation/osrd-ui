@@ -20,7 +20,7 @@ import { AMBIANT_A10, ERROR_30, ERROR_60, HOUR, KILOMETER, MINUTE } from '../lib
 import { type DrawingFunction, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
-import './lib/tailwind-mockup.css';
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
 const MONO_TRACK_SPACES = [
   { from: 6 * KILOMETER, to: 24 * KILOMETER },
