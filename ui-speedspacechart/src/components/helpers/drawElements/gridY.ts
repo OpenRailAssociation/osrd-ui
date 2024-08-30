@@ -1,9 +1,9 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { MARGINS, TICK_ICONS } from '../../const';
+import { MARGINS, TICK_TITLE_MARGINS } from '../../const';
 import { clearCanvas, speedRangeValues } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_TOP } = MARGINS;
-const { Y_LEFT_VERTICAL, Y_LEFT_HORIZONTAL } = TICK_ICONS;
+const { Y_LEFT_VERTICAL, Y_LEFT_HORIZONTAL } = TICK_TITLE_MARGINS;
 
 export const drawGridY = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { speeds } = store;
