@@ -1,4 +1,4 @@
-import React, { type FC, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
@@ -39,7 +39,7 @@ const CLOSED_DOORS = [
 /**
  * This component renders a colored area where the line only has one track:
  */
-const MonoTrackSpace: FC<{ from: number; to: number }> = ({ from, to }) => {
+const MonoTrackSpace = ({ from, to }: { from: number; to: number }) => {
   const drawMonoTrackSpace = useCallback<DrawingFunction>(
     (ctx, { getSpacePixel, width, height, spaceAxis }) => {
       const spaceSize = spaceAxis === 'x' ? width : height;
@@ -67,13 +67,13 @@ const MonoTrackSpace: FC<{ from: number; to: number }> = ({ from, to }) => {
 /**
  * This component renders a colored area where the line only has one track:
  */
-const ClosedDoor: FC<(typeof CLOSED_DOORS)[number]> = ({
+const ClosedDoor = ({
   doorPosition,
   areaFrom,
   areaTo,
   timeStart,
   timeEnd,
-}) => {
+}: (typeof CLOSED_DOORS)[number]) => {
   const drawClosedDoorBackground = useCallback<DrawingFunction>(
     (ctx, { getSpacePixel, getTimePixel, width, height, spaceAxis }) => {
       const spaceSize = spaceAxis === 'x' ? width : height;
@@ -162,10 +162,13 @@ const ClosedDoor: FC<(typeof CLOSED_DOORS)[number]> = ({
 /**
  * This story aims at showcasing how to display additional data.
  */
-const Wrapper: FC<{
+const Wrapper = ({
+  swapAxis,
+  spaceScaleType,
+}: {
   swapAxis: boolean;
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ swapAxis, spaceScaleType }) => {
+}) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

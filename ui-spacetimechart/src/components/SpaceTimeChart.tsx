@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import cx from 'classnames';
 
@@ -29,7 +29,7 @@ import {
 } from '../utils/scales';
 import { snapPosition } from '../utils/snapping';
 
-export const SpaceTimeChart: FC<SpaceTimeChartProps> = (props: SpaceTimeChartProps) => {
+export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
   const {
     operationalPoints,
     spaceOrigin,

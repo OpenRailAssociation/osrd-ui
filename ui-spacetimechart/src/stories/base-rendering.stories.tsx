@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React from 'react';
 
 import type { Meta } from '@storybook/react';
 
@@ -11,13 +11,19 @@ import './lib/tailwind-mockup.css';
 /**
  * This story aims at showcasing how to render a SpaceTimeChart.
  */
-const Wrapper: FC<{
+const Wrapper = ({
+  xZoomLevel,
+  yZoomLevel,
+  xOffset,
+  yOffset,
+  spaceScaleType,
+}: {
   xZoomLevel: number;
   yZoomLevel: number;
   xOffset: number;
   yOffset: number;
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ xZoomLevel, yZoomLevel, xOffset, yOffset, spaceScaleType }) => (
+}) => (
   <SpaceTimeChart
     className="inset-0 absolute"
     operationalPoints={OPERATIONAL_POINTS}

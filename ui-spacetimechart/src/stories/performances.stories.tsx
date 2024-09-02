@@ -1,4 +1,4 @@
-import React, { type FC, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { type Meta } from '@storybook/react';
 import cx from 'classnames';
@@ -31,12 +31,17 @@ const COLORS = [
  * This story aims at testing the performances of the SpaceTimeChart component when rendering a
  * high number of paths.
  */
-const Wrapper: FC<{
+const Wrapper = ({
+  operationalPointsCount,
+  trainTypes,
+  pathsPerTrain,
+  spaceScaleType,
+}: {
   operationalPointsCount: number;
   trainTypes: number;
   pathsPerTrain: number;
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ operationalPointsCount, trainTypes, pathsPerTrain, spaceScaleType }) => {
+}) => {
   const operationalPoints: OperationalPoint[] = useMemo(() => {
     let position = 0;
     return range(operationalPointsCount).map((i) => ({

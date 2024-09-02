@@ -1,4 +1,4 @@
-import React, { type FC, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
@@ -21,7 +21,7 @@ import { getDiff } from '../utils/vectors';
 
 import './lib/tailwind-mockup.css';
 
-const ScreenshotButton: FC = () => {
+const ScreenshotButton = () => {
   const { captureCanvases } = useContext(CanvasContext);
 
   return (
@@ -48,13 +48,19 @@ const ScreenshotButton: FC = () => {
  * SpaceTimeChart, such as `swapAxis`, `enableSnapping`, `hideGrid` or
  * `hidePathsLabels`.
  */
-const Wrapper: FC<{
+const Wrapper = ({
+  enableSnapping,
+  hideGrid,
+  hidePathsLabels,
+  swapAxis,
+  spaceScaleType,
+}: {
   enableSnapping: boolean;
   hideGrid: boolean;
   hidePathsLabels: boolean;
   swapAxis: boolean;
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ enableSnapping, hideGrid, hidePathsLabels, swapAxis, spaceScaleType }) => {
+}) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

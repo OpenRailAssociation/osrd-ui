@@ -1,4 +1,4 @@
-import React, { type FC, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { round } from 'lodash';
 
@@ -10,10 +10,7 @@ import { type DataPoint, type Point } from '../../lib/types';
 /**
  * This component draws a dashed line from p1 to p2, using SVG:
  */
-export const Line: FC<{
-  p1: Point;
-  p2: Point;
-}> = ({ p1, p2 }) => (
+export const Line = ({ p1, p2 }: { p1: Point; p2: Point }) => (
   <svg width="100%" height="100%">
     <line
       x1={p1.x}
@@ -28,7 +25,7 @@ export const Line: FC<{
 );
 
 const CROSS_SIZE = 11;
-const Cross: FC<{ size?: number }> = ({ size = CROSS_SIZE }) => (
+const Cross = ({ size = CROSS_SIZE }: { size?: number }) => (
   <>
     <div
       style={{
@@ -56,12 +53,17 @@ const Cross: FC<{ size?: number }> = ({ size = CROSS_SIZE }) => (
 /**
  * This component renders a data label, to help bring context to the SpaceTimeChart:
  */
-const DataLabel: FC<{
+const DataLabel = ({
+  data,
+  position,
+  isDiff,
+  marginTop = 0,
+}: {
   data: DataPoint;
   position: Point;
   isDiff?: boolean;
   marginTop?: number;
-}> = ({ data, position, isDiff, marginTop = 0 }) => (
+}) => (
   <div
     style={{
       position: 'absolute',
@@ -92,7 +94,7 @@ const DataLabel: FC<{
 /**
  * This component renders a DataLabel under the mouse, using the MouseContext from the SpaceTimeChart:
  */
-export const MouseTracker: FC<{ reference?: DataPoint }> = ({ reference }) => {
+export const MouseTracker = ({ reference }: { reference?: DataPoint }) => {
   const { getPoint } = useContext(SpaceTimeChartContext);
   const { position, data, isHover } = useContext(MouseContext);
 

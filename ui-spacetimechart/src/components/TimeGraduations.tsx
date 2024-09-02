@@ -1,10 +1,10 @@
-import { type FC, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { useDraw } from '../hooks/useCanvas';
 import { MINUTE } from '../lib/consts';
 import { type DrawingFunction } from '../lib/types';
 
-const TimeGraduations: FC = () => {
+const TimeGraduations = () => {
   const drawingFunction = useCallback<DrawingFunction>(
     (
       ctx,
