@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import React, { type PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
@@ -19,18 +19,7 @@ import { type SourceDefinition } from '../core/types';
  * This component handles displaying warped data. The data must be warped before being given to this component.
  * Check `SimulationWarpedMap` to see an example use case.
  */
-const TransformedDataMap: FC<
-  PropsWithChildren<{
-    bbox: BBox2d;
-    mapStyle?: string | StyleSpecification;
-    backgroundColor?: string;
-    sources: SourceDefinition[];
-    transformedData: Record<string, FeatureCollection>;
-    path?: Feature<LineString>;
-    pathLayer?: Omit<LineLayer, 'source-layer'>;
-    log?: boolean;
-  }>
-> = ({
+const TransformedDataMap = ({
   bbox,
   mapStyle,
   sources,
@@ -40,7 +29,16 @@ const TransformedDataMap: FC<
   pathLayer,
   log,
   children,
-}) => {
+}: PropsWithChildren<{
+  bbox: BBox2d;
+  mapStyle?: string | StyleSpecification;
+  backgroundColor?: string;
+  sources: SourceDefinition[];
+  transformedData: Record<string, FeatureCollection>;
+  path?: Feature<LineString>;
+  pathLayer?: Omit<LineLayer, 'source-layer'>;
+  log?: boolean;
+}>) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const pathCollection = useMemo(() => featureCollection(path ? [path] : []), [path]);
   const interactiveLayerIds = useMemo(

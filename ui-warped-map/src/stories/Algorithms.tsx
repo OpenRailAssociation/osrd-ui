@@ -1,4 +1,4 @@
-import React, { type FC, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { featureCollection } from '@turf/helpers';
 import type { Feature, LineString } from 'geojson';
@@ -24,9 +24,12 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
   },
 };
 
-const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: WarpingOptions }> = ({
+const AlgorithmsShowcase = ({
   path,
   warpingOptions,
+}: {
+  path: Feature<LineString>;
+  warpingOptions: WarpingOptions;
 }) => {
   const { grid, warpedGrid } = useMemo(
     () => getWarping(path, warpingOptions),
@@ -97,7 +100,7 @@ const AlgorithmsShowcase: FC<{ path: Feature<LineString>; warpingOptions: Warpin
   );
 };
 
-const Algorithms: FC<{ path: string } & WarpingOptions> = (props) => {
+const Algorithms = (props: { path: string } & WarpingOptions) => {
   const { path: pathName, ...warpingOptions } = props;
   const pathState = useAsyncMemo(
     () => fetch(`./${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),

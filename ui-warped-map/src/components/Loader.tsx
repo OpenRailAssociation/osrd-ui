@@ -1,6 +1,6 @@
-import React, { type FC } from 'react';
+import React from 'react';
 
-const Loader: FC = () => (
+const Loader = () => (
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
     <span>Loading...</span>
   </div>
