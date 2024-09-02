@@ -58,8 +58,12 @@
             "message": "Use ExpressionFilterSpecification instead",
             "fixWith": "ExpressionFilterSpecification",
           },
+          "FC": "Useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177",
+          "React.FC": "Useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177",
+          "React.FunctionComponent": "Useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177",
+          "React.FunctionalComponent": "Preact specific, useless and has some drawbacks, see https://github.com/facebook/create-react-app/pull/8177"
+          },
         },
-      },
     ],
     "@typescript-eslint/no-unused-vars": [
       "warn",
