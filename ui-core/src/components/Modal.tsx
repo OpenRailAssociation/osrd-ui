@@ -10,7 +10,7 @@ type ModalProps = {
   children: React.ReactNode;
 };
 
-const InputModal: React.FC<ModalProps> = ({ inputRef, isOpen, onClose, children }) => {
+const InputModal = ({ inputRef, isOpen, onClose, children }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { modalPosition, calculatePosition } = useModalPosition(inputRef, modalRef);
 

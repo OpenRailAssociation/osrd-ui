@@ -12,14 +12,7 @@ type LabelProps = {
   small: boolean;
 };
 
-const Label: React.FC<LabelProps> = ({
-  htmlFor,
-  text,
-  required,
-  hasHint,
-  disabled,
-  small = false,
-}) => (
+const Label = ({ htmlFor, text, required, hasHint, disabled, small = false }: LabelProps) => (
   <div className={cx('base-label-wrapper', { 'has-hint': hasHint, small })}>
     {required && (
       <span className="required">

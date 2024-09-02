@@ -17,7 +17,7 @@ export type StatusMessageProps = {
   small?: boolean;
 };
 
-const StatusMessage: React.FC<StatusMessageProps> = ({ statusWithMessage, showIcon, small }) => {
+const StatusMessage = ({ statusWithMessage, showIcon, small }: StatusMessageProps) => {
   const { status, message } = statusWithMessage;
   if (message === undefined) return null;
 

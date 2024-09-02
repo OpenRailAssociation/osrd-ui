@@ -20,13 +20,7 @@ type DayProps = {
   onClick: (date: Date) => void;
 };
 
-const Day: React.FC<DayProps> = ({
-  date,
-  isReferenceDate,
-  isSelectable,
-  dayWrapperClassName,
-  onClick,
-}) => (
+const Day = ({ date, isReferenceDate, isSelectable, dayWrapperClassName, onClick }: DayProps) => (
   <div
     onClick={() => {
       if (isSelectable) onClick(date);
@@ -40,7 +34,7 @@ const Day: React.FC<DayProps> = ({
   </div>
 );
 
-const Calendar: React.FC<CalendarProps> = (props) => {
+const Calendar = (props: CalendarProps) => {
   const { displayedMonthStartDate, onDayClick } = props;
   const { days, isReferenceDate, isDateSelectable, buildDayWrapperClassName } = useCalendar(props);
   return (

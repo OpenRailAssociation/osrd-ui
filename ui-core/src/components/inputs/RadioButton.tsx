@@ -14,7 +14,7 @@ export type RadioButtonProps = Omit<
   small?: boolean;
 };
 
-const RadioButton: React.FC<RadioButtonProps> = ({
+const RadioButton = ({
   id,
   label,
   value,
@@ -24,7 +24,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
   onKeyUp,
   small,
   ...rest
-}) => {
+}: RadioButtonProps) => {
   const { handleKeyUp, handleBlur, isFocusByTab } = useFocusByTab({ onBlur, onKeyUp });
   return (
     <div className={cx('radio-button', { 'read-only': readOnly, small })} tabIndex={0}>

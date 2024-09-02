@@ -8,7 +8,7 @@ export type TokenInputProps = {
   tokens: string[];
 };
 
-const TokenInput: React.FC<TokenInputProps> = ({ label, tokens: initialTokens }) => {
+const TokenInput = ({ label, tokens: initialTokens }: TokenInputProps) => {
   const [tokens, setTokens] = useState(initialTokens);
   const [newToken, setNewToken] = useState('');
   const [selectedToken, setSelectedToken] = useState<number | null>(null);

@@ -11,7 +11,7 @@ type InputStatusIconProps = {
   className?: string;
 };
 
-const InputStatusIcon: React.FC<InputStatusIconProps> = ({ status, small, className }) => {
+const InputStatusIcon = ({ status, small, className }: InputStatusIconProps) => {
   const size = small ? 'sm' : 'lg';
   return (
     <span className={cx('status-icon', className, status)}>

@@ -19,7 +19,7 @@ export type RadioGroupProps = {
   statusWithMessage?: StatusWithMessage;
 };
 
-const RadioGroup: React.FC<RadioGroupProps> = ({
+const RadioGroup = ({
   label,
   value,
   subtitle,
@@ -29,7 +29,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
   statusWithMessage,
   required,
   small,
-}) => {
+}: RadioGroupProps) => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>(value);
 
   const handleOptionChange = (

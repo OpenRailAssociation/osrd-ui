@@ -10,11 +10,11 @@ export type ToleranceRangeGridProps = {
   toleranceSign: 'minus' | 'plus';
 };
 
-const ToleranceRangeGrid: React.FC<ToleranceRangeGridProps> = ({
+const ToleranceRangeGrid = ({
   onSelection,
   selectedTolerance,
   toleranceSign,
-}) => (
+}: ToleranceRangeGridProps) => (
   <div className="tolerance-picker-section">
     <div className={`tolerance-grid ${toleranceSign}-tolerance`}>
       {TOLERANCE_RANGES.map(({ label, value }, index) => (

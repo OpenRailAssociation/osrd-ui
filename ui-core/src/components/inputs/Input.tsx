@@ -12,7 +12,7 @@ type InputAffixProps = {
   readOnly: boolean;
 };
 
-const InputAffix: React.FC<InputAffixProps> = ({ value, type, disabled, readOnly }) => {
+const InputAffix = ({ value, type, disabled, readOnly }: InputAffixProps) => {
   const isContentWithCallback =
     typeof value === 'object' && value !== null && 'onClickCallback' in value;
   const spanContent = isContentWithCallback

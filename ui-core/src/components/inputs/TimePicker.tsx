@@ -18,7 +18,7 @@ type TimeRangeProps = {
   onSelectItem: (item: number) => void;
 };
 
-const TimeRange: React.FC<TimeRangeProps> = ({ range, selectedItem, className, onSelectItem }) => (
+const TimeRange = ({ range, selectedItem, className, onSelectItem }: TimeRangeProps) => (
   <div className="time-grid">
     {range.map((item) => (
       <div
@@ -32,12 +32,7 @@ const TimeRange: React.FC<TimeRangeProps> = ({ range, selectedItem, className, o
   </div>
 );
 
-const TimePicker: React.FC<TimePickerProps> = ({
-  onTimeChange,
-  hours = 0,
-  minutes = 0,
-  ...otherProps
-}) => {
+const TimePicker = ({ onTimeChange, hours = 0, minutes = 0, ...otherProps }: TimePickerProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
