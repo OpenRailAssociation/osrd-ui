@@ -1,10 +1,4 @@
-import React, {
-  type ComponentType,
-  type FC,
-  type PropsWithChildren,
-  useEffect,
-  useState,
-} from 'react';
+import React, { type ComponentType, type PropsWithChildren, useEffect, useState } from 'react';
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
@@ -38,17 +32,7 @@ const DEFAULT_COMPONENTS: Components = {
  * This component handles loading all data along a given path on various sources, and then displays them on a map (using
  * TransformedDataMap):
  */
-const WarpedMap: FC<
-  PropsWithChildren<{
-    path: Feature<LineString>;
-    pathLayer?: Omit<LineLayer, 'source-layer'>;
-    sources: SourceDefinition[];
-    components?: Partial<Components>;
-    mapStyle?: string | StyleSpecification;
-    warpingOptions?: WarpingOptions;
-    log?: boolean;
-  }>
-> = ({
+const WarpedMap = ({
   path,
   pathLayer,
   sources,
@@ -57,7 +41,15 @@ const WarpedMap: FC<
   warpingOptions,
   log,
   children,
-}) => {
+}: PropsWithChildren<{
+  path: Feature<LineString>;
+  pathLayer?: Omit<LineLayer, 'source-layer'>;
+  sources: SourceDefinition[];
+  components?: Partial<Components>;
+  mapStyle?: string | StyleSpecification;
+  warpingOptions?: WarpingOptions;
+  log?: boolean;
+}>) => {
   const [state, setState] = useState<
     | { type: 'idle' }
     | { type: 'loading' }

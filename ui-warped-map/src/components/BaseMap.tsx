@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import React, { type PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
@@ -12,13 +12,16 @@ import { type SourceDefinition } from '../core/types';
 /**
  * This component is for testing purpose only. It displays data as they appear in the DataLoader component.
  */
-const BaseMap: FC<
-  PropsWithChildren<{
-    path: Feature<LineString>;
-    sources: SourceDefinition[];
-    mapStyle?: string | StyleSpecification;
-  }>
-> = ({ path, mapStyle, sources, children }) => {
+const BaseMap = ({
+  path,
+  mapStyle,
+  sources,
+  children,
+}: PropsWithChildren<{
+  path: Feature<LineString>;
+  sources: SourceDefinition[];
+  mapStyle?: string | StyleSpecification;
+}>) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const interactiveLayerIds = useMemo(
     () => sources.flatMap(({ layers }) => layers.map(({ id }) => id)),

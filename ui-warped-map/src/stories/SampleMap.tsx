@@ -1,4 +1,4 @@
-import React, { type FC, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { featureCollection } from '@turf/helpers';
 import type { Feature, LineString } from 'geojson';
@@ -24,7 +24,7 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
   },
 };
 
-const SampleMap: FC<{ path: string }> = ({ path: pathName }) => {
+const SampleMap = ({ path: pathName }: { path: string }) => {
   const pathState = useAsyncMemo(
     () => fetch(`./${pathName}.json`).then((res) => res.json() as Promise<Feature<LineString>>),
     [pathName]

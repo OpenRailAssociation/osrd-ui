@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
@@ -19,14 +19,21 @@ const TIME_LABEL = 'Loading data around warped path';
  *
  * It is designed as a component instead of a hook to simplify mounting/unmounting the temporary invisible map.
  */
-const DataLoader: FC<{
+const DataLoader = ({
+  bbox,
+  mapStyle,
+  onDataLoaded,
+  sources,
+  timeout,
+  log,
+}: {
   bbox: BBox2d;
   mapStyle?: string | StyleSpecification;
   onDataLoaded: (sourcesData: Record<string, FeatureCollection>) => void;
   sources: SourceDefinition[];
   timeout?: number;
   log?: boolean;
-}> = ({ bbox, mapStyle, onDataLoaded, sources, timeout, log }) => {
+}) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const [state, setState] = useState<'idle' | 'render' | 'loaded'>('idle');
 
