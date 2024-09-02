@@ -1,4 +1,4 @@
-import React, { type FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
@@ -13,10 +13,13 @@ import { getDiff } from '../utils/vectors';
 /**
  * This story aims at showcasing how to measure times and distances in a SpaceTimeChart.
  */
-const Wrapper: FC<{
+const Wrapper = ({
+  spaceScaleType,
+  enableSnapping,
+}: {
   spaceScaleType: 'linear' | 'proportional';
   enableSnapping: boolean;
-}> = ({ spaceScaleType, enableSnapping }) => {
+}) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

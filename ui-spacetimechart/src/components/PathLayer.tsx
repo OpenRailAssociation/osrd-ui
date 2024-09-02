@@ -1,4 +1,4 @@
-import { type FC, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { inRange, last } from 'lodash';
 
@@ -87,12 +87,12 @@ export type PathLayerProps = {
  * - The pauses
  * - The "picking" shape (to handle interactions)
  */
-export const PathLayer: FC<PathLayerProps> = ({
+export const PathLayer = ({
   path,
   color,
   level = DEFAULT_LEVEL,
   pickingTolerance = DEFAULT_PICKING_TOLERANCE,
-}) => {
+}: PathLayerProps) => {
   /**
    * This function returns the list of points to join to draw the path. It will be both used to
    * render the visible path, and the segments on the picking layer.

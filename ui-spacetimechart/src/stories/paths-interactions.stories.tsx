@@ -1,4 +1,4 @@
-import React, { type FC, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
@@ -23,12 +23,17 @@ function delayPath<T extends PathData>(path: T, newTimeOrigin: number): T {
 /**
  * This story aims at showcasing how to manipulate paths in a SpaceTimeChart.
  */
-const Wrapper: FC<{
+const Wrapper = ({
+  enableDragPaths,
+  pickingTolerance,
+  enableMultiSelection,
+  spaceScaleType,
+}: {
   enableDragPaths: boolean;
   enableMultiSelection: boolean;
   spaceScaleType: 'linear' | 'proportional';
   pickingTolerance: number;
-}> = ({ enableDragPaths, pickingTolerance, enableMultiSelection, spaceScaleType }) => {
+}) => {
   const [paths, setPaths] = useState(PATHS);
   const pathsDict = useMemo(() => keyBy(paths, 'id'), [paths]);
   const [state, setState] = useState<{

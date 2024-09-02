@@ -1,9 +1,9 @@
-import { type FC, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { useDraw } from '../hooks/useCanvas';
 import { type DrawingFunction } from '../lib/types';
 
-const SpaceGraduations: FC = () => {
+const SpaceGraduations = () => {
   const drawingFunction = useCallback<DrawingFunction>(
     (
       ctx,

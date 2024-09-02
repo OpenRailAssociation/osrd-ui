@@ -1,4 +1,4 @@
-import React, { type FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
@@ -20,9 +20,7 @@ const PATHS_DICT = keyBy(PATHS, 'id');
  * This story aims at showcasing how to implement a different kind of navigation, where the mouse
  * wheel moves the time axis, and where a selected path must remain focused as much as possible.
  */
-const Wrapper: FC<{
-  spaceScaleType: 'linear' | 'proportional';
-}> = ({ spaceScaleType }) => {
+const Wrapper = ({ spaceScaleType }: { spaceScaleType: 'linear' | 'proportional' }) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

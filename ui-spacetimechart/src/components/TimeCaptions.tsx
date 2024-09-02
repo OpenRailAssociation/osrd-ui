@@ -1,4 +1,4 @@
-import { type FC, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { useDraw } from '../hooks/useCanvas';
 import { MINUTE } from '../lib/consts';
@@ -31,7 +31,7 @@ const RANGES_FORMATER: ((t: number, pixelsPerMinute: number) => string)[] = [
   HOURS_FORMATTER,
 ];
 
-const TimeCaptions: FC = () => {
+const TimeCaptions = () => {
   const drawingFunction = useCallback<DrawingFunction>(
     (
       ctx,

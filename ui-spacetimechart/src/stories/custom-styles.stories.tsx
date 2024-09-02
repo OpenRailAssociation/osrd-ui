@@ -1,4 +1,4 @@
-import React, { type FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
@@ -25,12 +25,17 @@ const DEFAULT_COLOR_3 = '#FFEBE1';
 /**
  * This story aims at showcasing how to customize inside styles.
  */
-const Wrapper: FC<{
+const Wrapper = ({
+  color1,
+  color2,
+  color3,
+  spaceScaleType,
+}: {
   color1: string;
   color2: string;
   color3: string;
   spaceScaleType: 'linear' | 'proportional';
-}> = ({ color1, color2, color3, spaceScaleType }) => {
+}) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;
