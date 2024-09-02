@@ -20,7 +20,7 @@ export type FieldWrapperProps = {
   className?: string;
 };
 
-const FieldWrapper: React.FC<FieldWrapperProps> = ({
+const FieldWrapper = ({
   id,
   label,
   hint,
@@ -31,7 +31,7 @@ const FieldWrapper: React.FC<FieldWrapperProps> = ({
   small = false,
   className,
   children,
-}) => {
+}: FieldWrapperProps) => {
   const statusClassname = statusWithMessage ? { [statusWithMessage.status]: true } : {};
 
   return (

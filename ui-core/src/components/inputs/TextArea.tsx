@@ -9,7 +9,7 @@ export type TextAreaProps = React.InputHTMLAttributes<HTMLTextAreaElement> &
   Omit<FieldWrapperProps, 'children'>;
 
 const CHAR_COUNT_ERROR_THRESHOLD = 40;
-const TextArea: React.FC<TextAreaProps> = ({
+const TextArea = ({
   id,
   label,
   value: initialValue,
@@ -22,7 +22,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   onKeyUp,
   onBlur,
   ...rest
-}) => {
+}: TextAreaProps) => {
   const [value, setValue] = useState<string>(initialValue as string);
   const charCount = value?.length || 0;
   const { handleKeyUp, handleBlur, isFocusByTab } = useFocusByTab({ onBlur, onKeyUp });

@@ -1,4 +1,4 @@
-import React, { type InputHTMLAttributes, type MouseEvent, type FC } from 'react';
+import React, { type InputHTMLAttributes, type MouseEvent } from 'react';
 
 import cx from 'classnames';
 
@@ -11,7 +11,7 @@ export type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
   isIndeterminate?: boolean;
 };
 
-const Checkbox: FC<CheckboxProps> = ({
+const Checkbox = ({
   label,
   small,
   hint,
@@ -23,7 +23,7 @@ const Checkbox: FC<CheckboxProps> = ({
   onKeyUp,
   onBlur,
   ...rest
-}) => {
+}: CheckboxProps) => {
   const { handleKeyUp, handleBlur, isFocusByTab } = useFocusByTab({ onBlur, onKeyUp });
 
   const handleClick = (e: MouseEvent<HTMLInputElement>) => {

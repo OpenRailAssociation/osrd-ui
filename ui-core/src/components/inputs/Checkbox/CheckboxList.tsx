@@ -14,7 +14,7 @@ export type CheckboxListProps = {
   disabled?: boolean;
 };
 
-const CheckboxList: React.FC<CheckboxListProps> = (checkBoxListprops) => {
+const CheckboxList = (checkBoxListprops: CheckboxListProps) => {
   const {
     items,
     onClickItem,

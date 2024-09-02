@@ -39,7 +39,7 @@ export type TolerancePickerProps = Omit<InputProps, 'value'> & {
   translateWarningMessage?: (invalidTolerance: number) => string;
 };
 
-const TolerancePicker: React.FC<TolerancePickerProps> = ({
+const TolerancePicker = ({
   onToleranceChange,
   toleranceValues: { minusTolerance, plusTolerance } = {
     minusTolerance: TOLERANCE_RANGES[0].value,
@@ -47,7 +47,7 @@ const TolerancePicker: React.FC<TolerancePickerProps> = ({
   },
   translateWarningMessage,
   ...inputProps
-}) => {
+}: TolerancePickerProps) => {
   const formatToleranceValue = (minusIndex: number, plusIndex: number) =>
     `-${TOLERANCE_RANGES[minusIndex]?.label || ''}/+${TOLERANCE_RANGES[plusIndex]?.label || ''}`;
 

@@ -25,7 +25,7 @@ export type CalendarPickerPublicProps = {
 
 export type CalendarPickerProps = CalendarPickerPrivateProps & CalendarPickerPublicProps;
 
-const CalendarPicker: React.FC<CalendarPickerProps> = ({
+const CalendarPicker = ({
   initialDate,
   selectedSlot,
   selectableSlot,
@@ -33,7 +33,7 @@ const CalendarPicker: React.FC<CalendarPickerProps> = ({
   onDayClick,
   modalPosition,
   calendarPickerRef,
-}) => {
+}: CalendarPickerProps) => {
   const {
     displayedMonthsStartDates,
     showNavigationBtn,

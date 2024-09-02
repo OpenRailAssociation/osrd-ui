@@ -12,12 +12,12 @@ export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick
   isLoading?: boolean;
   isDisabled?: boolean;
   leadingIcon?: ReactNode;
-  counter?: number;
+  counter?: number | null;
   size?: ButtonSize;
   onClick: () => void;
 };
 
-const Button: React.FC<ButtonProps> = ({
+const Button = ({
   label,
   variant = 'Primary',
   isLoading = false,
@@ -27,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
   size = 'large',
   onClick,
   ...btnAttrs
-}) => {
+}: ButtonProps) => {
   const handleClick = () => {
     if (!isLoading && !isDisabled && onClick) {
       onClick();

@@ -27,7 +27,7 @@ export type RangeDatePickerProps = BaseDatePickerProps & {
 
 export type DatePickerProps = SingleDatePickerProps | RangeDatePickerProps;
 
-export const DatePicker: React.FC<DatePickerProps> = (props) => {
+export const DatePicker = (props: DatePickerProps) => {
   const {
     inputValue,
     selectedSlot,
