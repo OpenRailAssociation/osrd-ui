@@ -4,12 +4,7 @@ import { type StyledOperationalPointType } from '../types';
 import '@osrd-project/ui-core/dist/theme.css';
 import { positionMmToKm } from '../utils';
 
-const OperationalPoint: React.FC<StyledOperationalPointType> = ({
-  extensions,
-  id,
-  position,
-  display,
-}) => {
+const OperationalPoint = ({ extensions, id, position, display }: StyledOperationalPointType) => {
   if (!display) return null;
 
   return (

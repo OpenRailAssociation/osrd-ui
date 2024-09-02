@@ -7,7 +7,7 @@ type OperationalPointListProps = {
   operationalPoints: StyledOperationalPointType[];
 };
 
-const OperationalPointList: React.FC<OperationalPointListProps> = ({ operationalPoints }) => (
+const OperationalPointList = ({ operationalPoints }: OperationalPointListProps) => (
   <div className="operational-point-list ">
     {operationalPoints.map((op, index) => (
       <div

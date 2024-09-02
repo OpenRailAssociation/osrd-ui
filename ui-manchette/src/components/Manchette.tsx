@@ -1,4 +1,4 @@
-import React, { type FC, useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import { SpaceTimeChart, PathLayer } from '@osrd-project/ui-spacetimechart';
@@ -39,12 +39,12 @@ type ManchetteProps = {
   height?: number;
 };
 
-const Manchette: FC<ManchetteProps> = ({
+const Manchette = ({
   operationalPoints,
   projectPathTrainResult,
   selectedProjection,
   height = DEFAULT_HEIGHT,
-}) => {
+}: ManchetteProps) => {
   const manchette = useRef<HTMLDivElement>(null);
 
   const [isShiftPressed, setIsShiftPressed] = useState(false);
