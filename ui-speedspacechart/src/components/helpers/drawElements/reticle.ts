@@ -261,11 +261,11 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
       ctx.lineTo(curveX + MARGIN_LEFT, height - MARGIN_BOTTOM + 6);
 
       // calculate the position value between x.a and x.b
-      const position = Math.round(
+      const position =
         ((curveX - x.a) / (x.b - x.a)) *
           (nextCurvePosition!.position.start - previousCurvePosition!.position.start) +
-          previousCurvePosition!.position.start
-      );
+        previousCurvePosition!.position.start;
+      const roundedPosition = Math.round(position * 10) / 10;
       let textPosition = '';
       if (previousCurvePosition.position.start === 0 && nextCurvePosition.position.start === 0) {
         textPosition = '0';
@@ -275,7 +275,7 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
       ) {
         textPosition = maxPosition.toFixed(1).toString();
       } else {
-        textPosition = position.toFixed(1).toString();
+        textPosition = roundedPosition.toFixed(1).toString();
       }
 
       ctx.textAlign = 'center';
