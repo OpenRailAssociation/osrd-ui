@@ -10,16 +10,15 @@ import { SpaceTimeChart, PathLayer } from '../';
 import { type DataPoint, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
+type WrapperProps = {
+  spaceScaleType: 'linear' | 'proportional';
+  enableSnapping: boolean;
+};
+
 /**
  * This story aims at showcasing how to measure times and distances in a SpaceTimeChart.
  */
-const Wrapper = ({
-  spaceScaleType,
-  enableSnapping,
-}: {
-  spaceScaleType: 'linear' | 'proportional';
-  enableSnapping: boolean;
-}) => {
+const Wrapper = ({ spaceScaleType, enableSnapping }: WrapperProps) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

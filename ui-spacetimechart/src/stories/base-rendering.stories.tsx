@@ -8,22 +8,18 @@ import { SpaceTimeChart, PathLayer } from '../';
 
 import './lib/tailwind-mockup.css';
 
-/**
- * This story aims at showcasing how to render a SpaceTimeChart.
- */
-const Wrapper = ({
-  xZoomLevel,
-  yZoomLevel,
-  xOffset,
-  yOffset,
-  spaceScaleType,
-}: {
+type WrapperProps = {
   xZoomLevel: number;
   yZoomLevel: number;
   xOffset: number;
   yOffset: number;
   spaceScaleType: 'linear' | 'proportional';
-}) => (
+};
+
+/**
+ * This story aims at showcasing how to render a SpaceTimeChart.
+ */
+const Wrapper = ({ xZoomLevel, yZoomLevel, xOffset, yOffset, spaceScaleType }: WrapperProps) => (
   <SpaceTimeChart
     className="inset-0 absolute"
     operationalPoints={OPERATIONAL_POINTS}

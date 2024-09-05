@@ -22,20 +22,17 @@ const DEFAULT_COLOR_1 = '#FF511A';
 const DEFAULT_COLOR_2 = '#FF8B61';
 const DEFAULT_COLOR_3 = '#FFEBE1';
 
-/**
- * This story aims at showcasing how to customize inside styles.
- */
-const Wrapper = ({
-  color1,
-  color2,
-  color3,
-  spaceScaleType,
-}: {
+type WrapperProps = {
   color1: string;
   color2: string;
   color3: string;
   spaceScaleType: 'linear' | 'proportional';
-}) => {
+};
+
+/**
+ * This story aims at showcasing how to customize inside styles.
+ */
+const Wrapper = ({ color1, color2, color3, spaceScaleType }: WrapperProps) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

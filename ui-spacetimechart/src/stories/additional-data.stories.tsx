@@ -36,10 +36,15 @@ const CLOSED_DOORS = [
   },
 ];
 
+type MonoTrackSpaceProps = {
+  from: number;
+  to: number;
+};
+
 /**
  * This component renders a colored area where the line only has one track:
  */
-const MonoTrackSpace = ({ from, to }: { from: number; to: number }) => {
+const MonoTrackSpace = ({ from, to }: MonoTrackSpaceProps) => {
   const drawMonoTrackSpace = useCallback<DrawingFunction>(
     (ctx, { getSpacePixel, width, height, spaceAxis }) => {
       const spaceSize = spaceAxis === 'x' ? width : height;
@@ -159,16 +164,15 @@ const ClosedDoor = ({
   return null;
 };
 
+type WrapperProps = {
+  swapAxis: boolean;
+  spaceScaleType: 'linear' | 'proportional';
+};
+
 /**
  * This story aims at showcasing how to display additional data.
  */
-const Wrapper = ({
-  swapAxis,
-  spaceScaleType,
-}: {
-  swapAxis: boolean;
-  spaceScaleType: 'linear' | 'proportional';
-}) => {
+const Wrapper = ({ swapAxis, spaceScaleType }: WrapperProps) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

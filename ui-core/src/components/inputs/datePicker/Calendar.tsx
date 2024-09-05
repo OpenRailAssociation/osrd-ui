@@ -34,9 +34,11 @@ const Day = ({ date, isReferenceDate, isSelectable, dayWrapperClassName, onClick
   </div>
 );
 
-const Calendar = (props: CalendarProps) => {
-  const { displayedMonthStartDate, onDayClick } = props;
-  const { days, isReferenceDate, isDateSelectable, buildDayWrapperClassName } = useCalendar(props);
+const Calendar = ({ displayedMonthStartDate, onDayClick }: CalendarProps) => {
+  const { days, isReferenceDate, isDateSelectable, buildDayWrapperClassName } = useCalendar({
+    displayedMonthStartDate,
+    onDayClick,
+  });
   return (
     <div className="calendar-wrapper">
       <div className="calendar-anatomy">

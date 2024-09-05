@@ -15,6 +15,17 @@ import ReactMapGL, {
 
 import { type SourceDefinition } from '../core/types';
 
+type TransformedDataMapProps = {
+  bbox: BBox2d;
+  mapStyle?: string | StyleSpecification;
+  backgroundColor?: string;
+  sources: SourceDefinition[];
+  transformedData: Record<string, FeatureCollection>;
+  path?: Feature<LineString>;
+  pathLayer?: Omit<LineLayer, 'source-layer'>;
+  log?: boolean;
+};
+
 /**
  * This component handles displaying warped data. The data must be warped before being given to this component.
  * Check `SimulationWarpedMap` to see an example use case.
@@ -29,16 +40,7 @@ const TransformedDataMap = ({
   pathLayer,
   log,
   children,
-}: PropsWithChildren<{
-  bbox: BBox2d;
-  mapStyle?: string | StyleSpecification;
-  backgroundColor?: string;
-  sources: SourceDefinition[];
-  transformedData: Record<string, FeatureCollection>;
-  path?: Feature<LineString>;
-  pathLayer?: Omit<LineLayer, 'source-layer'>;
-  log?: boolean;
-}>) => {
+}: PropsWithChildren<TransformedDataMapProps>) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const pathCollection = useMemo(() => featureCollection(path ? [path] : []), [path]);
   const interactiveLayerIds = useMemo(
