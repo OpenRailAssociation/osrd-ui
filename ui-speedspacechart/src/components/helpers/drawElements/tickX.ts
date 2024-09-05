@@ -47,35 +47,37 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
   });
 
   speeds.forEach((_, i) => {
-    if (i <= Math.ceil(ratioX) * 20) {
-      ctx.moveTo(MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM);
-      ctx.lineTo(
-        MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2,
-        height - MARGIN_BOTTOM + CURVE_MARGIN_SIDES / 2
-      );
+    if (i > Math.ceil(ratioX) * 20) {
+      return;
+    }
 
-      if (i % 2 === 0) {
-        ctx.textAlign = 'center';
-        const text = i * RoundMaxPosition ? (i * RoundMaxPosition).toFixed(1).toString() : '0';
-        const textPositionX = MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2;
-        let opacity = 1;
+    ctx.moveTo(MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM);
+    ctx.lineTo(
+      MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2,
+      height - MARGIN_BOTTOM + CURVE_MARGIN_SIDES / 2
+    );
 
-        // low progressivily opacity for text when text is near borders or cursor, except for 0
-        if (
-          cursor.x &&
-          cursor.x + MARGIN_LEFT - leftOffset < textPositionX + 40 &&
-          cursor.x + MARGIN_LEFT - leftOffset > textPositionX - 40
-        )
-          opacity =
-            (10 - (40 - Math.abs(cursor.x + MARGIN_LEFT - leftOffset - textPositionX)) / 4) / 10;
-        if (text !== '0' && textPositionX < MARGIN_LEFT - leftOffset + 30)
-          opacity = (10 - (MARGIN_LEFT - leftOffset + 30 - textPositionX) / 3) / 10;
-        if (text !== '0' && textPositionX > width - MARGIN_RIGHT - leftOffset - 30)
-          opacity = (10 - (textPositionX - (width - MARGIN_RIGHT - leftOffset - 30)) / 3) / 10;
+    if (i % 2 === 0) {
+      ctx.textAlign = 'center';
+      const text = i * RoundMaxPosition ? (i * RoundMaxPosition).toFixed(0) : '0';
+      const textPositionX = MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2;
+      let opacity = 1;
 
-        ctx.fillStyle = `rgb(182, 179, 175, ${opacity})`;
-        ctx.fillText(text, textPositionX, height - MARGIN_BOTTOM + 24);
-      }
+      // low progressivily opacity for text when text is near borders or cursor, except for 0
+      if (
+        cursor.x &&
+        cursor.x + MARGIN_LEFT - leftOffset < textPositionX + 40 &&
+        cursor.x + MARGIN_LEFT - leftOffset > textPositionX - 40
+      )
+        opacity =
+          (10 - (40 - Math.abs(cursor.x + MARGIN_LEFT - leftOffset - textPositionX)) / 4) / 10;
+      if (text !== '0' && textPositionX < MARGIN_LEFT - leftOffset + 30)
+        opacity = (10 - (MARGIN_LEFT - leftOffset + 30 - textPositionX) / 3) / 10;
+      if (text !== '0' && textPositionX > width - MARGIN_RIGHT - leftOffset - 30)
+        opacity = (10 - (textPositionX - (width - MARGIN_RIGHT - leftOffset - 30)) / 3) / 10;
+
+      ctx.fillStyle = `rgb(182, 179, 175, ${opacity})`;
+      ctx.fillText(text, textPositionX, height - MARGIN_BOTTOM + 24);
     }
   });
 
