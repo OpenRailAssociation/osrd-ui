@@ -17,8 +17,8 @@ We do not change the version on local package versions, we keep the file to the 
 which is not a real version and can be easily identified as a development version.
 
 The version numbers for our releases are solely managed through git tags. It implies that when we
-update a single package, we release all the project together : even if there are no changes between
-two release (let's say we update ui-icons but nothing else, we would make a release that would
+update a single package, we release all the projects together : even if there are no changes between
+two releases (let's say we update ui-icons but nothing else, we would make a release that would
 publish all packages anyway).
 
 It's the tradeoff we make to keep the project simple and easy to manage, and to avoid the complexity
@@ -65,7 +65,7 @@ package.json will also prevent the package from being published.
 2. Run `npm run build`
 3. Run `npm run storybook`
 
-While developping on a project, you need to run the following commands to see the css modifications:
+While developing on a project, you need to run the following commands to see the css modifications:
 
 1. Run `cd ui-<name-of-the-project>`
 2. Run `npm run watch`
