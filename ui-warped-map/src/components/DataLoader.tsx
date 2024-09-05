@@ -12,6 +12,15 @@ import { type SourceDefinition } from '../core/types';
 
 const TIME_LABEL = 'Loading data around warped path';
 
+type DataLoaderProps = {
+  bbox: BBox2d;
+  mapStyle?: string | StyleSpecification;
+  onDataLoaded: (sourcesData: Record<string, FeatureCollection>) => void;
+  sources: SourceDefinition[];
+  timeout?: number;
+  log?: boolean;
+};
+
 /**
  * This component handles loading entities from MapLibre vector servers, and retrieving them as GeoJSONs from the
  * MapLibre `querySourceFeatures` method. It's quite dirty (it has to mount a map in the DOM, but somewhere it won't be
@@ -19,21 +28,7 @@ const TIME_LABEL = 'Loading data around warped path';
  *
  * It is designed as a component instead of a hook to simplify mounting/unmounting the temporary invisible map.
  */
-const DataLoader = ({
-  bbox,
-  mapStyle,
-  onDataLoaded,
-  sources,
-  timeout,
-  log,
-}: {
-  bbox: BBox2d;
-  mapStyle?: string | StyleSpecification;
-  onDataLoaded: (sourcesData: Record<string, FeatureCollection>) => void;
-  sources: SourceDefinition[];
-  timeout?: number;
-  log?: boolean;
-}) => {
+const DataLoader = ({ bbox, mapStyle, onDataLoaded, sources, timeout, log }: DataLoaderProps) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const [state, setState] = useState<'idle' | 'render' | 'loaded'>('idle');
 

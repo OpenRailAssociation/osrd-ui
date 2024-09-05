@@ -27,6 +27,13 @@ const COLORS = [
   '#FF9BC6',
 ];
 
+type WrapperProps = {
+  operationalPointsCount: number;
+  trainTypes: number;
+  pathsPerTrain: number;
+  spaceScaleType: 'linear' | 'proportional';
+};
+
 /**
  * This story aims at testing the performances of the SpaceTimeChart component when rendering a
  * high number of paths.
@@ -36,12 +43,7 @@ const Wrapper = ({
   trainTypes,
   pathsPerTrain,
   spaceScaleType,
-}: {
-  operationalPointsCount: number;
-  trainTypes: number;
-  pathsPerTrain: number;
-  spaceScaleType: 'linear' | 'proportional';
-}) => {
+}: WrapperProps) => {
   const operationalPoints: OperationalPoint[] = useMemo(() => {
     let position = 0;
     return range(operationalPointsCount).map((i) => ({

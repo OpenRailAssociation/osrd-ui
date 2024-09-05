@@ -43,6 +43,14 @@ const ScreenshotButton = () => {
   );
 };
 
+type WrapperProps = {
+  enableSnapping: boolean;
+  hideGrid: boolean;
+  hidePathsLabels: boolean;
+  swapAxis: boolean;
+  spaceScaleType: 'linear' | 'proportional';
+};
+
 /**
  * This story aims at showcasing how to use various specific options in a
  * SpaceTimeChart, such as `swapAxis`, `enableSnapping`, `hideGrid` or
@@ -54,13 +62,7 @@ const Wrapper = ({
   hidePathsLabels,
   swapAxis,
   spaceScaleType,
-}: {
-  enableSnapping: boolean;
-  hideGrid: boolean;
-  hidePathsLabels: boolean;
-  swapAxis: boolean;
-  spaceScaleType: 'linear' | 'proportional';
-}) => {
+}: WrapperProps) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

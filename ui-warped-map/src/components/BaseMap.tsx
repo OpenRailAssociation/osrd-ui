@@ -9,19 +9,16 @@ import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-m
 
 import { type SourceDefinition } from '../core/types';
 
-/**
- * This component is for testing purpose only. It displays data as they appear in the DataLoader component.
- */
-const BaseMap = ({
-  path,
-  mapStyle,
-  sources,
-  children,
-}: PropsWithChildren<{
+type BaseMapProps = {
   path: Feature<LineString>;
   sources: SourceDefinition[];
   mapStyle?: string | StyleSpecification;
-}>) => {
+};
+
+/**
+ * This component is for testing purpose only. It displays data as they appear in the DataLoader component.
+ */
+const BaseMap = ({ path, mapStyle, sources, children }: PropsWithChildren<BaseMapProps>) => {
   const [mapRef, setMapRef] = useState<MapRef | null>(null);
   const interactiveLayerIds = useMemo(
     () => sources.flatMap(({ layers }) => layers.map(({ id }) => id)),

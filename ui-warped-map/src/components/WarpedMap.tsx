@@ -28,6 +28,16 @@ const DEFAULT_COMPONENTS: Components = {
   loader: Loader,
 };
 
+type WarpedMapProps = {
+  path: Feature<LineString>;
+  pathLayer?: Omit<LineLayer, 'source-layer'>;
+  sources: SourceDefinition[];
+  components?: Partial<Components>;
+  mapStyle?: string | StyleSpecification;
+  warpingOptions?: WarpingOptions;
+  log?: boolean;
+};
+
 /**
  * This component handles loading all data along a given path on various sources, and then displays them on a map (using
  * TransformedDataMap):
@@ -41,15 +51,7 @@ const WarpedMap = ({
   warpingOptions,
   log,
   children,
-}: PropsWithChildren<{
-  path: Feature<LineString>;
-  pathLayer?: Omit<LineLayer, 'source-layer'>;
-  sources: SourceDefinition[];
-  components?: Partial<Components>;
-  mapStyle?: string | StyleSpecification;
-  warpingOptions?: WarpingOptions;
-  log?: boolean;
-}>) => {
+}: PropsWithChildren<WarpedMapProps>) => {
   const [state, setState] = useState<
     | { type: 'idle' }
     | { type: 'loading' }

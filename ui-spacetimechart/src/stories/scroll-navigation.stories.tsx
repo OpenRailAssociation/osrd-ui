@@ -16,11 +16,15 @@ import './lib/tailwind-mockup.css';
 
 const PATHS_DICT = keyBy(PATHS, 'id');
 
+type WrapperProps = {
+  spaceScaleType: 'linear' | 'proportional';
+};
+
 /**
  * This story aims at showcasing how to implement a different kind of navigation, where the mouse
  * wheel moves the time axis, and where a selected path must remain focused as much as possible.
  */
-const Wrapper = ({ spaceScaleType }: { spaceScaleType: 'linear' | 'proportional' }) => {
+const Wrapper = ({ spaceScaleType }: WrapperProps) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;

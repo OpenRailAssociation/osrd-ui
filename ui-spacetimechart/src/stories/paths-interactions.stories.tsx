@@ -19,6 +19,12 @@ function delayPath<T extends PathData>(path: T, newTimeOrigin: number): T {
     points: path.points.map((point) => ({ ...point, time: point.time + delay })),
   };
 }
+type WrapperProps = {
+  enableDragPaths: boolean;
+  pickingTolerance: number;
+  enableMultiSelection: boolean;
+  spaceScaleType: 'linear' | 'proportional';
+};
 
 /**
  * This story aims at showcasing how to manipulate paths in a SpaceTimeChart.
@@ -28,12 +34,7 @@ const Wrapper = ({
   pickingTolerance,
   enableMultiSelection,
   spaceScaleType,
-}: {
-  enableDragPaths: boolean;
-  enableMultiSelection: boolean;
-  spaceScaleType: 'linear' | 'proportional';
-  pickingTolerance: number;
-}) => {
+}: WrapperProps) => {
   const [paths, setPaths] = useState(PATHS);
   const pathsDict = useMemo(() => keyBy(paths, 'id'), [paths]);
   const [state, setState] = useState<{

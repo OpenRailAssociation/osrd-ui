@@ -24,13 +24,12 @@ const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
   },
 };
 
-const AlgorithmsShowcase = ({
-  path,
-  warpingOptions,
-}: {
+type AlgorithmsShowcaseProps = {
   path: Feature<LineString>;
   warpingOptions: WarpingOptions;
-}) => {
+};
+
+const AlgorithmsShowcase = ({ path, warpingOptions }: AlgorithmsShowcaseProps) => {
   const { grid, warpedGrid } = useMemo(
     () => getWarping(path, warpingOptions),
     [path, warpingOptions]

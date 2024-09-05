@@ -18,22 +18,18 @@ import { getDiff } from '../utils/vectors';
 
 import './lib/tailwind-mockup.css';
 
-/**
- * This story aims at showcasing how to handle panning and zooming in a SpaceTimeChart.
- */
-const Wrapper = ({
-  xPan,
-  yPan,
-  xZoom,
-  yZoom,
-  spaceScaleType,
-}: {
+type WrapperProps = {
   xPan: boolean;
   yPan: boolean;
   xZoom: boolean;
   yZoom: boolean;
   spaceScaleType: 'linear' | 'proportional';
-}) => {
+};
+
+/**
+ * This story aims at showcasing how to handle panning and zooming in a SpaceTimeChart.
+ */
+const Wrapper = ({ xPan, yPan, xZoom, yZoom, spaceScaleType }: WrapperProps) => {
   const [state, setState] = useState<{
     xOffset: number;
     yOffset: number;
