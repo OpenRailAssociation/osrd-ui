@@ -1,6 +1,13 @@
 name: Build osrd-ui
 
-on: [push]
+on:
+  pull_request:
+  workflow_dispatch:
+  merge_group:
+    types: [checks_requested]
+  push:
+    branches:
+      - dev
 
 jobs:
   build:
@@ -73,7 +80,7 @@ jobs:
           if rg -Ul '\n\n\z' .; then
             echo "Found multiple final newlines on listed file(s)"
             exit 1
-          fi    
+          fi
 
   check_unit_tests:
     runs-on: ubuntu-latest
