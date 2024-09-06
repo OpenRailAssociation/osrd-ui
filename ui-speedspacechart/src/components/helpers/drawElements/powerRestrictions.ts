@@ -9,7 +9,7 @@ import {
   clearCanvas,
   drawLinearLayerBackground,
   drawSeparatorLinearLayer,
-  maxPositionValues,
+  maxPositionValue,
   positionOnGraphScale,
 } from '../../utils';
 
@@ -42,7 +42,7 @@ export const drawPowerRestrictions = ({
   ctx.save();
   ctx.translate(leftOffset, 0);
 
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
 
   ctx.font = 'normal 12px IBM Plex Sans';
   ctx.fillStyle = 'rgb(121, 118, 113)';

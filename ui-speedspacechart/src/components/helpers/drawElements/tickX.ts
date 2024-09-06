@@ -1,6 +1,6 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
-import { clearCanvas, maxPositionValues } from '../../utils';
+import { clearCanvas, maxPositionValue } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM, CURVE_MARGIN_SIDES } = MARGINS;
 
@@ -17,13 +17,15 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.font = 'normal 12px IBM Plex Sans';
   ctx.fillStyle = 'rgb(182, 179, 175)';
 
-  const { maxPosition, RoundMaxPosition, intermediateTicksPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
+  const principleTicksPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 20));
+  const intermediateTicksPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 40));
 
   // vertical ticks based on ratio and round max position
 
   const xPosition =
     ((width - CURVE_MARGIN_SIDES - MARGIN_LEFT - MARGIN_RIGHT) / maxPosition) *
-    RoundMaxPosition *
+    principleTicksPosition *
     ratioX;
 
   const intermediateXPosition =
@@ -55,7 +57,7 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
 
     if (i % 2 === 0) {
       ctx.textAlign = 'center';
-      const text = i * RoundMaxPosition ? (i * RoundMaxPosition).toFixed(0) : '0';
+      const text = i * principleTicksPosition ? (i * principleTicksPosition).toFixed(0) : '0';
       const textPositionX = MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2;
       let opacity = 1;
 

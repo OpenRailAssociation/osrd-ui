@@ -2,17 +2,17 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { MARGINS } from '../components/const';
 import {
-  getGraphOffsets,
-  speedRangeValues,
-  maxPositionValues,
   clearCanvas,
+  findPreviousAndNextPosition,
   getAdaptiveHeight,
-  positionOnGraphScale,
+  getGraphOffsets,
   getLinearLayerMarginTop,
   getLinearLayersDisplayedHeight,
-  slopesValues,
-  findPreviousAndNextPosition,
   getStopPosition,
+  maxPositionValue,
+  positionOnGraphScale,
+  slopesValues,
+  speedRangeValues,
 } from '../components/utils';
 import type { LayerData, Store } from '../types/chartTypes';
 
@@ -98,22 +98,18 @@ describe('speedRangeValues', () => {
   });
 });
 
-describe('maxPositionValues', () => {
-  it('should return the correct maxPosition, RoundMaxPosition and intermediateTicksPosition', () => {
-    const { maxPosition, RoundMaxPosition, intermediateTicksPosition } = maxPositionValues(store);
+describe('maxPositionValue', () => {
+  it('should return the correct maxPosition', () => {
+    const maxPosition = maxPositionValue(store);
     expect(maxPosition).toBe(600);
-    expect(RoundMaxPosition).toBe(30);
-    expect(intermediateTicksPosition).toBe(15);
   });
 
-  it('should return 0 for maxPosition, RoundMaxPosition and intermediateTicksPosition when speed array is empty', () => {
-    const { maxPosition, RoundMaxPosition, intermediateTicksPosition } = maxPositionValues({
+  it('should return 0 for maxPosition if speed array is empty', () => {
+    const maxPosition = maxPositionValue({
       ...store,
       speeds: [],
     });
     expect(maxPosition).toBe(0);
-    expect(RoundMaxPosition).toBe(0);
-    expect(intermediateTicksPosition).toBe(0);
   });
 });
 

@@ -1,9 +1,9 @@
 import {
-  MARGINS,
   LINEAR_LAYER_SEPARATOR_HEIGHT,
-  LINEAR_LAYERS_HEIGHTS_BY_NAME,
-  type LAYERS_SELECTION,
   LINEAR_LAYERS_HEIGHTS,
+  LINEAR_LAYERS_HEIGHTS_BY_NAME,
+  MARGINS,
+  type LAYERS_SELECTION,
 } from './const';
 import type { LayerData, Store } from '../types/chartTypes';
 
@@ -11,12 +11,6 @@ type SpeedRangeValues = {
   minSpeed: number;
   maxSpeed: number;
   speedRange: number;
-};
-
-type MaxPositionValues = {
-  maxPosition: number;
-  RoundMaxPosition: number;
-  intermediateTicksPosition: number;
 };
 
 type SlopesValues = {
@@ -46,18 +40,14 @@ export const speedRangeValues = (store: Store): SpeedRangeValues => {
 };
 
 /**
- * Given a store including a list of speed data and a ratio value, return the max position, the rounded max position and the intermediate ticks position
+ * Given a store including a list of speed data return the max position
  * @param store
  */
-export const maxPositionValues = (store: Store): MaxPositionValues => {
+export const maxPositionValue = (store: Store): number => {
   if (store.speeds.length === 0) {
-    return { maxPosition: 0, RoundMaxPosition: 0, intermediateTicksPosition: 0 };
+    return 0.0;
   }
-  const maxPosition = store.speeds[store.speeds.length - 1].position.start;
-  const RoundMaxPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 20));
-  const intermediateTicksPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 40));
-
-  return { maxPosition, RoundMaxPosition, intermediateTicksPosition };
+  return store.speeds[store.speeds.length - 1].position.start;
 };
 
 export const clearCanvas = (ctx: CanvasRenderingContext2D, width: number, height: number) => {

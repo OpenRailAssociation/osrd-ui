@@ -1,5 +1,5 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { clearCanvas, getStopPosition, maxPositionValues } from '../../utils';
+import { clearCanvas, getStopPosition, maxPositionValue } from '../../utils';
 
 const STEP_HEIGHT = 6;
 const STEP_WIDTH = 1;
@@ -12,7 +12,7 @@ export const drawStep = ({ ctx, width, height, store }: DrawFunctionParams) => {
     return;
   }
 
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
 
   let stopPosition = getStopPosition(stops[0].position, width, ratioX, maxPosition);
 
