@@ -5,7 +5,7 @@ import { clearCanvas, maxPositionValue } from '../../utils';
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_BOTTOM, CURVE_MARGIN_SIDES } = MARGINS;
 
 export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => {
-  const { speeds, ratioX, leftOffset, cursor } = store;
+  const { ratioX, leftOffset, cursor } = store;
 
   clearCanvas(ctx, width, height);
 
@@ -18,66 +18,85 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.fillStyle = 'rgb(182, 179, 175)';
 
   const maxPosition = maxPositionValue(store);
-  const principleTicksPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 20));
-  const intermediateTicksPosition = Math.floor(maxPosition / (Math.ceil(store.ratioX) * 40));
+  const windowLength = maxPosition / store.ratioX;
 
-  // vertical ticks based on ratio and round max position
+  // Define the tick scale and the principle tick frequency given the window length
+  let tickScale: number;
+  let principleTickFrequency: number;
+  if (windowLength >= 200) {
+    tickScale = Math.floor(windowLength / 200) * 5;
+    principleTickFrequency = 2;
+  } else if (windowLength >= 50) {
+    tickScale = 2;
+    principleTickFrequency = 5;
+  } else if (windowLength >= 20) {
+    tickScale = 1;
+    principleTickFrequency = 5;
+  } else {
+    tickScale = 0.1;
+    principleTickFrequency = 5;
+  }
 
-  const xPosition =
-    ((width - CURVE_MARGIN_SIDES - MARGIN_LEFT - MARGIN_RIGHT) / maxPosition) *
-    principleTicksPosition *
-    ratioX;
-
-  const intermediateXPosition =
-    ((width - CURVE_MARGIN_SIDES - MARGIN_LEFT - MARGIN_RIGHT) / maxPosition) *
-    intermediateTicksPosition *
-    ratioX;
+  // `ratioRoundPositions` is the ratio of the canva width that will contains ticks.
+  // Without using this value, ticks will be spread out along the X axis and will not fall on integer positions.
+  const nbTicks = Math.floor(maxPosition / tickScale);
+  const maxTickPosition = nbTicks * tickScale;
+  const ratioRoundPositions = maxTickPosition / maxPosition;
+  const ticksOffset =
+    ((width - CURVE_MARGIN_SIDES - MARGIN_LEFT - MARGIN_RIGHT) * ratioRoundPositions * ratioX) /
+    nbTicks;
 
   ctx.beginPath();
+  const positionY = height - MARGIN_BOTTOM;
 
-  speeds.forEach((_, i) => {
-    if (i <= Math.ceil(ratioX) * 40 && i % 2 !== 0) {
-      ctx.moveTo(
-        MARGIN_LEFT + intermediateXPosition * i + CURVE_MARGIN_SIDES / 2,
-        height - MARGIN_BOTTOM
-      );
-      ctx.lineTo(
-        MARGIN_LEFT + intermediateXPosition * i + CURVE_MARGIN_SIDES / 2,
-        height - MARGIN_BOTTOM + 4
-      );
-    }
-  });
+  for (let i = 0; i <= nbTicks; i++) {
+    const positionX = MARGIN_LEFT + CURVE_MARGIN_SIDES / 2 + ticksOffset * i;
 
-  speeds.forEach((_, i) => {
-    ctx.moveTo(MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM);
-    ctx.lineTo(
-      MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2,
-      height - MARGIN_BOTTOM + CURVE_MARGIN_SIDES / 2
-    );
+    // Draw principle ticks given the frequency
+    const tickSize =
+      i % principleTickFrequency === 0 ? CURVE_MARGIN_SIDES * 0.66 : CURVE_MARGIN_SIDES * 0.33;
 
-    if (i % 2 === 0) {
+    ctx.moveTo(positionX, positionY);
+    ctx.lineTo(positionX, height - MARGIN_BOTTOM + tickSize);
+
+    // Draw position text every 2 principle ticks
+    if (i % (principleTickFrequency * 2) === 0) {
       ctx.textAlign = 'center';
-      const text = i * principleTicksPosition ? (i * principleTicksPosition).toFixed(0) : '0';
-      const textPositionX = MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2;
-      let opacity = 1;
+      const textPosition = (tickScale * i).toFixed(0);
+      const textWidth = ctx.measureText(textPosition).width;
+      const fadeWidth = textWidth * 2;
 
-      // low progressivily opacity for text when text is near borders or cursor, except for 0
-      if (
-        cursor.x &&
-        cursor.x + MARGIN_LEFT - leftOffset < textPositionX + 40 &&
-        cursor.x + MARGIN_LEFT - leftOffset > textPositionX - 40
-      )
-        opacity =
-          (10 - (40 - Math.abs(cursor.x + MARGIN_LEFT - leftOffset - textPositionX)) / 4) / 10;
-      if (text !== '0' && textPositionX < MARGIN_LEFT - leftOffset + 30)
-        opacity = (10 - (MARGIN_LEFT - leftOffset + 30 - textPositionX) / 3) / 10;
-      if (text !== '0' && textPositionX > width - MARGIN_RIGHT - leftOffset - 30)
-        opacity = (10 - (textPositionX - (width - MARGIN_RIGHT - leftOffset - 30)) / 3) / 10;
+      // Reduce progressively opacity for text when text is near the cursor or borders
+      const cursorX = cursor.x ? cursor.x + MARGIN_LEFT - leftOffset : Infinity;
+      const distanceCursor = Math.abs(cursorX - positionX);
+      // The -0.1 is to hide completely the text when it's near enougth the cursor.
+      // Clamp the opacity value between 0.0 and 1.0.
+      const opacityCursor = Math.max(Math.min(distanceCursor / fadeWidth - 0.1, 1.0), 0.0);
+
+      const distanceRightBorder = Math.abs(
+        width - MARGIN_RIGHT - CURVE_MARGIN_SIDES / 2 - leftOffset - positionX
+      );
+      const opacityRightBorder = Math.max(
+        Math.min(distanceRightBorder / fadeWidth - 0.1, 1.0),
+        0.0
+      );
+
+      const distanceLeftBorder = Math.abs(
+        MARGIN_LEFT + CURVE_MARGIN_SIDES / 2 - leftOffset - positionX
+      );
+      let opacityLeftBorder = Math.max(Math.min(distanceLeftBorder / fadeWidth - 0.1, 1.0), 0.0);
+      // Special case for 0 (the first tick). We don't want to hide it when it's near the left border.
+      if (i === 0) {
+        opacityLeftBorder = 1.0;
+      }
+
+      // Merge opacities
+      const opacity = Math.min(opacityCursor, opacityRightBorder, opacityLeftBorder);
 
       ctx.fillStyle = `rgb(182, 179, 175, ${opacity})`;
-      ctx.fillText(text, textPositionX, height - MARGIN_BOTTOM + 24);
+      ctx.fillText(textPosition, positionX, positionY + CURVE_MARGIN_SIDES * 1.33);
     }
-  });
+  }
 
   ctx.closePath();
   ctx.stroke();
@@ -94,7 +113,11 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.shadowOffsetY = 0;
   ctx.shadowBlur = 0;
   ctx.beginPath();
-  ctx.fillText('km', width - MARGIN_RIGHT - CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM + 24);
+  ctx.fillText(
+    'km',
+    width - MARGIN_RIGHT - CURVE_MARGIN_SIDES / 2,
+    positionY + CURVE_MARGIN_SIDES * 1.33
+  );
   ctx.closePath();
   ctx.stroke();
 };
