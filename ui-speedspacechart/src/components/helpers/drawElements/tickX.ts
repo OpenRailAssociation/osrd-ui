@@ -59,7 +59,7 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
       const textPositionX = MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2;
       let opacity = 1;
 
-      // low progressivily opacity for text when text is near borders or cursor, except for 0
+      // low progressively opacity for text when text is near borders or cursor, except for 0
       if (
         cursor.x &&
         cursor.x + MARGIN_LEFT - leftOffset < textPositionX + 40 &&
