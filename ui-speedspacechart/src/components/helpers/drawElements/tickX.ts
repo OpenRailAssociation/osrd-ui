@@ -47,10 +47,6 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
   });
 
   speeds.forEach((_, i) => {
-    if (i > Math.ceil(ratioX) * 20) {
-      return;
-    }
-
     ctx.moveTo(MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2, height - MARGIN_BOTTOM);
     ctx.lineTo(
       MARGIN_LEFT + xPosition * i + CURVE_MARGIN_SIDES / 2,
