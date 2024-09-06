@@ -1,10 +1,10 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { LINEAR_LAYERS_BACKGROUND_COLOR, MARGINS, LINEAR_LAYERS_HEIGHTS } from '../../const';
+import { LINEAR_LAYERS_BACKGROUND_COLOR, LINEAR_LAYERS_HEIGHTS, MARGINS } from '../../const';
 import {
   clearCanvas,
   drawLinearLayerBackground,
   drawSeparatorLinearLayer,
-  maxPositionValues,
+  maxPositionValue,
   positionOnGraphScale,
 } from '../../utils';
 
@@ -25,7 +25,7 @@ export const drawElectricalProfile = ({ ctx, width, height, store }: DrawFunctio
 
   ctx.save();
   ctx.translate(leftOffset, 0);
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
   const {
     MARGIN_TOP,
     MARGIN_BOTTOM,

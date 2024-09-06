@@ -1,10 +1,10 @@
 import type { DrawFunctionParams, tooltipInfos } from '../../../types/chartTypes';
 import {
-  LINEAR_LAYERS_HEIGHTS,
-  LINEAR_LAYERS_BACKGROUND_COLOR,
-  MARGINS,
   COLOR_DICTIONARY,
   LINEAR_LAYER_SEPARATOR_HEIGHT,
+  LINEAR_LAYERS_BACKGROUND_COLOR,
+  LINEAR_LAYERS_HEIGHTS,
+  MARGINS,
 } from '../../const';
 import {
   clearCanvas,
@@ -12,10 +12,10 @@ import {
   drawLinearLayerBackground,
   drawRoundedRect,
   drawSeparatorLinearLayer,
-  loadSvgImage,
-  maxPositionValues,
-  positionOnGraphScale,
   drawSvgImageWithColor,
+  loadSvgImage,
+  maxPositionValue,
+  positionOnGraphScale,
 } from '../../utils';
 
 const questionSvg =
@@ -59,7 +59,7 @@ export const drawSpeedLimitTags = async ({
   ctx.save();
   ctx.translate(leftOffset, 0);
 
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
 
   const questionImage = await loadSvgImage(questionBlobUrl);
   const alertFillImage = await loadSvgImage(alertFillBlobUrl);

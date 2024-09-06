@@ -1,6 +1,6 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
-import { clearCanvas, getStopPosition, maxPositionValues } from '../../utils';
+import { clearCanvas, getStopPosition, maxPositionValue } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM } = MARGINS;
 
@@ -11,7 +11,7 @@ export const drawGridX = ({ ctx, width, height, store }: DrawFunctionParams) => 
     return;
   }
 
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
 
   let stopPosition = getStopPosition(
     stops[0].position,

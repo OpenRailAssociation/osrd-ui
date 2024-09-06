@@ -4,7 +4,7 @@ import {
   clearCanvas,
   findPreviousAndNextPosition,
   getAdaptiveHeight,
-  maxPositionValues,
+  maxPositionValue,
   speedRangeValues,
 } from '../../utils';
 
@@ -68,7 +68,7 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
   };
 
   const { minSpeed, speedRange } = speedRangeValues(store);
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
 
   const heightWithoutLayers = getAdaptiveHeight(height, layersDisplay, false);
   const cursorBoxHeight = heightWithoutLayers - MARGIN_BOTTOM - MARGIN_TOP;

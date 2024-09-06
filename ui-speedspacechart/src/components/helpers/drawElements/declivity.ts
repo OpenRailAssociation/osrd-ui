@@ -1,6 +1,6 @@
-import { SLOPE_FILL_COLOR, MARGINS } from '../../../components/const';
+import { MARGINS, SLOPE_FILL_COLOR } from '../../../components/const';
 import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { clearCanvas, slopesValues, maxPositionValues } from '../../utils';
+import { clearCanvas, maxPositionValue, slopesValues } from '../../utils';
 
 const { CURVE_MARGIN_SIDES, MARGIN_TOP, MARGIN_BOTTOM, RIGHT_TICK_MARGINS } = MARGINS;
 
@@ -8,7 +8,7 @@ export const drawDeclivity = ({ ctx, width, height, store }: DrawFunctionParams)
   const { slopes, ratioX, leftOffset } = store;
 
   const { maxGradient } = slopesValues(store);
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
 
   if (!slopes || slopes.length === 0) {
     console.error('Slopes data is missing or empty.');

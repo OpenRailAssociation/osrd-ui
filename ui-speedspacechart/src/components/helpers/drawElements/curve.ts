@@ -5,7 +5,7 @@ import type {
   LayerData,
 } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
-import { clearCanvas, maxPositionValues, speedRangeValues } from '../../utils';
+import { clearCanvas, maxPositionValue, speedRangeValues } from '../../utils';
 
 const { CURVE_MARGIN_TOP, CURVE_MARGIN_SIDES } = MARGINS;
 
@@ -40,7 +40,7 @@ export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.translate(leftOffset, 0);
 
   const { minSpeed, speedRange } = speedRangeValues(store);
-  const { maxPosition } = maxPositionValues(store);
+  const maxPosition = maxPositionValue(store);
 
   ctx.lineWidth = 0.5;
   ctx.fillStyle = 'rgba(17, 101, 180, 0.02)';
