@@ -17,7 +17,6 @@ const CurveLayer = ({ width, height, store }: CurveLayerProps) => {
     width,
     height,
     store,
-    isEco: false,
   });
 
   return (
