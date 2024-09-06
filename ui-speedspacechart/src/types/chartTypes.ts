@@ -87,7 +87,6 @@ export type DrawFunctionParams = {
   height: number;
   store: Store;
   setStore?: React.Dispatch<React.SetStateAction<Store>>;
-  isEco?: boolean;
 };
 
 export type TrainDetails = {
