@@ -29,15 +29,20 @@
         };
       in {
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            # Nix formatter
-            alejandra.defaultPackage.${system}
+          buildInputs = with pkgs;
+            [
+              # Nix formatter
+              alejandra.defaultPackage.${system}
 
-            # Node version
-            fixedNode
-            fixedNodePackages.npm
-            fixedNodePackages.yarn
-          ];
+              # Node version
+              fixedNode
+              fixedNodePackages.npm
+              fixedNodePackages.yarn
+            ]
+            ++ lib.optionals stdenv.isDarwin (with pkgs.darwin.apple_sdk.frameworks; [
+              CoreFoundation
+              SystemConfiguration
+            ]);
         };
       }
     );
