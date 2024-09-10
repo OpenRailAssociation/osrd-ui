@@ -2,25 +2,23 @@ import React, { useEffect, useState } from 'react';
 
 import InteractionButtons from './common/InteractionButtons';
 import SettingsPanel from './common/SettingsPanel';
-import { MARGINS, LINEAR_LAYERS_HEIGHTS } from './const';
+import { LINEAR_LAYERS_HEIGHTS, MARGINS } from './const';
 import { resetZoom } from './helpers/layersManager';
 import {
   AxisLayerX,
-  AxisLayerY,
   CurveLayer,
   DeclivityLayer,
   ElectricalProfileLayer,
   FrontInteractivityLayer,
-  MajorGridY,
   PowerRestrictionsLayer,
   ReticleLayer,
   SpeedLimitTagsLayer,
   StepLayer,
   TickLayerX,
-  TickLayerY,
+  AxisLayerY,
   TickLayerYRight,
 } from './layers/index';
-import { getGraphOffsets, getAdaptiveHeight, getLinearLayerMarginTop } from './utils';
+import { getAdaptiveHeight, getGraphOffsets, getLinearLayerMarginTop } from './utils';
 import type { Data, Store } from '../types/chartTypes';
 
 export type SpeedSpaceChartProps = {
@@ -184,13 +182,11 @@ const SpeedSpaceChart = ({
         <DeclivityLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
       )}
       <CurveLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
-      <AxisLayerY width={adjustedWidthRightAxis} height={height} store={store} />
-      <MajorGridY width={adjustedWidthRightAxis} height={height} store={store} />
       <AxisLayerX width={adjustedWidthRightAxis} height={height} store={store} />
       {store.layersDisplay.steps && (
         <StepLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
       )}
-      <TickLayerY width={width} height={height} store={store} />
+      <AxisLayerY width={width} height={height} store={store} />
       {store.layersDisplay.electricalProfiles && (
         <ElectricalProfileLayer
           width={adjustedWidthRightAxis}
