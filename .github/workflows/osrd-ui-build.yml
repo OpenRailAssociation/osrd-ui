@@ -96,3 +96,11 @@ jobs:
             echo "Tests failed"
             exit 1
           fi
+
+  check_reuse_compliance:
+    runs-on: ubuntu-latest
+    name: Check REUSE Compliance
+    steps:
+      - uses: actions/checkout@v4
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v4
