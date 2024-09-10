@@ -26,7 +26,7 @@
     "build": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "storybook": "npm start --workspace='@osrd-project/storybook'",
+    "storybook": "npm start --workspace=@osrd-project/storybook",
     "lerna:changed": "lerna changed",
     "lerna:diff": "lerna diff",
     "lerna": "lerna",
