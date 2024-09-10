@@ -73,7 +73,7 @@ jobs:
           if rg -Ul '\n\n\z' .; then
             echo "Found multiple final newlines on listed file(s)"
             exit 1
-          fi    
+          fi
 
   check_unit_tests:
     runs-on: ubuntu-latest
@@ -89,3 +89,11 @@ jobs:
             echo "Tests failed"
             exit 1
           fi
+
+  check_reuse_compliance:
+    runs-on: ubuntu-latest
+    name: Check REUSE Compliance
+    steps:
+      - uses: actions/checkout@v4
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v4
