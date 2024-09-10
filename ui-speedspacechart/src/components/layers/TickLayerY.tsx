@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { Store } from '../../types/chartTypes';
-import { drawTickY } from '../helpers/drawElements/tickY';
+import { drawAxisY } from '../helpers/drawElements/axisY';
 import { useCanvas } from '../hooks';
 
 type TickLayerYProps = {
@@ -10,8 +10,8 @@ type TickLayerYProps = {
   store: Store;
 };
 
-const TickLayerY = ({ width, height, store }: TickLayerYProps) => {
-  const canvas = useCanvas(drawTickY, { width, height, store });
+const AxisLayerY = ({ width, height, store }: TickLayerYProps) => {
+  const canvas = useCanvas(drawAxisY, { width, height, store });
 
   return (
     <canvas
@@ -24,4 +24,4 @@ const TickLayerY = ({ width, height, store }: TickLayerYProps) => {
   );
 };
 
-export default TickLayerY;
+export default AxisLayerY;
