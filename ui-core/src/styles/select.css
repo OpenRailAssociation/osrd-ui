@@ -5,11 +5,15 @@
     0px 1px 1px rgba(0, 0, 0, 0.2),
     0px 2px 4px rgba(0, 0, 0, 0.1);
   height: 2.5rem;
-  padding: 0.438rem 0.813rem 0.562rem 0.813rem;
+  padding: 0.438rem 2rem 0.563rem 0.813rem;
   letter-spacing: 0;
   text-align: left;
   line-height: 1.5rem;
   width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: inline('../assets/triangle-up-down.svg') no-repeat right .75rem center;
   @apply border-grey-40 bg-black-1 text-grey-80;
 
   option {
@@ -72,7 +76,8 @@
 
   &.small {
     height: 2rem;
-    padding: 0.375rem 0.562rem;
+    padding: .375rem 2.5rem .375rem .563rem;
     font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 }
