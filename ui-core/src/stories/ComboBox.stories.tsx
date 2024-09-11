@@ -3,7 +3,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
 
-import { InputWithSuggestions } from '../components/inputs/InputWithSuggestions';
+import { ComboBox } from '../components/inputs/ComboBox';
 
 type Suggestion = { id: string; label: string };
 
@@ -13,13 +13,14 @@ const suggestions = [
   { id: '3', label: 'Manuella' },
 ] as Suggestion[];
 
-const meta: Meta<typeof InputWithSuggestions> = {
-  component: InputWithSuggestions,
+const meta: Meta<typeof ComboBox> = {
+  component: ComboBox,
   args: {
     small: false,
     disabled: false,
     readOnly: false,
     onChange: () => {},
+    onSelectSuggestion: () => {},
     getSuggestionLabel: (option) => (option as Suggestion).label,
     suggestions: suggestions,
   },
@@ -30,12 +31,12 @@ const meta: Meta<typeof InputWithSuggestions> = {
       </div>
     ),
   ],
-  title: 'core/InputWithSuggestions',
+  title: 'core/ComboBox',
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof InputWithSuggestions>;
+type Story = StoryObj<typeof ComboBox>;
 
 export const Default: Story = {
   args: {
@@ -49,7 +50,7 @@ export const WithDefaultValue: Story = {
   args: {
     label: 'Your name',
     type: 'text',
-    value: { id: '1', label: 'Manuel' },
+    value: suggestions[0], // Use a suggestion from the suggestions array
   },
 };
 
@@ -94,5 +95,13 @@ export const SmallInput: Story = {
     type: 'text',
     required: true,
     small: true,
+  },
+};
+
+export const WithoutSuggestions: Story = {
+  args: {
+    label: 'Your name',
+    type: 'text',
+    suggestions: [],
   },
 };
