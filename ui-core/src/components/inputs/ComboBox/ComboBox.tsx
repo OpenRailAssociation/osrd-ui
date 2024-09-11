@@ -1,12 +1,12 @@
 import React, {
-  useState,
-  useRef,
-  useEffect,
   type ChangeEventHandler,
+  type FocusEventHandler,
   type KeyboardEventHandler,
   type ReactNode,
-  type FocusEventHandler,
+  useEffect,
   useMemo,
+  useRef,
+  useState,
 } from 'react';
 
 import { ChevronDown, X } from '@osrd-project/ui-icons';
@@ -15,17 +15,17 @@ import cx from 'classnames';
 import { normalizeString } from './utils';
 import Input, { type InputProps } from '../Input';
 
-export type InputWithSuggestionsProps<T> = Omit<InputProps, 'onChange' | 'value'> & {
+export type ComboBoxProps<T> = Omit<InputProps, 'value'> & {
   suggestions: Array<T>;
-  onChange: (value: T) => void;
   getSuggestionLabel: (option: T) => string;
   customLabel?: ReactNode;
   numberOfSuggestionsToShow?: number;
   exactSearch?: boolean;
   value?: T;
+  onSelectSuggestion?: (option: T) => void;
 };
 
-const InputWithSuggestions = <T,>({
+const ComboBox = <T,>({
   suggestions,
   onChange,
   getSuggestionLabel,
@@ -34,11 +34,14 @@ const InputWithSuggestions = <T,>({
   exactSearch = false,
   value,
   small,
+  onSelectSuggestion,
   ...inputProps
-}: InputWithSuggestionsProps<T>) => {
+}: ComboBoxProps<T>) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<T[]>([]);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [inputValue, setInputValue] = useState(value ? getSuggestionLabel(value) : '');
+  const [selectedOption, setSelectedOption] = useState<T | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const sortedSuggestions = useMemo(
@@ -46,17 +49,18 @@ const InputWithSuggestions = <T,>({
     [suggestions, getSuggestionLabel]
   );
 
-  const showSuggestions = filteredSuggestions.length > 0;
+  const showSuggestions = filteredSuggestions.length > 0 && !inputProps.disabled;
 
   const focusInput = () => inputRef.current?.focus();
 
   const clearInput = () => {
     setInputValue('');
+    setSelectedOption(null);
     inputRef.current?.focus();
   };
 
   const icons = [
-    ...(inputValue
+    ...(selectedOption
       ? [
           {
             icon: <X size={small ? 'sm' : 'lg'} />,
@@ -70,7 +74,9 @@ const InputWithSuggestions = <T,>({
           {
             icon: <ChevronDown size={small ? 'sm' : 'lg'} />,
             action: focusInput,
-            className: 'chevron-icon',
+            className: cx('chevron-icon', {
+              disabled: inputProps.disabled,
+            }),
           },
         ]
       : []), // Conditionally include the chevron icon only when suggestions are not empty
@@ -82,9 +88,14 @@ const InputWithSuggestions = <T,>({
     }
   }, [value, getSuggestionLabel]);
 
+  useEffect(() => {
+    setFilteredSuggestions(sortedSuggestions);
+  }, [sortedSuggestions]);
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const userInput = normalizeString(e.currentTarget.value).trim();
     setInputValue(e.currentTarget.value);
+    onChange?.(e);
 
     if (userInput.trim() === '') {
       setFilteredSuggestions([]);
@@ -102,8 +113,10 @@ const InputWithSuggestions = <T,>({
 
   const selectSuggestion = (index: number) => {
     const selectedSuggestion = filteredSuggestions[index];
-    setInputValue(getSuggestionLabel(selectedSuggestion));
-    onChange(selectedSuggestion);
+    const suggestionLabel = getSuggestionLabel(selectedSuggestion);
+    setInputValue(suggestionLabel);
+    setSelectedOption(selectedSuggestion);
+    onSelectSuggestion?.(selectedSuggestion);
     setFilteredSuggestions([]);
     setActiveSuggestionIndex(-1);
   };
@@ -128,11 +141,21 @@ const InputWithSuggestions = <T,>({
   };
 
   const handleParentDivOnBlur: FocusEventHandler<HTMLInputElement> = () => {
+    const normalizedInput = normalizeString(inputValue.trim().toLowerCase());
+
+    const isInputInSuggestions = suggestions.some(
+      (suggestion) =>
+        normalizeString(getSuggestionLabel(suggestion).toLowerCase()) === normalizedInput
+    );
+
     if (filteredSuggestions.length === 1) {
       selectSuggestion(0);
-    } else {
-      setFilteredSuggestions([]);
+    } else if (!isInputInSuggestions) {
+      setInputValue('');
+      setSelectedOption(null);
     }
+
+    setFilteredSuggestions([]);
   };
 
   const handleSuggestionClick = (index: number) => {
@@ -141,7 +164,7 @@ const InputWithSuggestions = <T,>({
 
   return (
     <div
-      className="input-with-suggestions"
+      className="combo-box"
       style={{ '--number-of-suggestions': numberOfSuggestionsToShow } as React.CSSProperties}
       onBlur={handleParentDivOnBlur}
     >
@@ -156,7 +179,7 @@ const InputWithSuggestions = <T,>({
         withIcons={icons}
         small={small}
       />
-      {showSuggestions && filteredSuggestions.length > 0 && (
+      {showSuggestions && (
         <ul className="suggestions-list">
           {filteredSuggestions.map((suggestion, index) => (
             <li
@@ -166,7 +189,7 @@ const InputWithSuggestions = <T,>({
                 small,
               })}
               onClick={() => handleSuggestionClick(index)}
-              onMouseDown={(e) => e.preventDefault()} // Prevents the div parent (.input-with-suggestions) from losing focus
+              onMouseDown={(e) => e.preventDefault()} // Prevents the div parent (.combo-box) from losing focus
             >
               {getSuggestionLabel(suggestion)}
             </li>
@@ -177,4 +200,4 @@ const InputWithSuggestions = <T,>({
   );
 };
 
-export default InputWithSuggestions;
+export default ComboBox;

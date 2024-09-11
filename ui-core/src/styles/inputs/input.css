@@ -42,6 +42,12 @@
       @apply text-primary-20;
       cursor: pointer;
     }
+
+    .chevron-icon {
+      &.disabled {
+        @apply text-grey-30;
+      }
+    }
   }
 
   .leading-content-wrapper {
