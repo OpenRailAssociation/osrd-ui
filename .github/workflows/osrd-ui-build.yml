@@ -109,7 +109,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check DCO
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python 3.x
       uses: actions/setup-python@v4
       with:
@@ -119,4 +119,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         pip3 install -U dco-check
+        [ "$GITHUB_EVENT_NAME" = "merge_group" ] && export GITHUB_EVENT_NAME=pull_request
         dco-check
