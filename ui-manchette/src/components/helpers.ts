@@ -19,7 +19,7 @@ export const calcOperationalPointsToDisplay = (
 ): StyledOperationalPointType[] => {
   // For proportional display, we only display points that do not overlap with
   // the last displayed point:
-  if (isProportional && operationalPoints.length >= 0) {
+  if (isProportional && operationalPoints.length > 0) {
     // We start with the first operational point:
     const result: StyledOperationalPointType[] = [
       { ...operationalPoints[0], display: true, styles: {} },
