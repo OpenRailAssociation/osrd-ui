@@ -1,5 +1,5 @@
 import type { DrawFunctionParams, LayerData } from '../../../types/chartTypes';
-import { BLACK, MARGINS } from '../../const';
+import { WHITE, BLACK, MARGINS } from '../../const';
 import {
   clearCanvas,
   binarySearch,
@@ -41,13 +41,6 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
     electricalProfiles,
     powerRestrictions,
   } = store;
-
-  ctx.strokeStyle = BLACK.hex();
-  ctx.lineWidth = 1;
-  ctx.font = 'normal 12px IBM Plex Sans';
-  ctx.fillStyle = BLACK.hex();
-  ctx.shadowOffsetY = 0;
-  ctx.shadowBlur = 0;
 
   let speedText = '';
   let ecoSpeedText = '';
@@ -181,14 +174,8 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
   previousGradientText = slopes.findLast(({ position }) => position.start <= cursorPosition)!.value;
 
   // DRAWING
-
-  // Crosshair
-  ctx.beginPath();
-  ctx.moveTo(reticleX - RETICLE_LINE, reticleY);
-  ctx.lineTo(reticleX + RETICLE_LINE, reticleY);
-  ctx.moveTo(reticleX, reticleY - RETICLE_LINE);
-  ctx.lineTo(reticleX, reticleY + RETICLE_LINE);
-  ctx.stroke();
+  ctx.font = 'normal 12px IBM Plex Sans';
+  ctx.fillStyle = BLACK.hex();
 
   // V & H lines
   ctx.beginPath();
@@ -205,10 +192,32 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
   }
   ctx.stroke();
 
+  // Crosshair borders
+  ctx.beginPath();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = WHITE.hex();
+  ctx.lineCap = 'round';
+  ctx.moveTo(reticleX - RETICLE_LINE, reticleY);
+  ctx.lineTo(reticleX + RETICLE_LINE, reticleY);
+  ctx.moveTo(reticleX, reticleY - RETICLE_LINE);
+  ctx.lineTo(reticleX, reticleY + RETICLE_LINE);
+  ctx.stroke();
+
+  // Crosshair insides
+  ctx.beginPath();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = BLACK.hex();
+  ctx.moveTo(reticleX - RETICLE_LINE, reticleY);
+  ctx.lineTo(reticleX + RETICLE_LINE, reticleY);
+  ctx.moveTo(reticleX, reticleY - RETICLE_LINE);
+  ctx.lineTo(reticleX, reticleY + RETICLE_LINE);
+  ctx.stroke();
+
   // lines along the axis
   // horizontal
   ctx.beginPath();
   ctx.strokeStyle = BLACK.hex();
+  ctx.lineCap = 'butt';
   ctx.lineWidth = 1;
   ctx.moveTo(MARGIN_LEFT, reticleY);
   ctx.lineTo(MARGIN_LEFT, reticleY);
