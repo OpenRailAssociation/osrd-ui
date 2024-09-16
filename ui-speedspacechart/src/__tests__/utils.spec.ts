@@ -3,16 +3,19 @@ import { describe, expect, it, vi } from 'vitest';
 import { MARGINS } from '../components/const';
 import {
   clearCanvas,
-  findPreviousAndNextPosition,
   getAdaptiveHeight,
   getGraphOffsets,
   getLinearLayerMarginTop,
   getLinearLayersDisplayedHeight,
-  getStopPosition,
   maxPositionValue,
   positionOnGraphScale,
-  slopesValues,
   speedRangeValues,
+  slopesValues,
+  binarySearch,
+  positionToPosX,
+  interpolate,
+  clamp,
+  getSnappedStop,
 } from '../components/utils';
 import type { LayerData, Store } from '../types/chartTypes';
 
@@ -308,51 +311,86 @@ describe('getLinearLayersDisplayedHeight', () => {
   });
 });
 
-describe('findPreviousAndNextPosition', () => {
-  const xPositionReference = (ref: number) => ref;
-
-  it('should return the correct previous and next positions', () => {
-    const cursor = { x: 400, y: 0 };
-    const { previousPosition, nextPosition } = findPreviousAndNextPosition(
+describe('binarySearch', () => {
+  it.each([
+    [-200, 0],
+    [200, 0],
+    [300, 0],
+    [350, 1],
+    [400, 1],
+    [600, 2],
+    [900, 2],
+  ])('should return the correct index (%i)', (pos, expected) => {
+    const cursor = { x: pos, y: 0 };
+    const prev = binarySearch(
       speeds,
       cursor.x!,
-      xPositionReference
+      (element: LayerData<number>) => element.position.start
     );
-    expect(previousPosition).toEqual({ value: 20, position: { start: 350 } });
-    expect(nextPosition).toEqual({ value: 30, position: { start: 600 } });
-  });
-
-  it('should not return previous position if cursor is at the start of the array', () => {
-    const cursor = { x: 200, y: 0 };
-    const { previousPosition, nextPosition } = findPreviousAndNextPosition(
-      speeds,
-      cursor.x!,
-      xPositionReference
-    );
-    expect(previousPosition).toEqual(nextPosition);
-    expect(previousPosition).toEqual({ value: 10, position: { start: 200 } });
-  });
-
-  it('should not return next position if cursor is at the end of the array', () => {
-    const cursor = { x: 600, y: 0 };
-    const { previousPosition, nextPosition } = findPreviousAndNextPosition(
-      speeds,
-      cursor.x!,
-      xPositionReference
-    );
-    expect(nextPosition).toEqual(previousPosition);
-    expect(nextPosition).toEqual({ value: 30, position: { start: 600 } });
+    expect(prev).toEqual(expected);
   });
 });
 
-describe('getStopPosition', () => {
+describe('interpolate', () => {
+  it.each([
+    [0, 0, 1, 1, 0.5, 0.5],
+    [1, 0, 2, 2, 1.5, 1],
+    [0, 0, 0, 4, -42, 0], // x1 === x2 => y1
+  ])('should interpolate correctly', (x1, y1, x2, y2, x, yExpected) => {
+    const y = interpolate(x1, y1, x2, y2, x);
+    expect(y).toEqual(yExpected);
+  });
+});
+
+describe('positionToPosX', () => {
   it('should return the correct stop position', () => {
     const position = { start: 200 };
     const width = 1000;
     const ratioX = 1;
     const maxPosition = 600;
-    const stopPosition = getStopPosition(position, width, ratioX, maxPosition);
-    expect(stopPosition).toBe(336);
+    const posX = positionToPosX(position.start, maxPosition, width, ratioX);
+    expect(posX).toBe(364);
+  });
+});
+
+describe('clamp', () => {
+  it.each([
+    [4, 0, 10, 4],
+    [0, 0, 10, 0],
+    [10, 0, 10, 10],
+    [11, 0, 10, 10],
+    [-1, 0, 10, 0],
+  ])('should clamp correctly', (value, min, max, expected) => {
+    expect(clamp(value, min, max)).toEqual(expected);
+  });
+});
+
+describe('getSnappedStop', () => {
+  const width = 200;
+  it.each([
+    [[], 70, null],
+    [[300], 20, null],
+    [[300], 100, null],
+    [[300], 70, 300],
+    [[300], 71, 300],
+    [[200, 300], 71, 300],
+    [[300, 320], 71, 300],
+  ])('should find the correct snapped stop', (stopPositions, cursorX, expectedPos) => {
+    const stops = stopPositions.map((pos) => ({
+      position: { start: pos },
+      value: 'MyTestStop',
+    }));
+    const storeWithStops: Store = {
+      ...store,
+      stops,
+    };
+
+    const snappedStop = getSnappedStop(cursorX, width, storeWithStops);
+    if (expectedPos === null) {
+      expect(snappedStop).toBeNull();
+    } else {
+      expect(snappedStop!.position.start).toEqual(expectedPos);
+    }
   });
 });
 
