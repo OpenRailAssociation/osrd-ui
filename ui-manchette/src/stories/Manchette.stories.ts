@@ -18,16 +18,11 @@ const meta: Meta<typeof Manchette> = {
         type: 'object',
       },
     },
-    projectPathTrainResult: {
-      control: {
-        type: 'object',
-      },
+    zoomYIn: {
+      action: 'zoomYIn',
     },
-    selectedProjection: {
-      options: [undefined, ...SAMPLE_PATHS_DATA.map((path) => path.id)],
-      control: {
-        type: 'select',
-      },
+    zoomYOut: {
+      action: 'zoomYOut',
     },
   },
 };
@@ -38,7 +33,5 @@ type Story = StoryObj<typeof Manchette>;
 export const Default: Story = {
   args: {
     operationalPoints: OperationalPointListData,
-    projectPathTrainResult: PathData,
-    selectedProjection: 3,
   },
 };
