@@ -3,6 +3,7 @@ import {
   LINEAR_LAYERS_HEIGHTS,
   LINEAR_LAYERS_HEIGHTS_BY_NAME,
   MARGINS,
+  CURSOR_SNAP_DISTANCE,
   type LAYERS_SELECTION,
 } from './const';
 import type { LayerData, Store } from '../types/chartTypes';
@@ -266,24 +267,133 @@ export const createSvgBlobUrl = (svgString: string): string => {
   return URL.createObjectURL(blob);
 };
 
-export const findPreviousAndNextPosition = <T = string | number>(
-  data: LayerData<T>[],
-  cursorX: number,
-  xPositionReference: (ref: number) => number
-) => {
-  const previousPosition = data.findLast(
-    ({ position }) => xPositionReference(position.start) <= cursorX!
-  );
-  const nextPosition = data.find(({ position }) => xPositionReference(position.start) >= cursorX!);
+/** Retrieve the index of an element in the list.
+ * If the element is not found, return the predecessor.
+ * If the element is smaller than the first element, return 0.
+ * If the element is greater than the last element, return the last index.
+ * If the list is empty, return -1.
+ * @param data - The **sorted** data array.
+ * @param element - The element to search
+ * @param lambda - The function to extract the value from the data list.
+ */
+export const binarySearch = <T>(data: T[], element: number, lambda: (element: T) => number) => {
+  if (data.length === 0) {
+    return -1;
+  } else if (element < lambda(data[0])) {
+    return 0;
+  } else if (element > lambda(data[data.length - 1])) {
+    return data.length - 1;
+  }
 
-  return { previousPosition, nextPosition };
+  let left = 0;
+  let right = data.length;
+  while (left < right) {
+    const m = Math.floor((left + right) / 2);
+    if (lambda(data[m]) < element) {
+      left = m + 1;
+    } else {
+      right = m;
+    }
+  }
+
+  if (element !== lambda(data[left])) {
+    left--;
+  }
+
+  return left;
 };
 
-export const getStopPosition = (
-  position: LayerData<string>['position'],
+/** Transform a position in km into a position on the x-axis in pixels */
+export const positionToPosX = (
+  position: number,
+  maxPosition: number,
   width: number,
   ratioX: number,
-  maxPosition: number
-) =>
-  position.start * ((width - MARGINS.CURVE_MARGIN_SIDES) / maxPosition) * ratioX +
-  MARGINS.CURVE_MARGIN_SIDES / 2;
+  leftOffset = 0
+) => {
+  const xWidth = width - MARGINS.MARGIN_LEFT - MARGINS.MARGIN_RIGHT - MARGINS.CURVE_MARGIN_SIDES;
+  const leftMargin = MARGINS.CURVE_MARGIN_SIDES / 2 + MARGINS.MARGIN_LEFT + leftOffset;
+  return (position / maxPosition) * (xWidth * ratioX) + leftMargin;
+};
+
+/** Interpole on a straight line given two points and the x-axis value */
+export const interpolate = (x1: number, y1: number, x2: number, y2: number, x: number) => {
+  if (x1 === x2) {
+    return y1;
+  }
+  return y1 + (x - x1) * ((y2 - y1) / (x2 - x1));
+};
+
+/** Clamps the given value between the given minimum number and maximum number values */
+export const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+/** Filter stops to avoid overlapping draw */
+export const filterStops = (
+  stops: LayerData<string>[],
+  ratioX: number,
+  width: number,
+  maxPosition: number,
+  minSpace = 8
+) => {
+  let lastDisplayedPosX: number | null = null;
+
+  const filteredStops = stops.filter(({ position }) => {
+    const posX = positionToPosX(position.start, maxPosition, width, ratioX);
+    if (lastDisplayedPosX !== null && Math.abs(posX - lastDisplayedPosX) < minSpace) {
+      return false;
+    }
+    lastDisplayedPosX = posX;
+    return true;
+  });
+
+  return filteredStops;
+};
+
+/** Compute the cursor position on the x-axis given its position on the canva */
+export const getCursorPosition = (cursorX: number, width: number, store: Store) => {
+  const { ratioX, leftOffset } = store;
+  const maxPosition = maxPositionValue(store);
+  const x = cursorX - leftOffset - MARGINS.CURVE_MARGIN_SIDES / 2;
+  const maxX =
+    (width - MARGINS.MARGIN_LEFT - MARGINS.MARGIN_RIGHT - MARGINS.CURVE_MARGIN_SIDES) * ratioX;
+  return (x * maxPosition) / maxX;
+};
+
+/**
+ * Retrieve the snapped stop given the cursor position.
+ * If the cursor is not close enough to a stop, return null.
+ */
+export const getSnappedStop = (cursorX: number, width: number, store: Store) => {
+  const { ratioX, leftOffset, stops } = store;
+  const maxPosition = maxPositionValue(store);
+
+  // Search for the closest stop to the cursor
+  const filteredStops = filterStops(stops, ratioX, width, maxPosition);
+  let closestStopIndex: number = 0;
+  if (filteredStops.length > 1) {
+    const cursorPosition = clamp(getCursorPosition(cursorX, width, store), 0, maxPosition);
+    const index = binarySearch(
+      filteredStops,
+      cursorPosition,
+      (element: LayerData<string>) => element.position.start
+    );
+
+    const nextIndex = Math.min(index + 1, filteredStops.length - 1);
+    const leftDist = cursorPosition - filteredStops[index].position.start;
+    const rightDist = filteredStops[nextIndex].position.start - cursorPosition;
+    closestStopIndex = leftDist < rightDist ? index : nextIndex;
+  } else if (filteredStops.length === 1) {
+    closestStopIndex = 0;
+  } else {
+    return null;
+  }
+
+  // Check if the closest stop is close enough to the cursor
+  const stopPosition = filteredStops[closestStopIndex].position.start;
+  const stopPosX = positionToPosX(stopPosition, maxPosition, width, ratioX, leftOffset);
+  if (Math.abs(stopPosX - (cursorX + MARGINS.MARGIN_LEFT)) < CURSOR_SNAP_DISTANCE) {
+    return filteredStops[closestStopIndex];
+  }
+  return null;
+};
