@@ -9,7 +9,7 @@ import {
   getLinearLayersDisplayedHeight,
   maxPositionValue,
   positionOnGraphScale,
-  speedRangeValues,
+  maxSpeedValue,
   slopesValues,
   binarySearch,
   positionToPosX,
@@ -92,12 +92,10 @@ describe('getGraphOffsets', () => {
   });
 });
 
-describe('speedRangeValues', () => {
-  it('should return the correct minSpeed, maxSpeed and speedRange', () => {
-    const { minSpeed, maxSpeed, speedRange } = speedRangeValues(store);
-    expect(minSpeed).toBe(10);
+describe('maxSpeedValue', () => {
+  it('should return the correct maxSpeed', () => {
+    const maxSpeed = maxSpeedValue(store);
     expect(maxSpeed).toBe(30);
-    expect(speedRange).toBe(20);
   });
 });
 

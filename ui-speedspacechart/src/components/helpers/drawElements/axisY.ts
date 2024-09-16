@@ -1,6 +1,6 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
 import { MARGINS, TICK_TITLE_MARGINS } from '../../const';
-import { clearCanvas, speedRangeValues } from '../../utils';
+import { clearCanvas, maxSpeedValue } from '../../utils';
 
 const { MARGIN_LEFT, MARGIN_TOP, MARGIN_BOTTOM, CURVE_MARGIN_TOP, MARGIN_RIGHT } = MARGINS;
 const { Y_LEFT_VERTICAL, Y_LEFT_HORIZONTAL } = TICK_TITLE_MARGINS;
@@ -8,7 +8,7 @@ const TICK_WIDTH = 6;
 const TEXT_POSITION_X = 36;
 
 export const drawAxisY = ({ ctx, width, height, store }: DrawFunctionParams) => {
-  const { maxSpeed } = speedRangeValues(store);
+  const maxSpeed = maxSpeedValue(store);
 
   clearCanvas(ctx, width, height);
 

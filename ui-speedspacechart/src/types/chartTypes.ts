@@ -69,8 +69,7 @@ export type Store = Data & {
 };
 
 export type CurveConfig = {
-  minSpeed: number;
-  speedRange: number;
+  maxSpeed: number;
   maxPosition: number;
   ratioX: number;
 };
