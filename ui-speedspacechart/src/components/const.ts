@@ -1,3 +1,5 @@
+import chroma from 'chroma-js';
+
 import { type ColorDictionary, type Store } from '../types/chartTypes';
 
 export const SLOPE_FILL_COLOR = '#CFDDCE';
@@ -22,6 +24,8 @@ export const MARGINS = {
   RIGHT_TICK_MARGINS: 60,
   OFFSET_RIGHT_AXIS: 42,
 };
+
+export const CURSOR_SNAP_DISTANCE = 6;
 
 export const LINEAR_LAYERS_HEIGHTS = {
   ELECTRICAL_PROFILES_HEIGHT: 56,
@@ -62,6 +66,13 @@ export const LAYERS_SELECTION: Array<keyof Store['layersDisplay']> = [
   'powerRestrictions',
   'speedLimitTags',
 ];
+
+// Colors
+
+export const BLACK = chroma(0, 0, 0);
+export const GREY_50 = chroma(121, 118, 113);
+export const GREY_80 = chroma(49, 46, 43);
+export const LIGHT_BLUE = chroma(33, 112, 185);
 
 /**
  * COLOR_DICTIONARY maps specific colors to their corresponding secondary colors used for speed limit tags.

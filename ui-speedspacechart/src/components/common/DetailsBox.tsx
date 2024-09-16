@@ -36,7 +36,7 @@ const DetailsBox = ({
   previousGradientText,
   modeText,
 }: DetailsBoxProps) => {
-  const { MARGIN_TOP, MARGIN_BOTTOM, MARGIN_LEFT, MARGIN_RIGHT } = MARGINS;
+  const { MARGIN_BOTTOM, MARGIN_RIGHT } = MARGINS;
   const { energySource, tractionStatus, declivities, electricalProfiles, powerRestrictions } =
     store.detailsBoxDisplay;
 
@@ -46,12 +46,12 @@ const DetailsBox = ({
   const adaptedOffset = store.isSettingsPanelOpened ? 641 : 115;
 
   // find out if the box is going out off the right side of the canvas
-  if (curveX + MARGIN_LEFT + adaptedOffset > width - MARGIN_RIGHT - 10) rightOffset = 127;
+  if (curveX + adaptedOffset > width - MARGIN_RIGHT - 10) rightOffset = 127;
   // find out if the box is going out off the bottom side of the canvas
-  if (curveY + MARGIN_TOP + 180 > height - MARGIN_BOTTOM - 10) bottomOffset = 192;
+  if (curveY + 180 > height - MARGIN_BOTTOM - 10) bottomOffset = 192;
 
-  const boxX = curveX + MARGIN_LEFT + 6 - rightOffset;
-  const boxY = curveY + MARGIN_TOP + 6 - bottomOffset;
+  const boxX = curveX + 6 - rightOffset;
+  const boxY = curveY + 6 - bottomOffset;
 
   const speedDifference = Number(speedText) - Number(ecoSpeedText);
   const speedDifferenceText =

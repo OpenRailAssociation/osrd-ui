@@ -1,21 +1,21 @@
 import React from 'react';
 
 import type { Store } from '../../types/chartTypes';
-import { drawGridX } from '../helpers/drawElements/gridX';
+import { drawSteps } from '../helpers/drawElements/steps';
 import { useCanvas } from '../hooks';
 
-type AxisLayerXProps = {
+type StepsLayerProps = {
   width: number;
   height: number;
   store: Store;
 };
 
-const AxisLayerX = ({ width, height, store }: AxisLayerXProps) => {
-  const canvas = useCanvas(drawGridX, { width, height, store });
+const StepsLayer = ({ width, height, store }: StepsLayerProps) => {
+  const canvas = useCanvas(drawSteps, { width, height, store });
 
   return (
     <canvas
-      id="axis-layer-x"
+      id="steps-layer"
       className="absolute rounded-t-xl"
       ref={canvas}
       width={width}
@@ -24,4 +24,4 @@ const AxisLayerX = ({ width, height, store }: AxisLayerXProps) => {
   );
 };
 
-export default AxisLayerX;
+export default StepsLayer;
