@@ -5,7 +5,8 @@ import SettingsPanel from './common/SettingsPanel';
 import { LINEAR_LAYERS_HEIGHTS, MARGINS } from './const';
 import { resetZoom } from './helpers/layersManager';
 import {
-  AxisLayerX,
+  StepsLayer,
+  AxisLayerY,
   CurveLayer,
   DeclivityLayer,
   ElectricalProfileLayer,
@@ -13,9 +14,7 @@ import {
   PowerRestrictionsLayer,
   ReticleLayer,
   SpeedLimitTagsLayer,
-  StepLayer,
   TickLayerX,
-  AxisLayerY,
   TickLayerYRight,
 } from './layers/index';
 import { getAdaptiveHeight, getGraphOffsets, getLinearLayerMarginTop } from './utils';
@@ -182,9 +181,8 @@ const SpeedSpaceChart = ({
         <DeclivityLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
       )}
       <CurveLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
-      <AxisLayerX width={adjustedWidthRightAxis} height={height} store={store} />
       {store.layersDisplay.steps && (
-        <StepLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
+        <StepsLayer width={adjustedWidthRightAxis} height={height} store={store} />
       )}
       <AxisLayerY width={width} height={height} store={store} />
       {store.layersDisplay.electricalProfiles && (

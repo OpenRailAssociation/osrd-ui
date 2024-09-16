@@ -1,11 +1,15 @@
-import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { MARGINS } from '../../const';
+import type { DrawFunctionParams, LayerData } from '../../../types/chartTypes';
+import { BLACK, MARGINS } from '../../const';
 import {
   clearCanvas,
-  findPreviousAndNextPosition,
+  binarySearch,
   getAdaptiveHeight,
   maxPositionValue,
   speedRangeValues,
+  interpolate,
+  positionToPosX,
+  getCursorPosition,
+  getSnappedStop,
 } from '../../utils';
 
 const {
@@ -18,6 +22,9 @@ const {
 } = MARGINS;
 
 const RETICLE_LINE = 12.75;
+const SNAPPED_STOP_TEXT_OFFSET = 36;
+const CURSOR_HEIGHT = 6;
+const SNAPPED_CURSOR_HEIGHT = 24;
 
 export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) => {
   clearCanvas(ctx, width, height);
@@ -29,21 +36,16 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
     leftOffset,
     speeds,
     ecoSpeeds,
-    stops,
     electrifications,
     slopes,
     electricalProfiles,
     powerRestrictions,
   } = store;
 
-  if (stops.length === 0) {
-    return;
-  }
-
-  ctx.strokeStyle = 'rgb(0, 0, 0)';
+  ctx.strokeStyle = BLACK.hex();
   ctx.lineWidth = 1;
   ctx.font = 'normal 12px IBM Plex Sans';
-  ctx.fillStyle = 'rgb(0,0,0)';
+  ctx.fillStyle = BLACK.hex();
   ctx.shadowOffsetY = 0;
   ctx.shadowBlur = 0;
 
@@ -56,18 +58,9 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
   let powerRestrictionText = '';
   let previousGradientText = 0;
   let modeText = '';
-  let curveX = cursor.x!;
-  let curveY = 0;
-  let x = {
-    a: 0,
-    b: 0,
-  };
-  let y = {
-    a: 0,
-    b: 0,
-  };
+  let reticleY = 0;
 
-  const { minSpeed, speedRange } = speedRangeValues(store);
+  const { maxSpeed } = speedRangeValues(store);
   const maxPosition = maxPositionValue(store);
 
   const heightWithoutLayers = getAdaptiveHeight(height, layersDisplay, false);
@@ -79,225 +72,187 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
     leftOffset +
     CURVE_MARGIN_SIDES / 2;
 
-  if (cursor.x && cursor.y) {
-    // get the nearest previous and next speed values of the curve based on pointer position
-    const { previousPosition: previousCurvePosition, nextPosition: nextCurvePosition } =
-      findPreviousAndNextPosition(speeds, cursor.x!, xPositionReference);
-
-    // get the nearest previous and next speed values of the curve based on pointer position
-    const { previousPosition: previousEcoCurvePosition, nextPosition: nextEcoCurvePosition } =
-      findPreviousAndNextPosition(ecoSpeeds, cursor.x!, xPositionReference);
-
-    let stopPosition = xPositionReference(stops[0].position.start);
-
-    const filterdStops = stops.filter(({ position }) => {
-      const actualX = xPositionReference(position.start);
-      if (actualX - stopPosition < 16 && actualX !== stopPosition) {
-        return false;
-      } else {
-        stopPosition = actualX;
-        return true;
-      }
-    });
-
-    // get the nearest previous and next stop values of the curve based on pointer position
-    const { previousPosition: previousStop, nextPosition: nextStop } = findPreviousAndNextPosition(
-      filterdStops,
-      cursor.x!,
-      xPositionReference
-    );
-
-    // Get the electrical profile name based on the position of the cursor
-    if (electricalProfiles) {
-      const electricalProfileValue = electricalProfiles.find(
-        ({ position }) =>
-          xPositionReference(position.start) <= cursor.x! &&
-          xPositionReference(position.end!) >= cursor.x!
-      )?.value.electricalProfile;
-
-      if (electricalProfileValue) {
-        electricalProfileText = electricalProfileValue;
-      }
-    }
-
-    // Get the power restriction code based on the position of the cursor
-    if (powerRestrictions) {
-      const currentPowerRestriction = powerRestrictions.find(
-        ({ position }) =>
-          cursor.x! >= xPositionReference(position.start) &&
-          cursor.x! <= xPositionReference(position.end!)
-      );
-      powerRestrictionText = currentPowerRestriction?.value.powerRestriction || '';
-    }
-
-    // calculate the y position of the curve based on pointer position between two points
-    // adapt texts based on the position of the cursor
-    if (
-      previousCurvePosition !== undefined &&
-      nextCurvePosition !== undefined &&
-      previousEcoCurvePosition !== undefined &&
-      nextEcoCurvePosition !== undefined &&
-      previousStop !== undefined &&
-      nextStop !== undefined
-    ) {
-      const normalizedPreviousSpeed = (previousEcoCurvePosition.value - minSpeed) / speedRange;
-      const normalizedNextSpeed = (nextEcoCurvePosition.value - minSpeed) / speedRange;
-      x = {
-        a: xPositionReference(previousEcoCurvePosition.position.start),
-        b: xPositionReference(nextEcoCurvePosition.position.start),
-      };
-      y = {
-        a: cursorBoxHeight - normalizedPreviousSpeed * (cursorBoxHeight - CURVE_MARGIN_TOP),
-        b: cursorBoxHeight - normalizedNextSpeed * (cursorBoxHeight - CURVE_MARGIN_TOP),
-      };
-
-      const previousElectrification = electrifications.findLast(
-        ({ position }) => position.start <= previousCurvePosition.position.start
-      );
-
-      const electrificationUsage = previousElectrification?.value;
-      if (electrificationUsage) {
-        const isElectrified = electrificationUsage.type === 'electrification';
-        modeText = isElectrified ? 'electric' : '--';
-        electricalModeText = electrificationUsage.voltage!;
-      }
-
-      // find out if the cursor isn't close to the previous stop or the next stop based on 20px
-      if (
-        curveX - xPositionReference(previousStop.position.start) > 10 &&
-        xPositionReference(nextStop.position.start) - curveX > 10
-      ) {
-        const drop = (y.b! - y.a!) / (x.b! - x.a!);
-        const deltaX = curveX - x.a;
-        const deltaY = drop * deltaX;
-        curveY = y.a! + deltaY;
-
-        speedText = (
-          previousCurvePosition.value +
-            ((nextCurvePosition.value - previousCurvePosition.value) * (curveX - x.a)) /
-              (x.b - x.a) || 0
-        ).toFixed(1);
-
-        ecoSpeedText = (
-          previousEcoCurvePosition!.value +
-            ((nextEcoCurvePosition!.value - previousEcoCurvePosition!.value) * (curveX - x.a)) /
-              (x.b - x.a) || 0
-        ).toFixed(1);
-
-        if (previousCurvePosition.value < nextCurvePosition.value) {
-          effortText = 'accelerating';
-        }
-        if (previousCurvePosition.value > nextCurvePosition.value) {
-          effortText = 'decelerating';
-        }
-
-        previousGradientText = slopes.findLast(
-          ({ position }) => xPositionReference(position.start) <= curveX!
-        )!.value;
-      } else {
-        // find out from wich side the cursor is closer to the stop
-        if (
-          curveX - xPositionReference(previousStop.position.start) <=
-          xPositionReference(nextStop.position.start) - curveX
-        ) {
-          curveX = xPositionReference(previousStop.position.start);
-          stopText = previousStop.value;
-        } else {
-          curveX = xPositionReference(nextStop.position.start);
-          stopText = nextStop.value;
-        }
-
-        const { previousPosition: nextSpeed, nextPosition: previousSpeed } =
-          findPreviousAndNextPosition(speeds, curveX, xPositionReference);
-
-        const { previousPosition: nextEcoSpeed, nextPosition: previousEcoSpeed } =
-          findPreviousAndNextPosition(ecoSpeeds, curveX, xPositionReference);
-
-        // find curveY based on the average speed between the previous and next speed values
-        curveY =
-          cursorBoxHeight -
-          (((previousEcoSpeed!.value + nextEcoSpeed!.value) / 2 - minSpeed) / speedRange) *
-            (cursorBoxHeight - CURVE_MARGIN_TOP);
-
-        speedText = ((previousSpeed!.value + nextSpeed!.value) / 2).toFixed(1);
-
-        ecoSpeedText = ((previousEcoSpeed!.value + nextEcoSpeed!.value) / 2).toFixed(1);
-
-        if (nextSpeed!.value < previousSpeed!.value) {
-          effortText = 'accelerating';
-        }
-        if (nextSpeed!.value > previousSpeed!.value) {
-          effortText = 'decelerating';
-        }
-
-        previousGradientText = slopes.findLast(
-          ({ position }) => xPositionReference(position.start) <= curveX!
-        )!.value;
-      }
-
-      ctx.beginPath();
-      // lines along the curve
-      // horizontal
-      ctx.moveTo(curveX + MARGIN_LEFT - RETICLE_LINE, curveY + MARGIN_TOP);
-      ctx.lineTo(curveX + MARGIN_LEFT + RETICLE_LINE, curveY + MARGIN_TOP);
-      ctx.stroke();
-      // vertical
-      ctx.moveTo(curveX + MARGIN_LEFT, curveY + MARGIN_TOP - RETICLE_LINE);
-      ctx.lineTo(curveX + MARGIN_LEFT, curveY + MARGIN_TOP + RETICLE_LINE);
-
-      // lines along the axis
-      // horizontal
-      ctx.moveTo(MARGIN_LEFT, curveY + MARGIN_TOP);
-      ctx.lineTo(MARGIN_LEFT - 24, curveY + MARGIN_TOP);
-      ctx.closePath();
-      ctx.stroke();
-
-      ctx.clearRect(0, height - MARGIN_BOTTOM, width, MARGIN_BOTTOM);
-
-      // we need to draw the vertical line along the axis after all the other lines to clear them without this one
-      ctx.beginPath();
-      // vertical
-      ctx.moveTo(curveX + MARGIN_LEFT, height - MARGIN_BOTTOM);
-      ctx.lineTo(curveX + MARGIN_LEFT, height - MARGIN_BOTTOM + 6);
-
-      // calculate the position value between x.a and x.b
-      const position =
-        ((curveX - x.a) / (x.b - x.a)) *
-          (nextCurvePosition!.position.start - previousCurvePosition!.position.start) +
-        previousCurvePosition!.position.start;
-      const roundedPosition = Math.round(position * 10) / 10;
-      let textPosition = '';
-      if (previousCurvePosition.position.start === 0 && nextCurvePosition.position.start === 0) {
-        textPosition = '0';
-      } else if (
-        previousCurvePosition.position.start === maxPosition &&
-        nextCurvePosition.position.start === maxPosition
-      ) {
-        textPosition = maxPosition.toFixed(1).toString();
-      } else {
-        textPosition = roundedPosition.toFixed(1).toString();
-      }
-
-      ctx.textAlign = 'center';
-      ctx.fillText(textPosition, curveX + MARGIN_LEFT, height - MARGIN_BOTTOM + 20);
-
-      if (curveX < ctx.measureText(stopText).width / 2) {
-        ctx.textAlign = 'start';
-      } else if (curveX > cursorBoxWidth - ctx.measureText(stopText).width / 2) {
-        ctx.textAlign = 'end';
-      }
-      ctx.fillText(stopText, curveX + MARGIN_LEFT, height - MARGIN_BOTTOM + 36);
-
-      ctx.closePath();
-      ctx.stroke();
-    }
-
-    ctx.clearRect(0, 0, width, MARGIN_TOP);
+  // Skip drawing the reticle if the cursor is outside the graph
+  if (cursor.x === null || cursor.y === null) {
+    return;
   }
 
+  let reticleX = cursor.x + MARGIN_LEFT;
+
+  let cursorPosition = getCursorPosition(cursor.x, width, store);
+  if (cursorPosition < 0 || cursorPosition > maxPosition) {
+    return;
+  }
+
+  // Check if cursor is snapping to stop
+  let snapToStop = false;
+  if (layersDisplay.steps) {
+    const snappedStop = getSnappedStop(cursor.x, width, store);
+    if (snappedStop !== null) {
+      snapToStop = true;
+      cursorPosition = snappedStop.position.start;
+      reticleX = positionToPosX(cursorPosition, maxPosition, width, ratioX, leftOffset);
+      stopText = snappedStop.value;
+    }
+  }
+
+  // Get the electrical profile name based on the position of the cursor
+  if (electricalProfiles) {
+    const electricalProfileValue = electricalProfiles.find(
+      ({ position }) =>
+        xPositionReference(position.start) <= cursor.x! &&
+        xPositionReference(position.end!) >= cursor.x!
+    )?.value.electricalProfile;
+
+    if (electricalProfileValue) {
+      electricalProfileText = electricalProfileValue;
+    }
+  }
+
+  // Get the power restriction code based on the position of the cursor
+  if (powerRestrictions) {
+    const currentPowerRestriction = powerRestrictions.find(
+      ({ position }) =>
+        cursor.x! >= xPositionReference(position.start) &&
+        cursor.x! <= xPositionReference(position.end!)
+    );
+    powerRestrictionText = currentPowerRestriction?.value.powerRestriction || '';
+  }
+
+  const previousElectrification = electrifications.findLast(
+    ({ position }) => position.start <= cursorPosition
+  );
+
+  const electrificationUsage = previousElectrification?.value;
+  if (electrificationUsage) {
+    const isElectrified = electrificationUsage.type === 'electrification';
+    modeText = isElectrified ? 'electric' : '--';
+    electricalModeText = electrificationUsage.voltage!;
+  }
+
+  let predecessorSpeedIndex = binarySearch(
+    speeds,
+    cursorPosition,
+    (element: LayerData<number>) => element.position.start
+  );
+  if (predecessorSpeedIndex === speeds.length - 1) predecessorSpeedIndex--;
+
+  let predecessorEcoSpeedIndex = binarySearch(
+    ecoSpeeds,
+    cursorPosition,
+    (element: LayerData<number>) => element.position.start
+  );
+  if (predecessorEcoSpeedIndex === ecoSpeeds.length - 1) predecessorEcoSpeedIndex--;
+
+  const prevSpeed = speeds[predecessorSpeedIndex];
+  const nextSpeed = speeds[predecessorSpeedIndex + 1];
+  const speedValue = interpolate(
+    prevSpeed.position.start,
+    prevSpeed.value,
+    nextSpeed.position.start,
+    nextSpeed.value,
+    cursorPosition
+  );
+  speedText = speedValue.toFixed(1);
+  const baseReticleY =
+    cursorBoxHeight - (speedValue / maxSpeed) * (cursorBoxHeight - CURVE_MARGIN_TOP) + MARGIN_TOP;
+
+  const prevEcoSpeed = ecoSpeeds[predecessorEcoSpeedIndex];
+  const nextEcoSpeed = ecoSpeeds[predecessorEcoSpeedIndex + 1];
+  const ecoSpeedValue = interpolate(
+    prevEcoSpeed.position.start,
+    prevEcoSpeed.value,
+    nextEcoSpeed.position.start,
+    nextEcoSpeed.value,
+    cursorPosition
+  );
+  ecoSpeedText = ecoSpeedValue.toFixed(1);
+  if (prevEcoSpeed.value < nextEcoSpeed.value) {
+    effortText = 'accelerating';
+  } else if (prevEcoSpeed.value > nextEcoSpeed.value) {
+    effortText = 'decelerating';
+  }
+
+  reticleY =
+    cursorBoxHeight -
+    (ecoSpeedValue / maxSpeed) * (cursorBoxHeight - CURVE_MARGIN_TOP) +
+    MARGIN_TOP;
+
+  previousGradientText = slopes.findLast(({ position }) => position.start <= cursorPosition)!.value;
+
+  // DRAWING
+
+  // Crosshair
+  ctx.beginPath();
+  ctx.moveTo(reticleX - RETICLE_LINE, reticleY);
+  ctx.lineTo(reticleX + RETICLE_LINE, reticleY);
+  ctx.moveTo(reticleX, reticleY - RETICLE_LINE);
+  ctx.lineTo(reticleX, reticleY + RETICLE_LINE);
+  ctx.stroke();
+
+  // V & H lines
+  ctx.beginPath();
+  ctx.strokeStyle = BLACK.alpha(0.4).hex();
+  ctx.lineWidth = 0.5;
+  ctx.moveTo(reticleX, baseReticleY);
+  ctx.lineTo(reticleX, height - MARGIN_BOTTOM);
+
+  ctx.moveTo(reticleX, reticleY);
+  ctx.lineTo(MARGIN_LEFT, reticleY);
+  if (Math.abs(baseReticleY - reticleY) > 2) {
+    ctx.moveTo(reticleX, baseReticleY);
+    ctx.lineTo(MARGIN_LEFT, baseReticleY);
+  }
+  ctx.stroke();
+
+  // lines along the axis
+  // horizontal
+  ctx.beginPath();
+  ctx.strokeStyle = BLACK.hex();
+  ctx.lineWidth = 1;
+  ctx.moveTo(MARGIN_LEFT, reticleY);
+  ctx.lineTo(MARGIN_LEFT, reticleY);
+  ctx.stroke();
+
+  // we need to draw the vertical line along the axis after all the other lines to clear them without this one
+  const roundedCursorPosition = Math.round(cursorPosition * 10) / 10;
+  const textPosition = roundedCursorPosition.toFixed(1).toString();
+
+  ctx.textAlign = 'center';
+  if (snapToStop) {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.roundRect(
+      reticleX - 0.5,
+      height - MARGIN_BOTTOM - SNAPPED_CURSOR_HEIGHT * 0.6,
+      1,
+      SNAPPED_CURSOR_HEIGHT,
+      [1, 1, 1, 1]
+    );
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillText(textPosition, reticleX, height - MARGIN_BOTTOM + CURVE_MARGIN_SIDES * 1.33);
+  } else {
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.moveTo(reticleX, height - MARGIN_BOTTOM);
+    ctx.lineTo(reticleX, height - MARGIN_BOTTOM + CURSOR_HEIGHT);
+    ctx.stroke();
+    ctx.fillText(textPosition, reticleX, height - MARGIN_BOTTOM + CURVE_MARGIN_SIDES * 1.33);
+  }
+
+  if (reticleX - MARGIN_LEFT < ctx.measureText(stopText).width / 2) {
+    ctx.textAlign = 'start';
+  } else if (reticleX - MARGIN_LEFT > cursorBoxWidth - ctx.measureText(stopText).width / 2) {
+    ctx.textAlign = 'end';
+  }
+  ctx.fillText(stopText, reticleX, height - MARGIN_BOTTOM + SNAPPED_STOP_TEXT_OFFSET);
+
+  ctx.clearRect(0, 0, width, MARGIN_TOP);
+
   return {
-    curveX,
-    curveY,
+    curveX: reticleX,
+    curveY: reticleY,
     speedText,
     ecoSpeedText,
     effortText,
