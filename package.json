@@ -16,6 +16,7 @@
     "ui-speedspacechart",
     "ui-warped-map",
     "ui-manchette",
+    "ui-manchette-with-spacetimechart",
     "storybook"
   ],
   "engines": {

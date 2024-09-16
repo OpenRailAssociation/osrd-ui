@@ -11,7 +11,7 @@ const OperationalPointList = ({ operationalPoints }: OperationalPointListProps) 
   <div className="operational-point-list ">
     {operationalPoints.map((op, index) => (
       <div
-        key={index}
+        key={op.id}
         className="operational-point-wrapper flex flex-col justify-start"
         style={op.styles}
       >
