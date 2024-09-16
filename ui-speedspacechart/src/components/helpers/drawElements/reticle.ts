@@ -5,7 +5,7 @@ import {
   binarySearch,
   getAdaptiveHeight,
   maxPositionValue,
-  speedRangeValues,
+  maxSpeedValue,
   interpolate,
   positionToPosX,
   getCursorPosition,
@@ -60,7 +60,7 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
   let modeText = '';
   let reticleY = 0;
 
-  const { maxSpeed } = speedRangeValues(store);
+  const maxSpeed = maxSpeedValue(store);
   const maxPosition = maxPositionValue(store);
 
   const heightWithoutLayers = getAdaptiveHeight(height, layersDisplay, false);

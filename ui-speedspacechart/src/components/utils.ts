@@ -8,12 +8,6 @@ import {
 } from './const';
 import type { LayerData, Store } from '../types/chartTypes';
 
-type SpeedRangeValues = {
-  minSpeed: number;
-  maxSpeed: number;
-  speedRange: number;
-};
-
 type SlopesValues = {
   minGradient: number;
   maxGradient: number;
@@ -29,15 +23,12 @@ export const getGraphOffsets = (width: number, height: number, declivities?: boo
 
 /**
  * /**
- * Given a store including a list of speed data, return the minSpeed, maxSpeed and speedRange
+ * Given a store including a list of speed data, return the maxSpeed
  * @param store
  */
-export const speedRangeValues = (store: Store): SpeedRangeValues => {
+export const maxSpeedValue = (store: Store) => {
   const speeds = store.speeds;
-  const minSpeed = Math.min(...speeds.map(({ value }) => value));
-  const maxSpeed = Math.max(...speeds.map(({ value }) => value));
-  const speedRange = maxSpeed - minSpeed;
-  return { minSpeed, maxSpeed, speedRange };
+  return Math.max(...speeds.map(({ value }) => value));
 };
 
 /**

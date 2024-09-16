@@ -5,7 +5,7 @@ import type {
   LayerData,
 } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
-import { clearCanvas, maxPositionValue, speedRangeValues } from '../../utils';
+import { clearCanvas, maxPositionValue, maxSpeedValue } from '../../utils';
 
 const { CURVE_MARGIN_TOP, CURVE_MARGIN_SIDES } = MARGINS;
 
@@ -14,7 +14,7 @@ const drawSpecificCurve = (
   canvasConfig: CanvasConfig,
   specificSpeeds: LayerData<number>[]
 ) => {
-  const { minSpeed, speedRange, maxPosition, ratioX } = curveConfig;
+  const { maxSpeed, maxPosition, ratioX } = curveConfig;
   const { width, height, ctx } = canvasConfig;
 
   const adjustedWidth = width - CURVE_MARGIN_SIDES;
@@ -24,7 +24,7 @@ const drawSpecificCurve = (
 
   return specificSpeeds.forEach(({ position, value }) => {
     // normalize speed based on range of values
-    const normalizedSpeed = (value - minSpeed) / speedRange;
+    const normalizedSpeed = value / maxSpeed;
     const x = position.start * xcoef + halfCurveMarginSides;
     const y = height - normalizedSpeed * adjustedHeight;
     ctx.lineTo(x, y);
@@ -39,7 +39,7 @@ export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.save();
   ctx.translate(leftOffset, 0);
 
-  const { minSpeed, speedRange } = speedRangeValues(store);
+  const maxSpeed = maxSpeedValue(store);
   const maxPosition = maxPositionValue(store);
 
   ctx.lineWidth = 0.5;
@@ -47,7 +47,7 @@ export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.strokeStyle = 'rgb(17, 101, 180, 0.5)';
 
   ctx.beginPath();
-  drawSpecificCurve({ minSpeed, speedRange, maxPosition, ratioX }, { width, height, ctx }, speeds);
+  drawSpecificCurve({ maxSpeed, maxPosition, ratioX }, { width, height, ctx }, speeds);
   ctx.closePath();
   ctx.fill();
 
@@ -58,11 +58,7 @@ export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.globalCompositeOperation = 'destination-out';
 
   ctx.beginPath();
-  drawSpecificCurve(
-    { minSpeed, speedRange, maxPosition, ratioX },
-    { width, height, ctx },
-    ecoSpeeds
-  );
+  drawSpecificCurve({ maxSpeed, maxPosition, ratioX }, { width, height, ctx }, ecoSpeeds);
   ctx.closePath();
   ctx.fill();
   ctx.globalCompositeOperation = 'source-over';
