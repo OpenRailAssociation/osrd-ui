@@ -37,10 +37,17 @@ const TimePicker = ({ onTimeChange, hours = 0, minutes = 0, ...otherProps }: Tim
   const inputRef = useRef<HTMLInputElement>(null);
 
   const incrementMinute = (increment: number) => {
-    const newMinutes = minutes + increment;
-    if (newMinutes >= 0 && newMinutes <= 59) {
-      onTimeChange({ hours, minutes: newMinutes });
+    let newMinutes = minutes + increment;
+    let newHours = hours;
+
+    if (newMinutes >= 60) {
+      newMinutes = 0;
+      newHours = newHours === 23 ? 0 : newHours + 1;
+    } else if (newMinutes < 0) {
+      newMinutes = 59;
+      newHours = newHours === 0 ? 23 : newHours - 1;
     }
+    onTimeChange({ hours: newHours, minutes: newMinutes });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
