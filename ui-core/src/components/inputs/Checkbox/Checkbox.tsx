@@ -5,7 +5,7 @@ import cx from 'classnames';
 import useFocusByTab from '../../../hooks/useFocusByTab';
 
 export type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
+  label?: string;
   small?: boolean;
   hint?: string;
   isIndeterminate?: boolean;
@@ -49,7 +49,7 @@ const Checkbox = ({
         {...rest}
       />
       <span className={cx('checkmark', { 'focused-by-tab': isFocusByTab })}></span>
-      <div className="label">{label}</div>
+      {label && <div className="label">{label}</div>}
       {hint && <span className="hint">{hint}</span>}
     </label>
   );
