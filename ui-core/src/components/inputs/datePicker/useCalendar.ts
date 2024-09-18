@@ -28,10 +28,7 @@ export default function useCalendar({
     const isStart = (selectedSlot && isSameDay(date, selectedSlot.start)) || false;
     const isEnd = (selectedSlot && isSameDay(date, selectedSlot.end)) || false;
     const withinSelectedSlot =
-      (selectedSlot &&
-        selectedSlot.start &&
-        selectedSlot.end &&
-        isWithinInterval(date, selectedSlot)) ||
+      (selectedSlot?.start && selectedSlot.end && isWithinInterval(date, selectedSlot)) ||
       isStart ||
       isEnd;
     const insideSelectableSlot = isWithinInterval(date, selectableSlot);

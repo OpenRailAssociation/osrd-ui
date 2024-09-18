@@ -34,11 +34,9 @@ const Day = ({ date, isReferenceDate, isSelectable, dayWrapperClassName, onClick
   </div>
 );
 
-const Calendar = ({ displayedMonthStartDate, onDayClick }: CalendarProps) => {
-  const { days, isReferenceDate, isDateSelectable, buildDayWrapperClassName } = useCalendar({
-    displayedMonthStartDate,
-    onDayClick,
-  });
+const Calendar = (props: CalendarProps) => {
+  const { days, isReferenceDate, isDateSelectable, buildDayWrapperClassName } = useCalendar(props);
+  const { displayedMonthStartDate, onDayClick } = props;
   return (
     <div className="calendar-wrapper">
       <div className="calendar-anatomy">
@@ -48,13 +46,13 @@ const Calendar = ({ displayedMonthStartDate, onDayClick }: CalendarProps) => {
         <div className="calendar-grid-wrapper">
           <div className="calendar-weekday-labels">
             {WEEKDAY_LABELS.map((label, index) => (
-              <p key={index}>{label}</p>
+              <p key={`${label}-${index}`}>{label}</p>
             ))}
           </div>
           <div className="calendar-days-grid">
-            {days.map((date, index) => (
+            {days.map((date) => (
               <Day
-                key={index}
+                key={date.getTime()}
                 date={date}
                 isReferenceDate={isReferenceDate(date)}
                 isSelectable={isDateSelectable(date)}
