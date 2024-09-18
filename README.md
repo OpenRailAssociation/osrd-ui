@@ -2,6 +2,8 @@
 
 Icons, fonts, colors, components and all user interface items for OSRD project.
 
+A [live storybook](https://openrailassociation.github.io/osrd-ui/) showcases all components.
+
 ## Development
 
 Development will leverage preconstruct. **Documentation yet to come**.
