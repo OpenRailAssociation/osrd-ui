@@ -61,9 +61,9 @@ const CalendarPicker = ({
         </span>
       )}
       <div className={cx('calendar-list', { 'navigation-btn-hidden': !showNavigationBtn })}>
-        {displayedMonthsStartDates.map((date, index) => (
+        {displayedMonthsStartDates.map((date) => (
           <Calendar
-            key={index}
+            key={date.getTime()}
             displayedMonthStartDate={date}
             selectableSlot={selectableSlot}
             selectedSlot={selectedSlot}
