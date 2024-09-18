@@ -31,9 +31,11 @@ const store: Store = {
   stops: [],
   electrifications: [],
   slopes: [],
+  mrsp: undefined,
   powerRestrictions: [],
   electricalProfiles: [],
   speedLimitTags: [],
+  trainLength: 400,
   ratioX: 1,
   leftOffset: 0,
   cursor: {
@@ -55,7 +57,6 @@ const store: Store = {
     declivities: false,
     speedLimitTags: false,
     steps: true,
-    temporarySpeedLimits: false,
   },
   isSettingsPanelOpened: false,
 };

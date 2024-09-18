@@ -1,4 +1,5 @@
 export { default as StepsLayer } from './StepsLayer';
+export { default as SpeedLimitsLayer } from './SpeedLimitsLayer';
 export { default as CurveLayer } from './CurveLayer';
 export { default as DeclivityLayer } from './DeclivityLayer';
 export { default as ElectricalProfileLayer } from './ElectricalProfileLayer';
