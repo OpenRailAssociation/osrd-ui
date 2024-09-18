@@ -21,6 +21,7 @@ export type ElectrificationValues = {
   lowerPantograph?: boolean;
 };
 
+// TODO: Stop using this type and use ValuesAlongPath instead.
 export type LayerData<T> = {
   position: {
     start: number;
@@ -29,17 +30,34 @@ export type LayerData<T> = {
   value: T;
 };
 
+export type ValuesAlongPath<T> = {
+  // The n boundaries of the values along the path.
+  // Ignore first and last values which are 0 and the total length of the path.
+  boundaries: number[];
+  // The n+1 values along the path. Each value is associated with a range of the path.
+  // A value at index i is associated with the path between boundaries[i-1] bounradaires[i].
+  values: T[];
+};
+
+export type SpeedLimit = {
+  // The speed limit in km/h.
+  speed: number;
+  // Is the speed limit temporary or permanent.
+  isTemporary: boolean;
+};
+
 export type Data = {
   speeds: LayerData<number>[];
   ecoSpeeds: LayerData<number>[];
   stops: LayerData<string>[];
   electrifications: LayerData<ElectrificationValues>[];
   slopes: LayerData<number>[];
+  mrsp?: ValuesAlongPath<SpeedLimit>;
   electricalProfiles?: LayerData<ElectricalPofilelValues>[];
   powerRestrictions?: LayerData<PowerRestrictionValues>[];
   speedLimitTags?: LayerData<SpeedLimitTagValues>[];
-  speedLimits?: LayerData<number>[];
-  temporarySpeedLimits?: LayerData<number>[];
+  // The length of the train in meters.
+  trainLength: number;
 };
 
 export type Store = Data & {
@@ -60,7 +78,6 @@ export type Store = Data & {
     steps: boolean;
     declivities: boolean;
     speedLimits: boolean;
-    temporarySpeedLimits: boolean;
     electricalProfiles: boolean;
     powerRestrictions: boolean;
     speedLimitTags: boolean;

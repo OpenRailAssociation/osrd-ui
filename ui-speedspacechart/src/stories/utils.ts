@@ -28,6 +28,17 @@ const formatEcoSpeeds = (simulationFinalOutput: Simulation['final_output']) => {
   }));
 };
 
+const formatMrsp = (mrsp: Simulation['mrsp']) => {
+  const { boundaries, values } = mrsp;
+  return {
+    boundaries: boundaries.map(convertMmToKM),
+    values: values.map((speed) => ({
+      speed: convertMsToKmh(speed),
+      isTemporary: false,
+    })),
+  };
+};
+
 const formatStops = (operationalPoints: PathProperties['operational_points']) =>
   operationalPoints.map(({ position, extensions }) => ({
     position: {
@@ -137,21 +148,25 @@ export const formatData = (
 ): Data => {
   const speeds = formatSpeed(simulation.base);
   const ecoSpeeds = formatEcoSpeeds(simulation.final_output);
+  const mrsp = formatMrsp(simulation.mrsp);
   const stops = formatStops(pathProperties.operational_points);
   const electrifications = formatElectrifications(pathProperties.electrifications);
   const slopes = formatSlopes(pathProperties.slopes);
   const powerRestrictions = formatPowerRestrictions(powerRestrictionsData);
   const electricalProfiles = formatElectricalProfiles(simulation, electrifications);
   const speedLimitTags = formatSpeedLimitTags(speedLimitTagsData);
+  const trainLength = 400;
 
   return {
     speeds,
     ecoSpeeds,
+    mrsp,
     stops,
     electrifications,
     slopes,
     electricalProfiles,
     powerRestrictions,
     speedLimitTags,
+    trainLength,
   };
 };

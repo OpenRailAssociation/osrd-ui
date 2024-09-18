@@ -5,7 +5,6 @@ import SettingsPanel from './common/SettingsPanel';
 import { LINEAR_LAYERS_HEIGHTS, MARGINS } from './const';
 import { resetZoom } from './helpers/layersManager';
 import {
-  StepsLayer,
   AxisLayerY,
   CurveLayer,
   DeclivityLayer,
@@ -13,7 +12,9 @@ import {
   FrontInteractivityLayer,
   PowerRestrictionsLayer,
   ReticleLayer,
+  SpeedLimitsLayer,
   SpeedLimitTagsLayer,
+  StepsLayer,
   TickLayerX,
   TickLayerYRight,
 } from './layers/index';
@@ -62,9 +63,11 @@ const SpeedSpaceChart = ({
     stops: [],
     electrifications: [],
     slopes: [],
+    mrsp: undefined,
     powerRestrictions: undefined,
     electricalProfiles: undefined,
     speedLimitTags: undefined,
+    trainLength: 0,
     ratioX: 1,
     leftOffset: 0,
     cursor: {
@@ -82,7 +85,6 @@ const SpeedSpaceChart = ({
       steps: true,
       declivities: false,
       speedLimits: false,
-      temporarySpeedLimits: false,
       electricalProfiles: false,
       powerRestrictions: false,
       speedLimitTags: false,
@@ -122,25 +124,10 @@ const SpeedSpaceChart = ({
   };
 
   useEffect(() => {
-    const storeData = {
-      speeds: data.speeds || [],
-      ecoSpeeds: data.ecoSpeeds || [],
-      stops: data.stops || [],
-      electrifications: data.electrifications || [],
-      slopes: data.slopes || [],
-      electricalProfiles: data.electricalProfiles,
-      powerRestrictions: data.powerRestrictions,
-      speedLimitTags: data.speedLimitTags,
-    };
-
-    const { speeds, ecoSpeeds, stops, electrifications, slopes } = storeData;
-
-    if (speeds && ecoSpeeds && stops && electrifications && slopes) {
-      setStore((prev) => ({
-        ...prev,
-        ...storeData,
-      }));
-    }
+    setStore((prev) => ({
+      ...prev,
+      ...data,
+    }));
   }, [data]);
 
   useEffect(() => {
@@ -181,6 +168,9 @@ const SpeedSpaceChart = ({
         <DeclivityLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
       )}
       <CurveLayer width={WIDTH_OFFSET} height={HEIGHT_OFFSET} store={store} />
+      {store.layersDisplay.speedLimits && (
+        <SpeedLimitsLayer width={adjustedWidthRightAxis} height={height} store={store} />
+      )}
       {store.layersDisplay.steps && (
         <StepsLayer width={adjustedWidthRightAxis} height={height} store={store} />
       )}

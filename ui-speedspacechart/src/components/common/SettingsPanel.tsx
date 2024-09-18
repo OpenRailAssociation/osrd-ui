@@ -6,7 +6,7 @@ import { X } from '@osrd-project/ui-icons';
 import type { Store } from '../../types/chartTypes';
 import { DETAILS_BOX_SELECTION, LAYERS_SELECTION } from '../const';
 import type { SpeedSpaceChartProps } from '../SpeedSpaceChart';
-import { checkLayerData, getAdaptiveHeight } from '../utils';
+import { isLayerActive, getAdaptiveHeight } from '../utils';
 
 const SETTINGS_PANEL_BASE_HEIGHT = 442;
 const SPEEDSPACECHART_BASE_HEIGHT = 521.5;
@@ -64,7 +64,7 @@ const SettingsPanel = ({
             <Checkbox
               label={translations?.layersDisplay[selection] || selection}
               checked={store.layersDisplay[selection]}
-              disabled={checkLayerData(store, selection)}
+              disabled={!isLayerActive(store, selection)}
               onChange={() => {
                 setStore((prev) => ({
                   ...prev,

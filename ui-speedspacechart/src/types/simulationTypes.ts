@@ -1,7 +1,6 @@
 import { type electricalProfilesDesignValues } from '../stories/assets/const';
 
 export type Simulation = {
-  status: string;
   base: {
     positions: number[];
     speeds: number[];
@@ -17,6 +16,10 @@ export type Simulation = {
       profile?: keyof typeof electricalProfilesDesignValues | null;
       handled?: boolean;
     }[];
+  };
+  mrsp: {
+    boundaries: number[];
+    values: number[];
   };
 };
 

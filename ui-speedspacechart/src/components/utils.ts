@@ -169,16 +169,17 @@ export const drawLinearLayerBackground = (
 };
 
 /**
- * Check if an optional layer data is missing in the store.
- * Optional datas : electricalProfiles, powerRestrictions, speedLimitTags
+ * Return wether a layer should be active or not.
+ * Depending on the available data, some layers should be disabled.
  */
-export const checkLayerData = (store: Store, selection: (typeof LAYERS_SELECTION)[number]) =>
-  (selection === 'speedLimits' ||
-    selection === 'temporarySpeedLimits' ||
-    selection === 'electricalProfiles' ||
-    selection === 'powerRestrictions' ||
-    selection === 'speedLimitTags') &&
-  !store[selection];
+export const isLayerActive = (store: Store, selection: (typeof LAYERS_SELECTION)[number]) => {
+  if (selection === 'speedLimits') return store['mrsp'];
+  if (selection === 'electricalProfiles') return store['electricalProfiles'];
+  if (selection === 'powerRestrictions') return store['powerRestrictions'];
+  if (selection === 'speedLimitTags') return store['speedLimitTags'];
+  return true;
+};
+
 /**
  * Given a store including a list of slopes, return the position and value of min and max slopes
  * @param store

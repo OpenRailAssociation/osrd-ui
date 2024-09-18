@@ -1,7 +1,10 @@
 import type { Simulation } from '../../types/simulationTypes';
 
 export const simulationPmpLm: Simulation = {
-  status: 'success',
+  mrsp: {
+    boundaries: [1000000, 1200000, 1800000, 3550000, 4500000],
+    values: [16.667, 27.778, 16.667, 27.778, 8.333, 83.333],
+  },
   base: {
     positions: [
       0, 819, 3276, 7366, 29415, 52245, 98601, 159332, 207711, 357262, 1019000, 1142973, 1228000,
