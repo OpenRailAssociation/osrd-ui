@@ -55,8 +55,13 @@ const ComboBox = <T,>({
 
   const clearInput = () => {
     setInputValue('');
+    // Immediately clear the input's value in the DOM to prevent inconsistencies with handleInputFocus
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
     setSelectedOption(null);
-    inputRef.current?.focus();
+
+    focusInput();
   };
 
   const icons = [
@@ -88,10 +93,6 @@ const ComboBox = <T,>({
     }
   }, [value]);
 
-  useEffect(() => {
-    setFilteredSuggestions(sortedSuggestions);
-  }, [sortedSuggestions]);
-
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const userInput = normalizeString(e.currentTarget.value).trim();
     setInputValue(e.currentTarget.value);
@@ -99,6 +100,7 @@ const ComboBox = <T,>({
 
     if (userInput.trim() === '') {
       setFilteredSuggestions([]);
+      setSelectedOption(null);
       return;
     }
 
@@ -135,7 +137,17 @@ const ComboBox = <T,>({
 
   const handleInputFocus: FocusEventHandler<HTMLInputElement> = (e) => {
     e.stopPropagation();
-    if (inputRef.current && inputRef.current.value === '') {
+
+    const normalizedInput = normalizeString(e.currentTarget.value.trim().toLowerCase());
+    if (normalizedInput) {
+      const filtered = sortedSuggestions.filter((suggestion) => {
+        const suggestionLabel = normalizeString(getSuggestionLabel(suggestion).toLowerCase());
+        return exactSearch
+          ? suggestionLabel.startsWith(normalizedInput)
+          : suggestionLabel.includes(normalizedInput);
+      });
+      setFilteredSuggestions(filtered);
+    } else {
       setFilteredSuggestions(sortedSuggestions);
     }
   };
@@ -150,6 +162,8 @@ const ComboBox = <T,>({
 
     if (filteredSuggestions.length === 1) {
       selectSuggestion(0);
+    } else if (!isInputInSuggestions && selectedOption) {
+      setInputValue(getSuggestionLabel(selectedOption));
     } else if (!isInputInSuggestions) {
       setInputValue('');
       setSelectedOption(null);
@@ -161,7 +175,6 @@ const ComboBox = <T,>({
   const handleSuggestionClick = (index: number) => {
     selectSuggestion(index);
   };
-
   return (
     <div
       className="combo-box"

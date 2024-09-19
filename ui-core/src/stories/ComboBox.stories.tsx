@@ -50,7 +50,7 @@ export const WithDefaultValue: Story = {
   args: {
     label: 'Your name',
     type: 'text',
-    value: 'Manuel',
+    value: 'Manuéla',
   },
 };
 
