@@ -15,13 +15,13 @@ import cx from 'classnames';
 import { normalizeString } from './utils';
 import Input, { type InputProps } from '../Input';
 
-export type ComboBoxProps<T> = Omit<InputProps, 'value'> & {
+export type ComboBoxProps<T> = InputProps & {
   suggestions: Array<T>;
   getSuggestionLabel: (option: T) => string;
   customLabel?: ReactNode;
   numberOfSuggestionsToShow?: number;
   exactSearch?: boolean;
-  value?: T;
+  value?: string;
   onSelectSuggestion?: (option: T) => void;
 };
 
@@ -39,7 +39,7 @@ const ComboBox = <T,>({
 }: ComboBoxProps<T>) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<T[]>([]);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-  const [inputValue, setInputValue] = useState(value ? getSuggestionLabel(value) : '');
+  const [inputValue, setInputValue] = useState(value || '');
   const [selectedOption, setSelectedOption] = useState<T | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -84,9 +84,9 @@ const ComboBox = <T,>({
 
   useEffect(() => {
     if (value) {
-      setInputValue(getSuggestionLabel(value));
+      setInputValue(value);
     }
-  }, [value, getSuggestionLabel]);
+  }, [value]);
 
   useEffect(() => {
     setFilteredSuggestions(sortedSuggestions);
