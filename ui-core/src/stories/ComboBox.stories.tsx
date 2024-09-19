@@ -50,7 +50,7 @@ export const WithDefaultValue: Story = {
   args: {
     label: 'Your name',
     type: 'text',
-    value: suggestions[0], // Use a suggestion from the suggestions array
+    value: 'Manuel',
   },
 };
 
@@ -95,13 +95,5 @@ export const SmallInput: Story = {
     type: 'text',
     required: true,
     small: true,
-  },
-};
-
-export const WithoutSuggestions: Story = {
-  args: {
-    label: 'Your name',
-    type: 'text',
-    suggestions: [],
   },
 };
