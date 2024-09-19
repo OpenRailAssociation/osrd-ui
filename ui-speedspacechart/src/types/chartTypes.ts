@@ -68,18 +68,6 @@ export type Store = Data & {
   isSettingsPanelOpened: boolean;
 };
 
-export type CurveConfig = {
-  maxSpeed: number;
-  maxPosition: number;
-  ratioX: number;
-};
-
-export type CanvasConfig = {
-  width: number;
-  height: number;
-  ctx: CanvasRenderingContext2D;
-};
-
 export type DrawFunctionParams = {
   ctx: CanvasRenderingContext2D;
   width: number;
