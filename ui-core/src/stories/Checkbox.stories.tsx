@@ -30,7 +30,7 @@ export const Hint: Story = {
     hint: 'Without salt, sorry',
   },
 };
-export const Indterminate: Story = {
+export const Indeterminate: Story = {
   args: {
     label: 'Indeterminate',
     isIndeterminate: true,
