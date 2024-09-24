@@ -33,6 +33,7 @@ const Select = <T,>({
   getOptionLabel,
   getOptionValue,
   onChange,
+  ...props
 }: SelectProps<T>) => {
   const [selectedOption, setSelectedOption] = useState<T | undefined>(value);
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -69,6 +70,7 @@ const Select = <T,>({
         required={required}
         disabled={disabled || readOnly}
         onChange={handleOnChange}
+        {...props}
       >
         {placeholder && <option value={PLACEHOLDER_VALUE}>{`– ${placeholder} –`}</option>}
         {options.map((option) => (
