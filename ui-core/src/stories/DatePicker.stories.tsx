@@ -10,6 +10,8 @@ import {
   type CalendarSlot,
 } from '../components/inputs/datePicker';
 import '@osrd-project/ui-core/dist/theme.css';
+import './stories.css';
+import { formatDateString } from '../components/inputs/datePicker/utils';
 
 const now = new Date();
 const endSelectableDate = new Date(now);
@@ -38,11 +40,17 @@ const DatePickerStory = (props: DatePickerProps) => {
     );
   } else {
     return (
-      <DatePicker
-        {...props}
-        value={value as SingleDatePickerProps['value']}
-        onDateChange={onDayChange}
-      />
+      <div className="date-picker-story-wrapper">
+        <DatePicker
+          {...props}
+          value={value as SingleDatePickerProps['value']}
+          onDateChange={onDayChange}
+          errorMessages={{
+            invalidDate: `Please select a valid date between ${formatDateString(selectableSlot.start)} and ${formatDateString(selectableSlot.end)}`,
+            invalidInput: 'Please enter a valid date dd/mm/yy',
+          }}
+        />
+      </div>
     );
   }
 };
@@ -64,13 +72,14 @@ const meta: Meta<typeof DatePicker> = {
     },
   },
   args: {
+    selectableSlot,
     calendarPickerProps: {
       numberOfMonths: 1,
-      selectableSlot,
     },
     inputProps: {
       id: 'date-picker',
       label: 'Select a date',
+      inputFieldWrapperClassname: 'date-picker-input-wrapper',
     },
   },
   render: (props) => <DatePickerStory {...props} />,

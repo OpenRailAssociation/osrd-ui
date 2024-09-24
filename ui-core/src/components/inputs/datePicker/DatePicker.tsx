@@ -9,8 +9,11 @@ import useDatePicker from './useDatePicker';
 import Input, { type InputProps } from '../Input';
 
 type BaseDatePickerProps = {
+  selectableSlot?: CalendarSlot;
   inputProps: InputProps;
   calendarPickerProps?: CalendarPickerPublicProps;
+  errorMessages?: { invalidInput?: string; invalidDate?: string };
+  width?: number;
 };
 
 export type SingleDatePickerProps = BaseDatePickerProps & {
@@ -30,6 +33,7 @@ export type DatePickerProps = SingleDatePickerProps | RangeDatePickerProps;
 export const DatePicker = (props: DatePickerProps) => {
   const {
     inputValue,
+    statusWithMessage,
     selectedSlot,
     showPicker,
     modalPosition,
@@ -38,8 +42,12 @@ export const DatePicker = (props: DatePickerProps) => {
     setShowPicker,
     handleDayClick,
     handleInputClick,
+    handleInputOnChange,
   } = useDatePicker(props);
+
   const { inputFieldWrapperClassname, ...otherInputProps } = props.inputProps;
+  const { selectableSlot } = props;
+
   return (
     <div className="date-picker">
       <div>
@@ -53,8 +61,12 @@ export const DatePicker = (props: DatePickerProps) => {
             content: <CalendarIcon />,
             onClickCallback: () => setShowPicker(!showPicker),
           }}
-          inputFieldWrapperClassname={cx('date-picker-input', inputFieldWrapperClassname)}
+          inputFieldWrapperClassname={cx('date-picker-input', inputFieldWrapperClassname, {
+            'range-mode': props.isRangeMode,
+          })}
           autoComplete="off"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputOnChange(e.target.value)}
+          statusWithMessage={statusWithMessage}
         />
       </div>
       {showPicker && (
@@ -65,6 +77,7 @@ export const DatePicker = (props: DatePickerProps) => {
             onDayClick={handleDayClick}
             modalPosition={modalPosition}
             calendarPickerRef={calendarPickerRef}
+            selectableSlot={selectableSlot}
           />
         </div>
       )}

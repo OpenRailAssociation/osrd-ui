@@ -15,12 +15,12 @@ export type CalendarPickerPrivateProps = {
     left: number;
   };
   calendarPickerRef: React.RefObject<HTMLDivElement>;
+  selectableSlot?: CalendarSlot;
 };
 
 export type CalendarPickerPublicProps = {
   initialDate?: Date;
   numberOfMonths?: 1 | 2 | 3;
-  selectableSlot?: CalendarSlot;
 };
 
 export type CalendarPickerProps = CalendarPickerPrivateProps & CalendarPickerPublicProps;

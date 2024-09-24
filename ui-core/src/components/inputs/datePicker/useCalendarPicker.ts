@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { type CalendarPickerProps } from './CalendarPicker';
 import { generateSequentialDates, validateSlots } from './utils';
@@ -10,9 +10,9 @@ export default function useCalendarPicker({
   numberOfMonths = 1,
 }: Omit<CalendarPickerProps, 'modalPosition' | 'calendarPickerRef' | 'onDayClick'>) {
   validateSlots(selectedSlot, selectableSlot, initialDate);
-  const initialActiveDate =
-    initialDate ?? selectedSlot?.start ?? selectableSlot?.start ?? new Date();
-  const [activeDate, setActiveDate] = useState<Date>(initialActiveDate);
+
+  const [activeDate, setActiveDate] = useState(new Date());
+
   const displayedMonthsStartDates = generateSequentialDates(activeDate, numberOfMonths);
 
   const activeYear = activeDate.getFullYear();
@@ -47,6 +47,10 @@ export default function useCalendarPicker({
       setActiveDate(new Date(nextActiveYear, nextActiveMonth, 1));
     }
   };
+
+  useEffect(() => {
+    setActiveDate(initialDate ?? selectedSlot?.start ?? selectableSlot?.start ?? new Date());
+  }, [initialDate, selectedSlot, selectableSlot]);
 
   return {
     displayedMonthsStartDates,
