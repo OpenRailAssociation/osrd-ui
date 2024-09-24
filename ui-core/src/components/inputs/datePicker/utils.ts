@@ -8,6 +8,8 @@ export const INVALID_SELECTED_SLOT_BASED_ON_SELECTABLE_SLOT_ERROR =
   'selectedSlot must be within selectableSlot';
 export const INVALID_INITIAL_DATE_ERROR = 'initialDate must be within selectableSlot';
 
+export const containsOnlyNumbersAndSlashes = (s: string) => /^[0-9/]+$/.test(s);
+
 /**
  * Normalize the given date to midnight
  * @param date The date to normalize

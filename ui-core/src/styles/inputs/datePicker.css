@@ -5,8 +5,10 @@
         @apply text-primary-60;
       }
     }
-    .input {
-      caret-color: transparent;
+    &.range-mode {
+      .input {
+        caret-color: transparent;
+      }
     }
   }
 

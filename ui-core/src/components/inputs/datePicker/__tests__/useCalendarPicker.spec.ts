@@ -97,9 +97,8 @@ describe('useCalendarPicker', () => {
 
   describe('Navigation handling', () => {
     it('should navigate to the next month correctly during the year', () => {
-      const { result } = renderHook(() =>
-        useCalendarPicker({ initialDate: new Date(2024, july, 1) })
-      );
+      const initialDate = new Date(2024, july, 1);
+      const { result } = renderHook(() => useCalendarPicker({ initialDate }));
       act(() => result.current.handleGoToNextMonth());
 
       expect(result.current.displayedMonthsStartDates[0].getMonth()).toBe(august);
@@ -107,9 +106,8 @@ describe('useCalendarPicker', () => {
     });
 
     it('should navigate to the next month correctly at the end of the year', () => {
-      const { result } = renderHook(() =>
-        useCalendarPicker({ initialDate: new Date(2024, december, 1) })
-      );
+      const initialDate = new Date(2024, december, 1);
+      const { result } = renderHook(() => useCalendarPicker({ initialDate }));
       act(() => result.current.handleGoToNextMonth());
 
       expect(result.current.displayedMonthsStartDates[0].getMonth()).toBe(january);
@@ -117,9 +115,8 @@ describe('useCalendarPicker', () => {
     });
 
     it('should navigate to the previous month correctly during the year', () => {
-      const { result } = renderHook(() =>
-        useCalendarPicker({ initialDate: new Date(2024, july, 1) })
-      );
+      const initialDate = new Date(2024, july, 1);
+      const { result } = renderHook(() => useCalendarPicker({ initialDate }));
       act(() => result.current.handleGoToPreviousMonth());
 
       expect(result.current.displayedMonthsStartDates[0].getMonth()).toBe(june);
@@ -127,9 +124,8 @@ describe('useCalendarPicker', () => {
     });
 
     it('should navigate to the previous month correctly at the start of the year', () => {
-      const { result } = renderHook(() =>
-        useCalendarPicker({ initialDate: new Date(2024, january, 1) })
-      );
+      const initialDate = new Date(2024, january, 1);
+      const { result } = renderHook(() => useCalendarPicker({ initialDate }));
       act(() => result.current.handleGoToPreviousMonth());
 
       expect(result.current.displayedMonthsStartDates[0].getMonth()).toBe(december);
