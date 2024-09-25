@@ -4,7 +4,7 @@ export type SpeedLimitTags = {
 };
 
 export const speedLimitTags: SpeedLimitTags = {
-  boundaries: [0, 25000000, 65000000, 95000000, 125000000, 201408607],
+  boundaries: [0, 25000000, 65000000, 95000000, 125000000, 201649000],
   values: [
     { speed_limit_tags_type: 'tag', tag_name: 'MA100', color: '#494641' },
     { speed_limit_tags_type: 'tag', tag_name: 'EVO', color: '#216482' },

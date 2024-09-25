@@ -69,11 +69,13 @@ export const LAYERS_SELECTION: Array<keyof Store['layersDisplay']> = [
 // Colors
 
 export const BLACK = chroma(0, 0, 0);
-export const WHITE = chroma(255, 255, 255);
+export const ERROR_30 = chroma(255, 104, 104);
+export const ERROR_60 = chroma(217, 28, 28);
 export const GREY_50 = chroma(121, 118, 113);
 export const GREY_80 = chroma(49, 46, 43);
 export const LIGHT_BLUE = chroma(33, 112, 185);
-export const ERROR_60 = chroma(217, 28, 28);
+export const WARNING_30 = chroma(234, 167, 43);
+export const WHITE = chroma(255, 255, 255);
 
 /**
  * COLOR_DICTIONARY maps specific colors to their corresponding secondary colors used for speed limit tags.

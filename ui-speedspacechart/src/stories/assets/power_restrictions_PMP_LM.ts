@@ -82,6 +82,6 @@ export const powerRestrictionsPmpLm: PowerRestriction[] = [
     code: 'BBBB',
     handled: true,
     start: 180550965,
-    stop: 201544000,
+    stop: 201649000,
   },
 ];

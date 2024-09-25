@@ -1,9 +1,9 @@
 import {
+  CURSOR_SNAP_DISTANCE,
   LINEAR_LAYER_SEPARATOR_HEIGHT,
   LINEAR_LAYERS_HEIGHTS,
   LINEAR_LAYERS_HEIGHTS_BY_NAME,
   MARGINS,
-  CURSOR_SNAP_DISTANCE,
   type LAYERS_SELECTION,
 } from './const';
 import type { LayerData, Store } from '../types/chartTypes';
@@ -294,6 +294,9 @@ export const binarySearch = <T>(data: T[], element: number, lambda: (element: T)
 
   return left;
 };
+
+/** Convert meters to kilometers */
+export const convertMToKm = (meters: number) => meters / 1000;
 
 /** Transform a position in km into a position on the x-axis in pixels */
 export const positionToPosX = (
