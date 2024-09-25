@@ -32,9 +32,9 @@ const formatMrsp = (mrsp: Simulation['mrsp']) => {
   const { boundaries, values } = mrsp;
   return {
     boundaries: boundaries.map(convertMmToKM),
-    values: values.map((speed) => ({
+    values: values.map((speed, index) => ({
       speed: convertMsToKmh(speed),
-      isTemporary: false,
+      isTemporary: (index + 1) % 4 == 0,
     })),
   };
 };
