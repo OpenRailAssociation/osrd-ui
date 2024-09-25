@@ -22,7 +22,7 @@ export type ComboBoxProps<T> = InputProps & {
   numberOfSuggestionsToShow?: number;
   exactSearch?: boolean;
   value?: string;
-  onSelectSuggestion?: (option: T) => void;
+  onSelectSuggestion?: (option: T | undefined) => void;
 };
 
 const ComboBox = <T,>({
@@ -41,6 +41,7 @@ const ComboBox = <T,>({
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [inputValue, setInputValue] = useState(value || '');
   const [selectedOption, setSelectedOption] = useState<T | null>(null);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -49,7 +50,7 @@ const ComboBox = <T,>({
     [suggestions, getSuggestionLabel]
   );
 
-  const showSuggestions = filteredSuggestions.length > 0 && !inputProps.disabled;
+  const showSuggestions = isInputFocused && filteredSuggestions.length > 0 && !inputProps.disabled;
 
   const focusInput = () => inputRef.current?.focus();
 
@@ -60,7 +61,18 @@ const ComboBox = <T,>({
       inputRef.current.value = '';
     }
     setSelectedOption(null);
+    onSelectSuggestion?.(undefined);
+    const syntheticEvent = {
+      target: {
+        value: '',
+      },
+      currentTarget: {
+        value: '',
+      },
+    } as React.ChangeEvent<HTMLInputElement>;
 
+    // Call the parent's onChange handler with the synthetic event
+    onChange?.(syntheticEvent);
     focusInput();
   };
 
@@ -93,6 +105,10 @@ const ComboBox = <T,>({
     }
   }, [value]);
 
+  useEffect(() => {
+    setFilteredSuggestions(sortedSuggestions);
+  }, [sortedSuggestions]);
+
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const userInput = normalizeString(e.currentTarget.value).trim();
     setInputValue(e.currentTarget.value);
@@ -121,6 +137,9 @@ const ComboBox = <T,>({
     onSelectSuggestion?.(selectedSuggestion);
     setFilteredSuggestions([]);
     setActiveSuggestionIndex(-1);
+    setTimeout(() => {
+      inputRef.current?.blur();
+    }, 0);
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -137,6 +156,7 @@ const ComboBox = <T,>({
 
   const handleInputFocus: FocusEventHandler<HTMLInputElement> = (e) => {
     e.stopPropagation();
+    setIsInputFocused(true);
 
     const normalizedInput = normalizeString(e.currentTarget.value.trim().toLowerCase());
     if (normalizedInput) {
@@ -153,6 +173,7 @@ const ComboBox = <T,>({
   };
 
   const handleParentDivOnBlur: FocusEventHandler<HTMLInputElement> = () => {
+    setIsInputFocused(false);
     const normalizedInput = normalizeString(inputValue.trim().toLowerCase());
 
     const isInputInSuggestions = suggestions.some(
