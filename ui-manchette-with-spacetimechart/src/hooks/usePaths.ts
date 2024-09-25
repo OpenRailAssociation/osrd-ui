@@ -1,9 +1,10 @@
+/* eslint-disable import/no-unresolved */
 import { useMemo } from 'react';
 
 import {
   type ProjectPathTrainResult,
   type SpaceTimeCurves,
-} from '@osrd-project/ui-manchette/dist/types'; 
+} from '@osrd-project/ui-manchette/dist/types';
 
 const transformCurve = (curve: SpaceTimeCurves, departureTime: string) =>
   curve.positions.map((position, i) => ({

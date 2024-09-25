@@ -4,7 +4,11 @@ import type {
   ProjectPathTrainResult,
   OperationalPointType,
 } from '@osrd-project/ui-manchette/src/types';
-import type { OperationalPoint, SpaceScale } from '@osrd-project/ui-spacetimechart/dist/lib/types';
+import type {
+  OperationalPoint,
+  SpaceScale,
+  SpaceTimeChartProps,
+} from '@osrd-project/ui-spacetimechart/dist/lib/types';
 
 import { useIsOverflow } from './useIsOverFlow';
 import usePaths from './usePaths';
@@ -15,8 +19,9 @@ import {
   getOperationalPointsWithPosition,
   getScales,
   calcOperationalPointsHeight,
+  zoomX,
 } from '../helpers';
-import { getDiff } from '../utils/vector';
+import { getDiff } from '../utils/point';
 
 type State = {
   xZoom: number;
@@ -34,8 +39,8 @@ type State = {
 const useManchettesWithSpaceTimeChart = (
   operationalPoints: OperationalPointType[],
   projectPathTrainResult: ProjectPathTrainResult[],
-  manchette: React.RefObject<HTMLDivElement>,
-  selectedProjection?: number,
+  manchetteWithSpaceTimeChartContainer: React.RefObject<HTMLDivElement>,
+  selectedTrain?: number,
   height = 561
 ) => {
   const [isShiftPressed, setIsShiftPressed] = useState(false);
@@ -54,12 +59,12 @@ const useManchettesWithSpaceTimeChart = (
 
   const { xZoom, yZoom, xOffset, yOffset, panY, panning, scrollPosition, isProportional } = state;
 
-  const paths = usePaths(projectPathTrainResult, selectedProjection);
+  const paths = usePaths(projectPathTrainResult, selectedTrain);
 
   const checkOverflow = useCallback((isOverflowFromCallback: boolean) => {
     setState((prev) => ({ ...prev, panY: isOverflowFromCallback }));
   }, []);
-  useIsOverflow(manchette, checkOverflow);
+  useIsOverflow(manchetteWithSpaceTimeChartContainer, checkOverflow);
 
   // Memoize timeWindow to avoid recalculation on each render
   const timeWindow = useMemo(
@@ -96,13 +101,13 @@ const useManchettesWithSpaceTimeChart = (
   }, [yZoom]);
 
   const handleScroll = useCallback(() => {
-    if (!isShiftPressed && manchette.current) {
-      const { scrollTop } = manchette.current;
+    if (!isShiftPressed && manchetteWithSpaceTimeChartContainer.current) {
+      const { scrollTop } = manchetteWithSpaceTimeChartContainer.current;
       if (scrollTop || scrollTop === 0) {
         setState((prev) => ({ ...prev, scrollPosition: scrollTop, yOffset: scrollTop }));
       }
     }
-  }, [isShiftPressed, manchette]);
+  }, [isShiftPressed, manchetteWithSpaceTimeChartContainer]);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Shift') {
@@ -135,83 +140,92 @@ const useManchettesWithSpaceTimeChart = (
     [operationalPointsWithPosition, height, isProportional, yZoom]
   );
 
-  // Memoize the returned object to avoid unnecessary recalculations
-  return useMemo(
+  // Memoize manchetteProps separately
+  const manchetteProps = useMemo(
     () => ({
-      manchetteProps: {
-        operationalPoints: operationalPointsWithHeight,
-        zoomYIn,
-        zoomYOut,
-        toggleMode,
-        manchetteRef: manchette,
-        yZoom,
-        isProportional,
-      },
-      spaceTimeChartProps: {
-        operationalPoints: operationalPointsWithPosition,
-        spaceScales: computedScales,
-        timeScale: timeWindow / xZoom,
-        timeWindow,
-        paths,
-        xZoom,
-        xOffset,
-        panY,
-        yOffset: -scrollPosition + 14,
-        scrollPosition,
-        onPan: (payload: {
-          initialPosition: { x: number; y: number };
-          position: { x: number; y: number };
-          isPanning: boolean;
-        }) => {
-          const diff = getDiff(payload.initialPosition, payload.position);
-          const newState = { ...state };
-
-          if (!payload.isPanning) {
-            newState.panning = null;
-          } else if (!panning) {
-            newState.panning = { initialOffset: { x: xOffset, y: yOffset } };
-          } else {
-            const { initialOffset } = panning;
-            newState.xOffset = initialOffset.x + diff.x;
-            if (panY) {
-              const newYPos = initialOffset.y - diff.y;
-              if (
-                manchette.current &&
-                newYPos >= 0 &&
-                newYPos + INITIAL_SPACE_TIME_CHART_HEIGHT <= manchette.current.scrollHeight
-              ) {
-                newState.yOffset = newYPos;
-                newState.scrollPosition = newYPos;
-                manchette.current.scrollTop = newYPos;
-              }
-            }
-          }
-          setState(newState);
-        },
-      },
-      handleScroll,
-    }),
-    [
-      isProportional,
-      operationalPointsWithHeight,
+      operationalPoints: operationalPointsWithHeight,
       zoomYIn,
       zoomYOut,
       toggleMode,
-      handleScroll,
-      manchette,
       yZoom,
+      isProportional,
+    }),
+    [operationalPointsWithHeight, zoomYIn, zoomYOut, toggleMode, yZoom, isProportional]
+  );
+
+  // Memoize spaceTimeChartProps separately
+  const spaceTimeChartProps = useMemo(
+    () => ({
+      operationalPoints: operationalPointsWithPosition,
+      spaceScales: computedScales,
+      timeScale: timeWindow / xZoom,
+      paths,
+      xOffset,
+      yOffset: -scrollPosition + 14,
+      onZoom: (payload: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]) => {
+        if (isShiftPressed) {
+          setState((prev) => ({
+            ...prev,
+            ...zoomX(prev.xZoom, prev.xOffset, payload),
+          }));
+        }
+      },
+      onPan: (payload: {
+        initialPosition: { x: number; y: number };
+        position: { x: number; y: number };
+        isPanning: boolean;
+      }) => {
+        const diff = getDiff(payload.initialPosition, payload.position);
+        const newState = { ...state };
+
+        if (!payload.isPanning) {
+          newState.panning = null;
+        } else if (!panning) {
+          newState.panning = { initialOffset: { x: xOffset, y: yOffset } };
+        } else {
+          const { initialOffset } = panning;
+          newState.xOffset = initialOffset.x + diff.x;
+          if (panY) {
+            const newYPos = initialOffset.y - diff.y;
+            if (
+              manchetteWithSpaceTimeChartContainer.current &&
+              newYPos >= 0 &&
+              newYPos + INITIAL_SPACE_TIME_CHART_HEIGHT <=
+                manchetteWithSpaceTimeChartContainer.current.scrollHeight
+            ) {
+              newState.yOffset = newYPos;
+              newState.scrollPosition = newYPos;
+              manchetteWithSpaceTimeChartContainer.current.scrollTop = newYPos;
+            }
+          }
+        }
+        setState(newState);
+      },
+    }),
+    [
       operationalPointsWithPosition,
       computedScales,
       timeWindow,
-      paths,
       xZoom,
+      paths,
       xOffset,
+      panY,
       scrollPosition,
+      isShiftPressed,
       state,
       panning,
       yOffset,
-      panY,
+      manchetteWithSpaceTimeChartContainer,
     ]
+  );
+
+  return useMemo(
+    () => ({
+      manchetteProps,
+      spaceTimeChartProps,
+      handleScroll,
+    }),
+    [manchetteProps, spaceTimeChartProps, handleScroll]
   );
 };
 

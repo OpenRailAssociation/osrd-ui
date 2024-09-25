@@ -9,7 +9,7 @@ type OperationalPointListProps = {
 
 const OperationalPointList = ({ operationalPoints }: OperationalPointListProps) => (
   <div className="operational-point-list ">
-    {operationalPoints.map((op, index) => (
+    {operationalPoints.map((op) => (
       <div
         key={op.id}
         className="operational-point-wrapper flex flex-col justify-start"

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import React, { useRef } from 'react';
 
 import { Manchette } from '@osrd-project/ui-manchette';
@@ -9,6 +10,7 @@ import { PathLayer, SpaceTimeChart } from '@osrd-project/ui-spacetimechart';
 import type { Meta } from '@storybook/react';
 
 import '@osrd-project/ui-core/dist/theme.css';
+import '@osrd-project/ui-manchette/dist/theme.css';
 import '@osrd-project/ui-manchette-with-spacetimechart/dist/theme.css';
 
 import { SAMPLE_PATH_PROPERTIES_DATA, SAMPLE_PATHS_DATA } from '../assets/sampleData';
