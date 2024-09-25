@@ -36,7 +36,6 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
   "dependencies": {
-    "@osrd-project/ui-spacetimechart": "0.0.1-dev",
     "classnames": "^2.5.1",
     "lodash.isequal": "^4.5.0"
   },

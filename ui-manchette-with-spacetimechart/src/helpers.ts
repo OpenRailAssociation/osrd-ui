@@ -14,9 +14,9 @@ export type OperationalPointsOptions = { isProportional: boolean; yZoom: number;
 
 export const calcOperationalPointsToDisplay = (
   operationalPoints: OperationalPointType[],
-  options: OperationalPointsOptions
+  { height, isProportional, yZoom }: OperationalPointsOptions
 ): StyledOperationalPointType[] => {
-  if (!options.isProportional || operationalPoints.length === 0) {
+  if (!isProportional || operationalPoints.length === 0) {
     // For non-proportional display, we always display all the operational points:
     return operationalPoints.map((op) => ({ ...op, display: true }));
   }
@@ -25,7 +25,7 @@ export const calcOperationalPointsToDisplay = (
   // the last displayed point:
   const result: StyledOperationalPointType[] = [{ ...operationalPoints[0], display: true }];
   const totalDistance = calcTotalDistance(operationalPoints);
-  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(options.height);
+  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
   let lastDisplayedOP = result[0];
 
   // We iterate through all points, and only add them if they don't collide
@@ -33,7 +33,7 @@ export const calcOperationalPointsToDisplay = (
   for (let i = 1; i < operationalPoints.length; i++) {
     const op = operationalPoints[i];
     const diff = op.position - lastDisplayedOP.position;
-    const display = (diff / totalDistance) * heightWithoutFinalOp * options.yZoom >= BASE_OP_HEIGHT;
+    const display = (diff / totalDistance) * heightWithoutFinalOp * yZoom >= BASE_OP_HEIGHT;
     result.push({
       ...op,
       display,
@@ -58,26 +58,26 @@ export const calcOperationalPointsToDisplay = (
 
 export const calcOperationalPointsHeight = (
   operationalPoints: StyledOperationalPointType[],
-  options: OperationalPointsOptions
+  { height, isProportional, yZoom }: OperationalPointsOptions
 ) => {
   if (operationalPoints.length < 2) return [];
   const totalDistance = calcTotalDistance(operationalPoints);
-  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(options.height);
+  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
 
   return operationalPoints.map((op, index) => {
     const nextOp = operationalPoints.at(index + 1);
     if (!nextOp) {
       return { ...op, styles: { height: `${BASE_OP_HEIGHT}px` } };
     }
-    if (options.isProportional) {
+    if (isProportional) {
       return {
         ...op,
         styles: {
-          height: `${((nextOp.position - op.position) / totalDistance) * heightWithoutFinalOp * options.yZoom}px`,
+          height: `${((nextOp.position - op.position) / totalDistance) * heightWithoutFinalOp * yZoom}px`,
         },
       };
     } else {
-      return { ...op, styles: { height: `${BASE_OP_HEIGHT * options.yZoom}px` } };
+      return { ...op, styles: { height: `${BASE_OP_HEIGHT * yZoom}px` } };
     }
   });
 };
@@ -114,17 +114,20 @@ export const getOperationalPointsWithPosition = (
     importanceLevel: 1,
   }));
 
-export const getScales = (ops: OperationalPoint[], options: OperationalPointsOptions) => {
+export const getScales = (
+  ops: OperationalPoint[],
+  { height, isProportional, yZoom }: OperationalPointsOptions
+) => {
   if (ops.length < 2) return [];
   const from = ops.at(0)!.position;
   const to = ops.at(-1)!.position;
 
   const totalDistance = calcTotalDistance(ops);
-  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(options.height);
+  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
 
-  const scaleCoeff = options.isProportional
-    ? { coefficient: totalDistance / heightWithoutFinalOp / options.yZoom }
-    : { size: BASE_OP_HEIGHT * (ops.length - 1) * options.yZoom };
+  const scaleCoeff = isProportional
+    ? { coefficient: totalDistance / heightWithoutFinalOp / yZoom }
+    : { size: BASE_OP_HEIGHT * (ops.length - 1) * yZoom };
 
   return [
     {

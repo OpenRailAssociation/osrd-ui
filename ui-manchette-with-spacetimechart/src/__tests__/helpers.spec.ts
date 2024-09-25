@@ -3,6 +3,7 @@ import type {
   StyledOperationalPointType,
   ProjectPathTrainResult,
 } from '@osrd-project/ui-manchette/dist/types';
+// eslint-disable-next-line import/no-unresolved
 import { type OperationalPoint } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 import { describe, it, expect } from 'vitest';
 
