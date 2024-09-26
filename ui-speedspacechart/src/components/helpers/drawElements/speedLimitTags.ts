@@ -27,10 +27,9 @@ const alertFillBlobUrl = createSvgBlobUrl(alertFillSvg);
 
 const RECT_HEIGHT = 17;
 const Y_POSITION = 12;
-const RECTANGLE_SPACING = 1;
+const RECTANGLE_SPACING = 2;
 const TEXT_LEFT_PADDING = 4;
-const TEXT_RIGHT_PADDING = 8;
-const FIRST_TAG_LEFT_PADDING = 8;
+const TEXT_RIGHT_PADDING = 4;
 const ICON_WIDTH = 16;
 const ICON_HEIGHT = 16;
 const ICON_OFFSET = 4;
@@ -85,43 +84,20 @@ export const drawSpeedLimitTags = async ({
   let tooltip: tooltipInfos | null = null;
 
   if (speedLimitTags) {
-    speedLimitTags.forEach(({ position, value }, index) => {
+    speedLimitTags.forEach(({ position, value }) => {
       const { tag, color } = value;
       const x = positionOnGraphScale(position.start, maxPosition, width, ratioX, MARGINS);
       const nextBoundary = positionOnGraphScale(position.end!, maxPosition, width, ratioX, MARGINS);
 
       if (nextBoundary !== undefined) {
         const tagWidth = nextBoundary - x - RECTANGLE_SPACING;
-
         const secondaryColor = COLOR_DICTIONARY[color] || color;
 
         ctx.fillStyle = color;
         ctx.strokeStyle = tag === 'UU' ? '#494641' : color;
         ctx.lineWidth = 1;
 
-        ctx.beginPath();
-        ctx.fillRect(x, Y_POSITION, tagWidth - RECTANGLE_SPACING, RECT_HEIGHT);
-
-        ctx.fillStyle = secondaryColor;
-
-        const textWidth =
-          ctx.measureText(tag).width +
-          TEXT_RIGHT_PADDING +
-          (index === 0 ? FIRST_TAG_LEFT_PADDING : 0);
-
-        ctx.fillRect(x + 1 + textWidth, Y_POSITION, tagWidth - textWidth - 2, RECT_HEIGHT);
-        ctx.rect(x + textWidth, Y_POSITION, tagWidth - RECTANGLE_SPACING - textWidth, RECT_HEIGHT);
-        ctx.strokeRect(x + 1, Y_POSITION, tagWidth - RECTANGLE_SPACING, RECT_HEIGHT);
-        ctx.closePath();
-
-        if (tag === 'UU') {
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(x + textWidth + 2, Y_POSITION);
-          ctx.lineTo(x + textWidth + 2, Y_POSITION + RECT_HEIGHT);
-          ctx.closePath();
-          ctx.stroke();
-        }
+        ctx.fillRect(x, Y_POSITION, tagWidth, RECT_HEIGHT);
 
         if (tag === 'incompatible' || tag === 'missing_from_train') {
           const image = tag === 'incompatible' ? alertFillImage : questionImage;
@@ -160,18 +136,62 @@ export const drawSpeedLimitTags = async ({
             ) {
               tooltip = {
                 cursorX: cursor.x + MARGIN_LEFT,
-                cursorY: Y_POSITION,
+                cursorY: cursor.y,
                 text: 'Incompatible with the infrastructure',
               };
             }
           }
         } else {
+          const actualTextWidth = ctx.measureText(tag).width;
+
+          //Take the minimum between the actual text width and the total tag width to prevent the text from overflowing the tag
+          const textRectWidth = Math.min(
+            actualTextWidth + TEXT_LEFT_PADDING + TEXT_RIGHT_PADDING,
+            tagWidth
+          );
+
+          ctx.save();
+          // Clear the area where the tag text will be drawn
+          ctx.clearRect(x, Y_POSITION, textRectWidth, RECT_HEIGHT);
+          ctx.fillStyle = color;
+          ctx.fillRect(x, Y_POSITION, textRectWidth, RECT_HEIGHT);
+
           ctx.fillStyle = 'white';
           ctx.font = '600 12px "IBM Plex Sans"';
           ctx.textAlign = 'left';
           ctx.textBaseline = 'middle';
           const textPosition = x + TEXT_LEFT_PADDING;
-          ctx.fillText(tag, textPosition, Y_POSITION + TEXT_PADDING_TOP + RECT_HEIGHT / 2);
+
+          // Draw the tag text
+          ctx.fillText(
+            tag,
+            textPosition,
+            Y_POSITION + TEXT_PADDING_TOP + RECT_HEIGHT / 2,
+            textRectWidth - TEXT_LEFT_PADDING
+          );
+
+          ctx.restore();
+
+          const remainingWidth = tagWidth - textRectWidth;
+
+          // Fill the remaining width of the tag with the secondary color
+          ctx.fillStyle = secondaryColor;
+          ctx.fillRect(
+            x + textRectWidth + TEXT_RIGHT_PADDING,
+            Y_POSITION,
+            remainingWidth,
+            RECT_HEIGHT
+          );
+
+          ctx.strokeRect(x, Y_POSITION, tagWidth, RECT_HEIGHT);
+
+          if (tag === 'UU') {
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(x + textRectWidth, Y_POSITION);
+            ctx.lineTo(x + textRectWidth, Y_POSITION + RECT_HEIGHT);
+            ctx.stroke();
+          }
         }
       }
     });
