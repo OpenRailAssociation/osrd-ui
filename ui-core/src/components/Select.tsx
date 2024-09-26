@@ -10,7 +10,7 @@ export type SelectProps<T> = Omit<
 > &
   Omit<FieldWrapperProps, 'children'> & {
     options: Array<T>;
-    value: T;
+    value?: T;
     getOptionLabel: (option: T) => string;
     getOptionValue: (option: T) => string;
     onChange: (option?: T) => void;
