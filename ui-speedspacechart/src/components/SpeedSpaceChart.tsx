@@ -104,7 +104,6 @@ const SpeedSpaceChart = ({
     ? width - OFFSET_RIGHT_AXIS
     : width;
 
-  const [showDetailsBox, setShowDetailsBox] = useState(false);
   const [isMouseHoveringSettingsPanel, setIsMouseHoveringSettingsPanel] = useState(false);
 
   const reset = () => {
@@ -210,8 +209,6 @@ const SpeedSpaceChart = ({
           height={dynamicHeight}
           heightOffset={dynamicHeightOffset}
           store={store}
-          showDetailsBox={showDetailsBox}
-          setShowDetailsBox={setShowDetailsBox}
         />
       )}
       <FrontInteractivityLayer
@@ -219,7 +216,6 @@ const SpeedSpaceChart = ({
         height={dynamicHeightOffset}
         store={store}
         setStore={setStore}
-        setShowDetailsBox={setShowDetailsBox}
       />
     </div>
   );
