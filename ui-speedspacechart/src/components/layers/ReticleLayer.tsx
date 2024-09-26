@@ -10,20 +10,12 @@ type ReticleLayerProps = {
   height: number;
   heightOffset: number;
   store: Store;
-  showDetailsBox: boolean;
-  setShowDetailsBox: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ReticleLayer = ({
-  width,
-  height,
-  heightOffset,
-  store,
-  showDetailsBox,
-  setShowDetailsBox,
-}: ReticleLayerProps) => {
+const ReticleLayer = ({ width, height, heightOffset, store }: ReticleLayerProps) => {
   const canvas = useRef<HTMLCanvasElement>(null);
   const detailsBox = useRef<TrainDetails>();
+  const [trainDetails, setTrainDetails] = useState<TrainDetails | null>(null);
   const maxCursorHeight = getAdaptiveHeight(heightOffset, store.layersDisplay, false);
 
   useEffect(() => {
@@ -35,23 +27,15 @@ const ReticleLayer = ({
     }
   }, [width, height, store, maxCursorHeight]);
 
-  const [debouncedDetailsBox, setDebouncedDetailsBox] = useState<TrainDetails | null>(null);
-
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDebouncedDetailsBox(detailsBox.current!);
-      setShowDetailsBox(true);
-    }, 50);
-    return () => clearTimeout(timeout);
+    setTrainDetails(detailsBox.current!);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [detailsBox.current]);
 
   return (
     <>
       <canvas id="cursor-layer" className="absolute" ref={canvas} width={width} height={height} />
-      {showDetailsBox && debouncedDetailsBox && (
-        <DetailsBox width={width} height={height} store={store} {...debouncedDetailsBox} />
-      )}
+      {trainDetails && <DetailsBox width={width} height={height} store={store} {...trainDetails} />}
     </>
   );
 };

@@ -5,6 +5,10 @@ import cx from 'classnames';
 import type { Store } from '../../types/chartTypes';
 import { MARGINS } from '../const';
 
+const DETAILBOX_MARGIN = 6;
+const DETAILBOX_OFFSET = 12;
+const DETAILBOX_LIMIT = 10;
+
 type DetailsBoxProps = {
   width: number;
   height: number;
@@ -43,19 +47,21 @@ const DetailsBox = ({
   let rightOffset = 0;
   let bottomOffset = 0;
 
-  const adaptedOffset = store.isSettingsPanelOpened ? 641 : 115;
+  const detailsBoxWidth = document.getElementById('details-box')?.offsetWidth || 0;
+  const detailsBoxHeight = document.getElementById('details-box')?.offsetHeight || 0;
 
   // find out if the box is going out off the right side of the canvas
-  if (curveX + adaptedOffset > width - MARGIN_RIGHT - 10) rightOffset = 127;
+  if (curveX + detailsBoxWidth > width - MARGIN_RIGHT - DETAILBOX_LIMIT)
+    rightOffset = detailsBoxWidth + DETAILBOX_OFFSET;
   // find out if the box is going out off the bottom side of the canvas
-  if (curveY + 180 > height - MARGIN_BOTTOM - 10) bottomOffset = 192;
+  if (curveY + detailsBoxHeight > height - MARGIN_BOTTOM - DETAILBOX_LIMIT)
+    bottomOffset = detailsBoxHeight + DETAILBOX_OFFSET;
 
-  const boxX = curveX + 6 - rightOffset;
-  const boxY = curveY + 6 - bottomOffset;
+  const boxX = curveX + DETAILBOX_MARGIN - rightOffset;
+  const boxY = curveY + DETAILBOX_MARGIN - bottomOffset;
 
   const speedDifference = Number(speedText) - Number(ecoSpeedText);
-  const speedDifferenceText =
-    speedDifference < 0 ? speedDifference.toFixed(1) : `-${speedDifference.toFixed(1)}`;
+  const speedDifferenceText = speedDifference !== 0 ? `-${speedDifference.toFixed(1)}` : null;
 
   return (
     <div
@@ -66,25 +72,25 @@ const DetailsBox = ({
         marginLeft: boxX,
       }}
     >
-      {speedText && <span id="details-box-text base-speed-text">{speedText}</span>}
+      <span id="base-speed-text">{speedText || '--'}</span>
       <div>
-        <span id="mareco-speed-text">{ecoSpeedText}</span>
-        <span id="speed-difference-text">{speedDifferenceText}</span>
+        <span id="mareco-speed-text">{ecoSpeedText || '--'}</span>
+        {speedDifferenceText && <span id="speed-difference-text">{speedDifferenceText}</span>}
       </div>
-      {(energySource || tractionStatus) && (modeText || effortText) && <hr />}
-      {energySource && modeText && <span id="mode-text">{modeText}</span>}
-      {tractionStatus && effortText && <span id="effort-text">{effortText}</span>}
+      {(energySource || tractionStatus || modeText || effortText) && <hr />}
+      {energySource && <span id="mode-text">{modeText || '--'}</span>}
+      {tractionStatus && <span id="effort-text">{effortText || '--'}</span>}
       {electricalModeText && (
         <div id="electrical-mode-text">
-          <span>{electricalModeText}</span>
-          {electricalProfiles && <span className="ml-2">{electricalProfileText}</span>}
+          <span>{electricalModeText || '--'}</span>
+          {electricalProfiles && <span className="ml-2">{electricalProfileText || '--'}</span>}
         </div>
       )}
-      {powerRestrictions && <span id="power-restriction">{powerRestrictionText}</span>}
+      {powerRestrictions && <span id="power-restriction-text">{powerRestrictionText || '--'}</span>}
       {declivities && (
         <>
           <hr />
-          <span id="previous-gradient-text">{`${previousGradientText} ‰`}</span>
+          <span id="previous-gradient-text">{`${previousGradientText} ‰` || '--'}</span>
         </>
       )}
     </div>

@@ -9,7 +9,6 @@ type FrontInteractivityLayerProps = {
   height: number;
   store: Store;
   setStore: React.Dispatch<React.SetStateAction<Store>>;
-  setShowDetailsBox: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const FrontInteractivityLayer = ({
@@ -17,7 +16,6 @@ const FrontInteractivityLayer = ({
   height,
   store,
   setStore,
-  setShowDetailsBox,
 }: FrontInteractivityLayerProps) => {
   const canvas = useCanvas(drawFrame, { width, height, store, setStore });
 
@@ -28,7 +26,6 @@ const FrontInteractivityLayer = ({
       ref={canvas}
       width={width}
       height={height}
-      onMouseMove={() => setShowDetailsBox(false)}
     />
   );
 };
