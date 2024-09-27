@@ -11,7 +11,19 @@ type SpeedLimitTagsLayerProps = {
   store: Store;
 };
 const TOOLTIP_HEIGHT = 40;
-const MARGIN_ADJUSTMENT = 2;
+const LEFT_MARGIN = 52;
+const RIGHT_MARGIN = 16;
+const TOOLTIP_WIDTH = 238;
+
+const constrainTooltipPosition = (cursorX: number, width: number, tooltipWidth: number) => {
+  if (cursorX - tooltipWidth / 2 < LEFT_MARGIN) {
+    return LEFT_MARGIN + tooltipWidth / 2;
+  }
+  if (cursorX + tooltipWidth / 2 > width - RIGHT_MARGIN) {
+    return width - RIGHT_MARGIN - tooltipWidth / 2;
+  }
+  return cursorX;
+};
 
 const SpeedLimitTagsLayer = ({ width, marginTop, store }: SpeedLimitTagsLayerProps) => {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -39,8 +51,8 @@ const SpeedLimitTagsLayer = ({ width, marginTop, store }: SpeedLimitTagsLayerPro
       />
       {tooltip.current && (
         <Tooltip
-          cursorX={tooltip.current.cursorX}
-          cursorY={marginTop - TOOLTIP_HEIGHT - MARGIN_ADJUSTMENT}
+          cursorX={constrainTooltipPosition(tooltip.current.cursorX, width, TOOLTIP_WIDTH)}
+          cursorY={tooltip.current.cursorY - TOOLTIP_HEIGHT}
           height={TOOLTIP_HEIGHT}
           text={tooltip.current.text}
         />
