@@ -25,8 +25,6 @@ export const drawSpeedLimits = ({ ctx, width, height, store }: DrawFunctionParam
   const realHeight = height - MARGIN_BOTTOM - MARGIN_TOP;
   const maxSpeed = maxSpeedValue(store);
   const maxPosition = maxPositionValue(store);
-  // Add the last boundary to the boundaries array
-  mrsp.boundaries.push(maxPosition);
 
   ctx.lineCap = 'round';
 
@@ -35,7 +33,8 @@ export const drawSpeedLimits = ({ ctx, width, height, store }: DrawFunctionParam
   for (let i = 0; i < mrsp.values.length; i++) {
     const { speed, isTemporary } = mrsp.values[i];
 
-    const currentBoundaryX = positionToPosX(mrsp.boundaries[i], maxPosition, width, ratioX);
+    const currentBoundary = i < mrsp.boundaries.length - 1 ? mrsp.boundaries[i] : maxPosition;
+    const currentBoundaryX = positionToPosX(currentBoundary, maxPosition, width, ratioX);
 
     const speedY = realHeight - (speed / maxSpeed) * (realHeight - CURVE_MARGIN_TOP) + MARGIN_TOP;
     // Draw vertical line joining 2 speed limits
@@ -66,7 +65,7 @@ export const drawSpeedLimits = ({ ctx, width, height, store }: DrawFunctionParam
     let extendedBoundaryX: number | null = null;
     if (i < mrsp.values.length - 1 && mrsp.values[i + 1].speed > speed) {
       extendedBoundaryX = positionToPosX(
-        Math.min(mrsp.boundaries[i] + convertMToKm(trainLength), maxPosition),
+        Math.min(currentBoundary + convertMToKm(trainLength), maxPosition),
         maxPosition,
         width,
         ratioX
