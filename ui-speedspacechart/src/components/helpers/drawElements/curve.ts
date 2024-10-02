@@ -1,3 +1,5 @@
+import chroma from 'chroma-js';
+
 import type { DrawFunctionParams, LayerData } from '../../../types/chartTypes';
 import { MARGINS } from '../../const';
 import { clearCanvas, maxPositionValue, maxSpeedValue } from '../../utils';
@@ -34,6 +36,8 @@ const computeCurvePoints = (
 
 export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => {
   const { speeds, ecoSpeeds, ratioX, leftOffset } = store;
+  const baseSpeedColor = chroma(17, 101, 180);
+  const ecoSpeedColor = chroma(7, 69, 128);
 
   clearCanvas(ctx, width, height);
 
@@ -59,8 +63,8 @@ export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => 
 
   ctx.beginPath();
   ctx.lineWidth = 0.5;
-  ctx.strokeStyle = 'rgb(17, 101, 180, 0.5)';
-  ctx.fillStyle = 'rgba(17, 101, 180, 0.02)';
+  ctx.strokeStyle = baseSpeedColor.hex();
+  ctx.fillStyle = baseSpeedColor.alpha(0.15).hex();
   curvePoints.forEach(({ x, y }) => {
     ctx.lineTo(x, y);
   });
@@ -74,7 +78,7 @@ export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => 
 
   ctx.beginPath();
   ctx.fillStyle = 'rgba(255, 255, 255)';
-  ctx.strokeStyle = 'rgb(17, 101, 180)';
+  ctx.strokeStyle = ecoSpeedColor.hex();
   ctx.globalCompositeOperation = 'destination-out';
   ecoCurvePoints.forEach(({ x, y }) => {
     ctx.lineTo(x, y);
