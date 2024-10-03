@@ -33,7 +33,8 @@ export const drawSpeedLimits = ({ ctx, width, height, store }: DrawFunctionParam
   for (let i = 0; i < mrsp.values.length; i++) {
     const { speed, isTemporary } = mrsp.values[i];
 
-    const currentBoundary = i < mrsp.boundaries.length - 1 ? mrsp.boundaries[i] : maxPosition;
+    const isLastValue = i == mrsp.values.length - 1;
+    const currentBoundary = isLastValue ? maxPosition : mrsp.boundaries[i];
     const currentBoundaryX = positionToPosX(currentBoundary, maxPosition, width, ratioX);
 
     const speedY = realHeight - (speed / maxSpeed) * (realHeight - CURVE_MARGIN_TOP) + MARGIN_TOP;
@@ -63,7 +64,7 @@ export const drawSpeedLimits = ({ ctx, width, height, store }: DrawFunctionParam
 
     // Handle train length (only if next speed is higher than current speed)
     let extendedBoundaryX: number | null = null;
-    if (i < mrsp.values.length - 1 && mrsp.values[i + 1].speed > speed) {
+    if (!isLastValue && mrsp.values[i + 1].speed > speed) {
       extendedBoundaryX = positionToPosX(
         Math.min(currentBoundary + convertMToKm(trainLength), maxPosition),
         maxPosition,
