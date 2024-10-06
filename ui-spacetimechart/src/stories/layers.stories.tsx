@@ -4,8 +4,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { OPERATIONAL_POINTS, PATHS, START_DATE } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
-import { ConflictLayer, SpaceTimeChart, PathLayer } from '../';
-import { KILOMETER, MINUTE } from '../lib/consts';
+import { ConflictLayer, OccupancyBlockLayer, SpaceTimeChart, PathLayer } from '../';
+import {
+  KILOMETER,
+  MINUTE,
+  OCCUPANCY_FREE,
+  OCCUPANCY_SEMAPHORE,
+  OCCUPANCY_WARNING,
+} from '../lib/consts';
 
 import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
@@ -27,6 +33,51 @@ const CONFLICTS = [
     timeEnd: +START_DATE + 37 * MINUTE,
     spaceStart: 39 * KILOMETER,
     spaceEnd: 41 * KILOMETER,
+  },
+];
+
+const OCCUPANCY_BLOCKS = [
+  {
+    timeStart: +START_DATE + 42 * MINUTE,
+    timeEnd: +START_DATE + 43 * MINUTE,
+    spaceStart: 10 * KILOMETER,
+    spaceEnd: 14 * KILOMETER,
+    color: OCCUPANCY_FREE,
+  },
+  {
+    timeStart: +START_DATE + 43 * MINUTE,
+    timeEnd: +START_DATE + 46 * MINUTE,
+    spaceStart: 10 * KILOMETER,
+    spaceEnd: 14 * KILOMETER,
+    color: OCCUPANCY_SEMAPHORE,
+  },
+  {
+    timeStart: +START_DATE + 46 * MINUTE,
+    timeEnd: +START_DATE + 48 * MINUTE,
+    spaceStart: 10 * KILOMETER,
+    spaceEnd: 14 * KILOMETER,
+    color: OCCUPANCY_WARNING,
+  },
+  {
+    timeStart: +START_DATE + 44 * MINUTE,
+    timeEnd: +START_DATE + 45 * MINUTE,
+    spaceStart: 14 * KILOMETER,
+    spaceEnd: 18 * KILOMETER,
+    color: OCCUPANCY_FREE,
+  },
+  {
+    timeStart: +START_DATE + 45 * MINUTE,
+    timeEnd: +START_DATE + 48 * MINUTE,
+    spaceStart: 14 * KILOMETER,
+    spaceEnd: 18 * KILOMETER,
+    color: OCCUPANCY_SEMAPHORE,
+  },
+  {
+    timeStart: +START_DATE + 48 * MINUTE,
+    timeEnd: +START_DATE + 50 * MINUTE,
+    spaceStart: 14 * KILOMETER,
+    spaceEnd: 18 * KILOMETER,
+    color: OCCUPANCY_WARNING,
   },
 ];
 
@@ -53,6 +104,7 @@ const Wrapper = () => (
         <PathLayer key={path.id} path={path} color={path.color} />
       ))}
       <ConflictLayer conflicts={CONFLICTS} />
+      <OccupancyBlockLayer occupancyBlocks={OCCUPANCY_BLOCKS} />
     </SpaceTimeChart>
   </div>
 );

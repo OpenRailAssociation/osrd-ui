@@ -11,6 +11,12 @@ export const AMBIANT_A10 = '#EFF3F5';
 export const ERROR_30 = '#FF6868';
 export const ERROR_60 = '#D91C1C';
 
+// Occupancy blocks colors :
+
+export const OCCUPANCY_FREE = '#CAEDDB';
+export const OCCUPANCY_SEMAPHORE = '#FFD4D8';
+export const OCCUPANCY_WARNING = '#FFEABF';
+
 // Fonts:
 export const FONT_SIZE = 10;
 export const FONT = 'IBM Plex Sans';
