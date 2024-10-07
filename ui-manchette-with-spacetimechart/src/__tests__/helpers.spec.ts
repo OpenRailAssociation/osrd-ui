@@ -221,7 +221,7 @@ describe('getScales', () => {
       yZoom: 1,
     });
 
-    expect(result).toHaveLength(1);
+    expect(result).toHaveLength(2);
     expect(result[0].size).toBeDefined();
     expect(result[0].coefficient).not.toBeDefined();
   });

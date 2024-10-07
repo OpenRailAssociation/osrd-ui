@@ -107,7 +107,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
     }
 
     const getTimePixel = getTimeToPixel(timeOrigin, timePixelOffset, timeScale);
-    const getSpacePixel = getSpaceToPixel(spaceOrigin, spacePixelOffset, spaceScaleTree);
+    const getSpacePixel = getSpaceToPixel(spacePixelOffset, spaceScaleTree);
     const getPoint = getDataToPoint(getTimePixel, getSpacePixel, timeAxis, spaceAxis);
     const getTime = getPixelToTime(timeOrigin, timePixelOffset, timeScale);
     const getSpace = getPixelToSpace(spaceOrigin, spacePixelOffset, spaceScaleTree);
