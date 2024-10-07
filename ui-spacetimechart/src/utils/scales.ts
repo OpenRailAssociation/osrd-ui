@@ -153,15 +153,11 @@ export function getPixelToTime(
 }
 
 export function getSpaceToPixel(
-  spaceOrigin: number,
   pixelOffset: number,
   binaryTree: NormalizedScaleTree
 ): SpaceToPixel {
   return (position: number) => {
-    const { from, pixelFrom, coefficient } = getNormalizedScaleAtPosition(
-      position - spaceOrigin,
-      binaryTree
-    );
+    const { from, pixelFrom, coefficient } = getNormalizedScaleAtPosition(position, binaryTree);
     return pixelOffset + pixelFrom + (position - from) / coefficient;
   };
 }
