@@ -3,7 +3,12 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      storybook:
+        patterns:
+          - "storybook"
+          - "@storybook/*"
     commit-message:
       prefix: "dependency:"
     open-pull-requests-limit: 100
