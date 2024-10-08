@@ -4,8 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { OPERATIONAL_POINTS, PATHS, START_DATE } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
-import { SpaceTimeChart, PathLayer } from '../';
-import { ConflictLayer } from '../components/ConflictLayer';
+import { ConflictLayer, SpaceTimeChart, PathLayer } from '../';
 import { KILOMETER, MINUTE } from '../lib/consts';
 
 import '@osrd-project/ui-spacetimechart/dist/theme.css';
