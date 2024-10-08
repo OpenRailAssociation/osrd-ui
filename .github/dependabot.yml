@@ -9,6 +9,9 @@ updates:
         patterns:
           - "storybook"
           - "@storybook/*"
+      turf:
+        patterns:
+          - "@turf/*"
     commit-message:
       prefix: "dependency:"
     open-pull-requests-limit: 100
