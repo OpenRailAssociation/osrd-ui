@@ -23,6 +23,7 @@ export type ComboBoxProps<T> = InputProps & {
   exactSearch?: boolean;
   value?: string;
   onSelectSuggestion?: (option: T | undefined) => void;
+  disableDefaultFilter?: boolean;
 };
 
 const ComboBox = <T,>({
@@ -35,6 +36,7 @@ const ComboBox = <T,>({
   value,
   small,
   onSelectSuggestion,
+  disableDefaultFilter = false,
   ...inputProps
 }: ComboBoxProps<T>) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<T[]>([]);
@@ -46,8 +48,13 @@ const ComboBox = <T,>({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const sortedSuggestions = useMemo(
-    () => suggestions.sort((a, b) => getSuggestionLabel(a).localeCompare(getSuggestionLabel(b))),
-    [suggestions, getSuggestionLabel]
+    () =>
+      !disableDefaultFilter
+        ? [...suggestions].sort((a, b) =>
+            getSuggestionLabel(a).localeCompare(getSuggestionLabel(b))
+          )
+        : suggestions,
+    [suggestions, getSuggestionLabel, disableDefaultFilter]
   );
 
   const showSuggestions = isInputFocused && filteredSuggestions.length > 0 && !inputProps.disabled;

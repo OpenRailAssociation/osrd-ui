@@ -9,8 +9,9 @@ type Suggestion = { id: string; label: string };
 
 const suggestions = [
   { id: '1', label: 'Manuel' },
-  { id: '2', label: 'Manuela' },
-  { id: '3', label: 'Manuella' },
+  { id: '2', label: 'Consuela' },
+  { id: '3', label: 'Juan' },
+  { id: '4', label: 'Manolo' },
 ] as Suggestion[];
 
 const meta: Meta<typeof ComboBox> = {
@@ -95,5 +96,13 @@ export const SmallInput: Story = {
     type: 'text',
     required: true,
     small: true,
+  },
+};
+
+export const DisabledDefaultFilter: Story = {
+  args: {
+    label: 'Name',
+    type: 'text',
+    disableDefaultFilter: true,
   },
 };
