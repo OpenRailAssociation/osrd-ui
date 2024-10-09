@@ -109,6 +109,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 'with-leading-only': leadingContent && !trailingContent,
                 'with-trailing-only': trailingContent && !leadingContent,
                 'with-leading-and-trailing': leadingContent && trailingContent,
+                [`with-icons-${withIcons.length}`]: withIcons.length > 0,
                 [statusWithMessage?.status || '']: !!statusWithMessage,
               })}
               id={id}

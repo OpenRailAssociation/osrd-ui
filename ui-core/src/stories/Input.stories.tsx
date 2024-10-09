@@ -204,10 +204,30 @@ export const InputWithClearButton: Story = {
   args: {
     label: 'Your name',
     type: 'text',
-    value: 'Manuel',
+    value: 'Hubert Blaine Wolfeschlegelsteinhausenbergerdorff Sr',
     withIcons: [
       {
         icon: <X size="lg" />,
+        action: () => {},
+        className: 'chevron-icon',
+      },
+    ],
+  },
+};
+
+export const InputWithTwoIconAndLongValue: Story = {
+  args: {
+    label: 'Your name',
+    type: 'text',
+    value: 'Hubert Blaine Wolfeschlegelsteinhausenbergerdorff Sr',
+    withIcons: [
+      {
+        icon: <X size="lg" />,
+        action: () => {},
+        className: 'chevron-icon',
+      },
+      {
+        icon: <ChevronDown size="lg" />,
         action: () => {},
         className: 'chevron-icon',
       },

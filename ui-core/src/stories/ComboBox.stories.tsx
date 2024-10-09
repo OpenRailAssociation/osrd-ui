@@ -47,6 +47,18 @@ export const Default: Story = {
   },
 };
 
+export const LongText: Story = {
+  args: {
+    label: 'Your name',
+    type: 'text',
+    suggestions: [
+      { id: '1', label: 'Very very very very very very long value 1' },
+      { id: '2', label: 'Very very very very very very long value 2' },
+    ],
+    value: 'Very very very very very very long value 1',
+  },
+};
+
 export const WithDefaultValue: Story = {
   args: {
     label: 'Your name',
