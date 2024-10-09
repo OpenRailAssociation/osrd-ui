@@ -119,6 +119,19 @@ export const getScales = (
   { height, isProportional, yZoom }: OperationalPointsOptions
 ) => {
   if (ops.length < 2) return [];
+
+  if (!isProportional) {
+    return ops.slice(0, -1).map((from, index) => {
+      const to = ops[index + 1];
+
+      return {
+        from: from.position,
+        to: to.position,
+        size: BASE_OP_HEIGHT * yZoom,
+      };
+    });
+  }
+
   const from = ops.at(0)!.position;
   const to = ops.at(-1)!.position;
 
