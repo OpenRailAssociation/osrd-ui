@@ -5,7 +5,10 @@
     0px 1px 1px rgba(0, 0, 0, 0.2),
     0px 2px 4px rgba(0, 0, 0, 0.1);
   height: 2.5rem;
-  padding-left: 0.813rem;
+  padding-inline: 0.813rem 1.875rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   letter-spacing: 0;
   text-align: left;
   line-height: 1.5rem;

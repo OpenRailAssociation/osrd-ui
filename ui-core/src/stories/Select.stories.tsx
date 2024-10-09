@@ -52,6 +52,18 @@ export const Default: StoryType = {
   },
 };
 
+export const LongText: StoryType = {
+  args: {
+    id: 'LongText',
+    value: undefined,
+    placeholder: 'Very very very very very very long placeholder',
+    options: [
+      { value: 'blue', label: 'Blue' },
+      { value: 'long_value', label: 'Very very very very very very long value' },
+    ],
+  },
+};
+
 export const SelectedOption: StoryType = {
   args: {
     id: 'SelectedOption',
