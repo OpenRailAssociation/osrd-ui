@@ -25,6 +25,10 @@
     align-items: center;
     position: relative;
     width: 100%;
+
+    .input {
+      text-overflow: ellipsis;
+    }
   }
 
   .input-icons {
@@ -101,6 +105,14 @@
 
     &.with-leading-only {
       border-radius: 0 0.25rem 0.25rem 0;
+    }
+
+    &.with-icons-1 {
+      padding-right: 2.188rem;
+    }
+
+    &.with-icons-2 {
+      padding-right: 4.876rem;
     }
 
     &.with-trailing-only {
