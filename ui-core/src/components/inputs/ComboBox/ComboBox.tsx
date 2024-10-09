@@ -33,7 +33,7 @@ const ComboBox = <T,>({
   customLabel,
   numberOfSuggestionsToShow = 5,
   exactSearch = false,
-  value,
+  value = '',
   small,
   onSelectSuggestion,
   disableDefaultFilter = false,
@@ -41,7 +41,7 @@ const ComboBox = <T,>({
 }: ComboBoxProps<T>) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<T[]>([]);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-  const [inputValue, setInputValue] = useState(value || '');
+  const [inputValue, setInputValue] = useState(value);
   const [selectedOption, setSelectedOption] = useState<T | null>(null);
   const [isInputFocused, setIsInputFocused] = useState(false);
 
@@ -84,7 +84,7 @@ const ComboBox = <T,>({
   };
 
   const icons = [
-    ...(selectedOption
+    ...(selectedOption || suggestions.some((suggestion) => getSuggestionLabel(suggestion) === value)
       ? [
           {
             icon: <X size={small ? 'sm' : 'lg'} />,
