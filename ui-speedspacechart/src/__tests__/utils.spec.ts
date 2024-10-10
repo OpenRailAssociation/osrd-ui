@@ -95,22 +95,19 @@ describe('getGraphOffsets', () => {
 
 describe('maxSpeedValue', () => {
   it('should return the correct maxSpeed', () => {
-    const maxSpeed = maxSpeedValue(store);
+    const maxSpeed = maxSpeedValue(store.speeds);
     expect(maxSpeed).toBe(30);
   });
 });
 
 describe('maxPositionValue', () => {
   it('should return the correct maxPosition', () => {
-    const maxPosition = maxPositionValue(store);
+    const maxPosition = maxPositionValue(store.speeds);
     expect(maxPosition).toBe(600);
   });
 
   it('should return 0 for maxPosition if speed array is empty', () => {
-    const maxPosition = maxPositionValue({
-      ...store,
-      speeds: [],
-    });
+    const maxPosition = maxPositionValue([]);
     expect(maxPosition).toBe(0);
   });
 });

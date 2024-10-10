@@ -44,8 +44,8 @@ export const drawCurve = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.save();
   ctx.translate(leftOffset, 0);
 
-  const maxSpeed = maxSpeedValue(store);
-  const maxPosition = maxPositionValue(store);
+  const maxSpeed = maxSpeedValue(store.speeds);
+  const maxPosition = maxPositionValue(store.speeds);
 
   const curvePoints = computeCurvePoints(
     { width, height },

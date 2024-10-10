@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
-import { type Store, type tooltipInfos } from '../../types/chartTypes';
+import type { Store, tooltipInfos } from '../../types/chartTypes';
 import Tooltip from '../common/Tooltip';
 import { LINEAR_LAYERS_HEIGHTS } from '../const';
-import { drawSpeedLimitTags } from '../helpers/drawElements/speedLimitTags';
+import { drawSpeedLimitTags, computeTooltip } from '../helpers/drawElements/speedLimitTags';
 
 type SpeedLimitTagsLayerProps = {
   width: number;
@@ -18,12 +18,44 @@ const SpeedLimitTagsLayer = ({ width, marginTop, store }: SpeedLimitTagsLayerPro
   const tooltip = useRef<tooltipInfos | null>();
 
   useEffect(() => {
+    const updateCanvas = async () => {
+      const currentCanvas = canvas.current as HTMLCanvasElement;
+      const ctx = currentCanvas.getContext('2d') as CanvasRenderingContext2D;
+      const restrictedStore = {
+        speedLimitTags: store.speedLimitTags,
+        ratioX: store.ratioX,
+        leftOffset: store.leftOffset,
+        layersDisplay: {
+          electricalProfiles: store.layersDisplay.electricalProfiles,
+          powerRestrictions: store.layersDisplay.powerRestrictions,
+        },
+        speeds: store.speeds,
+      };
+      await drawSpeedLimitTags({
+        ctx,
+        width,
+        height: marginTop,
+        store: restrictedStore,
+      });
+    };
+    updateCanvas();
+  }, [
+    width,
+    marginTop,
+    store.speedLimitTags,
+    store.ratioX,
+    store.leftOffset,
+    store.layersDisplay.electricalProfiles,
+    store.layersDisplay.powerRestrictions,
+    store.speeds,
+  ]);
+
+  useEffect(() => {
     const updateTooltip = async () => {
       const currentCanvas = canvas.current as HTMLCanvasElement;
       const ctx = currentCanvas.getContext('2d') as CanvasRenderingContext2D;
-      tooltip.current = await drawSpeedLimitTags({ ctx, width, height: marginTop, store });
+      tooltip.current = await computeTooltip({ ctx, width, height: marginTop, store });
     };
-
     updateTooltip();
   }, [width, marginTop, store]);
 
