@@ -22,7 +22,7 @@ export const drawSteps = ({ ctx, width, height, store }: DrawFunctionParams) => 
 
   clearCanvas(ctx, width, height);
 
-  const maxPosition = maxPositionValue(store);
+  const maxPosition = maxPositionValue(store.speeds);
 
   const filteredStops = filterStops(stops, ratioX, width, maxPosition);
 
