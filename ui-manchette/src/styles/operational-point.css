@@ -67,7 +67,8 @@
     min-width: 37px;
   }
 
-  &:hover {
+  &:hover,
+  &.menu-active {
     @apply bg-black-5;
     border-radius: 4px;
     cursor: pointer;

@@ -4,9 +4,9 @@ import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-manchette/dist/theme.css';
 import { SAMPLE_PATH_PROPERTIES_DATA } from './assets/sampleData';
 import OperationalPoint from '../components/OperationalPoint';
+import { type StyledOperationalPointType } from '../types';
 
-const { id, extensions, part, position } =
-  SAMPLE_PATH_PROPERTIES_DATA.operational_points?.[0] ?? {};
+const firstOperationalPoint = SAMPLE_PATH_PROPERTIES_DATA.operational_points?.[0] ?? {};
 
 const meta: Meta<typeof OperationalPoint> = {
   component: OperationalPoint,
@@ -19,10 +19,9 @@ type Story = StoryObj<typeof OperationalPoint>;
 
 export const Default: Story = {
   args: {
-    extensions,
-    id,
-    part,
-    position,
-    display: true,
+    operationalPoint: {
+      ...firstOperationalPoint,
+      display: true,
+    } as StyledOperationalPointType,
   },
 };
