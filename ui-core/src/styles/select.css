@@ -16,7 +16,7 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: inline('../assets/triangle-up-down.svg') no-repeat right .75rem center;
+  background: inline('../assets/triangle-up-down.svg') no-repeat right 0.75rem center;
   @apply border-grey-40 bg-black-1 text-grey-80;
 
   option {
@@ -79,7 +79,7 @@
 
   &.small {
     height: 2rem;
-    padding: .375rem 2.5rem .375rem .563rem;
+    padding: 0.375rem 2.5rem 0.375rem 0.563rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
   }

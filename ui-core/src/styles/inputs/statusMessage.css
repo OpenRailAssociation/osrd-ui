@@ -13,19 +13,19 @@
     text-align: left;
     line-height: 1.5rem;
     @apply font-semibold;
-  
+
     &.info {
       @apply text-info-60;
     }
-  
+
     &.success {
       @apply text-success-60;
     }
-  
+
     &.warning {
       @apply text-warning-60;
     }
-  
+
     &.error {
       @apply text-error-60;
     }
