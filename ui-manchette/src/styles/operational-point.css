@@ -1,6 +1,7 @@
 .op {
   @apply text-grey-80;
-  width: inherit;
+  width: 315px;
+  position: relative;
   &-separator {
     position: relative;
     opacity: 0.6;
@@ -10,22 +11,22 @@
     min-width: 12px;
     align-self: stretch;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 10.75px;
       left: 0;
       width: 100%;
       height: 0.5px;
-      background-color: rgba(148, 145, 142, 0.6);
+      @apply bg-grey-40;
     }
   }
   &-name {
-    max-width: 174px;
+    max-width: 190px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
   }
-  &-ch{
+  &-ch {
     font-size: 0.875rem;
     margin: 0 2px;
     width: 1rem;
@@ -35,19 +36,19 @@
       width: 1rem;
     }
   }
-  
+
   &-type {
-    width: 16px;
+    width: 1rem;
     height: 16px;
     position: relative;
     align-self: center;
     & + .op-separator {
       flex-grow: 0;
-      width: 2.313rem;
+      width: 0.6875rem;
     }
     &::after {
       position: absolute;
-      content: "";
+      content: '';
       top: 50%;
       left: 50%;
       width: 0.125rem;
@@ -57,12 +58,34 @@
     }
   }
   &-position {
-    @apply text-grey-80;
+    @apply text-grey-50;
     font-size: 12px;
     font-weight: 400;
-    width: 41px;
+    width: calc(41px - 8px); /* 8px is the padding-left */
   }
   .lines {
     min-width: 37px;
+  }
+
+  &:hover {
+    @apply bg-black-5;
+    border-radius: 4px;
+    cursor: pointer;
+
+    .op-separator::after {
+      @apply bg-black-100;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    bottom: 10.75px;
+    right: -1.625rem;
+    width: 1.625rem;
+    height: 0.5px;
+    opacity: 0.6;
+    @apply bg-grey-40;
   }
 }
