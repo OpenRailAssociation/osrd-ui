@@ -51,6 +51,7 @@ export type OperationalPointType = ArrayElement<PathProperties['operational_poin
 export type StyledOperationalPointType = OperationalPointType & {
   styles?: CSSProperties;
   display?: boolean;
+  onClick?: (opId: string, opRef: HTMLDivElement | null) => void;
 };
 
 export type ProjectPathTrainResult = {

@@ -5,9 +5,13 @@ import { type StyledOperationalPointType } from '../types';
 
 type OperationalPointListProps = {
   operationalPoints: StyledOperationalPointType[];
+  activeOperationalPointId?: string;
 };
 
-const OperationalPointList = ({ operationalPoints }: OperationalPointListProps) => (
+const OperationalPointList = ({
+  operationalPoints,
+  activeOperationalPointId,
+}: OperationalPointListProps) => (
   <div className="operational-point-list ">
     {operationalPoints.map((op) => (
       <div
@@ -15,7 +19,7 @@ const OperationalPointList = ({ operationalPoints }: OperationalPointListProps) 
         className="operational-point-wrapper flex flex-col justify-start"
         style={op.styles}
       >
-        <OperationalPoint {...op} />
+        <OperationalPoint operationalPoint={op} isActive={activeOperationalPointId === op.id} />
       </div>
     ))}
   </div>

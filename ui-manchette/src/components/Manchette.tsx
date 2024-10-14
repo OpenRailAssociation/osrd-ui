@@ -9,6 +9,7 @@ import type { StyledOperationalPointType } from '../types';
 
 type ManchetteProps = {
   operationalPoints: StyledOperationalPointType[];
+  activeOperationalPointId?: string;
   zoomYIn: () => void;
   zoomYOut: () => void;
   height?: number;
@@ -23,15 +24,21 @@ const Manchette = ({
   zoomYOut,
   yZoom = 1,
   operationalPoints,
+  activeOperationalPointId,
   isProportional = true,
   toggleMode,
+  children,
 }: ManchetteProps) => (
   <div className="manchette-container">
     <div
       className=" bg-ambientB-10 border-r border-grey-30"
       style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px` }}
     >
-      <OperationalPointList operationalPoints={operationalPoints} />
+      <OperationalPointList
+        operationalPoints={operationalPoints}
+        activeOperationalPointId={activeOperationalPointId}
+      />
+      {children}
     </div>
     <div className="manchette-actions flex items-center">
       <div className=" flex items-center ">
