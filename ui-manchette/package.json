@@ -32,8 +32,8 @@
     "build": "npm run rollup",
     "watch": "NODE_ENV=development rollup -c -w",
     "prepublishOnly": "npm run clean && npm run build",
-    "lint": "eslint src --ext .ts,.tsx  --max-warnings 0",
-    "lint:fix": "eslint src --ext .ts,.tsx --fix"
+    "lint": "eslint src --max-warnings 0",
+    "lint:fix": "eslint src --fix"
   },
   "dependencies": {
     "classnames": "^2.5.1",
