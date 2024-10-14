@@ -23,5 +23,6 @@ export const Default: Story = {
     id,
     part,
     position,
+    display: true,
   },
 };
