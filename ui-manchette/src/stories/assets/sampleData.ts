@@ -96,7 +96,7 @@ export const SAMPLE_PATH_PROPERTIES_DATA: PathProperties = {
           uic: 7,
         },
       },
-      position: 47050000,
+      position: 470050000,
     },
   ],
 };
