@@ -37,10 +37,10 @@
     }
     .counter {
       background-image: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(255, 255, 255, 0.75) 100%
-    );
+        180deg,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.75) 100%
+      );
     }
   }
 
@@ -163,7 +163,7 @@
     padding-right: 0.313rem;
     border-radius: 0.188rem;
     border: 0.031rem solid rgba(148, 145, 142, 1);
-    background: #FFF;
+    background: #fff;
   }
   &:has(.leading-icon) {
     padding-left: 0.625rem;
