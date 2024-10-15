@@ -202,10 +202,10 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
               <>
                 <SpaceGraduations />
                 <TimeGraduations />
-                <TimeCaptions />
               </>
             )}
             {children}
+            {!hideGrid && <TimeCaptions />}
           </MouseContext.Provider>
         </CanvasContext.Provider>
       </SpaceTimeChartContext.Provider>
