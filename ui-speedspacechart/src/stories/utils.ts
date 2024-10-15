@@ -98,6 +98,7 @@ const formatElectricalProfiles = (
   electrifications: Data['electrifications']
 ) =>
   simulation.electrical_profiles.values.map(({ electrical_profile_type, profile }, index) => {
+    // if we change the boundaries in electrification, need to change in electrical_profiles too
     const electrification = electrifications.find(
       ({ position }) =>
         position.start >=
