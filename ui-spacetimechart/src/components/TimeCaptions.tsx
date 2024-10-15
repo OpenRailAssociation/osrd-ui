@@ -8,11 +8,11 @@ const MINUTES_FORMATTER = (t: number) => `:${new Date(t).getMinutes().toString()
 const HOURS_FORMATTER = (t: number, pixelsPerMinute: number) => {
   const date = new Date(t);
   if (pixelsPerMinute > 1) {
-    const hours = date.getUTCHours().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   } else {
-    return date.getUTCHours().toString().padStart(2, '0');
+    return date.getHours().toString().padStart(2, '0');
   }
 };
 
