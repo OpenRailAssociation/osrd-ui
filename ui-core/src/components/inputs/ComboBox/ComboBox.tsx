@@ -106,9 +106,14 @@ const ComboBox = <T,>({
       : []), // Conditionally include the chevron icon only when suggestions are not empty
   ];
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (value) {
       setInputValue(value);
+    } else {
+      setInputValue('');
+      setSelectedOption(null);
+      onSelectSuggestion?.(undefined);
     }
   }, [value]);
 
