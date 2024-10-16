@@ -44,7 +44,7 @@
         grid-auto-rows: 40px;
         grid-gap: 10px;
       }
-      
+
       .tolerance-grid.minus-tolerance {
         direction: rtl;
       }

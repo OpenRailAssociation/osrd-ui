@@ -10,7 +10,7 @@
     min-width: 12px;
     align-self: stretch;
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: 10.75px;
       left: 0;
@@ -25,7 +25,7 @@
     white-space: nowrap;
     overflow: hidden;
   }
-  &-ch{
+  &-ch {
     font-size: 0.875rem;
     margin: 0 2px;
     width: 1rem;
@@ -35,7 +35,7 @@
       width: 1rem;
     }
   }
-  
+
   &-type {
     width: 16px;
     height: 16px;
@@ -47,7 +47,7 @@
     }
     &::after {
       position: absolute;
-      content: "";
+      content: '';
       top: 50%;
       left: 50%;
       width: 0.125rem;
