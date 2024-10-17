@@ -1,6 +1,12 @@
 .manchette-container {
   .manchette-actions {
+    align-items: center;
     background-color: rgba(250, 249, 245, 0.6);
+    border-top: solid 1px;
+    border-right: solid 1px;
+    border-radius: 0 0 0 10px;
+    @apply border-black-25;
+    display: flex;
     height: 2.5rem;
     width: inherit;
     position: sticky;
@@ -9,17 +15,29 @@
     width: 100%;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border-top: solid 1px;
-    border-right: solid 1px;
-    @apply border-black-25;
-    border-radius: 0px 0px 0px 10px;
 
-    .zoom-out:disabled {
-      opacity: 0.4;
-    }
 
-    .zoom-in:disabled {
-      opacity: 0.4;
+    .zoom-buttons {
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      button {
+        border-right: solid 1px theme('colors.grey.20');
+        border-top: solid 1px white;
+        height: 100%;
+        padding-inline: 12px;
+      }
+
+      button:disabled {
+        @apply text-grey-30;
+      }
+
+      .zoom-reset {
+        @apply text-grey-50;
+        font-weight: 600;
+        font-size: 14px;
+      }
     }
 
     .toggle-mode {
