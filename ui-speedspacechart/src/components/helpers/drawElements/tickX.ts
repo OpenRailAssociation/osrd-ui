@@ -17,7 +17,7 @@ export const drawTickX = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.font = 'normal 12px IBM Plex Sans';
   ctx.fillStyle = 'rgb(182, 179, 175)';
 
-  const maxPosition = maxPositionValue(store);
+  const maxPosition = maxPositionValue(store.speeds);
   const windowLength = maxPosition / store.ratioX;
 
   // Define the tick scale and the principle tick frequency given the window length

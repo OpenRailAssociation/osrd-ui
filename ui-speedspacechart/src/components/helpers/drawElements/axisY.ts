@@ -8,7 +8,7 @@ const TICK_WIDTH = 6;
 const TEXT_POSITION_X = 36;
 
 export const drawAxisY = ({ ctx, width, height, store }: DrawFunctionParams) => {
-  const maxSpeed = maxSpeedValue(store);
+  const maxSpeed = maxSpeedValue(store.speeds);
 
   clearCanvas(ctx, width, height);
 

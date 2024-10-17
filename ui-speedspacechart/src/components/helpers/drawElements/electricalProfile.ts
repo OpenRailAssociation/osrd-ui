@@ -25,7 +25,7 @@ export const drawElectricalProfile = ({ ctx, width, height, store }: DrawFunctio
 
   ctx.save();
   ctx.translate(leftOffset, 0);
-  const maxPosition = maxPositionValue(store);
+  const maxPosition = maxPositionValue(store.speeds);
   const {
     MARGIN_TOP,
     MARGIN_BOTTOM,

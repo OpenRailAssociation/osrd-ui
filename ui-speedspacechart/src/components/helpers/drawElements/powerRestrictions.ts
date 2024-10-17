@@ -42,7 +42,7 @@ export const drawPowerRestrictions = ({
   ctx.save();
   ctx.translate(leftOffset, 0);
 
-  const maxPosition = maxPositionValue(store);
+  const maxPosition = maxPositionValue(store.speeds);
 
   ctx.font = 'normal 12px IBM Plex Sans';
   ctx.fillStyle = 'rgb(121, 118, 113)';

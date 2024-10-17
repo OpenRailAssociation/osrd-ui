@@ -23,23 +23,20 @@ export const getGraphOffsets = (width: number, height: number, declivities?: boo
 
 /**
  * /**
- * Given a store including a list of speed data, return the maxSpeed
- * @param store
+ * Given a list of speed data, return the maxSpeed
+ * @param speeds
  */
-export const maxSpeedValue = (store: Store) => {
-  const speeds = store.speeds;
-  return Math.max(...speeds.map(({ value }) => value));
-};
-
+export const maxSpeedValue = (speeds: LayerData<number>[]) =>
+  Math.max(...speeds.map(({ value }) => value));
 /**
- * Given a store including a list of speed data return the max position
- * @param store
+ * Given a list of speed data return the max position
+ * @param speeds
  */
-export const maxPositionValue = (store: Store): number => {
-  if (store.speeds.length === 0) {
+export const maxPositionValue = (speeds: LayerData<number>[]): number => {
+  if (speeds.length === 0) {
     return 0.0;
   }
-  return store.speeds[store.speeds.length - 1].position.start;
+  return speeds[speeds.length - 1].position.start;
 };
 
 export const clearCanvas = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
@@ -348,7 +345,7 @@ export const filterStops = (
 /** Compute the cursor position on the x-axis given its position on the canva */
 export const getCursorPosition = (cursorX: number, width: number, store: Store) => {
   const { ratioX, leftOffset } = store;
-  const maxPosition = maxPositionValue(store);
+  const maxPosition = maxPositionValue(store.speeds);
   const x = cursorX - leftOffset - MARGINS.CURVE_MARGIN_SIDES / 2;
   const maxX =
     (width - MARGINS.MARGIN_LEFT - MARGINS.MARGIN_RIGHT - MARGINS.CURVE_MARGIN_SIDES) * ratioX;
@@ -361,7 +358,7 @@ export const getCursorPosition = (cursorX: number, width: number, store: Store) 
  */
 export const getSnappedStop = (cursorX: number, width: number, store: Store) => {
   const { ratioX, leftOffset, stops } = store;
-  const maxPosition = maxPositionValue(store);
+  const maxPosition = maxPositionValue(store.speeds);
 
   // Search for the closest stop to the cursor
   const filteredStops = filterStops(stops, ratioX, width, maxPosition);

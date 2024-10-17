@@ -93,6 +93,20 @@ export type DrawFunctionParams = {
   setStore?: React.Dispatch<React.SetStateAction<Store>>;
 };
 
+export type SpeedLimitTagsLayerDrawingStore = Pick<
+  Store,
+  'speedLimitTags' | 'ratioX' | 'leftOffset' | 'speeds'
+> & {
+  layersDisplay: Pick<Store['layersDisplay'], 'electricalProfiles' | 'powerRestrictions'>;
+};
+
+export type SpeedLimitTagsLayerDrawFunctionParams = {
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
+  store: SpeedLimitTagsLayerDrawingStore;
+};
+
 export type TrainDetails = {
   curveX: number;
   curveY: number;
