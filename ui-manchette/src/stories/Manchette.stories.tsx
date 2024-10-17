@@ -74,6 +74,7 @@ const ManchetteWithWaypointMenu = () => {
       }))}
       zoomYIn={() => {}}
       zoomYOut={() => {}}
+      resetZoom={() => {}}
       toggleMode={() => {}}
       activeOperationalPointId={activeOperationalPointId}
     >
