@@ -1,0 +1,1 @@
+import{r as c}from"./index-RYns6xqu.js";function i({onBlur:s,onKeyUp:a}){const[u,e]=c.useState(!1),b=c.useCallback(t=>{t.key==="Tab"&&e(!0),a==null||a(t)},[a]),f=c.useCallback(t=>{e(!1),s==null||s(t)},[s]);return{handleKeyUp:b,handleBlur:f,isFocusByTab:u}}export{i as u};
