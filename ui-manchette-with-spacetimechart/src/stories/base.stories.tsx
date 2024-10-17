@@ -69,10 +69,12 @@ const ManchetteWithSpaceTimeWrapper = ({
   );
 };
 
-export default {
+const meta = {
   title: 'Manchette with SpaceTimeChart/rendering',
   component: ManchetteWithSpaceTimeWrapper,
-} as Meta<typeof ManchetteWithSpaceTimeWrapper>;
+} satisfies Meta<typeof ManchetteWithSpaceTimeWrapper>;
+
+export default meta;
 
 export const Default = {
   args: {
