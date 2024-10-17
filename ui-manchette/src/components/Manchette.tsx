@@ -12,6 +12,7 @@ type ManchetteProps = {
   activeOperationalPointId?: string;
   zoomYIn: () => void;
   zoomYOut: () => void;
+  resetZoom: () => void;
   height?: number;
   yZoom?: number;
   children?: React.ReactNode;
@@ -22,6 +23,7 @@ type ManchetteProps = {
 const Manchette = ({
   zoomYIn,
   zoomYOut,
+  resetZoom,
   yZoom = 1,
   operationalPoints,
   activeOperationalPointId,
@@ -31,7 +33,7 @@ const Manchette = ({
 }: ManchetteProps) => (
   <div className="manchette-container">
     <div
-      className=" bg-ambientB-10 border-r border-grey-30"
+      className="bg-ambientB-10 border-r border-grey-30"
       style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px` }}
     >
       <OperationalPointList
@@ -40,23 +42,16 @@ const Manchette = ({
       />
       {children}
     </div>
-    <div className="manchette-actions flex items-center">
-      <div className=" flex items-center ">
-        <button
-          className="h-full px-3 w-full zoom-out"
-          onClick={zoomYOut}
-          disabled={yZoom <= MIN_ZOOM_Y}
-        >
+    <div className="manchette-actions">
+      <div className="zoom-buttons">
+        <button className="zoom-out" onClick={zoomYOut} disabled={yZoom <= MIN_ZOOM_Y}>
           <ZoomOut />
         </button>
-      </div>
-      <div className=" flex items-center  border-x border-black-25  h-full">
-        <button
-          className="h-full px-3 w-full zoom-in"
-          disabled={yZoom >= MAX_ZOOM_Y}
-          onClick={zoomYIn}
-        >
+        <button className="zoom-in" onClick={zoomYIn} disabled={yZoom >= MAX_ZOOM_Y}>
           <ZoomIn />
+        </button>
+        <button className="zoom-reset" onClick={resetZoom}>
+          Fit
         </button>
       </div>
       <div className="flex items-center ml-auto text-sans font-semibold">
