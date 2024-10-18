@@ -45,7 +45,7 @@ export const ConflictLayer = ({ conflicts }: ConflictLayerProps) => {
     [conflicts]
   );
 
-  useDraw('overlay', drawConflictLayer);
+  useDraw('paths', drawConflictLayer);
 
   return null;
 };
