@@ -15,6 +15,7 @@
   .space-time-chart-container {
     height: 561px;
     width: 100%;
+    padding-top: 10px;
     bottom: 0;
   }
 }

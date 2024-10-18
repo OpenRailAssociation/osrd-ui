@@ -1,5 +1,8 @@
 .op {
   @apply text-grey-80;
+  height: 2rem;
+  line-height: 1.5rem;
+  padding-block: 3px 5px;
   width: 315px;
   position: relative;
   &-separator {
@@ -13,7 +16,7 @@
     &::after {
       content: '';
       position: absolute;
-      bottom: 10.75px;
+      bottom: 11px;
       left: 0;
       width: 100%;
       height: 0.5px;
@@ -82,7 +85,7 @@
     content: '';
     position: absolute;
     display: inline-block;
-    bottom: 10.75px;
+    bottom: 16px;
     right: -1.625rem;
     width: 1.625rem;
     height: 0.5px;

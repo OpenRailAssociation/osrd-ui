@@ -51,7 +51,7 @@ const ManchetteWithSpaceTimeWrapper = ({
         <Manchette {...manchetteProps} />
         <div
           className="space-time-chart-container w-full sticky"
-          style={{ bottom: 0, left: 0, top: 0, height: `${DEFAULT_HEIGHT - 6}px` }}
+          style={{ bottom: 0, left: 0, top: 2, height: `${DEFAULT_HEIGHT - 6}px` }}
         >
           <SpaceTimeChart
             className="inset-0 absolute h-full"
