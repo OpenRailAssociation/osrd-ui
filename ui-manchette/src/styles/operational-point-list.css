@@ -4,4 +4,12 @@
   padding-inline: 0.5rem 1.625rem;
 
   @apply bg-ambientB-10;
+
+  .operational-point-wrapper:last-child {
+    .op {
+      &::after {
+        bottom: 16px;
+      }
+    }
+  }
 }
