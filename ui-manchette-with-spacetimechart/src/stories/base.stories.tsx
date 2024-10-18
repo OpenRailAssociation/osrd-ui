@@ -2,10 +2,7 @@
 import React, { useRef } from 'react';
 
 import { Manchette } from '@osrd-project/ui-manchette';
-import {
-  type OperationalPointType,
-  type ProjectPathTrainResult,
-} from '@osrd-project/ui-manchette/dist/types';
+import type { ProjectPathTrainResult, Waypoint } from '@osrd-project/ui-manchette/dist/types';
 import { PathLayer, SpaceTimeChart } from '@osrd-project/ui-spacetimechart';
 import type { Meta } from '@storybook/react';
 
@@ -13,24 +10,24 @@ import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-manchette/dist/theme.css';
 import '@osrd-project/ui-manchette-with-spacetimechart/dist/theme.css';
 
-import { SAMPLE_PATH_PROPERTIES_DATA, SAMPLE_PATHS_DATA } from '../assets/sampleData';
+import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from '../assets/sampleData';
 import useManchettesWithSpaceTimeChart from '../hooks/useManchetteWithSpaceTimeChart';
 
 type ManchetteWithSpaceTimeWrapperProps = {
-  operationalPoints: OperationalPointType[];
+  waypoints: Waypoint[];
   projectPathTrainResult: ProjectPathTrainResult[];
   selectedTrain: number;
 };
 const DEFAULT_HEIGHT = 561;
 
 const ManchetteWithSpaceTimeWrapper = ({
-  operationalPoints,
+  waypoints,
   projectPathTrainResult,
   selectedTrain,
 }: ManchetteWithSpaceTimeWrapperProps) => {
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchettesWithSpaceTimeChart(
-    operationalPoints,
+    waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
     selectedTrain
@@ -56,7 +53,7 @@ const ManchetteWithSpaceTimeWrapper = ({
           <SpaceTimeChart
             className="inset-0 absolute h-full"
             spaceOrigin={0}
-            timeOrigin={Math.min(...projectPathTrainResult.map((p) => +new Date(p.departure_time)))}
+            timeOrigin={Math.min(...projectPathTrainResult.map((p) => +p.departure_time))}
             {...spaceTimeChartProps}
           >
             {spaceTimeChartProps.paths.map((path) => (
@@ -78,9 +75,8 @@ export default meta;
 
 export const Default = {
   args: {
-    operationalPoints: SAMPLE_PATH_PROPERTIES_DATA.operational_points,
+    waypoints: SAMPLE_WAYPOINTS,
     projectPathTrainResult: SAMPLE_PATHS_DATA,
-
     selectedTrain: 1,
   },
 };

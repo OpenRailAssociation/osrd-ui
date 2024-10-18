@@ -1,7 +1,7 @@
 import type {
-  OperationalPointType,
+  EnrichedWaypoint,
   ProjectPathTrainResult,
-  StyledOperationalPointType,
+  Waypoint,
 } from '@osrd-project/ui-manchette/dist/types';
 import type {
   OperationalPoint,
@@ -10,28 +10,29 @@ import type {
 
 import { BASE_OP_HEIGHT, MAX_TIME_WINDOW, MAX_ZOOM_X, MIN_ZOOM_X } from './consts';
 import { calcTotalDistance, getHeightWithoutLastWaypoint, msToS } from './utils';
-export type OperationalPointsOptions = { isProportional: boolean; yZoom: number; height: number };
+
+type OperationalPointsOptions = { isProportional: boolean; yZoom: number; height: number };
 
 export const calcOperationalPointsToDisplay = (
-  operationalPoints: OperationalPointType[],
+  waypoints: Waypoint[],
   { height, isProportional, yZoom }: OperationalPointsOptions
-): StyledOperationalPointType[] => {
-  if (!isProportional || operationalPoints.length === 0) {
+): EnrichedWaypoint[] => {
+  if (!isProportional || waypoints.length === 0) {
     // For non-proportional display, we always display all the operational points:
-    return operationalPoints.map((op) => ({ ...op, display: true }));
+    return waypoints.map((waypoint) => ({ ...waypoint, display: true }));
   }
 
   // For proportional display, we only display points that do not overlap with
   // the last displayed point:
-  const result: StyledOperationalPointType[] = [{ ...operationalPoints[0], display: true }];
-  const totalDistance = calcTotalDistance(operationalPoints);
+  const result: EnrichedWaypoint[] = [{ ...waypoints[0], display: true }];
+  const totalDistance = calcTotalDistance(waypoints);
   const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
   let lastDisplayedOP = result[0];
 
   // We iterate through all points, and only add them if they don't collide
   // with the last visible point:
-  for (let i = 1; i < operationalPoints.length; i++) {
-    const op = operationalPoints[i];
+  for (let i = 1; i < waypoints.length; i++) {
+    const op = waypoints[i];
     const diff = op.position - lastDisplayedOP.position;
     const display = (diff / totalDistance) * heightWithoutFinalOp * yZoom >= BASE_OP_HEIGHT;
     result.push({
@@ -57,15 +58,15 @@ export const calcOperationalPointsToDisplay = (
 };
 
 export const calcOperationalPointsHeight = (
-  operationalPoints: StyledOperationalPointType[],
+  waypoints: EnrichedWaypoint[],
   { height, isProportional, yZoom }: OperationalPointsOptions
 ) => {
-  if (operationalPoints.length < 2) return [];
-  const totalDistance = calcTotalDistance(operationalPoints);
+  if (waypoints.length < 2) return [];
+  const totalDistance = calcTotalDistance(waypoints);
   const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
 
-  return operationalPoints.map((op, index) => {
-    const nextOp = operationalPoints.at(index + 1);
+  return waypoints.map((op, index) => {
+    const nextOp = waypoints.at(index + 1);
     if (!nextOp) {
       return { ...op, styles: { height: `${BASE_OP_HEIGHT}px` } };
     }
@@ -90,8 +91,8 @@ export const computeTimeWindow = (trains: ProjectPathTrainResult[]) => {
       const lastCurve = train.space_time_curves.at(-1);
       if (!lastCurve || lastCurve.times.length < 2) return times;
 
-      const firstPoint = Number(new Date(train.departure_time));
-      const lastPoint = Number(new Date(train.departure_time)) + lastCurve.times.at(-1)!;
+      const firstPoint = Number(train.departure_time);
+      const lastPoint = Number(train.departure_time) + lastCurve.times.at(-1)!;
       return {
         minTime: times.minTime === -1 || times.minTime > firstPoint ? firstPoint : times.minTime,
         maxTime: times.maxTime === -1 || times.maxTime < lastPoint ? lastPoint : times.maxTime,
@@ -105,9 +106,9 @@ export const computeTimeWindow = (trains: ProjectPathTrainResult[]) => {
 };
 
 export const getOperationalPointsWithPosition = (
-  operationalPoints: StyledOperationalPointType[]
+  waypoints: EnrichedWaypoint[]
 ): OperationalPoint[] =>
-  operationalPoints.map((point) => ({
+  waypoints.map((point) => ({
     id: point.id,
     label: point.id,
     position: point.position,

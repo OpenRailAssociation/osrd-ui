@@ -2,11 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-manchette/dist/theme.css';
-import { SAMPLE_PATH_PROPERTIES_DATA } from './assets/sampleData';
+import { SAMPLE_WAYPOINTS } from './assets/sampleData';
 import OperationalPoint from '../components/OperationalPoint';
-import { type StyledOperationalPointType } from '../types';
-
-const firstOperationalPoint = SAMPLE_PATH_PROPERTIES_DATA.operational_points?.[0] ?? {};
 
 const meta: Meta<typeof OperationalPoint> = {
   component: OperationalPoint,
@@ -19,9 +16,9 @@ type Story = StoryObj<typeof OperationalPoint>;
 
 export const Default: Story = {
   args: {
-    operationalPoint: {
-      ...firstOperationalPoint,
+    waypoint: {
+      ...SAMPLE_WAYPOINTS[0],
       display: true,
-    } as StyledOperationalPointType,
+    },
   },
 };

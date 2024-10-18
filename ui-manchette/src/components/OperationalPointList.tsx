@@ -1,25 +1,22 @@
 import React from 'react';
 
 import OperationalPoint from './OperationalPoint';
-import { type StyledOperationalPointType } from '../types';
+import { type EnrichedWaypoint } from '../types';
 
 type OperationalPointListProps = {
-  operationalPoints: StyledOperationalPointType[];
-  activeOperationalPointId?: string;
+  waypoints: EnrichedWaypoint[];
+  activeWaypointId?: string;
 };
 
-const OperationalPointList = ({
-  operationalPoints,
-  activeOperationalPointId,
-}: OperationalPointListProps) => (
+const OperationalPointList = ({ waypoints, activeWaypointId }: OperationalPointListProps) => (
   <div className="operational-point-list ">
-    {operationalPoints.map((op) => (
+    {waypoints.map((waypoint) => (
       <div
-        key={op.id}
+        key={waypoint.id}
         className="operational-point-wrapper flex flex-col justify-start"
-        style={op.styles}
+        style={waypoint.styles}
       >
-        <OperationalPoint operationalPoint={op} isActive={activeOperationalPointId === op.id} />
+        <OperationalPoint waypoint={waypoint} isActive={activeWaypointId === waypoint.id} />
       </div>
     ))}
   </div>

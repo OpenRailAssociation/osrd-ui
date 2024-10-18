@@ -1,10 +1,3 @@
-import type {
-  OperationalPointType,
-  StyledOperationalPointType,
-  ProjectPathTrainResult,
-} from '@osrd-project/ui-manchette/dist/types';
-// eslint-disable-next-line import/no-unresolved
-import { type OperationalPoint } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 import { describe, it, expect } from 'vitest';
 
 import { BASE_OP_HEIGHT, MAX_TIME_WINDOW } from '../consts';
@@ -19,23 +12,20 @@ import {
 // Assuming these types from your code
 
 // Mock data for the tests
-const mockOperationalPoints: OperationalPointType[] = [
-  { position: 0, id: 'op1', part: { position: 0, track: 'mock' } },
-  { position: 10, id: 'op2', part: { position: 0, track: 'mock' } },
-  { position: 20, id: 'op3', part: { position: 0, track: 'mock' } },
+const mockOperationalPoints = [
+  { position: 0, id: 'op1' },
+  { position: 10, id: 'op2' },
+  { position: 20, id: 'op3' },
 ];
 
 // Tests for calcOperationalPointsToDisplay
 describe('calcOperationalPointsToDisplay', () => {
   it('should display all points for non-proportional display', () => {
-    const result: StyledOperationalPointType[] = calcOperationalPointsToDisplay(
-      mockOperationalPoints,
-      {
-        height: 500,
-        isProportional: false,
-        yZoom: 1,
-      }
-    );
+    const result = calcOperationalPointsToDisplay(mockOperationalPoints, {
+      height: 500,
+      isProportional: false,
+      yZoom: 1,
+    });
     expect(result).toHaveLength(mockOperationalPoints.length);
     result.forEach((op) => {
       expect(op.display).toBe(true);
@@ -43,61 +33,47 @@ describe('calcOperationalPointsToDisplay', () => {
   });
 
   it('should calculate proportional display correctly', () => {
-    const result: StyledOperationalPointType[] = calcOperationalPointsToDisplay(
-      mockOperationalPoints,
-      {
-        height: 500,
-        isProportional: true,
-        yZoom: 1,
-      }
-    );
+    const result = calcOperationalPointsToDisplay(mockOperationalPoints, {
+      height: 500,
+      isProportional: true,
+      yZoom: 1,
+    });
     expect(result).toHaveLength(mockOperationalPoints.length);
     expect(result[0].display).toBe(true);
     expect(result[1].display).toBe(true);
   });
 
   it('should ensure the last point is always displayed', () => {
-    const result: StyledOperationalPointType[] = calcOperationalPointsToDisplay(
-      mockOperationalPoints,
-      {
-        height: 500,
-        isProportional: true,
-        yZoom: 1,
-      }
-    );
+    const result = calcOperationalPointsToDisplay(mockOperationalPoints, {
+      height: 500,
+      isProportional: true,
+      yZoom: 1,
+    });
     expect(result[result.length - 1].display).toBe(true);
   });
 });
 
 // Tests for calcOperationalPointsHeight
 describe('calcOperationalPointsHeight', () => {
-  const mockStyledOperationalPoints: StyledOperationalPointType[] = mockOperationalPoints.map(
-    (op) => ({
-      ...op,
-      styles: {},
-      display: true,
-    })
-  );
+  const mockStyledOperationalPoints = mockOperationalPoints.map((op) => ({
+    ...op,
+    styles: {},
+    display: true,
+  }));
   it('Should ensure that a empty array is return when there is only 1 operationalPoint', () => {
-    const result: StyledOperationalPointType[] = calcOperationalPointsHeight(
-      [mockOperationalPoints[0]],
-      {
-        height: 500,
-        isProportional: true,
-        yZoom: 1,
-      }
-    );
+    const result = calcOperationalPointsHeight([mockOperationalPoints[0]], {
+      height: 500,
+      isProportional: true,
+      yZoom: 1,
+    });
     expect(result.length).toBe(0);
   });
   it('should return correct heights for proportional display', () => {
-    const result: StyledOperationalPointType[] = calcOperationalPointsHeight(
-      mockStyledOperationalPoints,
-      {
-        height: 500,
-        isProportional: true,
-        yZoom: 2,
-      }
-    );
+    const result = calcOperationalPointsHeight(mockStyledOperationalPoints, {
+      height: 500,
+      isProportional: true,
+      yZoom: 2,
+    });
     expect(result).toHaveLength(mockStyledOperationalPoints.length);
     expect(result[0].styles?.height).toBe(`428px`);
     expect(result[1].styles?.height).toBe(`428px`);
@@ -105,14 +81,11 @@ describe('calcOperationalPointsHeight', () => {
   });
 
   it('should return correct heights for non-proportional display', () => {
-    const result: StyledOperationalPointType[] = calcOperationalPointsHeight(
-      mockStyledOperationalPoints,
-      {
-        height: 500,
-        isProportional: false,
-        yZoom: 1,
-      }
-    );
+    const result = calcOperationalPointsHeight(mockStyledOperationalPoints, {
+      height: 500,
+      isProportional: false,
+      yZoom: 1,
+    });
     expect(result[0].styles?.height).toBe(`${BASE_OP_HEIGHT}px`);
     expect(result[1].styles?.height).toBe(`${BASE_OP_HEIGHT}px`);
   });
@@ -120,7 +93,7 @@ describe('calcOperationalPointsHeight', () => {
 
 // Tests for computeTimeWindow
 describe('computeTimeWindow', () => {
-  const mockTrains: ProjectPathTrainResult[] = [
+  const mockTrains = [
     {
       departure_time: '2023-01-01T00:00:00Z',
       space_time_curves: [
@@ -148,12 +121,12 @@ describe('computeTimeWindow', () => {
   ];
 
   it('should calculate the correct time window', () => {
-    const timeWindow: number = computeTimeWindow(mockTrains);
+    const timeWindow = computeTimeWindow(mockTrains);
     expect(timeWindow).toBeLessThanOrEqual(MAX_TIME_WINDOW);
   });
 
   it('should return MAX_TIME_WINDOW if calculated time is too large', () => {
-    const mockLongTrains: ProjectPathTrainResult[] = [
+    const mockLongTrains = [
       {
         departure_time: '2023-01-01T00:00:00Z',
         space_time_curves: [
@@ -175,7 +148,7 @@ describe('computeTimeWindow', () => {
 // Tests for getOperationalPointsWithPosition
 describe('getOperationalPointsWithPosition', () => {
   it('should return operational points with position and label', () => {
-    const result: OperationalPoint[] = getOperationalPointsWithPosition(mockOperationalPoints);
+    const result = getOperationalPointsWithPosition(mockOperationalPoints);
     expect(result).toHaveLength(mockOperationalPoints.length);
     result.forEach((op, index) => {
       expect(op.id).toBe(mockOperationalPoints[index].id);
@@ -186,7 +159,7 @@ describe('getOperationalPointsWithPosition', () => {
 
 // Tests for getScales
 describe('getScales', () => {
-  const mockOpsWithPosition: OperationalPoint[] = mockOperationalPoints.map((op) => ({
+  const mockOpsWithPosition = mockOperationalPoints.map((op) => ({
     id: op.id,
     label: op.id,
     position: op.position,
@@ -210,7 +183,7 @@ describe('getScales', () => {
       yZoom: 1,
     });
     expect(result).toHaveLength(1);
-    expect(result[0].coefficient).toBeDefined();
+    expect(result[0]).toHaveProperty('coefficient');
     expect(result[0].size).not.toBeDefined();
   });
 
@@ -223,6 +196,6 @@ describe('getScales', () => {
 
     expect(result).toHaveLength(2);
     expect(result[0].size).toBeDefined();
-    expect(result[0].coefficient).not.toBeDefined();
+    expect(result[0]).not.toHaveProperty('coefficient');
   });
 });

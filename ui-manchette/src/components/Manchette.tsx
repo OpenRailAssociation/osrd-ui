@@ -5,10 +5,10 @@ import cx from 'classnames';
 
 import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from './consts';
 import OperationalPointList from './OperationalPointList';
-import type { StyledOperationalPointType } from '../types';
+import type { EnrichedWaypoint } from '../types';
 
 type ManchetteProps = {
-  operationalPoints: StyledOperationalPointType[];
+  waypoints: EnrichedWaypoint[];
   activeOperationalPointId?: string;
   zoomYIn: () => void;
   zoomYOut: () => void;
@@ -25,7 +25,7 @@ const Manchette = ({
   zoomYOut,
   resetZoom,
   yZoom = 1,
-  operationalPoints,
+  waypoints,
   activeOperationalPointId,
   isProportional = true,
   toggleMode,
@@ -36,10 +36,7 @@ const Manchette = ({
       className="bg-ambientB-10 border-r border-grey-30"
       style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px` }}
     >
-      <OperationalPointList
-        operationalPoints={operationalPoints}
-        activeOperationalPointId={activeOperationalPointId}
-      />
+      <OperationalPointList waypoints={waypoints} activeWaypointId={activeOperationalPointId} />
       {children}
     </div>
     <div className="manchette-actions">
