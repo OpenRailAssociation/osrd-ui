@@ -1,14 +1,11 @@
 /* eslint-disable import/no-unresolved */
 import { useMemo } from 'react';
 
-import {
-  type ProjectPathTrainResult,
-  type SpaceTimeCurves,
-} from '@osrd-project/ui-manchette/dist/types';
+import { type ProjectPathTrainResult } from '@osrd-project/ui-manchette/dist/types';
 
-const transformCurve = (curve: SpaceTimeCurves, departureTime: string) =>
+const transformCurve = (curve: ProjectPathTrainResult['spaceTimeCurves'][0], departureTime: Date) =>
   curve.positions.map((position, i) => ({
-    time: curve.times[i] + new Date(departureTime).getTime(),
+    time: curve.times[i] + departureTime.getTime(),
     position,
   }));
 
@@ -16,11 +13,11 @@ const usePaths = (projectPathTrainResult: ProjectPathTrainResult[], selectedTrai
   useMemo(
     () =>
       projectPathTrainResult.flatMap((path) =>
-        path.space_time_curves.map((spaceTimeCurve, ind) => ({
+        path.spaceTimeCurves.map((spaceTimeCurve, ind) => ({
           id: `${path.id}-${ind}`,
           label: path.name,
           color: selectedTrain && selectedTrain === path.id ? '#201EDE' : '#000000',
-          points: transformCurve(spaceTimeCurve, path.departure_time),
+          points: transformCurve(spaceTimeCurve, path.departureTime),
         }))
       ),
     [projectPathTrainResult, selectedTrain]

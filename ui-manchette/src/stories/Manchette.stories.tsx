@@ -5,20 +5,16 @@ import '@osrd-project/ui-manchette/dist/theme.css';
 import { EyeClosed, Telescope } from '@osrd-project/ui-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SAMPLE_PATH_PROPERTIES_DATA } from './assets/sampleData';
+import { SAMPLE_WAYPOINTS } from './assets/sampleData';
 import Menu, { type MenuItem } from './components/Menu';
 import Manchette from '../components/Manchette';
-import { type StyledOperationalPointType } from '../types';
-
-const OperationalPointListData: StyledOperationalPointType[] =
-  SAMPLE_PATH_PROPERTIES_DATA.operational_points?.map((op) => ({ ...op, display: true })) ?? [];
 
 const meta: Meta<typeof Manchette> = {
   component: Manchette,
   title: 'Manchette/Manchette',
   tags: ['autodocs'],
   argTypes: {
-    operationalPoints: {
+    waypoints: {
       control: {
         type: 'object',
       },
@@ -66,8 +62,9 @@ const ManchetteWithWaypointMenu = () => {
 
   return (
     <Manchette
-      operationalPoints={OperationalPointListData.map((op) => ({
+      waypoints={SAMPLE_WAYPOINTS.map((op) => ({
         ...op,
+        display: true,
         onClick: (id, ref) => {
           handleWaypointClick(id, ref);
         },
@@ -94,7 +91,7 @@ type Story = StoryObj<typeof ManchetteWithWaypointMenu>;
 
 export const Default: Story = {
   args: {
-    operationalPoints: OperationalPointListData,
+    waypoints: SAMPLE_WAYPOINTS.map((waypoint) => ({ ...waypoint, display: true })),
   },
 };
 

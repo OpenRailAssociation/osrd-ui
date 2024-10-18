@@ -1,117 +1,39 @@
 /* eslint-disable import/no-unresolved */
-import {
-  type PathProperties,
-  type ProjectPathTrainResult,
-} from '@osrd-project/ui-manchette/dist/types';
+import { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-manchette/dist/types';
 
-export const SAMPLE_PATH_PROPERTIES_DATA: PathProperties = {
-  operational_points: [
-    {
-      id: 'South_West_station',
-      part: {
-        track: 'TB0',
-        position: 500.0,
-        extensions: {
-          sncf: null,
-        },
-      },
-      extensions: {
-        sncf: {
-          ci: 0,
-          ch: 'BV',
-          ch_short_label: 'BV',
-          ch_long_label: '0',
-          trigram: 'SWS',
-        },
-        identifier: {
-          name: 'South_West_station',
-          uic: 1,
-        },
-      },
-      position: 0,
-    },
-    {
-      id: 'Mid_West_station',
-      part: {
-        track: 'TC2',
-        position: 450.0,
-        extensions: {
-          sncf: null,
-        },
-      },
-      extensions: {
-        sncf: {
-          ci: 0,
-          ch: 'BV',
-          ch_short_label: 'BV',
-          ch_long_label: '0',
-          trigram: 'MWS',
-        },
-        identifier: {
-          name: 'Mid_West_station',
-          uic: 3,
-        },
-      },
-      position: 13000000,
-    },
-    {
-      id: 'Mid_East_station',
-      part: {
-        track: 'TD1',
-        position: 14000.0,
-        extensions: {
-          sncf: null,
-        },
-      },
-      extensions: {
-        sncf: {
-          ci: 0,
-          ch: 'BV',
-          ch_short_label: 'BV',
-          ch_long_label: '0',
-          trigram: 'MES',
-        },
-        identifier: {
-          name: 'Mid_East_station',
-          uic: 4,
-        },
-      },
-      position: 27550000,
-    },
-    {
-      id: 'North_East_station',
-      part: {
-        track: 'TG5',
-        position: 1500.0,
-        extensions: {
-          sncf: null,
-        },
-      },
-      extensions: {
-        sncf: {
-          ci: 0,
-          ch: 'BV',
-          ch_short_label: 'BV',
-          ch_long_label: '0',
-          trigram: 'NES',
-        },
-        identifier: {
-          name: 'North_East_station',
-          uic: 7,
-        },
-      },
-      position: 47050000,
-    },
-  ],
-};
+export const SAMPLE_WAYPOINTS: Waypoint[] = [
+  {
+    id: 'South_West_station',
+    name: 'South_West_station',
+    secondaryCode: 'BV',
+    position: 0,
+  },
+  {
+    id: 'Mid_West_station',
+    name: 'Mid_West_station',
+    secondaryCode: 'BV',
+    position: 13000000,
+  },
+  {
+    id: 'Mid_East_station',
+    name: 'Mid_East_station',
+    secondaryCode: 'BV',
+    position: 27550000,
+  },
+  {
+    id: 'North_East_station',
+    name: 'North_East_station',
+    secondaryCode: 'BV',
+    position: 47050000,
+  },
+];
 
 export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
   {
     id: 1,
     name: 'Train 1',
-    departure_time: '2024-06-26T13:57:56Z',
-    rolling_stock_length: 26070,
-    space_time_curves: [
+    departureTime: new Date('2024-06-26T13:57:56Z'),
+    spaceTimeCurves: [
       {
         positions: [
           0, 2387, 8642, 17449, 28163, 68719, 118795, 196855, 406366, 706610, 1102281, 1593458,
@@ -136,9 +58,8 @@ export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
   {
     id: 2,
     name: 'Train 2',
-    departure_time: '2024-06-26T13:42:56Z',
-    rolling_stock_length: 26070,
-    space_time_curves: [
+    departureTime: new Date('2024-06-26T13:42:56Z'),
+    spaceTimeCurves: [
       {
         positions: [
           0, 2387, 8642, 17449, 28163, 68719, 118795, 196855, 406366, 706610, 1102281, 1593458,
@@ -163,9 +84,8 @@ export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
   {
     id: 3,
     name: 'Train 3',
-    departure_time: '2024-06-26T14:12:56Z',
-    rolling_stock_length: 26070,
-    space_time_curves: [
+    departureTime: new Date('2024-06-26T14:12:56Z'),
+    spaceTimeCurves: [
       {
         positions: [
           0, 2387, 8642, 17449, 28163, 68719, 118795, 196855, 406366, 706610, 1102281, 1593458,

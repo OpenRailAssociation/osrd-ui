@@ -1,73 +1,24 @@
 import { type CSSProperties } from 'react';
 
-export type PathProperties = {
-  operational_points?:
-    | {
-        extensions?: OperationalPointExtensions;
-        id: string;
-        part: OperationalPointPart;
-        /** Distance from the beginning of the path in mm */
-        position: number;
-      }[]
-    | null;
+export type Waypoint = {
+  id: string;
+  position: number; // in mm
+  name?: string;
+  secondaryCode?: string;
 };
 
-export type GeoJsonLineString = {
-  coordinates: GeoJsonLineStringValue;
-  type: 'LineString';
-};
-
-export type GeoJsonPointValue = number[];
-export type GeoJsonLineStringValue = GeoJsonPointValue[];
-
-export type OperationalPointExtensions = {
-  identifier?: {
-    name: string;
-    uic: number;
-  } | null;
-  sncf?: {
-    ch: string;
-    ch_long_label: string;
-    ch_short_label: string;
-    ci: number;
-    trigram: string;
-  } | null;
-};
-export type OperationalPointPart = {
-  extensions?: {
-    sncf?: {
-      kp: string;
-    } | null;
-  };
-  position: number;
-  track: string;
-};
-
-export type ArrayElement<ArrayType extends readonly unknown[] | null | undefined> =
-  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
-
-export type OperationalPointType = ArrayElement<PathProperties['operational_points'] | null>;
-
-export type StyledOperationalPointType = OperationalPointType & {
+export type InteractiveWaypoint = Waypoint & {
   styles?: CSSProperties;
   display?: boolean;
   onClick?: (opId: string, opRef: HTMLDivElement | null) => void;
 };
 
 export type ProjectPathTrainResult = {
-  /*Name of train */
-  name: string;
-  /*Id of train */
   id: number;
-  /** List of space-time curves sections along the path */
-  space_time_curves: {
-    positions: number[];
-    times: number[];
+  name: string;
+  spaceTimeCurves: {
+    positions: number[]; // in mm
+    times: number[]; // in seconds since the departure of the train
   }[];
-  /** Departure time of the train */
-  departure_time: string;
-  /** Rolling stock length in mm */
-  rolling_stock_length: number;
+  departureTime: Date;
 };
-
-export type SpaceTimeCurves = ArrayElement<ProjectPathTrainResult['space_time_curves'] | null>;

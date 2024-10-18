@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type {
-  ProjectPathTrainResult,
-  OperationalPointType,
-} from '@osrd-project/ui-manchette/src/types';
+import type { ProjectPathTrainResult, Waypoint } from '@osrd-project/ui-manchette/dist/types';
 import type {
   OperationalPoint,
   SpaceScale,
@@ -37,7 +34,7 @@ type State = {
 };
 
 const useManchettesWithSpaceTimeChart = (
-  operationalPoints: OperationalPointType[],
+  waypoints: Waypoint[],
   projectPathTrainResult: ProjectPathTrainResult[],
   manchetteWithSpaceTimeChartContainer: React.RefObject<HTMLDivElement>,
   selectedTrain?: number,
@@ -74,10 +71,10 @@ const useManchettesWithSpaceTimeChart = (
 
   // Memoize computedOperationalPoints to avoid recalculations unless the dependencies change
   const operationalPointsToDisplay = useMemo(
-    () => calcOperationalPointsToDisplay(operationalPoints, { height, isProportional, yZoom }),
-    [operationalPoints, height, isProportional, yZoom]
+    () => calcOperationalPointsToDisplay(waypoints, { height, isProportional, yZoom }),
+    [waypoints, height, isProportional, yZoom]
   );
-  const operationalPointsWithHeight = useMemo(
+  const waypointWithHeight = useMemo(
     () =>
       calcOperationalPointsHeight(operationalPointsToDisplay, { height, isProportional, yZoom }),
     [operationalPointsToDisplay, height, yZoom, isProportional]
@@ -147,7 +144,7 @@ const useManchettesWithSpaceTimeChart = (
   // Memoize manchetteProps separately
   const manchetteProps = useMemo(
     () => ({
-      operationalPoints: operationalPointsWithHeight,
+      waypoints: waypointWithHeight,
       zoomYIn,
       zoomYOut,
       resetZoom,
@@ -155,7 +152,7 @@ const useManchettesWithSpaceTimeChart = (
       yZoom,
       isProportional,
     }),
-    [operationalPointsWithHeight, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional]
+    [waypointWithHeight, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional]
   );
 
   // Memoize spaceTimeChartProps separately
