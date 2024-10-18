@@ -100,6 +100,10 @@ const useManchettesWithSpaceTimeChart = (
     }
   }, [yZoom]);
 
+  const resetZoom = useCallback(() => {
+    setState((prev) => ({ ...prev, yZoom: 1 }));
+  }, []);
+
   const handleScroll = useCallback(() => {
     if (!isShiftPressed && manchetteWithSpaceTimeChartContainer.current) {
       const { scrollTop } = manchetteWithSpaceTimeChartContainer.current;
@@ -146,11 +150,12 @@ const useManchettesWithSpaceTimeChart = (
       operationalPoints: operationalPointsWithHeight,
       zoomYIn,
       zoomYOut,
+      resetZoom,
       toggleMode,
       yZoom,
       isProportional,
     }),
-    [operationalPointsWithHeight, zoomYIn, zoomYOut, toggleMode, yZoom, isProportional]
+    [operationalPointsWithHeight, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional]
   );
 
   // Memoize spaceTimeChartProps separately
