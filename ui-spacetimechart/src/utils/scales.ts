@@ -72,7 +72,13 @@ export function spaceScalesToBinaryTree(
   // Step 3: Build the tree
   function buildTree(scales: NormalizedScale[]): NormalizedScaleTree {
     if (scales.length === 0) {
-      throw new Error('Invalid scales: there should be at least one scale.');
+      return {
+        coefficient: 1,
+        from: -Infinity,
+        to: Infinity,
+        pixelFrom: -Infinity,
+        pixelTo: Infinity,
+      };
     } else if (scales.length === 1) {
       return scales[0];
     } else {

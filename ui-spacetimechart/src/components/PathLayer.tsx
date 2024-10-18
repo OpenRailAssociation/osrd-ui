@@ -271,6 +271,8 @@ export const PathLayer = ({
    */
   const drawExtremities = useCallback<DrawingFunction>(
     (ctx, { getTimePixel, getSpacePixel, swapAxis }) => {
+      if (!path.points.length) return;
+
       const pathDirection = getDirection(path);
       const from = path.points[0];
       const fromEnd = path.fromEnd || DEFAULT_PATH_END;
