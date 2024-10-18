@@ -34,12 +34,11 @@ export const calcOperationalPointsToDisplay = (
     const op = operationalPoints[i];
     const diff = op.position - lastDisplayedOP.position;
     const display = (diff / totalDistance) * heightWithoutFinalOp * yZoom >= BASE_OP_HEIGHT;
-    result.push({
-      ...op,
-      display,
-    });
 
-    if (display) lastDisplayedOP = result[i];
+    if (display) {
+      result.push({ ...op, display });
+      lastDisplayedOP = op;
+    }
   }
 
   // In the end, to make sure the last point is visible, if it's not, we swap
