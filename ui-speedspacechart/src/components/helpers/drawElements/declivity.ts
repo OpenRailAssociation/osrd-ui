@@ -8,7 +8,7 @@ export const drawDeclivity = ({ ctx, width, height, store }: DrawFunctionParams)
   const { slopes, ratioX, leftOffset } = store;
 
   const { maxGradient } = slopesValues(store);
-  const maxPosition = maxPositionValue(store);
+  const maxPosition = maxPositionValue(store.speeds);
 
   if (!slopes || slopes.length === 0) {
     console.error('Slopes data is missing or empty.');
