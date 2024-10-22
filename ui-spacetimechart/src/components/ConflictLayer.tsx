@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 
-import { useDraw } from '../hooks/useCanvas';
-import { type DrawingFunction } from '../lib/types';
+import { useDraw, usePicking } from '../hooks/useCanvas';
+import { type DrawingFunction, type PickingDrawingFunction } from '../lib/types';
+import { drawAliasedRect } from '../utils/canvas';
+import { indexToColor, hexToRgb } from '../utils/colors';
 
 export type Conflict = {
   timeStart: number;
@@ -46,6 +48,32 @@ export const ConflictLayer = ({ conflicts }: ConflictLayerProps) => {
   );
 
   useDraw('paths', drawConflictLayer);
+
+  const drawPicking = useCallback<PickingDrawingFunction>(
+    (imageData, { registerPickingElement, getTimePixel, getSpacePixel }) => {
+      for (const [conflictIndex, conflict] of conflicts.entries()) {
+        const x = getTimePixel(conflict.timeStart);
+        const y = getSpacePixel(conflict.spaceStart);
+        const width = getTimePixel(conflict.timeEnd) - x;
+        const height = getSpacePixel(conflict.spaceEnd) - y;
+        const border = BORDERS[0].size;
+
+        const index = registerPickingElement({ type: 'conflict', conflictIndex });
+        const color = hexToRgb(indexToColor(index));
+
+        drawAliasedRect(
+          imageData,
+          { x: x - border, y: y - border },
+          width + 2 * border,
+          height + 2 * border,
+          color
+        );
+      }
+    },
+    [conflicts]
+  );
+
+  usePicking('paths', drawPicking);
 
   return null;
 };
