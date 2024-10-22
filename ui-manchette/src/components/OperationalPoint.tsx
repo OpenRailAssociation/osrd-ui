@@ -27,7 +27,7 @@ const OperationalPoint = ({
       id={id}
       ref={opRef}
       onClick={() => {
-        onClick && onClick(id, opRef.current);
+        if (onClick) onClick(id, opRef.current);
       }}
     >
       <div className="op-position justify-self-start text-end">{positionMmToKm(position)}</div>
