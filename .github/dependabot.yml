@@ -12,6 +12,9 @@ updates:
       turf:
         patterns:
           - "@turf/*"
+      typescript-eslint:
+        patterns:
+          - "@typescript-eslint/*"
     commit-message:
       prefix: "dependency:"
     open-pull-requests-limit: 100
