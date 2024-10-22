@@ -50,7 +50,7 @@
     "@typescript-eslint/no-explicit-any": 2,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/space-before-blocks": 0,
-    "@typescript-eslint/ban-types": [
+    "@typescript-eslint/no-restricted-types": [
       "error",
       {
         "types": {
