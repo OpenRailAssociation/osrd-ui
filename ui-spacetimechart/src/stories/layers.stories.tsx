@@ -2,9 +2,9 @@ import React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { ConflictLayer, OccupancyBlockLayer, SpaceTimeChart, PathLayer } from '../';
 import { OPERATIONAL_POINTS, PATHS, START_DATE } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
-import { ConflictLayer, OccupancyBlockLayer, SpaceTimeChart, PathLayer } from '../';
 import {
   KILOMETER,
   MINUTE,

@@ -4,6 +4,7 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import FileSaver from 'file-saver';
 
+import { SpaceTimeChart, PathLayer } from '../';
 import { MouseTracker } from './lib/components';
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import {
@@ -14,7 +15,6 @@ import {
   X_ZOOM_LEVEL,
   Y_ZOOM_LEVEL,
 } from './lib/utils';
-import { SpaceTimeChart, PathLayer } from '../';
 import { CanvasContext } from '../lib/context';
 import { type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';

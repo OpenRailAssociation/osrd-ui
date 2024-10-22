@@ -4,9 +4,9 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import { keyBy } from 'lodash';
 
+import { SpaceTimeChart, PathLayer } from '../';
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
-import { SpaceTimeChart, PathLayer } from '../';
 import { type HoveredItem, type Point } from '../lib/types';
 import { isPathOnScreen } from '../utils/geometry';
 import { getSpaceAtTime } from '../utils/scales';
