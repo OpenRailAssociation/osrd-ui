@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 
+import { SpaceTimeChart, PathLayer } from '../';
 import { MouseTracker } from './lib/components';
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
-import { SpaceTimeChart, PathLayer } from '../';
 import { type DataPoint, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 

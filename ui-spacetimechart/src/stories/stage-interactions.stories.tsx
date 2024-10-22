@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 
+import { SpaceTimeChart, PathLayer } from '../';
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import {
   MAX_X_ZOOM,
@@ -12,7 +13,6 @@ import {
   X_ZOOM_LEVEL,
   Y_ZOOM_LEVEL,
 } from './lib/utils';
-import { SpaceTimeChart, PathLayer } from '../';
 import { type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 

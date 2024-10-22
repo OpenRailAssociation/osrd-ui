@@ -4,6 +4,7 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import { clamp, inRange } from 'lodash';
 
+import { SpaceTimeChart, PathLayer } from '../';
 import { MouseTracker } from './lib/components';
 import { OPERATIONAL_POINTS, PATHS, START_DATE } from './lib/paths';
 import {
@@ -14,7 +15,6 @@ import {
   X_ZOOM_LEVEL,
   Y_ZOOM_LEVEL,
 } from './lib/utils';
-import { SpaceTimeChart, PathLayer } from '../';
 import { useDraw } from '../hooks/useCanvas';
 import { AMBIANT_A10, ERROR_30, ERROR_60, HOUR, KILOMETER, MINUTE } from '../lib/consts';
 import { type DrawingFunction, type Point } from '../lib/types';
