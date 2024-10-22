@@ -171,6 +171,29 @@ export function drawAliasedDisc(
   }
 }
 
+export function drawAliasedRect(
+  imageData: ImageData,
+  { x, y }: Point,
+  width: number,
+  height: number,
+  [r, g, b]: RGBColor | RGBAColor
+) {
+  const xMin = clamp(x, 0, imageData.width);
+  const yMin = clamp(y, 0, imageData.height);
+  const xMax = clamp(x + width, 0, imageData.width);
+  const yMax = clamp(y + height, 0, imageData.height);
+
+  for (let i = xMin; i < xMax; i++) {
+    for (let j = yMin; j < yMax; j++) {
+      const index = (j * imageData.width + i) * 4;
+      imageData.data[index] = r;
+      imageData.data[index + 1] = g;
+      imageData.data[index + 2] = b;
+      imageData.data[index + 3] = 255;
+    }
+  }
+}
+
 /**
  * This function draws a "stop" path extremity.
  * That handles a path that stops or starts exactly in an operational points included in the line
