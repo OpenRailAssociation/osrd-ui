@@ -16,7 +16,7 @@ const options = [
 const SelectWrapper = (props: SelectProps<Option>) => <Select {...props} />;
 
 const meta: Meta<typeof SelectWrapper> = {
-  component: Select,
+  component: SelectWrapper,
   args: {
     label: 'Fill colour',
     placeholder: 'Choose',
