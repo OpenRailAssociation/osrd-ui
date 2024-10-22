@@ -48,11 +48,16 @@ export function getClosestPointOnSegment(
 export function snapPosition(mousePosition: Point, hoveredItem: HoveredItem | null) {
   if (!mousePosition || !hoveredItem) return mousePosition;
 
-  // Snap to a point:
-  if (hoveredItem.element.type === 'point') {
-    return hoveredItem.element.point;
+  switch (hoveredItem.element.type) {
+    case 'point':
+      return hoveredItem.element.point;
+    case 'segment':
+      return getClosestPointOnSegment(
+        mousePosition,
+        hoveredItem.element.from,
+        hoveredItem.element.to
+      );
+    default:
+      return mousePosition;
   }
-
-  // Snap to a segment:
-  return getClosestPointOnSegment(mousePosition, hoveredItem.element.from, hoveredItem.element.to);
 }
