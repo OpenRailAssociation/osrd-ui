@@ -25,6 +25,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
+    margin-bottom: 13px;
 
     .start-position,
     .end-position {
@@ -32,6 +33,23 @@
       background-color: theme('colors.grey.80');
       border-radius: 4px;
       padding: 2px 4.5px;
+    }
+  }
+
+  .conflict {
+    margin-top: 18px;
+    font-weight: 600;
+
+    header {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      background-color: theme('colors.error.60');
+      padding: 3px 6px;
     }
   }
 }

@@ -48,6 +48,20 @@ const CONFLICT_GROUP = {
   timeStart: +START_DATE + 15 * MINUTE,
   spaceStart: 12 * KILOMETER,
   spaceEnd: 41 * KILOMETER,
+  conflicts: [
+    {
+      trainNames: ['4655', '6079'],
+      type: 'Spacing',
+      timeStart: +START_DATE + 15 * MINUTE,
+      timeEnd: +START_DATE + 35 * MINUTE,
+    },
+    {
+      trainNames: ['4655', '5431'],
+      type: 'Spacing',
+      timeStart: +START_DATE + 35 * MINUTE,
+      timeEnd: +START_DATE + 37 * MINUTE,
+    },
+  ],
 };
 
 const OCCUPANCY_BLOCKS = [
