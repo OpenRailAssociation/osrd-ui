@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ConflictLayer, OccupancyBlockLayer, SpaceTimeChart, PathLayer } from '../';
+import {
+  type Conflict,
+  ConflictLayer,
+  ConflictTooltip,
+  OccupancyBlockLayer,
+  SpaceTimeChart,
+  PathLayer,
+} from '../';
 import { OPERATIONAL_POINTS, PATHS, START_DATE } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
 import {
@@ -12,6 +19,7 @@ import {
   OCCUPANCY_SEMAPHORE,
   OCCUPANCY_WARNING,
 } from '../lib/consts';
+import type { Point } from '../lib/types';
 
 import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
@@ -35,6 +43,26 @@ const CONFLICTS = [
     spaceEnd: 41 * KILOMETER,
   },
 ];
+
+const CONFLICT_GROUP = {
+  timeStart: +START_DATE + 15 * MINUTE,
+  spaceStart: 12 * KILOMETER,
+  spaceEnd: 41 * KILOMETER,
+  conflicts: [
+    {
+      trainNames: ['4655', '6079'],
+      type: 'Spacing',
+      timeStart: +START_DATE + 15 * MINUTE,
+      timeEnd: +START_DATE + 35 * MINUTE,
+    },
+    {
+      trainNames: ['4655', '5431'],
+      type: 'Spacing',
+      timeStart: +START_DATE + 35 * MINUTE,
+      timeEnd: +START_DATE + 37 * MINUTE,
+    },
+  ],
+};
 
 const OCCUPANCY_BLOCKS = [
   {
@@ -84,30 +112,48 @@ const OCCUPANCY_BLOCKS = [
 /**
  * This story aims at showcasing various additional layers.
  */
-const Wrapper = () => (
-  <div className="inset-0">
-    <SpaceTimeChart
-      className="inset-0 absolute overflow-hidden p-0 m-0"
-      operationalPoints={OPERATIONAL_POINTS}
-      spaceOrigin={0}
-      spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
-        from: point.position,
-        to: OPERATIONAL_POINTS[i + 1].position,
-        size: 50 * Y_ZOOM_LEVEL,
-      }))}
-      timeOrigin={+new Date('2024/04/02')}
-      timeScale={60000 / X_ZOOM_LEVEL}
-      xOffset={0}
-      yOffset={0}
-    >
-      {PATHS.map((path) => (
-        <PathLayer key={path.id} path={path} color={path.color} />
-      ))}
-      <ConflictLayer conflicts={CONFLICTS} />
-      <OccupancyBlockLayer occupancyBlocks={OCCUPANCY_BLOCKS} />
-    </SpaceTimeChart>
-  </div>
-);
+const Wrapper = () => {
+  const [hoveredConflict, setHoveredConflict] = useState<Conflict | null>(null);
+  const [cursorPosition, setCursorPosition] = useState<Point | null>(null);
+
+  return (
+    <div className="inset-0">
+      <SpaceTimeChart
+        className="inset-0 absolute overflow-hidden p-0 m-0"
+        operationalPoints={OPERATIONAL_POINTS}
+        spaceOrigin={0}
+        spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
+          from: point.position,
+          to: OPERATIONAL_POINTS[i + 1].position,
+          size: 50 * Y_ZOOM_LEVEL,
+        }))}
+        timeOrigin={+new Date('2024/04/02')}
+        timeScale={60000 / X_ZOOM_LEVEL}
+        xOffset={0}
+        yOffset={0}
+        onHoveredChildUpdate={({ item }) => {
+          let conflict = null;
+          if (item?.element?.type === 'conflict') {
+            conflict = CONFLICTS[item.element.conflictIndex];
+          }
+          setHoveredConflict(conflict);
+        }}
+        onMouseMove={({ position }) => {
+          setCursorPosition(position);
+        }}
+      >
+        {PATHS.map((path) => (
+          <PathLayer key={path.id} path={path} color={path.color} />
+        ))}
+        <ConflictLayer conflicts={CONFLICTS} />
+        <OccupancyBlockLayer occupancyBlocks={OCCUPANCY_BLOCKS} />
+        {hoveredConflict && cursorPosition && (
+          <ConflictTooltip {...CONFLICT_GROUP} position={cursorPosition} />
+        )}
+      </SpaceTimeChart>
+    </div>
+  );
+};
 
 const meta = {
   title: 'SpaceTimeChart/Layers',

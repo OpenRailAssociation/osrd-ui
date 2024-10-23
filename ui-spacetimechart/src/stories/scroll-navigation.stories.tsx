@@ -7,7 +7,7 @@ import { keyBy } from 'lodash';
 import { SpaceTimeChart, PathLayer } from '../';
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
-import { type HoveredItem, type Point } from '../lib/types';
+import { type Point } from '../lib/types';
 import { isPathOnScreen } from '../utils/geometry';
 import { getSpaceAtTime } from '../utils/scales';
 import { getDiff } from '../utils/vectors';
@@ -35,7 +35,7 @@ const Wrapper = ({ spaceScaleType }: WrapperProps) => {
       | null
       | { type: 'stage'; initialOffset: Point }
       | { type: 'items'; initialTimeOrigins: Record<string, number> };
-    hoveredPath: HoveredItem | null;
+    hoveredPathId: string | null;
   }>({
     xOffset: 0,
     yOffset: 0,
@@ -43,7 +43,7 @@ const Wrapper = ({ spaceScaleType }: WrapperProps) => {
     yZoomLevel: Y_ZOOM_LEVEL,
     selected: null,
     panTarget: null,
-    hoveredPath: null,
+    hoveredPathId: null,
   });
 
   return (
@@ -52,7 +52,7 @@ const Wrapper = ({ spaceScaleType }: WrapperProps) => {
         className={cx(
           'inset-0 absolute p-0 m-0',
           state.panTarget && 'cursor-grabbing',
-          state.hoveredPath && 'cursor-pointer'
+          state.hoveredPathId && 'cursor-pointer'
         )}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
@@ -68,21 +68,19 @@ const Wrapper = ({ spaceScaleType }: WrapperProps) => {
         xOffset={state.xOffset}
         yOffset={state.yOffset}
         onClick={() => {
-          const { hoveredPath, selected, panTarget } = state;
+          const { hoveredPathId, selected, panTarget } = state;
 
           // Skip events when something is being dragged or panned:
           if (panTarget) return;
 
           setState((s) => ({
             ...s,
-            selected:
-              !hoveredPath || hoveredPath.element.pathId === selected
-                ? null
-                : hoveredPath.element.pathId,
+            selected: !hoveredPathId || hoveredPathId === selected ? null : hoveredPathId,
           }));
         }}
         onHoveredChildUpdate={({ item }) => {
-          setState((s) => ({ ...s, hoveredPath: item }));
+          const hoveredPathId = item && 'pathId' in item.element ? item.element.pathId : null;
+          setState((s) => ({ ...s, hoveredPathId }));
         }}
         onPan={({ initialPosition, position, isPanning }) => {
           const { panTarget } = state;
@@ -169,7 +167,7 @@ const Wrapper = ({ spaceScaleType }: WrapperProps) => {
                   : 4
                 : state.selected === path.id
                   ? 1
-                  : state.hoveredPath?.element.pathId === path.id
+                  : state.hoveredPathId === path.id
                     ? 1
                     : state.selected
                       ? 3

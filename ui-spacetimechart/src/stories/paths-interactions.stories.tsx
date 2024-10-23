@@ -7,7 +7,7 @@ import { keyBy } from 'lodash';
 import { SpaceTimeChart, PathLayer } from '../';
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
-import { type HoveredItem, type PathData, type Point } from '../lib/types';
+import { type PathData, type Point } from '../lib/types';
 import { getDiff } from '../utils/vectors';
 
 import '@osrd-project/ui-spacetimechart/dist/theme.css';
@@ -47,7 +47,7 @@ const Wrapper = ({
       | null
       | { type: 'stage'; initialOffset: Point }
       | { type: 'items'; initialTimeOrigins: Record<string, number> };
-    hoveredPath: HoveredItem | null;
+    hoveredPathId: string | null;
   }>({
     xOffset: 0,
     yOffset: 0,
@@ -55,7 +55,7 @@ const Wrapper = ({
     yZoomLevel: Y_ZOOM_LEVEL,
     selection: null,
     panTarget: null,
-    hoveredPath: null,
+    hoveredPathId: null,
   });
 
   return (
@@ -64,7 +64,7 @@ const Wrapper = ({
         className={cx(
           'inset-0 absolute p-0 m-0',
           state.panTarget && 'cursor-grabbing',
-          state.hoveredPath && 'cursor-pointer'
+          state.hoveredPathId && 'cursor-pointer'
         )}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
@@ -80,13 +80,13 @@ const Wrapper = ({
         xOffset={state.xOffset}
         yOffset={state.yOffset}
         onClick={({ event }) => {
-          const { hoveredPath, selection, panTarget } = state;
+          const { hoveredPathId, selection, panTarget } = state;
 
           // Skip events when something is being dragged or panned:
           if (panTarget) return;
 
           // Unselect everything when clicking stage (unless multi-selection is enabled and the ctrl key is down):
-          if (!hoveredPath) {
+          if (!hoveredPathId) {
             if (!enableMultiSelection || !event.ctrlKey)
               setState((prev) => ({ ...prev, selection: null }));
           }
@@ -94,34 +94,32 @@ const Wrapper = ({
           else if (!selection) {
             setState({
               ...state,
-              selection: new Set([hoveredPath.element.pathId]),
+              selection: new Set([hoveredPathId]),
             });
           }
           // Handle single selection:
           else if (!enableMultiSelection || !event.ctrlKey) {
             setState({
               ...state,
-              selection: selection.has(hoveredPath.element.pathId)
-                ? null
-                : new Set([hoveredPath.element.pathId]),
+              selection: selection.has(hoveredPathId) ? null : new Set([hoveredPathId]),
             });
           }
           // Handle multi selection:
           else {
             const newSelection = new Set(selection);
 
-            if (newSelection.has(hoveredPath.element.pathId))
-              newSelection.delete(hoveredPath.element.pathId);
-            else newSelection.add(hoveredPath.element.pathId);
+            if (newSelection.has(hoveredPathId)) newSelection.delete(hoveredPathId);
+            else newSelection.add(hoveredPathId);
 
             setState({ ...state, selection: newSelection.size ? newSelection : null });
           }
         }}
         onHoveredChildUpdate={({ item }) => {
-          setState((prev) => ({ ...prev, hoveredPath: item }));
+          const hoveredPathId = item && 'pathId' in item.element ? item.element.pathId : null;
+          setState((prev) => ({ ...prev, hoveredPathId }));
         }}
         onPan={({ initialPosition, position, initialData, data, isPanning }) => {
-          const { panTarget, hoveredPath, selection } = state;
+          const { panTarget, hoveredPathId, selection } = state;
           const diff = getDiff(initialPosition, position);
 
           // Stop dragging or panning:
@@ -132,10 +130,10 @@ const Wrapper = ({
             }));
           }
           // Start dragging selection
-          else if (!panTarget && enableDragPaths && hoveredPath) {
-            const newSelection = selection?.has(hoveredPath.element.pathId)
+          else if (!panTarget && enableDragPaths && hoveredPathId) {
+            const newSelection = selection?.has(hoveredPathId)
               ? selection
-              : new Set([hoveredPath.element.pathId]);
+              : new Set([hoveredPathId]);
             setState((s) => ({
               ...s,
               selection: newSelection,
@@ -208,7 +206,7 @@ const Wrapper = ({
                   : 4
                 : state.selection?.has(path.id)
                   ? 1
-                  : state.hoveredPath?.element.pathId === path.id
+                  : state.hoveredPathId === path.id
                     ? 1
                     : state.selection?.size
                       ? 3
