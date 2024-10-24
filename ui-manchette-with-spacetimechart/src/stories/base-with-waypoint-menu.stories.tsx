@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
+import { EyeClosed, Telescope } from '@osrd-project/ui-icons';
 import Manchette, { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-manchette';
 import { PathLayer, SpaceTimeChart } from '@osrd-project/ui-spacetimechart';
 import type { Meta } from '@storybook/react';
@@ -8,6 +9,7 @@ import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-manchette/dist/theme.css';
 import '@osrd-project/ui-manchette-with-spacetimechart/dist/theme.css';
 
+import Menu, { type MenuItem } from './Menu';
 import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from '../assets/sampleData';
 import useManchettesWithSpaceTimeChart from '../hooks/useManchetteWithSpaceTimeChart';
 
@@ -19,12 +21,39 @@ type ManchetteWithSpaceTimeWrapperProps = {
 
 const DEFAULT_HEIGHT = 561;
 
+/** Example of setting up a menu for the waypoints */
+
 const ManchetteWithSpaceTimeWrapper = ({
   waypoints,
   projectPathTrainResult,
   selectedTrain,
 }: ManchetteWithSpaceTimeWrapperProps) => {
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
+
+  const [activeWaypointId, setActiveWaypointPointId] = useState<string>();
+
+  const menuItems: MenuItem[] = [
+    {
+      title: 'Action 1',
+      icon: <EyeClosed />,
+      onClick: (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setActiveWaypointPointId(undefined);
+      },
+    },
+    {
+      title: 'Action 2',
+      icon: <Telescope />,
+      onClick: (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setActiveWaypointPointId(undefined);
+      },
+    },
+  ];
+
+  const handleWaypointClick = (waypointId: string) => {
+    setActiveWaypointPointId(waypointId);
+  };
 
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchettesWithSpaceTimeChart(
     waypoints,
@@ -45,7 +74,18 @@ const ManchetteWithSpaceTimeWrapper = ({
         style={{ height: `${DEFAULT_HEIGHT}px` }}
         onScroll={handleScroll}
       >
-        <Manchette {...manchetteProps} />
+        <Manchette
+          {...manchetteProps}
+          waypoints={manchetteProps.waypoints.map((op) => ({
+            ...op,
+            onClick: handleWaypointClick,
+          }))}
+          waypointMenuData={{
+            activeWaypointId,
+            menu: <Menu items={menuItems} />,
+            scrollableParentRef: manchetteWithSpaceTimeChartRef,
+          }}
+        />
         <div
           className="space-time-chart-container w-full sticky"
           style={{ bottom: 0, left: 0, top: 2, height: `${DEFAULT_HEIGHT - 6}px` }}
@@ -73,7 +113,7 @@ const meta: Meta<typeof ManchetteWithSpaceTimeWrapper> = {
 
 export default meta;
 
-export const Default = {
+export const WaypointMenu = {
   args: {
     waypoints: SAMPLE_WAYPOINTS,
     projectPathTrainResult: SAMPLE_PATHS_DATA,

@@ -4,7 +4,6 @@
   line-height: 1.5rem;
   padding-block: 3px 5px;
   width: 315px;
-  position: relative;
   &-separator {
     position: relative;
     opacity: 0.6;
@@ -81,12 +80,22 @@
     }
   }
 
+  .menu-wrapper {
+    position: absolute;
+    z-index: 12;
+  }
+}
+
+.last-separator {
+  width: 26px;
+  height: 2rem;
+
+  position: relative;
   &::after {
     content: '';
     position: absolute;
     display: inline-block;
     bottom: 16px;
-    right: -1.625rem;
     width: 1.625rem;
     height: 0.5px;
     opacity: 0.6;
