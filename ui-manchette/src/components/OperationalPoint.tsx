@@ -2,18 +2,23 @@ import React, { useRef } from 'react';
 
 import cx from 'classnames';
 
-import { type StyledOperationalPointType } from '../types';
+import type { WaypointMenuItem, StyledOperationalPointType } from '../types';
 import '@osrd-project/ui-core/dist/theme.css';
 import { positionMmToKm } from '../utils';
+import WaypointMenu from './WaypointMenu';
 
 type OperationalPointProps = {
   operationalPoint: StyledOperationalPointType;
   isActive: boolean;
+  waypointMenuItems?: WaypointMenuItem[];
+  waypointMenuClassName?: string;
 };
 
 const OperationalPoint = ({
   operationalPoint: { extensions, id, position, display, onClick },
   isActive,
+  waypointMenuItems,
+  waypointMenuClassName,
 }: OperationalPointProps) => {
   const opRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +32,7 @@ const OperationalPoint = ({
       id={id}
       ref={opRef}
       onClick={() => {
-        if (onClick) onClick(id, opRef.current);
+        if (onClick) onClick(`${id}-${position}`); // to handle waypoints with same id
       }}
     >
       <div className="op-position justify-self-start text-end">{positionMmToKm(position)}</div>
@@ -39,6 +44,9 @@ const OperationalPoint = ({
 
       <div className="op-type"></div>
       <div className="op-separator"></div>
+      {isActive && waypointMenuItems && (
+        <WaypointMenu items={waypointMenuItems} className={waypointMenuClassName} />
+      )}
     </div>
   );
 };

@@ -5,11 +5,11 @@ import cx from 'classnames';
 
 import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from './consts';
 import OperationalPointList from './OperationalPointList';
-import type { StyledOperationalPointType } from '../types';
+import type { StyledOperationalPointType, WaypointMenuData } from '../types';
 
 type ManchetteProps = {
   operationalPoints: StyledOperationalPointType[];
-  activeOperationalPointId?: string;
+  waypointMenuData: WaypointMenuData;
   zoomYIn: () => void;
   zoomYOut: () => void;
   resetZoom: () => void;
@@ -26,10 +26,9 @@ const Manchette = ({
   resetZoom,
   yZoom = 1,
   operationalPoints,
-  activeOperationalPointId,
+  waypointMenuData,
   isProportional = true,
   toggleMode,
-  children,
 }: ManchetteProps) => (
   <div className="manchette-container">
     <div
@@ -38,9 +37,8 @@ const Manchette = ({
     >
       <OperationalPointList
         operationalPoints={operationalPoints}
-        activeOperationalPointId={activeOperationalPointId}
+        waypointMenuData={waypointMenuData}
       />
-      {children}
     </div>
     <div className="manchette-actions">
       <div className="zoom-buttons">

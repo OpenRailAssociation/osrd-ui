@@ -1,16 +1,16 @@
 import React from 'react';
 
 import OperationalPoint from './OperationalPoint';
-import { type StyledOperationalPointType } from '../types';
+import type { WaypointMenuData, StyledOperationalPointType } from '../types';
 
 type OperationalPointListProps = {
   operationalPoints: StyledOperationalPointType[];
-  activeOperationalPointId?: string;
+  waypointMenuData: WaypointMenuData;
 };
 
 const OperationalPointList = ({
   operationalPoints,
-  activeOperationalPointId,
+  waypointMenuData: { activeOperationalPointId, waypointMenuItems, waypointMenuClassName },
 }: OperationalPointListProps) => (
   <div className="operational-point-list ">
     {operationalPoints.map((op) => (
@@ -19,7 +19,12 @@ const OperationalPointList = ({
         className="operational-point-wrapper flex flex-col justify-start"
         style={op.styles}
       >
-        <OperationalPoint operationalPoint={op} isActive={activeOperationalPointId === op.id} />
+        <OperationalPoint
+          operationalPoint={op}
+          isActive={activeOperationalPointId === `${op.id}-${op.position}`}
+          waypointMenuItems={waypointMenuItems}
+          waypointMenuClassName={waypointMenuClassName}
+        />
       </div>
     ))}
   </div>
