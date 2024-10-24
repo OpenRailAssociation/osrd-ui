@@ -9,19 +9,23 @@ import '@osrd-project/ui-core/dist/theme.css';
 const TimePickerStory = (props: TimePickerProps) => {
   const [selectedHour, setSelectedHour] = useState(props.hours);
   const [selectedMinute, setSelectedMinute] = useState(props.minutes);
-  const onTimeChange = (newTime: { hours: number; minutes: number }) => {
+  const [selectedSecond, setSelectedSecond] = useState(props.seconds);
+  const onTimeChange = (newTime: { hours: number; minutes: number; seconds?: number }) => {
     setSelectedHour(newTime.hours);
     setSelectedMinute(newTime.minutes);
+    setSelectedSecond(newTime.seconds);
   };
   useEffect(() => {
     setSelectedHour(props.hours);
     setSelectedMinute(props.minutes);
-  }, [props.hours, props.minutes]);
+    setSelectedSecond(props.seconds);
+  }, [props.hours, props.minutes, props.seconds]);
   return (
     <TimePicker
       {...props}
       hours={selectedHour}
       minutes={selectedMinute}
+      seconds={selectedSecond}
       onTimeChange={onTimeChange}
     />
   );
@@ -32,6 +36,7 @@ const meta: Meta<typeof TimePicker> = {
   args: {
     disabled: false,
     readOnly: false,
+    displaySeconds: false,
   },
   argTypes: {
     hours: {
@@ -53,13 +58,6 @@ const meta: Meta<typeof TimePicker> = {
   },
   title: 'Core/TimePicker',
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: '7rem' }}>
-        <Story />
-      </div>
-    ),
-  ],
   render: TimePickerStory,
 };
 
@@ -70,6 +68,13 @@ export const Default: Story = {
   args: {
     label: 'Time',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '6.7rem', minHeight: '500px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const DisabledTimePicker: Story = {
@@ -77,4 +82,25 @@ export const DisabledTimePicker: Story = {
     disabled: true,
     label: 'Time',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '6.7rem', minHeight: '500px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const TimePickerWithSeconds: Story = {
+  args: {
+    displaySeconds: true,
+    label: 'Time',
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '8.5rem', minHeight: '500px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
