@@ -1,10 +1,6 @@
 .menu {
-  position: absolute;
-  z-index: 10;
   @apply bg-grey-5;
-  width: 23rem;
-  top: 0;
-  left: 0;
+  width: 305px;
   border: 0.0625rem solid #b6b2af;
   border-radius: 0.5rem;
   box-shadow:

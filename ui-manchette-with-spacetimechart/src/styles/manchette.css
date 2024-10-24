@@ -6,10 +6,15 @@
   opacity: 1;
   background-color: rgba(255, 255, 255, 1);
   width: 100%;
+  position: relative;
 
   .manchette {
     overflow-y: auto;
     overflow-x: hidden;
+
+    &.no-scroll {
+      overflow-y: clip;
+    }
   }
 
   .space-time-chart-container {

@@ -3,17 +3,18 @@ import React from 'react';
 export type MenuItem = {
   title: string;
   icon: React.ReactNode;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
 };
 
 type MenuProps = {
-  menuRef: React.RefObject<HTMLDivElement>;
   items: MenuItem[];
-  style?: React.CSSProperties;
 };
 
-const Menu = ({ menuRef, items, style }: MenuProps) => (
-  <div ref={menuRef} className="menu" style={style}>
+/**
+ * Example of waypoint menu that could be passed to the manchette as props
+ */
+const Menu = ({ items }: MenuProps) => (
+  <div className="menu">
     {items.map(({ title, icon, onClick }) => (
       <button key={title} type="button" className="menu-item" onClick={onClick}>
         <span className="icon">{icon}</span>

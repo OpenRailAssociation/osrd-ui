@@ -70,8 +70,8 @@
     min-width: 37px;
   }
 
-  &:hover,
-  &.menu-active {
+  &:not(.menu-active):hover,
+  &.waypoint-active {
     @apply bg-black-5;
     border-radius: 4px;
     cursor: pointer;
@@ -79,6 +79,10 @@
     .waypoint-separator::after {
       @apply bg-black-100;
     }
+  }
+
+  &.menu-active {
+    cursor: default;
   }
 
   &::after {

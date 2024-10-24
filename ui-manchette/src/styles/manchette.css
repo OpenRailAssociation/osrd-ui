@@ -1,4 +1,11 @@
 .manchette-container {
+  .menu-wrapper {
+    position: absolute;
+    z-index: 12;
+    left: 8px;
+    margin-top: 28px;
+  }
+
   .manchette-actions {
     align-items: center;
     background-color: rgba(250, 249, 245, 0.6);
@@ -15,7 +22,6 @@
     width: 100%;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-
 
     .zoom-buttons {
       display: flex;
