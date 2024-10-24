@@ -12,11 +12,8 @@ export type SelectProps<T> = Omit<
     options: Array<T>;
     value?: T;
     getOptionLabel: (option: T) => string;
-    getOptionValue: (option: T) => string;
     onChange: (option?: T) => void;
   };
-
-const PLACEHOLDER_VALUE = '__PLACEHOLDER__';
 
 const Select = <T,>({
   id,
@@ -31,16 +28,13 @@ const Select = <T,>({
   readOnly,
   small,
   getOptionLabel,
-  getOptionValue,
   onChange,
   ...props
 }: SelectProps<T>) => {
   const [selectedOption, setSelectedOption] = useState<T | undefined>(value);
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newSelectedOption =
-      e.target.value === PLACEHOLDER_VALUE
-        ? undefined
-        : options.find((option) => getOptionValue(option) === e.target.value);
+    const index = e.target.selectedIndex;
+    const newSelectedOption = options[placeholder ? index - 1 : index];
     setSelectedOption(newSelectedOption);
     onChange(newSelectedOption);
   };
@@ -66,17 +60,15 @@ const Select = <T,>({
           small,
           'read-only': readOnly,
         })}
-        value={selectedOption ? getOptionValue(selectedOption) : undefined}
         required={required}
         disabled={disabled || readOnly}
         onChange={handleOnChange}
         {...props}
       >
-        {placeholder && <option value={PLACEHOLDER_VALUE}>{`– ${placeholder} –`}</option>}
+        {placeholder && <option>{`– ${placeholder} –`}</option>}
         {options.map((option) => (
-          <option key={getOptionValue(option)} value={getOptionValue(option)}>
-            {getOptionLabel(option)}
-          </option>
+          /* eslint-disable-next-line react/jsx-key */
+          <option selected={option === selectedOption}>{getOptionLabel(option)}</option>
         ))}
       </select>
     </FieldWrapper>
