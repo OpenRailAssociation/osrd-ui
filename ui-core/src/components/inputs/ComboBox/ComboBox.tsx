@@ -80,15 +80,20 @@ const ComboBox = <T,>({
 
     // Call the parent's onChange handler with the synthetic event
     onChange?.(syntheticEvent);
+  };
+
+  const clearAndFocusInput = () => {
+    clearInput();
     focusInput();
   };
 
   const icons = [
-    ...(selectedOption || suggestions.some((suggestion) => getSuggestionLabel(suggestion) === value)
+    ...(selectedOption ||
+    suggestions.some((suggestion) => getSuggestionLabel(suggestion) === inputValue)
       ? [
           {
             icon: <X size={small ? 'sm' : 'lg'} />,
-            action: clearInput,
+            action: clearAndFocusInput,
             className: 'clear-icon',
           },
         ]
@@ -111,9 +116,7 @@ const ComboBox = <T,>({
     if (value) {
       setInputValue(value);
     } else {
-      setInputValue('');
-      setSelectedOption(null);
-      onSelectSuggestion?.(undefined);
+      clearInput();
     }
   }, [value]);
 
@@ -122,11 +125,11 @@ const ComboBox = <T,>({
   }, [sortedSuggestions]);
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const userInput = normalizeString(e.currentTarget.value).trim();
+    const userInput = normalizeString(e.currentTarget.value).trim().toLowerCase();
     setInputValue(e.currentTarget.value);
     onChange?.(e);
 
-    if (userInput.trim() === '') {
+    if (!userInput) {
       setFilteredSuggestions([]);
       setSelectedOption(null);
       return;
@@ -135,8 +138,8 @@ const ComboBox = <T,>({
     const filtered = sortedSuggestions.filter((suggestion) => {
       const suggestionLabel = normalizeString(getSuggestionLabel(suggestion).toLowerCase());
       return exactSearch
-        ? suggestionLabel.startsWith(userInput.toLowerCase())
-        : suggestionLabel.includes(userInput.toLowerCase());
+        ? suggestionLabel.startsWith(userInput)
+        : suggestionLabel.includes(userInput);
     });
     setFilteredSuggestions(filtered);
   };
