@@ -1,13 +1,13 @@
-import along from '@turf/along';
-import bbox from '@turf/bbox';
-import bboxClip from '@turf/bbox-clip';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import distance from '@turf/distance';
-import { lineString, point } from '@turf/helpers';
-import intersect from '@turf/intersect';
-import length from '@turf/length';
-import lineIntersect from '@turf/line-intersect';
-import lineSlice from '@turf/line-slice';
+import { along } from '@turf/along';
+import { bbox } from '@turf/bbox';
+import { bboxClip } from '@turf/bbox-clip';
+import { booleanPointInPolygon } from '@turf/boolean-point-in-polygon';
+import { distance } from '@turf/distance';
+import { featureCollection, lineString, point } from '@turf/helpers';
+import { intersect } from '@turf/intersect';
+import { length } from '@turf/length';
+import { lineIntersect } from '@turf/line-intersect';
+import { lineSlice } from '@turf/line-slice';
 import type {
   BBox,
   Feature,
@@ -323,7 +323,12 @@ export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone)
     }
 
     if (type === 'Polygon' || type === 'MultiPolygon') {
-      const res = intersect(feature as Feature<Polygon | MultiPolygon>, polygon);
+      const res = intersect(
+        featureCollection([
+          feature as Feature<Polygon | MultiPolygon>,
+          zoneToFeature(zone, true) as Feature<Polygon>,
+        ])
+      );
 
       return res && res.geometry.coordinates.length
         ? ({ ...feature, ...res, properties: feature.properties } as T)

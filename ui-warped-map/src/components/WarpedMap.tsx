@@ -1,7 +1,7 @@
 import React, { type ComponentType, type PropsWithChildren, useEffect, useState } from 'react';
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
-import bbox from '@turf/bbox';
+import { bbox } from '@turf/bbox';
 import type { Feature, FeatureCollection, LineString } from 'geojson';
 import { isNil, mapValues, omitBy } from 'lodash';
 import { type LineLayer } from 'react-map-gl/maplibre';

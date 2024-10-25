@@ -1,7 +1,7 @@
 import React, { type PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
-import bbox from '@turf/bbox';
+import { bbox } from '@turf/bbox';
 import { featureCollection } from '@turf/helpers';
 import type { Feature, LineString } from 'geojson';
 import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-map-gl/maplibre';
