@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import * as d3selection from 'd3-selection';
 
 import { zoom } from './layersManager';
 import type { DrawFunctionParams } from '../../types/chartTypes';
@@ -8,7 +8,7 @@ import { clearCanvas } from '../utils';
 export const drawFrame = ({ ctx, width, height, store, setStore }: DrawFunctionParams) => {
   clearCanvas(ctx, width, height);
 
-  const canvas = d3.select(FRONT_INTERACTIVITY_LAYER_ID) as d3.Selection<
+  const canvas = d3selection.select(FRONT_INTERACTIVITY_LAYER_ID) as d3selection.Selection<
     Element,
     unknown,
     HTMLCanvasElement,
@@ -20,7 +20,7 @@ export const drawFrame = ({ ctx, width, height, store, setStore }: DrawFunctionP
 
   // cursor interaction
   canvas.on('mousemove', (event) => {
-    const cursor = d3.pointer(event);
+    const cursor = d3selection.pointer(event);
 
     if (setStore) {
       setStore(() => ({
