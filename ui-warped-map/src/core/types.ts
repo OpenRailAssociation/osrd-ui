@@ -18,3 +18,5 @@ export interface SourceDefinition {
   url: string;
   layers: RequiredFor<LayerProps, 'id' | 'source-layer'>[];
 }
+
+export type BBox2D = [number, number, number, number];

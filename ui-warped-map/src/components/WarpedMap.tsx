@@ -2,7 +2,6 @@ import React, { type ComponentType, type PropsWithChildren, useEffect, useState 
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
-import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import type { Feature, FeatureCollection, LineString } from 'geojson';
 import { isNil, mapValues, omitBy } from 'lodash';
 import { type LineLayer } from 'react-map-gl/maplibre';
@@ -11,15 +10,16 @@ import DataLoader from './DataLoader';
 import Loader from './Loader';
 import TransformedDataMap from './TransformedDataMap';
 import getWarping, { type WarpingFunction, type WarpingOptions } from '../core/getWarping';
-import { type SourceDefinition } from '../core/types';
+import { bboxAs2D } from '../core/helpers';
+import type { BBox2D, SourceDefinition } from '../core/types';
 
 const TIME_LABEL = 'Warping data';
 
 interface PathStatePayload {
   path: Feature<LineString>;
   warpedPath: Feature<LineString>;
-  pathBBox: BBox2d;
-  warpedPathBBox: BBox2d;
+  pathBBox: BBox2D;
+  warpedPathBBox: BBox2D;
   transform: WarpingFunction;
 }
 
@@ -75,7 +75,7 @@ const WarpedMap = ({
    * This effect handles reading the path, and retrieve the warping function:
    */
   useEffect(() => {
-    const pathBBox = bbox(path) as BBox2d;
+    const pathBBox = bboxAs2D(bbox(path));
     const { warpedPathBBox, transform } = getWarping(path, warpingOptions);
     const warpedPath = transform(path) as typeof path;
 

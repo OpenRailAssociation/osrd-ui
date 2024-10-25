@@ -1,6 +1,8 @@
 import bbox from '@turf/bbox';
-import { type BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import type { Feature, FeatureCollection, GeoJsonProperties, Geometry, Position } from 'geojson';
+
+import { bboxAs2D } from './helpers';
+import type { BBox2D } from './types';
 
 // The following types help describing a full QuadTree:
 export type Leaf<T> = {
@@ -9,16 +11,16 @@ export type Leaf<T> = {
 };
 export type Quad<T> = {
   type: 'quad';
-  bbox: BBox2d;
+  bbox: BBox2D;
   children: [QuadChild<T> | null, QuadChild<T> | null, QuadChild<T> | null, QuadChild<T> | null];
 };
 export type QuadChild<T> = Quad<T> | Leaf<T>;
 
-export function bboxIntersect([mx1, my1, Mx1, My1]: BBox2d, [mx2, my2, Mx2, My2]: BBox2d): boolean {
+export function bboxIntersect([mx1, my1, Mx1, My1]: BBox2D, [mx2, my2, Mx2, My2]: BBox2D): boolean {
   return !(mx1 > Mx2) && !(Mx1 < mx2) && !(my1 > My2) && !(My1 < my2);
 }
 
-function getNewQuadChild<T>(box: BBox2d, isLeaf?: boolean): QuadChild<T> {
+function getNewQuadChild<T>(box: BBox2D, isLeaf?: boolean): QuadChild<T> {
   return isLeaf
     ? {
         type: 'leaf',
@@ -39,12 +41,12 @@ export function getQuadTree<G extends Geometry | null = Geometry, P = GeoJsonPro
   collection: FeatureCollection<G, P>,
   depth: number
 ): Quad<Feature<G, P>> {
-  const boundingBox = bbox(collection) as BBox2d;
+  const boundingBox = bboxAs2D(bbox(collection));
   const root = getNewQuadChild(boundingBox) as Quad<Feature<G, P>>;
 
   for (let i = 0, l = collection.features.length; i < l; i++) {
     const feature = collection.features[i];
-    const fBBox = bbox(feature) as BBox2d;
+    const fBBox = bboxAs2D(bbox(feature));
 
     let quads: QuadChild<Feature<G, P>>[] = [root];
     for (let d = 0; d < depth; d++) {
@@ -59,7 +61,7 @@ export function getQuadTree<G extends Geometry | null = Geometry, P = GeoJsonPro
         const ax = (x1 + x2) / 2;
         const ay = (y1 + y2) / 2;
 
-        const candidates: BBox2d[] = [
+        const candidates: BBox2D[] = [
           [x1, y1, ax, ay],
           [ax, y1, x2, ay],
           [x1, ay, ax, y2],

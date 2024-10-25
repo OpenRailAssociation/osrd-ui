@@ -3,10 +3,10 @@ import React, { type PropsWithChildren, useEffect, useMemo, useState } from 'rea
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import bbox from '@turf/bbox';
 import { featureCollection } from '@turf/helpers';
-import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import type { Feature, LineString } from 'geojson';
 import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-map-gl/maplibre';
 
+import { bboxAs2D } from '../core/helpers';
 import { type SourceDefinition } from '../core/types';
 
 type BaseMapProps = {
@@ -30,7 +30,7 @@ const BaseMap = ({ path, mapStyle, sources, children }: PropsWithChildren<BaseMa
     if (!mapRef || !path) return;
 
     setTimeout(() => {
-      mapRef.fitBounds(bbox(path) as BBox2d, { animate: false });
+      mapRef.fitBounds(bboxAs2D(bbox(path)), { animate: false });
       mapRef.resize();
     }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps

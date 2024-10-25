@@ -23,7 +23,7 @@ import type {
 import { chunk, first, last } from 'lodash';
 import { type MapGeoJSONFeature } from 'maplibre-gl';
 
-import { type Zone } from './types';
+import type { BBox2D, Zone } from './types';
 import vec, { type Vec2 } from './vec-lib';
 
 /*
@@ -332,4 +332,11 @@ export function clip<T extends Feature | FeatureCollection>(tree: T, zone: Zone)
   }
 
   return tree;
+}
+
+export function bboxAs2D(boundingBox: BBox): BBox2D {
+  if (boundingBox.length !== 4) {
+    throw new Error('Expected a 2D BBox');
+  }
+  return boundingBox;
 }

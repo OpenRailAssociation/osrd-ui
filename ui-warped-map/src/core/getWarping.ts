@@ -1,6 +1,5 @@
 import bbox from '@turf/bbox';
 import { lineString } from '@turf/helpers';
-import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import simplify from '@turf/simplify';
 import type { Feature, FeatureCollection, Geometry, LineString, Position } from 'geojson';
 
@@ -11,7 +10,7 @@ import {
   pointsGridToZone,
   straightenGrid,
 } from './grids';
-import { extendLine, getSamples } from './helpers';
+import { bboxAs2D, extendLine, getSamples } from './helpers';
 import { clipAndProjectGeoJSON, projectBetweenGrids } from './projection';
 import { getQuadTree } from './quadtree';
 
@@ -82,7 +81,7 @@ export default function getWarping(
   // as input, clips it to the grid contour polygon, and projects it the
   // regular grid:
   return {
-    warpedPathBBox: bbox(warped) as BBox2d,
+    warpedPathBBox: bboxAs2D(bbox(warped)),
     transform: <T extends Geometry | Feature | FeatureCollection>(f: T): T | null =>
       clipAndProjectGeoJSON(f, projection, zone),
 

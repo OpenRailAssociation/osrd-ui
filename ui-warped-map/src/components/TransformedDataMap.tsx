@@ -2,7 +2,6 @@ import React, { type PropsWithChildren, useEffect, useMemo, useState } from 'rea
 
 import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
-import type { BBox2d } from '@turf/helpers/dist/js/lib/geojson';
 import type { Feature, FeatureCollection, LineString } from 'geojson';
 import { omit } from 'lodash';
 import ReactMapGL, {
@@ -13,10 +12,10 @@ import ReactMapGL, {
   Source,
 } from 'react-map-gl/maplibre';
 
-import { type SourceDefinition } from '../core/types';
+import type { BBox2D, SourceDefinition } from '../core/types';
 
 type TransformedDataMapProps = {
-  bbox: BBox2d;
+  bbox: BBox2D;
   mapStyle?: string | StyleSpecification;
   backgroundColor?: string;
   sources: SourceDefinition[];
@@ -53,7 +52,7 @@ const TransformedDataMap = ({
     if (!mapRef) return;
 
     const avgLon = (bbox[0] + bbox[2]) / 2;
-    const thinBBox: BBox2d = [avgLon, bbox[1], avgLon, bbox[3]];
+    const thinBBox: BBox2D = [avgLon, bbox[1], avgLon, bbox[3]];
     setTimeout(() => {
       mapRef.fitBounds(thinBBox, { animate: false });
       mapRef.resize();
