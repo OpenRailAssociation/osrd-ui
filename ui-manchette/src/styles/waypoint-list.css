@@ -1,12 +1,12 @@
-.operational-point-list {
+.waypoint-list {
   width: 349px;
   border-bottom-left-radius: 0.25rem;
   padding-inline: 0.5rem 1.625rem;
 
   @apply bg-ambientB-10;
 
-  .operational-point-wrapper:last-child {
-    .op {
+  .waypoint-wrapper:last-child {
+    .waypoint {
       &::after {
         bottom: 16px;
       }

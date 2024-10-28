@@ -30,7 +30,7 @@ const meta: Meta<typeof Manchette> = {
 
 const ManchetteWithWaypointMenu = () => {
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
-  const [activeOperationalPointId, setActiveOperationalPointId] = useState<string>();
+  const [activeWaypointId, setActiveWaypointId] = useState<string>();
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +40,7 @@ const ManchetteWithWaypointMenu = () => {
       icon: <EyeClosed />,
       onClick: () => {
         setMenuPosition(null);
-        setActiveOperationalPointId(undefined);
+        setActiveWaypointId(undefined);
       },
     },
     {
@@ -48,7 +48,7 @@ const ManchetteWithWaypointMenu = () => {
       icon: <Telescope />,
       onClick: () => {
         setMenuPosition(null);
-        setActiveOperationalPointId(undefined);
+        setActiveWaypointId(undefined);
       },
     },
   ];
@@ -57,13 +57,13 @@ const ManchetteWithWaypointMenu = () => {
     if (!ref) return;
     const position = ref.getBoundingClientRect();
     setMenuPosition({ top: position.bottom - 2, left: position.left });
-    setActiveOperationalPointId(id);
+    setActiveWaypointId(id);
   };
 
   return (
     <Manchette
-      waypoints={SAMPLE_WAYPOINTS.map((op) => ({
-        ...op,
+      waypoints={SAMPLE_WAYPOINTS.map((waypoint) => ({
+        ...waypoint,
         display: true,
         onClick: (id, ref) => {
           handleWaypointClick(id, ref);
@@ -73,7 +73,7 @@ const ManchetteWithWaypointMenu = () => {
       zoomYOut={() => {}}
       resetZoom={() => {}}
       toggleMode={() => {}}
-      activeOperationalPointId={activeOperationalPointId}
+      activeWaypointId={activeWaypointId}
     >
       {menuPosition && (
         <Menu

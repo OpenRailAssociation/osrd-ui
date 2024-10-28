@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { ProjectPathTrainResult, Waypoint } from '@osrd-project/ui-manchette/dist/types';
 import type {
-  OperationalPoint,
   SpaceScale,
   SpaceTimeChartProps,
 } from '@osrd-project/ui-spacetimechart/dist/lib/types';
@@ -11,11 +10,11 @@ import { useIsOverflow } from './useIsOverFlow';
 import usePaths from './usePaths';
 import { MAX_ZOOM_Y, MIN_ZOOM_Y, ZOOM_Y_DELTA, INITIAL_SPACE_TIME_CHART_HEIGHT } from '../consts';
 import {
-  calcOperationalPointsToDisplay,
+  calcWaypointsToDisplay,
   computeTimeWindow,
-  getOperationalPointsWithPosition,
+  getWaypointsWithPosition as getOperationalPointWithPosition,
   getScales,
-  calcOperationalPointsHeight,
+  calcWaypointsHeight,
   zoomX,
 } from '../helpers';
 import { getDiff } from '../utils/point';
@@ -28,7 +27,7 @@ type State = {
   panning: { initialOffset: { x: number; y: number } } | null;
   scrollPosition: number;
   isProportional: boolean;
-  operationalPointsChart: OperationalPoint[];
+  waypointsChart: Waypoint[];
   panY: boolean;
   scales: SpaceScale[];
 };
@@ -49,7 +48,7 @@ const useManchettesWithSpaceTimeChart = (
     panning: null,
     scrollPosition: 0,
     isProportional: true,
-    operationalPointsChart: [],
+    waypointsChart: [],
     panY: false,
     scales: [],
   });
@@ -69,20 +68,18 @@ const useManchettesWithSpaceTimeChart = (
     [projectPathTrainResult]
   );
 
-  // Memoize computedOperationalPoints to avoid recalculations unless the dependencies change
-  const operationalPointsToDisplay = useMemo(
-    () => calcOperationalPointsToDisplay(waypoints, { height, isProportional, yZoom }),
+  const waypointsToDisplay = useMemo(
+    () => calcWaypointsToDisplay(waypoints, { height, isProportional, yZoom }),
     [waypoints, height, isProportional, yZoom]
   );
   const waypointWithHeight = useMemo(
-    () =>
-      calcOperationalPointsHeight(operationalPointsToDisplay, { height, isProportional, yZoom }),
-    [operationalPointsToDisplay, height, yZoom, isProportional]
+    () => calcWaypointsHeight(waypointsToDisplay, { height, isProportional, yZoom }),
+    [waypointsToDisplay, height, yZoom, isProportional]
   );
 
   const operationalPointsWithPosition = useMemo(
-    () => getOperationalPointsWithPosition(operationalPointsToDisplay),
-    [operationalPointsToDisplay]
+    () => getOperationalPointWithPosition(waypointsToDisplay),
+    [waypointsToDisplay]
   );
 
   const zoomYIn = useCallback(() => {

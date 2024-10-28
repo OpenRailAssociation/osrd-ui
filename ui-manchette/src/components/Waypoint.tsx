@@ -6,22 +6,22 @@ import { type InteractiveWaypoint } from '../types';
 import '@osrd-project/ui-core/dist/theme.css';
 import { positionMmToKm } from '../utils';
 
-type OperationalPointProps = {
+type WaypointProps = {
   waypoint: InteractiveWaypoint;
   isActive: boolean;
 };
 
-const OperationalPoint = ({
+const Waypoint = ({
   waypoint: { name, secondaryCode, id, position, display, onClick },
   isActive,
-}: OperationalPointProps) => {
+}: WaypointProps) => {
   const opRef = useRef<HTMLDivElement>(null);
 
   if (!display) return null;
 
   return (
     <div
-      className={cx('flex op items-baseline', {
+      className={cx('flex waypoint items-baseline', {
         'menu-active': isActive,
       })}
       id={id}
@@ -30,17 +30,19 @@ const OperationalPoint = ({
         if (onClick) onClick(id, opRef.current);
       }}
     >
-      <div className="op-position justify-self-start text-end">{positionMmToKm(position)}</div>
+      <div className="waypoint-position justify-self-start text-end">
+        {positionMmToKm(position)}
+      </div>
 
-      <div className="op-name mx-2 justify-self-start">{name}</div>
-      <div className="op-separator"></div>
-      <div className="op-ch font-mono justify-self-end">{secondaryCode}</div>
-      <div className="op-separator"></div>
+      <div className="waypoint-name mx-2 justify-self-start">{name}</div>
+      <div className="waypoint-separator"></div>
+      <div className="waypoint-ch font-mono justify-self-end">{secondaryCode}</div>
+      <div className="waypoint-separator"></div>
 
-      <div className="op-type"></div>
-      <div className="op-separator"></div>
+      <div className="waypoint-type"></div>
+      <div className="waypoint-separator"></div>
     </div>
   );
 };
 
-export default OperationalPoint;
+export default Waypoint;

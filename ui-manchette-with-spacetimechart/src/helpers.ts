@@ -8,37 +8,38 @@ import type {
   SpaceTimeChartProps,
 } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 
-import { BASE_OP_HEIGHT, MAX_TIME_WINDOW, MAX_ZOOM_X, MIN_ZOOM_X } from './consts';
+import { BASE_WAYPOINT_HEIGHT, MAX_TIME_WINDOW, MAX_ZOOM_X, MIN_ZOOM_X } from './consts';
 import { calcTotalDistance, getHeightWithoutLastWaypoint, msToS } from './utils';
 
-type OperationalPointsOptions = { isProportional: boolean; yZoom: number; height: number };
+type WaypointsOptions = { isProportional: boolean; yZoom: number; height: number };
 
-export const calcOperationalPointsToDisplay = (
+export const calcWaypointsToDisplay = (
   waypoints: Waypoint[],
-  { height, isProportional, yZoom }: OperationalPointsOptions
+  { height, isProportional, yZoom }: WaypointsOptions
 ): InteractiveWaypoint[] => {
   if (!isProportional || waypoints.length === 0) {
-    // For non-proportional display, we always display all the operational points:
+    // For non-proportional display, we always display all the waypoints:
     return waypoints.map((waypoint) => ({ ...waypoint, display: true }));
   }
 
-  // For proportional display, we only display points that do not overlap with
+  // For proportional display, we only display waypoints that do not overlap with
   // the last displayed point:
   const result: InteractiveWaypoint[] = [{ ...waypoints[0], display: true }];
   const totalDistance = calcTotalDistance(waypoints);
-  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
-  let lastDisplayedOP = result[0];
+  const heightWithoutFinalWaypoint = getHeightWithoutLastWaypoint(height);
+  let lastDisplayedWaypoint = result[0];
 
   // We iterate through all points, and only add them if they don't collide
   // with the last visible point:
   for (let i = 1; i < waypoints.length; i++) {
-    const op = waypoints[i];
-    const diff = op.position - lastDisplayedOP.position;
-    const display = (diff / totalDistance) * heightWithoutFinalOp * yZoom >= BASE_OP_HEIGHT;
+    const waypoint = waypoints[i];
+    const diff = waypoint.position - lastDisplayedWaypoint.position;
+    const display =
+      (diff / totalDistance) * heightWithoutFinalWaypoint * yZoom >= BASE_WAYPOINT_HEIGHT;
 
     if (display) {
-      result.push({ ...op, display });
-      lastDisplayedOP = op;
+      result.push({ ...waypoint, display });
+      lastDisplayedWaypoint = waypoint;
     }
   }
 
@@ -46,7 +47,7 @@ export const calcOperationalPointsToDisplay = (
   // it with the last visible item:
   const lastItem = result[result.length - 1];
   if (!lastItem.display) {
-    const lastVisibleItem = result.findLast((op) => op.display);
+    const lastVisibleItem = result.findLast((waypoint) => waypoint.display);
     if (lastVisibleItem) {
       lastVisibleItem.display = false;
       lastItem.display = true;
@@ -56,28 +57,32 @@ export const calcOperationalPointsToDisplay = (
   return result;
 };
 
-export const calcOperationalPointsHeight = (
+export const calcWaypointsHeight = (
   waypoints: InteractiveWaypoint[],
-  { height, isProportional, yZoom }: OperationalPointsOptions
+  { height, isProportional, yZoom }: WaypointsOptions
 ) => {
   if (waypoints.length < 2) return [];
   const totalDistance = calcTotalDistance(waypoints);
-  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
+  const heightWithoutFinalWaypoint = getHeightWithoutLastWaypoint(height);
 
-  return waypoints.map((op, index) => {
-    const nextOp = waypoints.at(index + 1);
-    if (!nextOp) {
-      return { ...op, styles: { height: `${BASE_OP_HEIGHT}px` } };
+  return waypoints.map((waypoint, index) => {
+    const nextWaypoint = waypoints.at(index + 1);
+    if (!nextWaypoint) {
+      return { ...waypoint, styles: { height: `${BASE_WAYPOINT_HEIGHT}px` } };
     }
     if (isProportional) {
       return {
-        ...op,
+        ...waypoint,
         styles: {
-          height: `${((nextOp.position - op.position) / totalDistance) * heightWithoutFinalOp * yZoom}px`,
+          height: `${
+            ((nextWaypoint.position - waypoint.position) / totalDistance) *
+            heightWithoutFinalWaypoint *
+            yZoom
+          }px`,
         },
       };
     } else {
-      return { ...op, styles: { height: `${BASE_OP_HEIGHT * yZoom}px` } };
+      return { ...waypoint, styles: { height: `${BASE_WAYPOINT_HEIGHT * yZoom}px` } };
     }
   });
 };
@@ -104,9 +109,7 @@ export const computeTimeWindow = (trains: ProjectPathTrainResult[]) => {
   return timeWindow > MAX_TIME_WINDOW ? MAX_TIME_WINDOW : timeWindow;
 };
 
-export const getOperationalPointsWithPosition = (
-  waypoints: InteractiveWaypoint[]
-): OperationalPoint[] =>
+export const getWaypointsWithPosition = (waypoints: InteractiveWaypoint[]): OperationalPoint[] =>
   waypoints.map((point) => ({
     id: point.id,
     label: point.id,
@@ -115,32 +118,32 @@ export const getOperationalPointsWithPosition = (
   }));
 
 export const getScales = (
-  ops: OperationalPoint[],
-  { height, isProportional, yZoom }: OperationalPointsOptions
+  waypoints: Waypoint[],
+  { height, isProportional, yZoom }: WaypointsOptions
 ) => {
-  if (ops.length < 2) return [];
+  if (waypoints.length < 2) return [];
 
   if (!isProportional) {
-    return ops.slice(0, -1).map((from, index) => {
-      const to = ops[index + 1];
+    return waypoints.slice(0, -1).map((from, index) => {
+      const to = waypoints[index + 1];
 
       return {
         from: from.position,
         to: to.position,
-        size: BASE_OP_HEIGHT * yZoom,
+        size: BASE_WAYPOINT_HEIGHT * yZoom,
       };
     });
   }
 
-  const from = ops.at(0)!.position;
-  const to = ops.at(-1)!.position;
+  const from = waypoints.at(0)!.position;
+  const to = waypoints.at(-1)!.position;
 
-  const totalDistance = calcTotalDistance(ops);
-  const heightWithoutFinalOp = getHeightWithoutLastWaypoint(height);
+  const totalDistance = calcTotalDistance(waypoints);
+  const heightWithoutFinalWaypoint = getHeightWithoutLastWaypoint(height);
 
   const scaleCoeff = isProportional
-    ? { coefficient: totalDistance / heightWithoutFinalOp / yZoom }
-    : { size: BASE_OP_HEIGHT * (ops.length - 1) * yZoom };
+    ? { coefficient: totalDistance / heightWithoutFinalWaypoint / yZoom }
+    : { size: BASE_WAYPOINT_HEIGHT * (waypoints.length - 1) * yZoom };
 
   return [
     {

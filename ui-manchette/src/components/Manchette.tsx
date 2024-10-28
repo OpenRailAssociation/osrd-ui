@@ -4,12 +4,12 @@ import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
 import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from './consts';
-import OperationalPointList from './OperationalPointList';
+import WaypointList from './WaypointList';
 import type { InteractiveWaypoint } from '../types';
 
 type ManchetteProps = {
   waypoints: InteractiveWaypoint[];
-  activeOperationalPointId?: string;
+  activeWaypointId?: string;
   zoomYIn: () => void;
   zoomYOut: () => void;
   resetZoom: () => void;
@@ -26,7 +26,7 @@ const Manchette = ({
   resetZoom,
   yZoom = 1,
   waypoints,
-  activeOperationalPointId,
+  activeWaypointId,
   isProportional = true,
   toggleMode,
   children,
@@ -36,7 +36,7 @@ const Manchette = ({
       className="bg-ambientB-10 border-r border-grey-30"
       style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px` }}
     >
-      <OperationalPointList waypoints={waypoints} activeWaypointId={activeOperationalPointId} />
+      <WaypointList waypoints={waypoints} activeWaypointId={activeWaypointId} />
       {children}
     </div>
     <div className="manchette-actions">

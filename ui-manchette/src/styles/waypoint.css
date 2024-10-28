@@ -1,4 +1,4 @@
-.op {
+.waypoint {
   @apply text-grey-80;
   height: 2rem;
   line-height: 1.5rem;
@@ -34,7 +34,7 @@
     margin: 0 2px;
     width: 1rem;
     text-align: left;
-    & + .op-separator {
+    & + .waypoint-separator {
       flex-grow: 0;
       width: 1rem;
     }
@@ -45,7 +45,7 @@
     height: 16px;
     position: relative;
     align-self: center;
-    & + .op-separator {
+    & + .waypoint-separator {
       flex-grow: 0;
       width: 0.6875rem;
     }
@@ -76,7 +76,7 @@
     border-radius: 4px;
     cursor: pointer;
 
-    .op-separator::after {
+    .waypoint-separator::after {
       @apply bg-black-100;
     }
   }
