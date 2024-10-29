@@ -33,7 +33,7 @@ const Manchette = ({
 }: ManchetteProps) => (
   <div className="manchette-container">
     <div
-      className="bg-ambientB-10 border-r border-grey-30"
+      className="bg-white-100 border-r border-grey-30"
       style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px` }}
     >
       <WaypointList waypoints={waypoints} activeWaypointId={activeWaypointId} />
