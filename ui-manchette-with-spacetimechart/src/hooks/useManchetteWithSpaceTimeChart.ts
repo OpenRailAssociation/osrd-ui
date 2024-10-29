@@ -6,7 +6,6 @@ import type {
   SpaceTimeChartProps,
 } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 
-import { useIsOverflow } from './useIsOverFlow';
 import usePaths from './usePaths';
 import { MAX_ZOOM_Y, MIN_ZOOM_Y, ZOOM_Y_DELTA, INITIAL_SPACE_TIME_CHART_HEIGHT } from '../consts';
 import {
@@ -28,7 +27,6 @@ type State = {
   scrollPosition: number;
   isProportional: boolean;
   waypointsChart: Waypoint[];
-  panY: boolean;
   scales: SpaceScale[];
 };
 
@@ -49,18 +47,12 @@ const useManchettesWithSpaceTimeChart = (
     scrollPosition: 0,
     isProportional: true,
     waypointsChart: [],
-    panY: false,
     scales: [],
   });
 
-  const { xZoom, yZoom, xOffset, yOffset, panY, panning, scrollPosition, isProportional } = state;
+  const { xZoom, yZoom, xOffset, yOffset, panning, scrollPosition, isProportional } = state;
 
   const paths = usePaths(projectPathTrainResult, selectedTrain);
-
-  const checkOverflow = useCallback((isOverflowFromCallback: boolean) => {
-    setState((prev) => ({ ...prev, panY: isOverflowFromCallback }));
-  }, []);
-  useIsOverflow(manchetteWithSpaceTimeChartContainer, checkOverflow);
 
   // Memoize timeWindow to avoid recalculation on each render
   const timeWindow = useMemo(
@@ -184,18 +176,17 @@ const useManchettesWithSpaceTimeChart = (
         } else {
           const { initialOffset } = panning;
           newState.xOffset = initialOffset.x + diff.x;
-          if (panY) {
-            const newYPos = initialOffset.y - diff.y;
-            if (
-              manchetteWithSpaceTimeChartContainer.current &&
-              newYPos >= 0 &&
-              newYPos + INITIAL_SPACE_TIME_CHART_HEIGHT <=
-                manchetteWithSpaceTimeChartContainer.current.scrollHeight
-            ) {
-              newState.yOffset = newYPos;
-              newState.scrollPosition = newYPos;
-              manchetteWithSpaceTimeChartContainer.current.scrollTop = newYPos;
-            }
+
+          const newYPos = initialOffset.y - diff.y;
+          if (
+            manchetteWithSpaceTimeChartContainer.current &&
+            newYPos >= 0 &&
+            newYPos + INITIAL_SPACE_TIME_CHART_HEIGHT <=
+              manchetteWithSpaceTimeChartContainer.current.scrollHeight
+          ) {
+            newState.yOffset = newYPos;
+            newState.scrollPosition = newYPos;
+            manchetteWithSpaceTimeChartContainer.current.scrollTop = newYPos;
           }
         }
         setState(newState);
@@ -208,7 +199,6 @@ const useManchettesWithSpaceTimeChart = (
       xZoom,
       paths,
       xOffset,
-      panY,
       scrollPosition,
       isShiftPressed,
       state,
