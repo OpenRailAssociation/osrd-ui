@@ -13,11 +13,12 @@
   font-weight: 400;
   letter-spacing: 0;
   text-align: left;
+  width: fit-content;
 
   .label {
     line-height: 1.5rem;
     padding-top: 0.188rem;
-    width: 12.813rem;
+    padding-right: 0.35rem;
     @apply text-grey-80;
   }
 
