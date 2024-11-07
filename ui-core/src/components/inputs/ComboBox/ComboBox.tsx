@@ -198,8 +198,7 @@ const ComboBox = <T,>({
     } else if (!isInputInSuggestions && selectedOption) {
       setInputValue(getSuggestionLabel(selectedOption));
     } else if (!isInputInSuggestions) {
-      setInputValue('');
-      setSelectedOption(null);
+      clearInput();
     }
 
     setFilteredSuggestions([]);
