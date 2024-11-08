@@ -13,22 +13,13 @@ import {
 } from '../../const';
 import {
   clearCanvas,
-  createSvgBlobUrl,
   drawLinearLayerBackground,
   drawRoundedRect,
   drawSeparatorLinearLayer,
   drawSvgImageWithColor,
-  loadSvgImage,
   maxPositionValue,
   positionOnGraphScale,
 } from '../../utils';
-
-const questionSvg =
-  '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13M6.92 6.085h.001a.75.75 0 1 1-1.342-.67c.169-.339.436-.701.849-.977C6.845 4.16 7.369 4 8 4a2.76 2.76 0 0 1 1.637.525c.503.377.863.965.863 1.725 0 .448-.115.83-.329 1.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6 6 0 0 0-.26.16 1 1 0 0 0-.276.245.75.75 0 0 1-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1 1 0 0 0 .277-.245C8.96 6.514 9 6.427 9 6.25a.61.61 0 0 0-.262-.525A1.27 1.27 0 0 0 8 5.5c-.369 0-.595.09-.74.187-.146.1-.263.238-.34.398M9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/></svg>';
-const alertFillSvg =
-  '<svg xmlns="http://www.w3.org/2000/svg" width = "16" height = "16" viewBox = "0 0 16 16" > <path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575zM8 5a.75.75 0 0 0-.75.75v2.5a.75.75 0 0 0 1.5 0v-2.5A.75.75 0 0 0 8 5m1 6a1 1 0 1 0-2 0 1 1 0 0 0 2 0" /> </svg>';
-const questionBlobUrl = createSvgBlobUrl(questionSvg);
-const alertFillBlobUrl = createSvgBlobUrl(alertFillSvg);
 
 const RECT_HEIGHT = 17;
 const Y_POSITION = 12;
@@ -43,11 +34,12 @@ const TEXT_PADDING_TOP = 1;
 const ICON_BACKGROUND_WIDTH = 24;
 const ICON_BACKGROUND_HEIGHT = 24;
 
-export const drawSpeedLimitTags = async ({
+export const drawSpeedLimitTags = ({
   ctx,
   width,
   height: marginTop,
   store,
+  images,
 }: SpeedLimitTagsLayerDrawFunctionParams) => {
   const {
     speedLimitTags,
@@ -64,9 +56,6 @@ export const drawSpeedLimitTags = async ({
   ctx.translate(leftOffset, 0);
 
   const maxPosition = maxPositionValue(store.speeds);
-
-  const questionImage = await loadSvgImage(questionBlobUrl);
-  const alertFillImage = await loadSvgImage(alertFillBlobUrl);
 
   let speedLimitTagsBackgroundColor = LINEAR_LAYERS_BACKGROUND_COLOR.FIRST;
 
@@ -127,7 +116,7 @@ export const drawSpeedLimitTags = async ({
       }
 
       if (tag === 'incompatible' || tag === 'missing_from_train') {
-        const image = tag === 'incompatible' ? alertFillImage : questionImage;
+        const image = tag === 'incompatible' ? images.alertFillImage : images.questionImage;
 
         ctx.fillStyle = color;
 
@@ -143,16 +132,16 @@ export const drawSpeedLimitTags = async ({
           ICON_BACKGROUND_HEIGHT,
           cornerRadius
         );
-
-        drawSvgImageWithColor(
-          ctx,
-          image,
-          iconXPosition + ICON_OFFSET,
-          iconYPosition + ICON_OFFSET,
-          ICON_WIDTH,
-          ICON_HEIGHT,
-          WHITE.hex()
-        );
+        if (image !== null)
+          drawSvgImageWithColor(
+            ctx,
+            image,
+            iconXPosition + ICON_OFFSET,
+            iconYPosition + ICON_OFFSET,
+            ICON_WIDTH,
+            ICON_HEIGHT,
+            WHITE.hex()
+          );
       } else {
         ctx.fillStyle = 'white';
         ctx.font = '600 12px "IBM Plex Sans"';
@@ -172,11 +161,11 @@ export const drawSpeedLimitTags = async ({
   ctx.clearRect(width - MARGIN_RIGHT, 0, width, LINEAR_LAYERS_HEIGHTS.SPEED_LIMIT_TAGS_HEIGHT);
 };
 
-export const computeTooltip = async ({
+export const computeTooltip = ({
   width,
   height: marginTop,
   store,
-}: DrawFunctionParams): Promise<tooltipInfos | null> => {
+}: DrawFunctionParams): tooltipInfos | null => {
   const { speedLimitTags, ratioX, leftOffset, cursor } = store;
 
   const { MARGIN_TOP, MARGIN_LEFT } = MARGINS;

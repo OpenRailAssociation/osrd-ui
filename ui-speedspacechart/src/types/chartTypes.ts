@@ -105,6 +105,7 @@ export type SpeedLimitTagsLayerDrawFunctionParams = {
   width: number;
   height: number;
   store: SpeedLimitTagsLayerDrawingStore;
+  images: { questionImage: HTMLImageElement | null; alertFillImage: HTMLImageElement | null };
 };
 
 export type TrainDetails = {
