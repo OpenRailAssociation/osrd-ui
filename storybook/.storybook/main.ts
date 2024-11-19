@@ -5,9 +5,9 @@ import { mergeConfig } from 'vite';
 /** @type { import('@storybook/html-vite').StorybookConfig } */
 const config: StorybookConfig = {
   stories: [
-    '../stories/**/stories.ts',
-    '../../**/src/**/*.mdx',
+    // TODO: remove this when every stories are migrated to `@osrd-project/stroybook/stories/`
     '../../**/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   addons: [
     getAbsolutePath('@storybook/addon-links'),
