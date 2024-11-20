@@ -1,5 +1,11 @@
 import React from 'react';
 
-const TrackOccupancyManchette = () => <div>TrackOccupancyManchette</div>;
+import { type TrackOccupancyManchetteProps } from './types';
+
+const TrackOccupancyManchette = ({ tracks }: TrackOccupancyManchetteProps) => {
+  console.warn('tracks:', tracks);
+
+  return <div id="trackOccupancyManchette"></div>;
+};
 
 export default TrackOccupancyManchette;
