@@ -17,6 +17,7 @@ export type OccupancyZone = {
 };
 
 export type TrackOccupancyCanvasProps = {
+  tracks: Track[];
   zones: OccupancyZone[];
   selectedTrain: string | null;
   timeOrigin: number; // in ms

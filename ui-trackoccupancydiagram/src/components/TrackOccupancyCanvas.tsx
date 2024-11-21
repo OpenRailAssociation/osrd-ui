@@ -32,7 +32,7 @@ const TrackOccupancyCanvas = ({
     store
   );
 
-  return <div id="trackOccupancyCanvas"></div>;
+  return <div id="track-occupancy-canvas" className="bg-white-100"></div>;
 };
 
 export default TrackOccupancyCanvas;
