@@ -25,7 +25,7 @@
   },
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
-    "build": "npm run build --workspaces --if-present",
+    "build": "lerna run build",
     "lint": "npm run lint --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "storybook": "npm start --workspace=@osrd-project/storybook",
