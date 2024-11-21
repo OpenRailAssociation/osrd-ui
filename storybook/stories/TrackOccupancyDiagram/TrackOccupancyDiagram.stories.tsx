@@ -2,9 +2,6 @@ import React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import '@osrd-project/ui-core/dist/theme.css';
-import '@osrd-project/ui-trackoccupancydiagram/dist/theme.css';
-
 import { KebabHorizontal } from '../../../ui-icons/src/index';
 import {
   TrackOccupancyManchette,
@@ -12,6 +9,8 @@ import {
 } from '../../../ui-trackoccupancydiagram/src/index';
 import zones from '../samples/TrackOccupancyDiagramSamples/occupancyZone';
 import tracks from '../samples/TrackOccupancyDiagramSamples/tracks';
+
+const X_ZOOM_LEVEL = 6;
 
 const TrackOccupancyDiagram = () => (
   <div
@@ -24,7 +23,6 @@ const TrackOccupancyDiagram = () => (
   >
     <div
       style={{
-        height: 494,
         width: 1424,
         boxShadow:
           '0px 2px 4px 0 rgba(0, 0, 0, 0.22), 0 4px 7px -3px rgba(255, 171, 88, 0.17), inset 0 1px 0 0 rgb(255, 255, 255)',
@@ -38,7 +36,7 @@ const TrackOccupancyDiagram = () => (
           width: '100%',
           paddingLeft: 16,
           borderRadius: '10px 10px 0 0',
-          boxShadow: 'inset 1px 0 0 0 rgb(255, 255, 255), inset 0 -1px 0 0 rgba(0, 0, 0, 0.25)',
+          boxShadow: 'inset 0 1px 0 0 rgb(255, 255, 255), inset 0 -1px 0 0 rgba(0, 0, 0, 0.25)',
         }}
       >
         <KebabHorizontal />
@@ -46,7 +44,6 @@ const TrackOccupancyDiagram = () => (
       <div className="flex">
         <div
           style={{
-            height: 454,
             width: 200,
             borderRadius: '0 0 0 10px',
           }}
@@ -55,12 +52,17 @@ const TrackOccupancyDiagram = () => (
         </div>
         <div
           style={{
-            height: 454,
             width: 1224,
             borderRadius: '0 0 10px 0',
           }}
         >
-          <TrackOccupancyCanvas zones={zones} selectedTrain={null} timeOrigin={0} timeScale={1} />
+          <TrackOccupancyCanvas
+            tracks={tracks}
+            zones={zones}
+            selectedTrain={null}
+            timeOrigin={+new Date('2024/04/02')}
+            timeScale={60000 / X_ZOOM_LEVEL}
+          />
         </div>
       </div>
     </div>
