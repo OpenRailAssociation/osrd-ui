@@ -12,6 +12,14 @@ const suggestions = [
   { id: '2', label: 'Consuela' },
   { id: '3', label: 'Juan' },
   { id: '4', label: 'Manolo' },
+  { id: '5', label: 'Maria' },
+  { id: '6', label: 'Jose' },
+  { id: '7', label: 'Ana' },
+  { id: '8', label: 'Pedro' },
+  { id: '9', label: 'Lucia' },
+  { id: '10', label: 'Carlos' },
+  { id: '11', label: 'Elena' },
+  { id: '12', label: 'Miguel' },
 ] as Suggestion[];
 
 const meta: Meta<typeof ComboBox> = {

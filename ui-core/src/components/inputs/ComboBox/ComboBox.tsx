@@ -44,6 +44,7 @@ const ComboBox = <T,>({
   const [inputValue, setInputValue] = useState(value);
   const [selectedOption, setSelectedOption] = useState<T | null>(null);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const suggestionRefs = useRef<(HTMLLIElement | null)[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -156,9 +157,25 @@ const ComboBox = <T,>({
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (e.key === 'ArrowDown') {
-      setActiveSuggestionIndex((prev) => (prev < filteredSuggestions.length - 1 ? prev + 1 : prev));
+      setActiveSuggestionIndex((prev) => {
+        const newIndex = prev < filteredSuggestions.length - 1 ? prev + 1 : prev;
+        if (suggestionRefs.current[newIndex]) {
+          (suggestionRefs.current[newIndex] as HTMLLIElement).scrollIntoView({
+            block: 'nearest',
+          });
+        }
+        return newIndex;
+      });
     } else if (e.key === 'ArrowUp') {
-      setActiveSuggestionIndex((prev) => (prev > 0 ? prev - 1 : prev));
+      setActiveSuggestionIndex((prev) => {
+        const newIndex = prev > 0 ? prev - 1 : prev;
+        if (suggestionRefs.current[newIndex]) {
+          (suggestionRefs.current[newIndex] as HTMLLIElement).scrollIntoView({
+            block: 'nearest',
+          });
+        }
+        return newIndex;
+      });
     } else if ((e.key === 'Enter' || e.key === 'Tab') && activeSuggestionIndex >= 0) {
       selectSuggestion(activeSuggestionIndex);
     } else if (e.key === 'Escape') {
@@ -229,6 +246,7 @@ const ComboBox = <T,>({
         <ul className="suggestions-list">
           {filteredSuggestions.map((suggestion, index) => (
             <li
+              ref={(el) => (suggestionRefs.current[index] = el)}
               key={`${getSuggestionLabel(suggestion)}-${index}`}
               className={cx('suggestion-item', {
                 active: index === activeSuggestionIndex,
