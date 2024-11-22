@@ -2,22 +2,24 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-#track-occupancy-manchette {
+#track-occupancy-manchette,
+#track-occupancy-canvas {
   height: 100%;
   width: 100%;
+  border-radius: inherit;
+}
+
+#track-occupancy-manchette {
   padding: 8px 0;
   @apply bg-ambientB-10;
-  border-radius: inherit;
   box-shadow:
     inset 0 1px 0 0 rgb(255 255 255),
     inset -1px 0 0 0 rgba(0, 0, 0, 0.25);
 }
 
 #track-occupancy-canvas {
-  height: 100%;
-  width: 100%;
   @apply bg-white-100;
-  border-radius: inherit;
+  position: relative;
 }
 
 .track {
@@ -36,30 +38,34 @@
 
   &-name {
     height: 24px;
-    display: flex;
-
-    &-detail {
-      @apply bg-grey-70;
-      border-radius: 4px;
-      box-shadow:
-        0 0 0 2px rgb(255, 255, 255),
-        0 0 0 2.5px rgb(182, 178, 175);
-      padding: 2px 6px;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      @apply text-white-100;
-    }
-
-    &-rail {
-      align-self: center;
-      height: 9px;
-      width: 17px;
-      margin-left: 2.5px;
-      margin-right: 1px;
-      @apply bg-white-50;
-      border-top: solid 1px rgb(211, 209, 207);
-      border-bottom: solid 1px rgb(211, 209, 207);
-    }
+    @apply bg-grey-70;
+    border-radius: 4px;
+    box-shadow:
+      0 0 0 2px rgb(255, 255, 255),
+      0 0 0 2.5px rgb(182, 178, 175);
+    padding: 2px 6px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    @apply text-white-100;
   }
+
+  &-rail {
+    align-self: center;
+    height: 9px;
+    width: 17px;
+    margin-left: 2.5px;
+    margin-right: 1px;
+    @apply bg-white-50;
+    border-top: solid 1px rgb(211, 209, 207);
+    border-bottom: solid 1px rgb(211, 209, 207);
+  }
+}
+
+#tracks-layer,
+#occupancy-zones-layer {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  padding: 8px 0;
 }

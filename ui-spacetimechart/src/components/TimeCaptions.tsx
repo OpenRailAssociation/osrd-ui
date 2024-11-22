@@ -51,6 +51,7 @@ const TimeCaptions = () => {
           timeCaptionsStyles,
           timeGraduationsStyles,
         },
+        showTicks,
       }
     ) => {
       const timeAxisSize = !swapAxis ? width : height;
@@ -96,15 +97,17 @@ const TimeCaptions = () => {
       // Render caption top border:
       ctx.strokeStyle = timeGraduationsStyles[1].color;
       ctx.lineWidth = timeGraduationsStyles[1].width;
-      ctx.beginPath();
-      if (!swapAxis) {
-        ctx.moveTo(0, spaceAxisSize - CAPTION_SIZE);
-        ctx.lineTo(timeAxisSize, spaceAxisSize - CAPTION_SIZE);
-      } else {
-        ctx.moveTo(CAPTION_SIZE, 0);
-        ctx.lineTo(CAPTION_SIZE, timeAxisSize);
+      if (!showTicks) {
+        ctx.beginPath();
+        if (!swapAxis) {
+          ctx.moveTo(0, spaceAxisSize - CAPTION_SIZE);
+          ctx.lineTo(timeAxisSize, spaceAxisSize - CAPTION_SIZE);
+        } else {
+          ctx.moveTo(CAPTION_SIZE, 0);
+          ctx.lineTo(CAPTION_SIZE, timeAxisSize);
+        }
+        ctx.stroke();
       }
-      ctx.stroke();
 
       // Render time captions:
       for (const t in labelMarks) {
@@ -118,6 +121,12 @@ const TimeCaptions = () => {
         ctx.fillStyle = styles.color;
         ctx.font = `${styles.fontWeight || 'normal'} ${styles.font}`;
         if (!swapAxis) {
+          if (showTicks) {
+            ctx.strokeStyle = timeCaptionsStyles[1].color;
+            ctx.moveTo(getTimePixel(+t), spaceAxisSize - CAPTION_SIZE);
+            ctx.lineTo(getTimePixel(+t), +t % 180000 === 0 ? 8 : 4);
+            ctx.stroke();
+          }
           ctx.fillText(
             text,
             getTimePixel(+t),

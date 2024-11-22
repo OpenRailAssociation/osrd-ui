@@ -29,6 +29,7 @@ export type TrackOccupancyManchetteProps = {
 };
 
 export type Store = {
+  tracks: Track[];
   zones: OccupancyZone[];
   selectedTrain: string | null;
   timeOrigin: number; // in ms
