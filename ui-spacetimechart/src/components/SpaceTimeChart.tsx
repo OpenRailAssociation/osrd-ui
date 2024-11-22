@@ -44,6 +44,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
     enableSnapping,
     hideGrid,
     hidePathsLabels,
+    showTicks,
     theme,
     /* eslint-disable @typescript-eslint/no-unused-vars */
     onPan,
@@ -73,6 +74,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
         swapAxis,
         hideGrid,
         hidePathsLabels,
+        showTicks,
       }),
     [
       width,
@@ -86,6 +88,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       swapAxis,
       hideGrid,
       hidePathsLabels,
+      showTicks,
     ]
   );
 
@@ -148,6 +151,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       enableSnapping: !!enableSnapping,
       hideGrid: !!hideGrid,
       hidePathsLabels: !!hidePathsLabels,
+      showTicks: !!showTicks,
       theme: fullTheme,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

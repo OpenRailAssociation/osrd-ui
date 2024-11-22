@@ -193,6 +193,7 @@ export type SpaceTimeChartProps = {
   // Additional options to show/hide context information:
   hideGrid?: boolean;
   hidePathsLabels?: boolean;
+  showTicks?: boolean;
 
   // Custom styles:
   theme?: Partial<SpaceTimeChartTheme>;
@@ -272,4 +273,5 @@ export type SpaceTimeChartContextType = {
   enableSnapping: boolean;
   hideGrid: boolean;
   hidePathsLabels: boolean;
+  showTicks: boolean;
 };

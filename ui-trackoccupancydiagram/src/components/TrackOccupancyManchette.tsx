@@ -7,10 +7,8 @@ const TrackOccupancyManchette = ({ tracks }: TrackOccupancyManchetteProps) => (
     {tracks.map((track) => (
       <div className="track" key={track.id}>
         <span className="track-line">{track.line}</span>
-        <div className="track-name">
-          <div className="track-name-detail">{track.name}</div>
-          <div className="track-name-rail" />
-        </div>
+        <div className="track-name">{track.name}</div>
+        <div className="track-rail" />
       </div>
     ))}
   </div>
