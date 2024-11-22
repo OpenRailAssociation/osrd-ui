@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import OccupancyZonesLayer from './layers/OccupancyZonesLayer';
+import TracksLayer from './layers/TracksLayer';
 import type { Store, TrackOccupancyCanvasProps } from './types';
 
 const TrackOccupancyCanvas = ({
+  tracks,
   zones,
   selectedTrain,
   timeOrigin,
   timeScale,
 }: TrackOccupancyCanvasProps) => {
-  const store: Store = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [store, setStore] = useState<Store>({
+    tracks,
     zones,
     selectedTrain,
     timeOrigin,
@@ -17,22 +22,14 @@ const TrackOccupancyCanvas = ({
     offsetX: 0,
     clientX: 0,
     clientY: 0,
-  };
+  });
 
-  console.warn(
-    'zones:',
-    zones,
-    'selectedTrain:',
-    selectedTrain,
-    'timeOrigin:',
-    timeOrigin,
-    'timeScale:',
-    timeScale,
-    'store:',
-    store
+  return (
+    <div id="track-occupancy-canvas" className="bg-white-100">
+      <TracksLayer />
+      <OccupancyZonesLayer />
+    </div>
   );
-
-  return <div id="track-occupancy-canvas" className="bg-white-100"></div>;
 };
 
 export default TrackOccupancyCanvas;
