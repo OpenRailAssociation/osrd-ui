@@ -1,3 +1,10 @@
+import {
+  type DrawingFunction,
+  type LayerType,
+} from '@osrd-project/ui-spacetimechart/src/lib/types';
+
+import { type TICKS_PATTERN } from './consts';
+
 export type Track = {
   id: string;
   name: string;
@@ -17,25 +24,12 @@ export type OccupancyZone = {
 };
 
 export type TrackOccupancyCanvasProps = {
-  tracks: Track[];
-  zones: OccupancyZone[];
-  selectedTrain: string | null;
-  timeOrigin: number; // in ms
-  timeScale: number; // in ms/px
+  useDraw: (layer: LayerType, fn: DrawingFunction) => void;
+  setCanvasesRoot: (root: HTMLDivElement | null) => void;
 };
 
 export type TrackOccupancyManchetteProps = {
   tracks: Track[];
 };
 
-export type Store = {
-  tracks: Track[];
-  zones: OccupancyZone[];
-  selectedTrain: string | null;
-  timeOrigin: number; // in ms
-  timeScale: number; // in ms/px
-  ratio: number;
-  offsetX: number;
-  clientX: number;
-  clientY: number;
-};
+export type TickPattern = keyof typeof TICKS_PATTERN;

@@ -1,5 +1,10 @@
 import { type HTMLProps, type ReactNode } from 'react';
 
+import type {
+  Track,
+  OccupancyZone,
+} from '@osrd-project/ui-trackoccupancydiagram/dist/components/types';
+
 // GLOBAL UTILITY TYPES:
 export type Point = {
   x: number;
@@ -233,6 +238,8 @@ export type SpaceTimeChartProps = {
 export type SpaceTimeChartContextType = {
   width: number;
   height: number;
+  trackOccupancyWidth?: number;
+  trackOccupancyHeight?: number;
 
   // Axis-swapping related data:
   timeAxis: Axis;
@@ -265,6 +272,8 @@ export type SpaceTimeChartContextType = {
 
   // Useful data:
   operationalPoints: OperationalPoint[];
+  tracks?: Track[];
+  occupancyZones?: OccupancyZone[];
 
   // Full theme:
   theme: SpaceTimeChartTheme;

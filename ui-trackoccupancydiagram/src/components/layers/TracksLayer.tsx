@@ -1,5 +1,47 @@
-import React from 'react';
+import { useCallback } from 'react';
 
-const TracksLayer = () => <canvas id="tracks-layer" />;
+import {
+  type LayerType,
+  type DrawingFunction,
+} from '@osrd-project/ui-spacetimechart/src/lib/types';
+
+import { drawTracks } from '../helpers/drawElements/drawTracks';
+
+const TracksLayer = ({ useDraw }: { useDraw: (layer: LayerType, fn: DrawingFunction) => void }) => {
+  const drawingFunction = useCallback<DrawingFunction>(
+    (
+      ctx,
+      {
+        timeOrigin,
+        timePixelOffset,
+        getTimePixel,
+        tracks,
+        trackOccupancyWidth,
+        trackOccupancyHeight,
+        timeScale,
+        theme: { timeRanges, breakpoints },
+      }
+    ) => {
+      if (trackOccupancyHeight && trackOccupancyWidth)
+        drawTracks({
+          ctx,
+          width: trackOccupancyWidth,
+          height: trackOccupancyHeight,
+          tracks,
+          timeOrigin,
+          timePixelOffset,
+          getTimePixel,
+          timeRanges,
+          breakpoints,
+          timeScale,
+        });
+    },
+    []
+  );
+
+  useDraw('background', drawingFunction);
+
+  return null;
+};
 
 export default TracksLayer;
