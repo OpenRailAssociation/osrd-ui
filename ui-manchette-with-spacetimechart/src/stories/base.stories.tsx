@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import React, { useRef } from 'react';
 
-import { Manchette } from '@osrd-project/ui-manchette';
+import Manchette from '@osrd-project/ui-manchette';
 import type { ProjectPathTrainResult, Waypoint } from '@osrd-project/ui-manchette/dist/types';
 import { PathLayer, SpaceTimeChart } from '@osrd-project/ui-spacetimechart';
 import type { Meta } from '@storybook/react';
