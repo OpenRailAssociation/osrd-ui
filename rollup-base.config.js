@@ -7,7 +7,6 @@ import livereload from 'rollup-plugin-livereload';
 import postcss from 'rollup-plugin-postcss';
 
 const formats = ['esm'];
-const isDev = process.env.NODE_ENV === 'development';
 
 /** @type {import("rollup").RollupOptions} */
 const generateRollupBaseConfig = (projectName, external) => ({
@@ -27,7 +26,7 @@ const generateRollupBaseConfig = (projectName, external) => ({
       plugins: [],
     }),
     terser(),
-    isDev &&
+    process.env.ROLLUP_WATCH &&
       livereload({
         watch: 'dist',
       }),

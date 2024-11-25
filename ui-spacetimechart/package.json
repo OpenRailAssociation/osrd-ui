@@ -30,7 +30,7 @@
     "rollup": "rollup -c",
     "clean": "rimraf dist",
     "build": "npm run rollup",
-    "watch": "NODE_ENV=development rollup -c -w",
+    "watch": "rollup -c -w",
     "test": "vitest run --dir src/__tests__",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "eslint src --max-warnings 0",
