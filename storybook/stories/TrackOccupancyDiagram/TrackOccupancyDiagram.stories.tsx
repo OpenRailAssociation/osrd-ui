@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { KebabHorizontal } from '../../../ui-icons/src/index';
 import TimeCaptions from '../../../ui-spacetimechart/src/components/TimeCaptions';
-import { useCanvas } from '../../../ui-spacetimechart/src/hooks/useCanvas';
+import { useCanvas, useDraw } from '../../../ui-spacetimechart/src/hooks/useCanvas';
 import { useMouseTracking } from '../../../ui-spacetimechart/src/hooks/useMouseTracking';
 import { useSize } from '../../../ui-spacetimechart/src/hooks/useSize';
 import { DEFAULT_THEME } from '../../../ui-spacetimechart/src/lib/consts';
@@ -54,6 +54,8 @@ const TrackOccupancyDiagram = ({
   const spaceOrigin = 0;
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
   const { width, height } = useSize(root);
+  const [canvasesRoot, setCanvasesRoot] = useState<HTMLDivElement | null>(null);
+  const { width: trackOccupancyWidth, height: trackOccupancyHeight } = useSize(canvasesRoot);
   const timeOrigin = +new Date('2024/04/02');
   const timeScale = 60000 / xZoomLevel;
   const swapAxis = undefined;
@@ -153,6 +155,8 @@ const TrackOccupancyDiagram = ({
       fingerprint,
       width,
       height,
+      trackOccupancyHeight,
+      trackOccupancyWidth,
       getTimePixel,
       getSpacePixel,
       getPoint,
@@ -163,6 +167,8 @@ const TrackOccupancyDiagram = ({
       resetPickingElements,
       registerPickingElement,
       operationalPoints,
+      tracks,
+      occupancyZones: zones,
       spaceOrigin,
       spaceScaleTree,
       timeOrigin,
@@ -181,10 +187,11 @@ const TrackOccupancyDiagram = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fingerprint]);
 
-  const [canvasesRoot, setCanvasesRoot] = useState<HTMLDivElement | null>(null);
+  const [spaceTicksRoot, setSpaceTicksRoot] = useState<HTMLDivElement | null>(null);
   const mouseState = useMouseTracking(root);
   const { position } = mouseState;
   const { canvasContext } = useCanvas(canvasesRoot, contextState, position);
+  const { canvasContext: spaceTicksContext } = useCanvas(spaceTicksRoot, contextState, position);
 
   return (
     <div
@@ -231,24 +238,21 @@ const TrackOccupancyDiagram = ({
                 style={{
                   width: 1224,
                   borderRadius: '0 0 10px 0',
+                  position: 'relative',
                 }}
               >
-                <TrackOccupancyCanvas
-                  tracks={tracks}
-                  zones={zones}
-                  selectedTrain={null}
-                  timeOrigin={timeOrigin}
-                  timeScale={timeScale}
-                />
+                <TrackOccupancyCanvas useDraw={useDraw} setCanvasesRoot={setCanvasesRoot} />
               </div>
             </div>
           </div>
+        </CanvasContext.Provider>
+        <CanvasContext.Provider value={spaceTicksContext}>
           <div
             ref={setRoot}
             className="relative"
             style={{ marginLeft: 200, width: 1224, height: 33 }}
           >
-            <div ref={setCanvasesRoot} className="absolute inset-0">
+            <div ref={setSpaceTicksRoot} className="absolute inset-0">
               <TimeCaptions />
             </div>
           </div>

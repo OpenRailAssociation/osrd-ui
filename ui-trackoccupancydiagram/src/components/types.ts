@@ -1,3 +1,8 @@
+import {
+  type DrawingFunction,
+  type LayerType,
+} from '@osrd-project/ui-spacetimechart/src/lib/types';
+
 export type Track = {
   id: string;
   name: string;
@@ -17,11 +22,8 @@ export type OccupancyZone = {
 };
 
 export type TrackOccupancyCanvasProps = {
-  tracks: Track[];
-  zones: OccupancyZone[];
-  selectedTrain: string | null;
-  timeOrigin: number; // in ms
-  timeScale: number; // in ms/px
+  useDraw: (layer: LayerType, fn: DrawingFunction) => void;
+  setCanvasesRoot: (root: HTMLDivElement | null) => void;
 };
 
 export type TrackOccupancyManchetteProps = {
@@ -38,4 +40,12 @@ export type Store = {
   offsetX: number;
   clientX: number;
   clientY: number;
+};
+
+export type DrawFunctionParams = {
+  ctx: CanvasRenderingContext2D;
+  width: number;
+  height: number;
+  store: Store;
+  setStore?: React.Dispatch<React.SetStateAction<Store>>;
 };
