@@ -7,6 +7,10 @@
   height: 100%;
   width: 100%;
   border-radius: inherit;
+
+  > canvas {
+    border-radius: inherit;
+  }
 }
 
 #track-occupancy-manchette {
@@ -67,5 +71,4 @@
   height: 100%;
   width: 100%;
   position: absolute;
-  padding: 8px 0;
 }

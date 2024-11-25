@@ -1,0 +1,1 @@
+export const TRACK_HEIGHT_CONTAINER = 73;

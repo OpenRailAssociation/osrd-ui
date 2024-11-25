@@ -1,4 +1,4 @@
-const zones = [
+const OccupancyZones = [
   {
     id: '1',
     trackId: '1',
@@ -37,4 +37,4 @@ const zones = [
   },
 ];
 
-export default zones;
+export default OccupancyZones;
