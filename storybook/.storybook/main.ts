@@ -1,5 +1,4 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import { mergeConfig } from 'vite';
 
 /** @type { import('@storybook/html-vite').StorybookConfig } */
 const config: StorybookConfig = {
@@ -23,12 +22,5 @@ const config: StorybookConfig = {
   },
   staticDirs: ['../public'],
   logLevel: 'debug',
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      resolve: {
-        preserveSymlinks: true,
-      },
-    });
-  },
 };
 export default config;
