@@ -30,11 +30,12 @@ const Manchette = ({
   isProportional = true,
   toggleMode,
   children,
+  height,
 }: ManchetteProps) => (
   <div className="manchette-container">
     <div
       className="bg-white-100 border-r border-grey-30"
-      style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px` }}
+      style={{ minHeight: `${INITIAL_OP_LIST_HEIGHT}px`, height }}
     >
       <WaypointList waypoints={waypoints} activeWaypointId={activeWaypointId} />
       {children}
