@@ -20,10 +20,12 @@ const useElementInView = <T extends HTMLElement>(
 
   useEffect(() => {
     const currentRef = ref?.current;
-    const root = containerRef?.current || null;
+    const root = containerRef?.current;
 
-    if (!currentRef) {
-      // If the user implementing ui-manchette doesn't provide a ref to handle the menu visibility,
+    if (!currentRef) return;
+
+    if (!root) {
+      // If the user implementing ui-manchette doesn't provide a container ref to handle the menu visibility,
       // the menu should always be visible
       setIsInView(true);
       return;
