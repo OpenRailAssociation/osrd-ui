@@ -26,15 +26,14 @@ const Manchette = ({
   resetZoom,
   yZoom = 1,
   waypoints,
-  activeWaypointId,
   isProportional = true,
   toggleMode,
   children,
   height = INITIAL_OP_LIST_HEIGHT,
 }: ManchetteProps) => (
   <div className="manchette-container">
-    <div className="bg-white-100 border-r border-grey-30" style={{ height: `${height}px` }}>
-      <WaypointList waypoints={waypoints} activeWaypointId={activeWaypointId} />
+    <div className="bg-white-100 border-r border-grey-30" style={{ minHeight: `${height}px` }}>
+      <WaypointList waypoints={waypoints} />
       {children}
     </div>
     <div className="manchette-actions">
