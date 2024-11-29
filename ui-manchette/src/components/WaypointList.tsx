@@ -20,7 +20,6 @@ const WaypointList = ({ waypoints, waypointMenuData }: WaypointListProps) => (
           waypoint={waypoint}
           isActive={waypointMenuData?.activeWaypointId === waypoint.id}
           waypointMenu={waypointMenuData?.menu}
-          scrollableParentRef={waypointMenuData?.scrollableParentRef}
         />
       </div>
     ))}

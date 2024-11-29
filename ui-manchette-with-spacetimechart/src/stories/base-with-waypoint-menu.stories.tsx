@@ -4,6 +4,7 @@ import { EyeClosed, Telescope } from '@osrd-project/ui-icons';
 import Manchette, { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-manchette';
 import { PathLayer, SpaceTimeChart } from '@osrd-project/ui-spacetimechart';
 import type { Meta } from '@storybook/react';
+import cx from 'classnames';
 
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-manchette/dist/theme.css';
@@ -70,7 +71,9 @@ const ManchetteWithSpaceTimeWrapper = ({
       ></div>
       <div
         ref={manchetteWithSpaceTimeChartRef}
-        className="manchette flex"
+        className={cx('manchette flex', {
+          'no-scroll': activeWaypointId,
+        })}
         style={{ height: `${DEFAULT_HEIGHT}px` }}
         onScroll={handleScroll}
       >
@@ -83,7 +86,6 @@ const ManchetteWithSpaceTimeWrapper = ({
           waypointMenuData={{
             activeWaypointId,
             menu: <Menu items={menuItems} />,
-            scrollableParentRef: manchetteWithSpaceTimeChartRef,
           }}
         />
         <div

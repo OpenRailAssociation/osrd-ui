@@ -33,24 +33,40 @@ const Manchette = ({
   height = INITIAL_OP_LIST_HEIGHT,
 }: ManchetteProps) => (
   <div className="manchette-container">
-    <div className="bg-white-100 border-r border-grey-30" style={{ minHeight: `${height}px` }}>
+    <div className="bg-white-100 border-r border-grey-30" style={{ height: `${height}px` }}>
       <WaypointList waypoints={waypoints} waypointMenuData={waypointMenuData} />
       {children}
     </div>
     <div className="manchette-actions">
       <div className="zoom-buttons">
-        <button className="zoom-out" onClick={zoomYOut} disabled={yZoom <= MIN_ZOOM_Y}>
+        <button
+          className="zoom-out"
+          onClick={zoomYOut}
+          disabled={yZoom <= MIN_ZOOM_Y || !!waypointMenuData?.activeWaypointId}
+        >
           <ZoomOut />
         </button>
-        <button className="zoom-in" onClick={zoomYIn} disabled={yZoom >= MAX_ZOOM_Y}>
+        <button
+          className="zoom-in"
+          onClick={zoomYIn}
+          disabled={yZoom >= MAX_ZOOM_Y || !!waypointMenuData?.activeWaypointId}
+        >
           <ZoomIn />
         </button>
-        <button className="zoom-reset" onClick={resetZoom}>
+        <button
+          disabled={!!waypointMenuData?.activeWaypointId}
+          className="zoom-reset"
+          onClick={resetZoom}
+        >
           Fit
         </button>
       </div>
       <div className="flex items-center ml-auto text-sans font-semibold">
-        <button className="toggle-mode" onClick={toggleMode}>
+        <button
+          disabled={!!waypointMenuData?.activeWaypointId}
+          className="toggle-mode"
+          onClick={toggleMode}
+        >
           <div className="flex flex-col items-end pr-2">
             <span className={cx({ 'text-grey-30': !isProportional })}>Km</span>
 

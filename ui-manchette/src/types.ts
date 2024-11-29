@@ -16,8 +16,6 @@ export type InteractiveWaypoint = Waypoint & {
 export type WaypointMenuData = {
   menu: React.ReactNode;
   activeWaypointId?: string;
-  // Ref of the scrollable parent of the waypoints list to enable the menu hidding behavior
-  scrollableParentRef?: React.RefObject<HTMLElement>;
 };
 
 export type ProjectPathTrainResult = {

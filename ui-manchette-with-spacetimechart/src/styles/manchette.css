@@ -10,6 +10,10 @@
   .manchette {
     overflow-y: auto;
     overflow-x: hidden;
+
+    &.no-scroll {
+      overflow-y: clip;
+    }
   }
 
   .space-time-chart-container {
