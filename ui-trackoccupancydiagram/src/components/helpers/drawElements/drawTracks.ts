@@ -101,7 +101,7 @@ export const drawTracks = ({
   }
 
   tracks?.forEach((_, index) => {
-    const trackTranslate = index === 0 ? 8 : 73;
+    const trackTranslate = index === 0 ? CANVAS_PADDING : TRACK_HEIGHT_CONTAINER;
     ctx.translate(0, trackTranslate);
     drawTrack({
       ctx,
