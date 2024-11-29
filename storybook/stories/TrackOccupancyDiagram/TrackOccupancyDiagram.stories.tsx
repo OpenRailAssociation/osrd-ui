@@ -198,8 +198,6 @@ const TrackOccupancyDiagram = ({
     <div
       className="bg-ambientB-10"
       style={{
-        height: 680,
-        width: 1920,
         padding: '30px 40px',
       }}
     >
@@ -290,5 +288,9 @@ export default meta;
 type Story = StoryObj<typeof TrackOccupancyDiagram>;
 
 export const TrackOccupancyDiagramStoryDefault: Story = {
-  args: {},
+  args: {
+    xOffset: 0,
+    xZoomLevel: X_ZOOM_LEVEL,
+    yZoomLevel: Y_ZOOM_LEVEL,
+  },
 };

@@ -1,5 +1,6 @@
 import { drawTrack } from './drawTrack';
 import { timeScaleSample } from '../../../sample/timeScale';
+import { TRACK_HEIGHT_CONTAINER, CANVAS_PADDING } from '../../consts';
 import { type Track } from '../../types';
 
 export function getTimeToPixel(
@@ -57,7 +58,7 @@ export const drawTracks = ({ ctx, width, height, tracks, getTimePixel }: DrawTra
   });
 
   tracks?.forEach((_, index) => {
-    const trackTranslate = index === 0 ? 8 : 73;
+    const trackTranslate = index === 0 ? CANVAS_PADDING : TRACK_HEIGHT_CONTAINER;
     ctx.translate(0, trackTranslate);
     drawTrack({ ctx, width, getTimePixel });
   });

@@ -2,6 +2,7 @@ import { sum } from 'lodash';
 
 import { timeScaleSample } from '../../../sample/timeScale';
 import { TRACK_HEIGHT_CONTAINER } from '../../consts';
+
 type DrawTrackProps = {
   ctx: CanvasRenderingContext2D;
   width: number;
