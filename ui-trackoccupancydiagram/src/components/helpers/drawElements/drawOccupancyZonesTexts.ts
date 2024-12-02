@@ -1,4 +1,9 @@
-import { OCCUPANCY_ZONE_START, MINUTES_TEXT_OFFSET, STATION_TEXT_OFFSET } from '../../consts';
+import {
+  OCCUPANCY_ZONE_START,
+  MINUTES_TEXT_OFFSET,
+  STATION_TEXT_OFFSET,
+  COLORS,
+} from '../../consts';
 import { drawText } from '../../utils';
 
 const BREAKPOINTS = {
@@ -9,6 +14,8 @@ const STROKE_WIDTH = 4;
 const X_INITIAL_POSITION_OFFSET = 8;
 const Y_INITIAL_POSITION_OFFSET = 5;
 const Y_MEDIUM_POSITION_OFFSET = 14;
+
+const { WHITE_100, GREY_50, GREY_60, GREY_80 } = COLORS;
 
 export const drawOccupancyZonesTexts = ({
   ctx,
@@ -49,7 +56,7 @@ export const drawOccupancyZonesTexts = ({
   const xDeparturePosition = getBreakpoint('small') ? 'left' : 'center';
 
   const textStroke = {
-    color: 'rgb(255, 255, 255)',
+    color: WHITE_100,
     width: STROKE_WIDTH,
   };
 
@@ -59,7 +66,7 @@ export const drawOccupancyZonesTexts = ({
     text: zone.arrivalTrainName,
     x: xName,
     y: yName,
-    color: 'rgb(121, 118, 113)',
+    color: GREY_50,
     rotateAngle: -30,
     stroke: textStroke,
   });
@@ -70,7 +77,7 @@ export const drawOccupancyZonesTexts = ({
     text: zone.arrivalTime.getMinutes().toLocaleString('fr-FR', { minimumIntegerDigits: 2 }),
     x: arrivalTime,
     y: OCCUPANCY_ZONE_START + MINUTES_TEXT_OFFSET,
-    color: 'rgb(92, 89, 85)',
+    color: GREY_80,
     xPosition: xArrivalPosition,
     yPosition: 'top',
     font: '400 12px IBM Plex Sans',
@@ -82,7 +89,7 @@ export const drawOccupancyZonesTexts = ({
     text: zone.departureTime.getMinutes().toLocaleString('fr-FR', { minimumIntegerDigits: 2 }),
     x: departureTime,
     y: OCCUPANCY_ZONE_START + MINUTES_TEXT_OFFSET,
-    color: 'rgb(92, 89, 85)',
+    color: GREY_80,
     xPosition: xDeparturePosition,
     yPosition: 'top',
     font: '400 12px IBM Plex Sans',
@@ -95,7 +102,7 @@ export const drawOccupancyZonesTexts = ({
     text: zone.originStation!,
     x: arrivalTime,
     y: OCCUPANCY_ZONE_START - STATION_TEXT_OFFSET,
-    color: 'rgb(92, 89, 85)',
+    color: GREY_60,
     xPosition: 'right',
     yPosition: 'bottom',
     font: `400 10px IBM Plex Mono`,
@@ -107,7 +114,7 @@ export const drawOccupancyZonesTexts = ({
     text: zone.destinationStation!,
     x: departureTime,
     y: OCCUPANCY_ZONE_START - STATION_TEXT_OFFSET,
-    color: 'rgb(92, 89, 85)',
+    color: GREY_60,
     xPosition: 'left',
     yPosition: 'bottom',
     font: `400 10px IBM Plex Mono`,

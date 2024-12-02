@@ -1,6 +1,6 @@
 import { drawTrack } from './drawTrack';
 import { timeScaleSample } from '../../../sample/timeScale';
-import { TRACK_HEIGHT_CONTAINER, CANVAS_PADDING } from '../../consts';
+import { TRACK_HEIGHT_CONTAINER, CANVAS_PADDING, COLORS } from '../../consts';
 import { type Track } from '../../types';
 
 export function getTimeToPixel(
@@ -10,6 +10,8 @@ export function getTimeToPixel(
 ): (time: number) => number {
   return (time: number) => pixelOffset + (time - timeOrigin) / timeScale;
 }
+
+const { WHITE_100, HOUR_BACKGROUND } = COLORS;
 
 const drawBackground = ({
   ctx,
@@ -26,7 +28,7 @@ const drawBackground = ({
 }) => {
   if (xStart >= 0) {
     ctx.clearRect(xStart, 0, width, height);
-    ctx.fillStyle = switchBackground ? 'rgba(243, 248, 253, 0.5)' : 'rgb(255, 255, 255)';
+    ctx.fillStyle = switchBackground ? HOUR_BACKGROUND : WHITE_100;
     ctx.fillRect(xStart, 0, width, height);
   }
 };

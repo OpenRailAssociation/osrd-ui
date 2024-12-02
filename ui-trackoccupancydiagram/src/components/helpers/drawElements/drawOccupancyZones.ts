@@ -4,6 +4,7 @@ import {
   CANVAS_PADDING,
   OCCUPANCY_ZONE_START,
   OCCUPANCY_ZONE_HEIGHT,
+  COLORS,
 } from '../../consts';
 import type { OccupancyZone, Track } from '../../types';
 
@@ -36,7 +37,7 @@ export const drawOccupancyZones = ({
         const departureTime = getTimePixel(zone.departureTime.getTime());
 
         ctx.fillStyle = zone.color;
-        ctx.strokeStyle = 'rgb(255, 255, 255)';
+        ctx.strokeStyle = COLORS.WHITE_100;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.rect(

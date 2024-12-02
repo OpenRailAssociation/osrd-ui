@@ -1,7 +1,7 @@
 import { sum } from 'lodash';
 
 import { timeScaleSample } from '../../../sample/timeScale';
-import { TRACK_HEIGHT_CONTAINER } from '../../consts';
+import { TRACK_HEIGHT_CONTAINER, COLORS } from '../../consts';
 
 type DrawTrackProps = {
   ctx: CanvasRenderingContext2D;
@@ -17,11 +17,13 @@ const TICKS_PATTERN = {
   HOUR: [16, 9, 16],
 };
 
+const { WHITE_50, GREY_20, RAIL_TICK } = COLORS;
+
 const drawRails = ({
   xStart,
   yStart,
   width,
-  stroke = '#D3D1CF',
+  stroke = GREY_20,
   ctx,
 }: {
   xStart: number;
@@ -32,7 +34,7 @@ const drawRails = ({
 }) => {
   ctx.clearRect(xStart, yStart, width, 9);
   ctx.beginPath();
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+  ctx.fillStyle = WHITE_50;
   ctx.strokeStyle = stroke;
   ctx.lineWidth = 1;
   ctx.rect(xStart, yStart, width, 8);
@@ -104,7 +106,7 @@ export const drawTrack = ({ ctx, width, getTimePixel }: DrawTrackProps) => {
       xStart: getTimePixel(+time),
       yStart: TRACK_HEIGHT_CONTAINER / 2,
       ticks: TICKS_PATTERN[tickPattern],
-      stroke: '#2170B9',
+      stroke: RAIL_TICK,
     });
   });
 
