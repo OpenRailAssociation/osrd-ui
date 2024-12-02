@@ -8,6 +8,40 @@ import {
 } from '../../consts';
 import type { OccupancyZone, Track } from '../../types';
 
+type DrawZone = {
+  ctx: CanvasRenderingContext2D;
+  arrivalTime: number;
+  departureTime: number;
+};
+
+const drawDefaultZone = ({ ctx, arrivalTime, departureTime }: DrawZone) => {
+  ctx.beginPath();
+  ctx.rect(arrivalTime, OCCUPANCY_ZONE_START, departureTime! - arrivalTime, OCCUPANCY_ZONE_HEIGHT);
+  ctx.fill();
+  ctx.stroke();
+};
+
+const ARROW_OFFSET_X = 1;
+const ARROW_OFFSET_Y = 1.5;
+const ARROW_WIDTH = 4.5;
+const ARROW_TOP_Y = 3.5;
+const ARROW_BOTTOM_Y = 6.5;
+
+const drawThroughTrain = ({ ctx, arrivalTime }: Omit<DrawZone, 'departureTime'>) => {
+  ctx.beginPath();
+  ctx.moveTo(arrivalTime - ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
+  ctx.lineTo(arrivalTime - ARROW_WIDTH, OCCUPANCY_ZONE_START - ARROW_TOP_Y);
+  ctx.lineTo(arrivalTime + ARROW_WIDTH, OCCUPANCY_ZONE_START - ARROW_TOP_Y);
+  ctx.lineTo(arrivalTime + ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
+  ctx.lineTo(arrivalTime + ARROW_WIDTH, OCCUPANCY_ZONE_START + ARROW_BOTTOM_Y);
+  ctx.lineTo(arrivalTime - ARROW_WIDTH, OCCUPANCY_ZONE_START + ARROW_BOTTOM_Y);
+  ctx.lineTo(arrivalTime - ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
+  ctx.fill();
+  ctx.moveTo(arrivalTime - ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
+  ctx.lineTo(arrivalTime + ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
+  ctx.stroke();
+};
+
 export const drawOccupancyZones = ({
   ctx,
   width,
@@ -36,25 +70,25 @@ export const drawOccupancyZones = ({
     trackOccupancyZones.forEach((zone) => {
       const arrivalTime = getTimePixel(zone.arrivalTime.getTime());
       const departureTime = getTimePixel(zone.departureTime.getTime());
+      const isThroughTrain = arrivalTime === departureTime;
 
       ctx.fillStyle = zone.color;
       ctx.strokeStyle = COLORS.WHITE_100;
       ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.rect(
-        arrivalTime,
-        OCCUPANCY_ZONE_START,
-        departureTime - arrivalTime,
-        OCCUPANCY_ZONE_HEIGHT
-      );
-      ctx.fill();
-      ctx.stroke();
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
 
+      if (isThroughTrain) {
+        drawThroughTrain({ ctx, arrivalTime });
+      } else {
+        drawDefaultZone({ ctx, arrivalTime, departureTime });
+      }
       drawOccupancyZonesTexts({
         ctx,
         zone,
         arrivalTime,
         departureTime,
+        isThroughTrain,
       });
     });
   });

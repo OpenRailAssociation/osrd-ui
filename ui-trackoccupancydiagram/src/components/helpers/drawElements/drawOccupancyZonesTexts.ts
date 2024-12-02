@@ -24,6 +24,7 @@ export const drawOccupancyZonesTexts = ({
   zone,
   arrivalTime,
   departureTime,
+  isThroughTrain,
 }: {
   ctx: CanvasRenderingContext2D;
   zone: {
@@ -35,6 +36,7 @@ export const drawOccupancyZonesTexts = ({
   };
   arrivalTime: number;
   departureTime: number;
+  isThroughTrain: boolean;
 }) => {
   const zoneOccupancyLength = departureTime - arrivalTime - STROKE_WIDTH;
 
@@ -82,17 +84,18 @@ export const drawOccupancyZonesTexts = ({
     stroke: textStroke,
   });
 
-  drawText({
-    ctx,
-    text: zone.departureTime.getMinutes().toLocaleString('fr-FR', { minimumIntegerDigits: 2 }),
-    x: departureTime,
-    y: OCCUPANCY_ZONE_START + MINUTES_TEXT_OFFSET,
-    color: GREY_80,
-    xPosition: xDeparturePosition,
-    yPosition: 'top',
-    font: SANS,
-    stroke: textStroke,
-  });
+  if (!isThroughTrain)
+    drawText({
+      ctx,
+      text: zone.departureTime.getMinutes().toLocaleString('fr-FR', { minimumIntegerDigits: 2 }),
+      x: departureTime,
+      y: OCCUPANCY_ZONE_START + MINUTES_TEXT_OFFSET,
+      color: GREY_80,
+      xPosition: xDeparturePosition,
+      yPosition: 'top',
+      font: '400 12px IBM Plex Sans',
+      stroke: textStroke,
+    });
 
   // origin & destination
   drawText({

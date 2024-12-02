@@ -8,7 +8,7 @@ const OccupancyZones = [
     originStation: 'FOO',
     destinationStation: 'BAR',
     arrivalTime: new Date('2024/04/02 01:30'),
-    departureTime: new Date('2024/04/02 01:31'),
+    departureTime: new Date('2024/04/02 01:30'),
   },
   {
     id: '2',
@@ -96,7 +96,7 @@ const OccupancyZones = [
     arrivalTime: new Date('2024/04/02 00:40'),
     originStation: 'FOO',
     destinationStation: 'BAR',
-    departureTime: new Date('2024/04/02 00:41'),
+    departureTime: new Date('2024/04/02 00:40'),
   },
   {
     id: '10',
@@ -228,7 +228,7 @@ const OccupancyZones = [
     originStation: 'FOO',
     destinationStation: 'BAR',
     arrivalTime: new Date('2024/04/02 02:59'),
-    departureTime: new Date('2024/04/02 03:00'),
+    departureTime: new Date('2024/04/02 02:59'),
   },
 ];
 

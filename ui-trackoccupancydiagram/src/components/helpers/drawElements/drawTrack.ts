@@ -19,6 +19,8 @@ const drawRails = ({
   ctx: CanvasRenderingContext2D;
 }) => {
   ctx.clearRect(xStart, yStart, width, 9);
+  ctx.beginPath();
+  ctx.fillStyle = WHITE_50;
   ctx.strokeStyle = stroke;
   ctx.beginPath();
   ctx.rect(xStart, yStart, width, 8);
