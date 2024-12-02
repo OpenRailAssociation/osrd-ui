@@ -4,6 +4,7 @@ import {
   CANVAS_PADDING,
   OCCUPANCY_ZONE_START,
   OCCUPANCY_ZONE_HEIGHT,
+  COLORS,
 } from '../../consts';
 import type { OccupancyZone, Track } from '../../types';
 
@@ -28,33 +29,33 @@ export const drawOccupancyZones = ({
     const trackTranslate = index === 0 ? CANVAS_PADDING : TRACK_HEIGHT_CONTAINER;
     ctx.translate(0, trackTranslate);
 
-    const filteredOccupancyZone = occupancyZones?.filter((zone) => zone.trackId === track.id);
+    const trackOccupancyZones = occupancyZones?.filter((zone) => zone.trackId === track.id);
 
-    if (filteredOccupancyZone) {
-      filteredOccupancyZone.forEach((zone) => {
-        const arrivalTime = getTimePixel(zone.arrivalTime.getTime());
-        const departureTime = getTimePixel(zone.departureTime.getTime());
+    if (!trackOccupancyZones) return;
 
-        ctx.fillStyle = zone.color;
-        ctx.strokeStyle = 'rgb(255, 255, 255)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.rect(
-          arrivalTime,
-          OCCUPANCY_ZONE_START,
-          departureTime - arrivalTime,
-          OCCUPANCY_ZONE_HEIGHT
-        );
-        ctx.fill();
-        ctx.stroke();
+    trackOccupancyZones.forEach((zone) => {
+      const arrivalTime = getTimePixel(zone.arrivalTime.getTime());
+      const departureTime = getTimePixel(zone.departureTime.getTime());
 
-        drawOccupancyZonesTexts({
-          ctx,
-          zone,
-          arrivalTime,
-          departureTime,
-        });
+      ctx.fillStyle = zone.color;
+      ctx.strokeStyle = COLORS.WHITE_100;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.rect(
+        arrivalTime,
+        OCCUPANCY_ZONE_START,
+        departureTime - arrivalTime,
+        OCCUPANCY_ZONE_HEIGHT
+      );
+      ctx.fill();
+      ctx.stroke();
+
+      drawOccupancyZonesTexts({
+        ctx,
+        zone,
+        arrivalTime,
+        departureTime,
       });
-    }
+    });
   });
 };

@@ -8,8 +8,12 @@ new FontFace('IBM Plex Mono', 'url(/assets/IBMPlexMono-Regular.ttf)').load().the
   document.fonts.add(result);
 });
 
-const TrackOccupancyCanvas = ({ useDraw, setCanvasesRoot }: TrackOccupancyCanvasProps) => (
-  <div id="track-occupancy-canvas" className="bg-white-100" ref={setCanvasesRoot}>
+const TrackOccupancyCanvas = ({ opId, useDraw, setCanvasesRoot }: TrackOccupancyCanvasProps) => (
+  <div
+    id={`track-occupancy-canvas-${opId}`}
+    className="bg-white-100 canvas-container"
+    ref={setCanvasesRoot}
+  >
     <TracksLayer useDraw={useDraw} />
     <OccupancyZonesLayer useDraw={useDraw} />
   </div>

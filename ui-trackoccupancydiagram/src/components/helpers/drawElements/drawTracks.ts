@@ -1,6 +1,7 @@
 import { drawTrack } from './drawTrack';
 import { TRACK_HEIGHT_CONTAINER, CANVAS_PADDING, COLORS, TICKS_PRIORITIES } from '../../consts';
 import { type Track } from '../../types';
+import { getLabelLevels, getLabelMarks } from '../../utils';
 
 export function getTimeToPixel(
   timeOrigin: number,
@@ -9,6 +10,8 @@ export function getTimeToPixel(
 ): (time: number) => number {
   return (time: number) => pixelOffset + (time - timeOrigin) / timeScale;
 }
+
+const { WHITE_100, HOUR_BACKGROUND } = COLORS;
 
 const drawBackground = ({
   ctx,
@@ -25,7 +28,7 @@ const drawBackground = ({
 }) => {
   if (xStart >= 0) {
     ctx.clearRect(xStart, 0, width, height);
-    ctx.fillStyle = switchBackground ? 'rgba(243, 248, 253, 0.5)' : 'rgb(255, 255, 255)';
+    ctx.fillStyle = switchBackground ? HOUR_BACKGROUND : WHITE_100;
     ctx.fillRect(xStart, 0, width, height);
   }
 };
@@ -60,29 +63,10 @@ export const drawTracks = ({
   const minT = timeOrigin - timeScale * timePixelOffset;
   const maxT = minT + timeScale * width;
   const pixelsPerMinute = (1 / timeScale) * 60_000;
-  let labelLevels: number[] = [];
 
-  breakpoints.some((breakpoint, i) => {
-    if (pixelsPerMinute < breakpoint) {
-      labelLevels = TICKS_PRIORITIES[i];
-      return true;
-    }
-    return false;
-  });
+  const labelLevels = getLabelLevels(breakpoints, pixelsPerMinute, TICKS_PRIORITIES);
 
-  const labelMarks: Record<number, { level: number; rangeIndex: number }> = {};
-
-  timeRanges.map((range, i) => {
-    const labelLevel = labelLevels[i];
-
-    if (!labelLevel) return;
-
-    let t = Math.floor(minT / range) * range;
-    while (t <= maxT) {
-      if (labelLevel) labelMarks[t] = { level: labelLevel, rangeIndex: i };
-      t += range;
-    }
-  });
+  const labelMarks = getLabelMarks(timeRanges, minT, maxT, labelLevels);
 
   let switchBackground = false;
 

@@ -1,9 +1,14 @@
 export const TRACK_HEIGHT_CONTAINER = 73;
-export const CANVAS_PADDING = 8;
+export const CANVAS_PADDING = 10;
 export const OCCUPANCY_ZONE_START = 35;
 export const OCCUPANCY_ZONE_HEIGHT = 3;
 export const MINUTES_TEXT_OFFSET = 6.5;
 export const STATION_TEXT_OFFSET = 5;
+
+export const FONTS = {
+  SANS: '400 12px IBM Plex Sans',
+  MONO: '400 10px IBM Plex Mono',
+};
 
 export const COLORS = {
   GREY_20: 'rgb(211, 209, 207)',

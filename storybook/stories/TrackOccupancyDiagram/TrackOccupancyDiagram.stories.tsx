@@ -40,6 +40,7 @@ type TrackOccupancyDiagramProps = {
   emptyData: boolean;
 };
 
+const OP_ID = 'story';
 const X_ZOOM_LEVEL = 6;
 const Y_ZOOM_LEVEL = 3;
 
@@ -195,61 +196,29 @@ const TrackOccupancyDiagram = ({
   const { canvasContext: spaceTicksContext } = useCanvas(spaceTicksRoot, contextState, position);
 
   return (
-    <div
-      className="bg-ambientB-10"
-      style={{
-        padding: '30px 40px',
-      }}
-    >
+    <div id="track-occupancy-diagram-base-story" className="bg-ambientB-10">
       <SpaceTimeChartContext.Provider value={contextState}>
-        <div
-          style={{
-            width: 1424,
-            boxShadow:
-              '0px 2px 4px 0 rgba(0, 0, 0, 0.22), 0 4px 7px -3px rgba(255, 171, 88, 0.17), inset 0 1px 0 0 rgb(255, 255, 255)',
-            borderRadius: 10,
-          }}
-        >
-          <div
-            className="bg-ambientB-5 flex flex-col justify-center"
-            style={{
-              height: 40,
-              width: '100%',
-              paddingLeft: 16,
-              borderRadius: '10px 10px 0 0',
-              boxShadow: 'inset 0 1px 0 0 rgb(255, 255, 255), inset 0 -1px 0 0 rgba(0, 0, 0, 0.25)',
-            }}
-          >
+        <div className="main-container">
+          <div className="bg-ambientB-5 flex flex-col justify-center main-container-header">
             <KebabHorizontal />
           </div>
           <div className="flex">
-            <div
-              style={{
-                width: 200,
-                borderRadius: '0 0 0 10px',
-              }}
-            >
+            <div className="main-container-manchette">
               <TrackOccupancyManchette tracks={tracks} />
             </div>
             <CanvasContext.Provider value={canvasContext}>
-              <div
-                style={{
-                  width: 1224,
-                  borderRadius: '0 0 10px 0',
-                  position: 'relative',
-                }}
-              >
-                <TrackOccupancyCanvas useDraw={useDraw} setCanvasesRoot={setCanvasesRoot} />
+              <div className="main-container-canvas">
+                <TrackOccupancyCanvas
+                  opId={OP_ID}
+                  useDraw={useDraw}
+                  setCanvasesRoot={setCanvasesRoot}
+                />
               </div>
             </CanvasContext.Provider>
           </div>
         </div>
         <CanvasContext.Provider value={spaceTicksContext}>
-          <div
-            ref={setRoot}
-            className="relative"
-            style={{ marginLeft: 200, width: 1224, height: 33 }}
-          >
+          <div ref={setRoot} className="relative main-container-time-captions">
             <div ref={setSpaceTicksRoot} className="absolute inset-0">
               <TimeCaptions />
             </div>

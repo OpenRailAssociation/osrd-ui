@@ -25,12 +25,12 @@ export const drawText = ({
   xPosition = 'left',
   yPosition = 'bottom',
   font = '400 12px IBM Plex Sans',
-  rotateAngle,
+  rotateAngle = 0,
   stroke,
 }: DrawTextType) => {
   ctx.save();
   ctx.translate(x, y);
-  if (rotateAngle) ctx.rotate((rotateAngle * Math.PI) / 180);
+  ctx.rotate((rotateAngle * Math.PI) / 180);
 
   ctx.font = font;
   ctx.textAlign = xPosition;
@@ -46,33 +46,50 @@ export const drawText = ({
   ctx.restore();
 };
 
-export const getTickPattern = (minutes: string) => {
-  let tickPattern: TickPattern = 'MINUTE';
-  switch (minutes) {
-    case '00':
-      tickPattern = 'HOUR';
-      break;
-    case '30':
-      tickPattern = 'HALF_HOUR';
-      break;
-    case '15':
-    case '45':
-      tickPattern = 'QUARTER_HOUR';
-      break;
-    case '05':
-    case '10':
-    case '20':
-    case '25':
-    case '35':
-    case '40':
-    case '50':
-    case '55':
-      tickPattern = 'FIVE_MINUTES';
-      break;
-    default:
-      tickPattern = 'MINUTE';
-      break;
-  }
+export const getTickPattern = (minutes: string): TickPattern => {
+  const tickPatternMap: Record<string, TickPattern> = {
+    '00': 'HOUR',
+    '30': 'HALF_HOUR',
+    '15': 'QUARTER_HOUR',
+    '45': 'QUARTER_HOUR',
+    '05': 'FIVE_MINUTES',
+    '10': 'FIVE_MINUTES',
+    '20': 'FIVE_MINUTES',
+    '25': 'FIVE_MINUTES',
+    '35': 'FIVE_MINUTES',
+    '40': 'FIVE_MINUTES',
+    '50': 'FIVE_MINUTES',
+    '55': 'FIVE_MINUTES',
+  };
+  return tickPatternMap[minutes] ?? 'MINUTE';
+};
 
-  return tickPattern;
+export const getLabelMarks = (
+  timeRanges: number[],
+  minT: number,
+  maxT: number,
+  labelLevels: number[]
+) => {
+  const labelMarks: Record<number, { level: number; rangeIndex: number }> = {};
+
+  timeRanges.map((range, index) => {
+    const labelLevel = labelLevels[index];
+
+    if (!labelLevel) return;
+
+    for (let t = Math.floor(minT / range) * range; t <= maxT; t += range) {
+      labelMarks[t] = { level: labelLevel, rangeIndex: index };
+    }
+  });
+
+  return labelMarks;
+};
+
+export const getLabelLevels = (
+  breakpoints: number[],
+  pixelsPerMinute: number,
+  ticksPriorities: number[][]
+): number[] => {
+  const index = breakpoints.findIndex((breakpoint) => pixelsPerMinute < breakpoint);
+  return index >= 0 ? ticksPriorities[index] : [];
 };

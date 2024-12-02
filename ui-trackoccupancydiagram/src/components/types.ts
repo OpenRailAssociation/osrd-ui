@@ -24,6 +24,7 @@ export type OccupancyZone = {
 };
 
 export type TrackOccupancyCanvasProps = {
+  opId: string;
   useDraw: (layer: LayerType, fn: DrawingFunction) => void;
   setCanvasesRoot: (root: HTMLDivElement | null) => void;
 };
