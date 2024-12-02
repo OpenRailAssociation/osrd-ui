@@ -114,7 +114,6 @@ const ComboBox = <T,>({
     } else {
       setInputValue('');
       setSelectedOption(null);
-      onSelectSuggestion?.(undefined);
     }
   }, [value]);
 
