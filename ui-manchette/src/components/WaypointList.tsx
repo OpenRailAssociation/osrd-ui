@@ -1,14 +1,14 @@
 import React from 'react';
 
 import Waypoint from './Waypoint';
-import type { WaypointMenuData, InteractiveWaypoint } from '../types';
+import type { InteractiveWaypoint } from '../types';
 
 type WaypointListProps = {
   waypoints: InteractiveWaypoint[];
-  waypointMenuData?: WaypointMenuData;
+  activeWaypointId?: string;
 };
 
-const WaypointList = ({ waypoints, waypointMenuData }: WaypointListProps) => (
+const WaypointList = ({ waypoints, activeWaypointId }: WaypointListProps) => (
   <div className="waypoint-list ">
     {waypoints.map((waypoint) => (
       <div
@@ -18,8 +18,8 @@ const WaypointList = ({ waypoints, waypointMenuData }: WaypointListProps) => (
       >
         <Waypoint
           waypoint={waypoint}
-          isActive={waypointMenuData?.activeWaypointId === waypoint.id}
-          waypointMenu={waypointMenuData?.menu}
+          isActive={activeWaypointId === waypoint.id}
+          isMenuActive={!!activeWaypointId}
         />
       </div>
     ))}

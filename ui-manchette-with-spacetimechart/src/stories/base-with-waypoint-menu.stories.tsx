@@ -22,7 +22,11 @@ type ManchetteWithSpaceTimeWrapperProps = {
 
 const DEFAULT_HEIGHT = 561;
 
-/** Example of setting up a menu for the waypoints */
+/**
+ * Example of setting up a menu for the waypoints.
+ * When displayed, the interaction with the rest of the manchette is disabled
+ * and the scroll inside the manchette is locked.
+ * */
 
 const ManchetteWithSpaceTimeWrapper = ({
   waypoints,
@@ -30,8 +34,12 @@ const ManchetteWithSpaceTimeWrapper = ({
   selectedTrain,
 }: ManchetteWithSpaceTimeWrapperProps) => {
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
-
-  const [activeWaypointId, setActiveWaypointPointId] = useState<string>();
+  // Allow us to compute the position of the menu in Manchette component
+  const manchetteWithSpaceTimeCharWrappertRef = useRef<HTMLDivElement>(null);
+  const [activeWaypointRef, setActiveWaypointPointRef] =
+    useState<React.RefObject<HTMLDivElement>>();
+  // Allow us now which waypoint has been clicked and change its style
+  const [activeWaypointId, setActiveWaypointId] = useState<string>();
 
   const menuItems: MenuItem[] = [
     {
@@ -39,7 +47,8 @@ const ManchetteWithSpaceTimeWrapper = ({
       icon: <EyeClosed />,
       onClick: (e: React.MouseEvent) => {
         e.stopPropagation();
-        setActiveWaypointPointId(undefined);
+        setActiveWaypointPointRef(undefined);
+        setActiveWaypointId(undefined);
       },
     },
     {
@@ -47,13 +56,18 @@ const ManchetteWithSpaceTimeWrapper = ({
       icon: <Telescope />,
       onClick: (e: React.MouseEvent) => {
         e.stopPropagation();
-        setActiveWaypointPointId(undefined);
+        setActiveWaypointPointRef(undefined);
+        setActiveWaypointId(undefined);
       },
     },
   ];
 
-  const handleWaypointClick = (waypointId: string) => {
-    setActiveWaypointPointId(waypointId);
+  const handleWaypointClick = (
+    waypointId: string,
+    waypointRef: React.RefObject<HTMLDivElement>
+  ) => {
+    setActiveWaypointId(waypointId);
+    setActiveWaypointPointRef(waypointRef);
   };
 
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchettesWithSpaceTimeChart(
@@ -64,7 +78,9 @@ const ManchetteWithSpaceTimeWrapper = ({
   );
 
   return (
-    <div className="manchette-space-time-chart-wrapper">
+    // Ref needs to be on the parent on the scrollable element (.manchette) and have a position
+    // relative so the menu can properly overflow the manchette
+    <div ref={manchetteWithSpaceTimeCharWrappertRef} className="manchette-space-time-chart-wrapper">
       <div
         className="header bg-ambientB-5 w-full border-b border-grey-30"
         style={{ height: '40px' }}
@@ -84,8 +100,10 @@ const ManchetteWithSpaceTimeWrapper = ({
             onClick: handleWaypointClick,
           }))}
           waypointMenuData={{
-            activeWaypointId,
             menu: <Menu items={menuItems} />,
+            activeWaypointId,
+            activeWaypointRef,
+            manchetteWrapperRef: manchetteWithSpaceTimeCharWrappertRef,
           }}
         />
         <div

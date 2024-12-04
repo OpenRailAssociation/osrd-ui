@@ -1,4 +1,9 @@
 .manchette-container {
+  .menu-wrapper {
+    position: absolute;
+    z-index: 12;
+  }
+
   .manchette-actions {
     align-items: center;
     background-color: rgba(250, 249, 245, 0.6);
