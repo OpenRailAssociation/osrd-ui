@@ -4,7 +4,7 @@ import {
   clearCanvas,
   positionToPosX,
   maxPositionValue,
-  filterStops,
+  getDisplayedStops,
   getSnappedStop,
 } from '../../utils';
 
@@ -24,7 +24,7 @@ export const drawSteps = ({ ctx, width, height, store }: DrawFunctionParams) => 
 
   const maxPosition = maxPositionValue(store.speeds);
 
-  const filteredStops = filterStops(stops, ratioX, width, maxPosition);
+  const filteredStops = getDisplayedStops(stops, ratioX, width, maxPosition);
 
   ctx.save();
   ctx.translate(leftOffset, 0);
@@ -72,7 +72,7 @@ export const drawSteps = ({ ctx, width, height, store }: DrawFunctionParams) => 
   ctx.restore();
 
   // Text
-  const filteredTextStops = filterStops(filteredStops, ratioX, width, maxPosition, 25);
+  const filteredTextStops = getDisplayedStops(filteredStops, ratioX, width, maxPosition, 25);
   filteredTextStops.forEach(({ position, value }) => {
     if (snappedStop && position.start === snappedStop.position.start) {
       return;
@@ -92,7 +92,7 @@ export const drawSteps = ({ ctx, width, height, store }: DrawFunctionParams) => 
     ctx.textAlign = 'left';
 
     // Draw the text at the origin, since the context is already transformed
-    ctx.fillText(value!, 0, 0);
+    ctx.fillText(value!.name, 0, 0);
     ctx.restore();
   });
 

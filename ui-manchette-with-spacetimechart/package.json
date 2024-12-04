@@ -39,6 +39,7 @@
   "dependencies": {
     "@osrd-project/ui-manchette": "0.0.1-dev",
     "@osrd-project/ui-spacetimechart": "0.0.1-dev",
+    "@osrd-project/ui-speedspacechart": "0.0.1-dev",
     "classnames": "^2.5.1",
     "lodash.isequal": "^4.5.0",
     "vitest": "^2.1.1"

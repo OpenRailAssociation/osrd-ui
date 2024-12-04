@@ -374,7 +374,7 @@ describe('getSnappedStop', () => {
   ])('should find the correct snapped stop', (stopPositions, cursorX, expectedPos) => {
     const stops = stopPositions.map((pos) => ({
       position: { start: pos },
-      value: 'MyTestStop',
+      value: { name: 'MyTestStop' },
     }));
     const storeWithStops: Store = {
       ...store,

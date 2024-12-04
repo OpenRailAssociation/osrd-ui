@@ -15,7 +15,7 @@ import {
   DEFAULT_ZOOM_MS_PER_PX,
 } from '../consts';
 import {
-  calcWaypointsToDisplay,
+  getDisplayedWaypoints,
   getWaypointsWithPosition as getOperationalPointWithPosition,
   getScales,
   calcWaypointsHeight,
@@ -63,7 +63,7 @@ const useManchettesWithSpaceTimeChart = (
   const paths = usePaths(projectPathTrainResult, selectedTrain);
 
   const waypointsToDisplay = useMemo(
-    () => calcWaypointsToDisplay(waypoints, { height, isProportional, yZoom }),
+    () => getDisplayedWaypoints(waypoints, { height, isProportional, yZoom }),
     [waypoints, height, isProportional, yZoom]
   );
   const waypointWithHeight = useMemo(

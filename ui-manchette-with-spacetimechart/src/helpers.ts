@@ -1,5 +1,6 @@
 import type { InteractiveWaypoint, Waypoint } from '@osrd-project/ui-manchette/dist/types';
 import type { OperationalPoint } from '@osrd-project/ui-spacetimechart/dist/lib/types';
+import { filterVisibleElements } from '@osrd-project/ui-speedspacechart/src/components/utils';
 import { clamp } from 'lodash';
 
 import {
@@ -13,48 +14,26 @@ import { calcTotalDistance, getHeightWithoutLastWaypoint } from './utils';
 
 type WaypointsOptions = { isProportional: boolean; yZoom: number; height: number };
 
-export const calcWaypointsToDisplay = (
+export const getDisplayedWaypoints = (
   waypoints: Waypoint[],
   { height, isProportional, yZoom }: WaypointsOptions
 ): InteractiveWaypoint[] => {
   if (!isProportional || waypoints.length === 0) {
-    // For non-proportional display, we always display all the waypoints:
     return waypoints.map((waypoint) => ({ ...waypoint, display: true }));
   }
 
-  // For proportional display, we only display waypoints that do not overlap with
-  // the last displayed point:
-  const result: InteractiveWaypoint[] = [{ ...waypoints[0], display: true }];
   const totalDistance = calcTotalDistance(waypoints);
   const heightWithoutFinalWaypoint = getHeightWithoutLastWaypoint(height);
-  let lastDisplayedWaypoint = result[0];
+  const minSpace = BASE_WAYPOINT_HEIGHT / yZoom;
 
-  // We iterate through all points, and only add them if they don't collide
-  // with the last visible point:
-  for (let i = 1; i < waypoints.length; i++) {
-    const waypoint = waypoints[i];
-    const diff = waypoint.position - lastDisplayedWaypoint.position;
-    const display =
-      (diff / totalDistance) * heightWithoutFinalWaypoint * yZoom >= BASE_WAYPOINT_HEIGHT;
+  const displayedWaypoints = filterVisibleElements({
+    elements: waypoints,
+    getPosition: (waypoint) => (waypoint.position / totalDistance) * heightWithoutFinalWaypoint,
+    getWeight: (waypoint) => waypoint.weight,
+    minSpace,
+  });
 
-    if (display) {
-      result.push({ ...waypoint, display });
-      lastDisplayedWaypoint = waypoint;
-    }
-  }
-
-  // In the end, to make sure the last point is visible, if it's not, we swap
-  // it with the last visible item:
-  const lastItem = result[result.length - 1];
-  if (!lastItem.display) {
-    const lastVisibleItem = result.findLast((waypoint) => waypoint.display);
-    if (lastVisibleItem) {
-      lastVisibleItem.display = false;
-      lastItem.display = true;
-    }
-  }
-
-  return result;
+  return displayedWaypoints.map((waypoint) => ({ ...waypoint, display: true }));
 };
 
 export const calcWaypointsHeight = (

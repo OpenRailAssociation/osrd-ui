@@ -5,6 +5,7 @@ export type Waypoint = {
   position: number; // in mm
   name?: string;
   secondaryCode?: string;
+  weight?: number;
 };
 
 export type InteractiveWaypoint = Waypoint & {

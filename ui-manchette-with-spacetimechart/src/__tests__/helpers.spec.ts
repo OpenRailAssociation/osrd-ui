@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { BASE_WAYPOINT_HEIGHT } from '../consts';
 import {
-  calcWaypointsToDisplay,
+  getDisplayedWaypoints,
   calcWaypointsHeight,
   getWaypointsWithPosition,
   getScales,
@@ -17,9 +17,9 @@ const mockedWaypoints = [
   { position: 20, id: 'waypoint-3' },
 ];
 
-describe('calcWaypointsToDisplay', () => {
+describe('getDisplayedWaypoints', () => {
   it('should display all points for non-proportional display', () => {
-    const result = calcWaypointsToDisplay(mockedWaypoints, {
+    const result = getDisplayedWaypoints(mockedWaypoints, {
       height: 500,
       isProportional: false,
       yZoom: 1,
@@ -31,7 +31,7 @@ describe('calcWaypointsToDisplay', () => {
   });
 
   it('should calculate proportional display correctly', () => {
-    const result = calcWaypointsToDisplay(mockedWaypoints, {
+    const result = getDisplayedWaypoints(mockedWaypoints, {
       height: 500,
       isProportional: true,
       yZoom: 1,
@@ -42,7 +42,7 @@ describe('calcWaypointsToDisplay', () => {
   });
 
   it('should ensure the last point is always displayed', () => {
-    const result = calcWaypointsToDisplay(mockedWaypoints, {
+    const result = getDisplayedWaypoints(mockedWaypoints, {
       height: 500,
       isProportional: true,
       yZoom: 1,

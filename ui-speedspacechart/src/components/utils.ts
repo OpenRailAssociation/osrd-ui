@@ -6,13 +6,20 @@ import {
   MARGINS,
   type LAYERS_SELECTION,
 } from './const';
-import type { LayerData, Store } from '../types/chartTypes';
+import type { LayerData, OperationalPoints, Store } from '../types/chartTypes';
 
 type SlopesValues = {
   minGradient: number;
   maxGradient: number;
   slopesRange: number;
   maxPosition: number;
+};
+
+type VisibilityFilterOptions<T> = {
+  elements: T[];
+  getPosition: (element: T) => number;
+  getWeight: (element: T) => number | undefined;
+  minSpace: number;
 };
 
 export const getGraphOffsets = (width: number, height: number, declivities?: boolean) => {
@@ -326,26 +333,48 @@ export const interpolate = (x1: number, y1: number, x2: number, y2: number, x: n
 export const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
-/** Filter stops to avoid overlapping draw */
-export const filterStops = (
-  stops: LayerData<string>[],
+export const filterVisibleElements = <T>({
+  elements,
+  getPosition,
+  getWeight,
+  minSpace,
+}: VisibilityFilterOptions<T>): T[] => {
+  const sortedElements = [...elements].sort((a, b) => (getWeight(b) ?? 0) - (getWeight(a) ?? 0));
+  const displayedElements: { element: T; position: number }[] = [];
+
+  for (const element of sortedElements) {
+    const position = getPosition(element);
+
+    const hasSpace = !displayedElements.some(
+      (displayed) => Math.abs(position - displayed.position) < minSpace
+    );
+
+    if (hasSpace) {
+      displayedElements.push({ element, position });
+    }
+  }
+
+  return displayedElements
+    .sort((a, b) => getPosition(a.element) - getPosition(b.element))
+    .map(({ element }) => element);
+};
+
+/** Filter stops to avoid overlapping, showing the most important stops first */
+export const getDisplayedStops = (
+  stops: LayerData<OperationalPoints>[],
   ratioX: number,
   width: number,
   maxPosition: number,
   minSpace = 8
-) => {
-  let lastDisplayedPosX: number | null = null;
-
-  const filteredStops = stops.filter(({ position }) => {
-    const posX = positionToPosX(position.start, maxPosition, width, ratioX);
-    if (lastDisplayedPosX !== null && Math.abs(posX - lastDisplayedPosX) < minSpace) {
-      return false;
-    }
-    lastDisplayedPosX = posX;
-    return true;
+): LayerData<OperationalPoints>[] => {
+  const displayedStops = filterVisibleElements({
+    elements: stops,
+    getPosition: (stop) => positionToPosX(stop.position.start, maxPosition, width, ratioX),
+    getWeight: (stop) => stop.value.weight,
+    minSpace,
   });
 
-  return filteredStops;
+  return displayedStops;
 };
 
 /** Compute the cursor position on the x-axis given its position on the canva */
@@ -367,14 +396,14 @@ export const getSnappedStop = (cursorX: number, width: number, store: Store) => 
   const maxPosition = maxPositionValue(store.speeds);
 
   // Search for the closest stop to the cursor
-  const filteredStops = filterStops(stops, ratioX, width, maxPosition);
+  const filteredStops = getDisplayedStops(stops, ratioX, width, maxPosition);
   let closestStopIndex: number = 0;
   if (filteredStops.length > 1) {
     const cursorPosition = clamp(getCursorPosition(cursorX, width, store), 0, maxPosition);
     const index = binarySearch(
       filteredStops,
       cursorPosition,
-      (element: LayerData<string>) => element.position.start
+      (element: LayerData<OperationalPoints>) => element.position.start
     );
 
     const nextIndex = Math.min(index + 1, filteredStops.length - 1);

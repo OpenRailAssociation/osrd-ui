@@ -44,7 +44,10 @@ const formatStops = (operationalPoints: PathProperties['operational_points']) =>
     position: {
       start: convertMmToKM(position),
     },
-    value: `${extensions.identifier.name} ${extensions.ch !== '00' ? extensions.ch : ''}`,
+    value: {
+      name: `${extensions.identifier.name} ${extensions.ch !== '00' ? extensions.ch : ''}`,
+      weight: extensions.weight,
+    },
   }));
 
 const formatElectrifications = (electrifications: PathProperties['electrifications']) =>

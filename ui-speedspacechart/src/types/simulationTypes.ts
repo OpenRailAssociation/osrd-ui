@@ -42,6 +42,7 @@ export type PathProperties = {
       identifier: {
         name: string;
       };
+      weight?: number;
     };
     position: number;
   }[];

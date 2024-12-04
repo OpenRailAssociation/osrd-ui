@@ -30,6 +30,11 @@ export type LayerData<T> = {
   value: T;
 };
 
+export type OperationalPoints = {
+  name: string;
+  weight?: number;
+};
+
 export type ValuesAlongPath<T> = {
   // The n boundaries of the values along the path.
   // Ignore first and last values which are 0 and the total length of the path.
@@ -49,7 +54,7 @@ export type SpeedLimit = {
 export type Data = {
   speeds: LayerData<number>[];
   ecoSpeeds: LayerData<number>[];
-  stops: LayerData<string>[];
+  stops: LayerData<OperationalPoints>[];
   electrifications: LayerData<ElectrificationValues>[];
   slopes: LayerData<number>[];
   mrsp?: ValuesAlongPath<SpeedLimit>;

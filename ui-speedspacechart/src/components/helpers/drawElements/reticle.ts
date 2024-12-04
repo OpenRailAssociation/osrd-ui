@@ -85,7 +85,7 @@ export const drawCursor = ({ ctx, width, height, store }: DrawFunctionParams) =>
       snapToStop = true;
       cursorPosition = snappedStop.position.start;
       reticleX = positionToPosX(cursorPosition, maxPosition, width, ratioX, leftOffset);
-      stopText = snappedStop.value;
+      stopText = snappedStop.value.name;
     }
   }
 

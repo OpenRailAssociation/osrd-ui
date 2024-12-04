@@ -150,6 +150,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Paris-Montparnasse',
         },
+        weight: 100,
       },
       position: 0,
     },
@@ -159,6 +160,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Paris-Vaugirard',
         },
+        weight: 80,
       },
       position: 341000,
     },
@@ -168,6 +170,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Paris-Montparnasse',
         },
+        weight: 20,
       },
       position: 1014000,
     },
@@ -177,6 +180,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Paris-Montparnasse',
         },
+        weight: 20,
       },
       position: 1078000,
     },
@@ -186,6 +190,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Paris-Montparnasse',
         },
+        weight: 10,
       },
       position: 1900000,
     },
@@ -195,6 +200,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Vanves-Malakoff',
         },
+        weight: 0,
       },
       position: 2005000,
     },
@@ -204,6 +210,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Vanves-Malakoff',
         },
+        weight: 0,
       },
       position: 2085000,
     },
@@ -213,6 +220,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Vanves-Malakoff',
         },
+        weight: 70,
       },
       position: 2332000,
     },
@@ -222,6 +230,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Vanves-Malakoff',
         },
+        weight: 90,
       },
       position: 2701000,
     },
@@ -231,6 +240,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 75,
       },
       position: 3856000,
     },
@@ -240,6 +250,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 15,
       },
       position: 3856000,
     },
@@ -249,6 +260,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 85,
       },
       position: 3927000,
     },
@@ -258,6 +270,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 35,
       },
       position: 3943000,
     },
@@ -267,6 +280,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 10,
       },
       position: 3959000,
     },
@@ -276,6 +290,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 0,
       },
       position: 4306000,
     },
@@ -285,6 +300,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 20,
       },
       position: 4306000,
     },
@@ -294,6 +310,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 75,
       },
       position: 4331000,
     },
@@ -303,6 +320,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 65,
       },
       position: 4407000,
     },
@@ -312,6 +330,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 70,
       },
       position: 4465000,
     },
@@ -321,6 +340,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 40,
       },
       position: 4666000,
     },
@@ -330,6 +350,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 10,
       },
       position: 5338000,
     },
@@ -339,6 +360,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 20,
       },
       position: 5341000,
     },
@@ -348,6 +370,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 75,
       },
       position: 5559000,
     },
@@ -357,6 +380,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 35,
       },
       position: 5563000,
     },
@@ -366,6 +390,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montrouge-Châtillon',
         },
+        weight: 50,
       },
       position: 5617000,
     },
@@ -375,6 +400,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Massy-TGV',
         },
+        weight: 50,
       },
       position: 11377000,
     },
@@ -384,6 +410,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Massy-TGV',
         },
+        weight: 10,
       },
       position: 11457000,
     },
@@ -393,6 +420,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Massy-TGV',
         },
+        weight: 70,
       },
       position: 13266000,
     },
@@ -402,6 +430,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Massy-TGV',
         },
+        weight: 20,
       },
       position: 13495000,
     },
@@ -411,6 +440,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Massy-TGV',
         },
+        weight: 60,
       },
       position: 13640000,
     },
@@ -420,6 +450,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Massy-TGV',
         },
+        weight: 80,
       },
       position: 13917000,
     },
@@ -429,6 +460,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Massy-TGV',
         },
+        weight: 55,
       },
       position: 14284000,
     },
@@ -438,6 +470,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 12 Marcoussis',
         },
+        weight: 30,
       },
       position: 24888000,
     },
@@ -447,6 +480,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 13 St-Arnoult',
         },
+        weight: 70,
       },
       position: 44154000,
     },
@@ -456,6 +490,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 13 St-Arnoult',
         },
+        weight: 15,
       },
       position: 55666000,
     },
@@ -465,6 +500,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 14 St-Léger',
         },
+        weight: 20,
       },
       position: 65984000,
     },
@@ -474,6 +510,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 14 St-Léger',
         },
+        weight: 65,
       },
       position: 66757000,
     },
@@ -483,6 +520,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 14 St-Léger',
         },
+        weight: 60,
       },
       position: 67322000,
     },
@@ -492,6 +530,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 15 Rouvray',
         },
+        weight: 15,
       },
       position: 91839000,
     },
@@ -501,6 +540,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 16 Dangeau',
         },
+        weight: 20,
       },
       position: 113593000,
     },
@@ -510,6 +550,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Courtalain-TGV-Bifurcation',
         },
+        weight: 35,
       },
       position: 129814000,
     },
@@ -519,6 +560,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Courtalain-TGV-Bifurcation',
         },
+        weight: 30,
       },
       position: 129814000,
     },
@@ -528,6 +570,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 17',
         },
+        weight: 30,
       },
       position: 133730000,
     },
@@ -537,6 +580,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 31 Plessis',
         },
+        weight: 45,
       },
       position: 149220000,
     },
@@ -546,6 +590,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 32 Dollon',
         },
+        weight: 40,
       },
       position: 172330000,
     },
@@ -555,6 +600,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 33 Connerré',
         },
+        weight: 60,
       },
       position: 178858000,
     },
@@ -564,6 +610,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Poste 33 Connerré',
         },
+        weight: 55,
       },
       position: 179187000,
     },
@@ -573,6 +620,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Connerré-Beillé',
         },
+        weight: 90,
       },
       position: 181509000,
     },
@@ -582,6 +630,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Connerré-Beillé',
         },
+        weight: 10,
       },
       position: 182367000,
     },
@@ -591,6 +640,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montfort-le-Gesnois',
         },
+        weight: 25,
       },
       position: 184452000,
     },
@@ -600,6 +650,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Montfort-le-Gesnois',
         },
+        weight: 15,
       },
       position: 184564000,
     },
@@ -609,6 +660,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'St-Mars-la-Brière',
         },
+        weight: 20,
       },
       position: 187776000,
     },
@@ -618,6 +670,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Champagné',
         },
+        weight: 30,
       },
       position: 190201000,
     },
@@ -627,6 +680,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: "Yvré-l'Évêque",
         },
+        weight: 50,
       },
       position: 194664000,
     },
@@ -636,6 +690,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Le Mans',
         },
+        weight: 10,
       },
       position: 199484000,
     },
@@ -645,6 +700,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Le Mans',
         },
+        weight: 5,
       },
       position: 200406000,
     },
@@ -654,6 +710,7 @@ export const pathPropertiesPmpLm: PathProperties = {
         identifier: {
           name: 'Le Mans',
         },
+        weight: 100,
       },
       position: 201649000,
     },

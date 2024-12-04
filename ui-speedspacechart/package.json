@@ -21,6 +21,7 @@
   ],
   "exports": {
     "./dist/theme.css": "./dist/theme.css",
+    "./src/components/utils": "./src/components/utils",
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.esm.js"
