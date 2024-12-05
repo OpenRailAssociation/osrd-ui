@@ -6,9 +6,10 @@ import type { InteractiveWaypoint } from '../types';
 type WaypointListProps = {
   waypoints: InteractiveWaypoint[];
   activeWaypointId?: string;
+  activeWaypointRef?: React.Ref<HTMLDivElement>;
 };
 
-const WaypointList = ({ waypoints, activeWaypointId }: WaypointListProps) => (
+const WaypointList = ({ waypoints, activeWaypointId, activeWaypointRef }: WaypointListProps) => (
   <div className="waypoint-list ">
     {waypoints.map((waypoint) => (
       <div
@@ -17,6 +18,7 @@ const WaypointList = ({ waypoints, activeWaypointId }: WaypointListProps) => (
         style={waypoint.styles}
       >
         <Waypoint
+          nameRef={activeWaypointId === waypoint.id ? activeWaypointRef : null}
           waypoint={waypoint}
           isActive={activeWaypointId === waypoint.id}
           isMenuActive={!!activeWaypointId}

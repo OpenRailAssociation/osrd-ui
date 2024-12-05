@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useRef } from 'react';
 
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import cx from 'classnames';
@@ -6,9 +6,6 @@ import cx from 'classnames';
 import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from './consts';
 import WaypointList from './WaypointList';
 import type { InteractiveWaypoint, WaypointMenuData } from '../types';
-
-const WAYPOINT_MENU_LEFT_OFFSET = 8;
-const WAYPOINT_MENU_TOP_OFFSET = -2;
 
 type ManchetteProps = {
   waypoints: InteractiveWaypoint[];
@@ -36,33 +33,30 @@ const Manchette = ({
   height = INITIAL_OP_LIST_HEIGHT,
 }: ManchetteProps) => {
   const [menuPosition, setMenuPosition] = useState<number>();
+  const activeWaypointRef = useRef<HTMLDivElement>(null);
 
   // Allow to track the menu position after we might have scrolled in the page
-  useEffect(() => {
+  useLayoutEffect(() => {
     const manchetteWrapperPosition =
       waypointMenuData?.manchetteWrapperRef?.current?.getBoundingClientRect().top;
     const waypointPosition =
-      waypointMenuData?.activeWaypointRef?.current?.getBoundingClientRect().top;
+      activeWaypointRef?.current?.getBoundingClientRect().top;
 
-    if (!manchetteWrapperPosition || !waypointPosition) {
-      setMenuPosition(undefined);
-    } else {
-      setMenuPosition(window.scrollY * 2 + manchetteWrapperPosition + waypointPosition);
-    }
+    setMenuPosition(waypointPosition - manchetteWrapperPosition);
   }, [waypointMenuData]);
 
   return (
     <div className="manchette-container">
-      {waypointMenuData?.menu && menuPosition && (
+      {waypointMenuData?.menu && waypointMenuData?.activeWaypointId && (
         <div
           className="menu-wrapper"
-          style={{ top: menuPosition + WAYPOINT_MENU_TOP_OFFSET, left: WAYPOINT_MENU_LEFT_OFFSET }}
+          style={{ top: menuPosition }}
         >
           {waypointMenuData.menu}
         </div>
       )}
       <div className="bg-white-100 border-r border-grey-30" style={{ minHeight: `${height}px` }}>
-        <WaypointList waypoints={waypoints} activeWaypointId={waypointMenuData?.activeWaypointId} />
+        <WaypointList waypoints={waypoints} activeWaypointId={waypointMenuData?.activeWaypointId} activeWaypointRef={activeWaypointRef} />
         {children}
       </div>
       <div className="manchette-actions">

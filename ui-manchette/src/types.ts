@@ -10,13 +10,12 @@ export type Waypoint = {
 export type InteractiveWaypoint = Waypoint & {
   styles?: CSSProperties;
   display?: boolean;
-  onClick?: (waypointId: string, waypointRef: React.RefObject<HTMLDivElement>) => void;
+  onClick?: (waypointId: string) => void;
 };
 
 export type WaypointMenuData = {
   menu: React.ReactNode;
   activeWaypointId?: string;
-  activeWaypointRef?: React.RefObject<HTMLDivElement>;
   manchetteWrapperRef: React.RefObject<HTMLDivElement>;
 };
 

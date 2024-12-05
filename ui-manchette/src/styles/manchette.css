@@ -2,6 +2,8 @@
   .menu-wrapper {
     position: absolute;
     z-index: 12;
+    left: 8px;
+    margin-top: 30px;
   }
 
   .manchette-actions {

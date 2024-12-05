@@ -36,8 +36,6 @@ const ManchetteWithSpaceTimeWrapper = ({
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
   // Allow us to compute the position of the menu in Manchette component
   const manchetteWithSpaceTimeCharWrappertRef = useRef<HTMLDivElement>(null);
-  const [activeWaypointRef, setActiveWaypointPointRef] =
-    useState<React.RefObject<HTMLDivElement>>();
   // Allow us now which waypoint has been clicked and change its style
   const [activeWaypointId, setActiveWaypointId] = useState<string>();
 
@@ -47,7 +45,6 @@ const ManchetteWithSpaceTimeWrapper = ({
       icon: <EyeClosed />,
       onClick: (e: React.MouseEvent) => {
         e.stopPropagation();
-        setActiveWaypointPointRef(undefined);
         setActiveWaypointId(undefined);
       },
     },
@@ -56,18 +53,15 @@ const ManchetteWithSpaceTimeWrapper = ({
       icon: <Telescope />,
       onClick: (e: React.MouseEvent) => {
         e.stopPropagation();
-        setActiveWaypointPointRef(undefined);
         setActiveWaypointId(undefined);
       },
     },
   ];
 
   const handleWaypointClick = (
-    waypointId: string,
-    waypointRef: React.RefObject<HTMLDivElement>
+    waypointId: string
   ) => {
     setActiveWaypointId(waypointId);
-    setActiveWaypointPointRef(waypointRef);
   };
 
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchettesWithSpaceTimeChart(
@@ -102,7 +96,6 @@ const ManchetteWithSpaceTimeWrapper = ({
           waypointMenuData={{
             menu: <Menu items={menuItems} />,
             activeWaypointId,
-            activeWaypointRef,
             manchetteWrapperRef: manchetteWithSpaceTimeCharWrappertRef,
           }}
         />
