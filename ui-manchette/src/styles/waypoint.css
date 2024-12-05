@@ -19,7 +19,10 @@
       bottom: 11px;
       left: 0;
       width: 100%;
-      height: 0.5px;
+      height: 1px;
+      @media (min-resolution: 2x) {
+        height: 0.5px;
+      }
       @apply bg-grey-40;
     }
   }
@@ -92,7 +95,10 @@
     bottom: 16px;
     right: -1.625rem;
     width: 1.625rem;
-    height: 0.5px;
+    height: 1px;
+    @media (min-resolution: 2x) {
+      height: 0.5px;
+    }
     opacity: 0.6;
     @apply bg-grey-40;
   }
