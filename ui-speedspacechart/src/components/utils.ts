@@ -22,12 +22,18 @@ export const getGraphOffsets = (width: number, height: number, declivities?: boo
 };
 
 /**
- * /**
- * Given a list of speed data, return the maxSpeed
- * @param speeds
+ * Given the store, return the max speed value.
+ * Can be either the max speed value from the MRSP or the max speed value from the speeds,
+ * depending on the layers displayed.
+ * @param store
  */
-export const maxSpeedValue = (speeds: LayerData<number>[]) =>
-  Math.max(...speeds.map(({ value }) => value));
+export const maxSpeedValue = (store: Store) => {
+  if (store.layersDisplay.speedLimits && store.mrsp) {
+    return Math.max(...store.mrsp.values.map(({ speed }) => speed));
+  }
+  return Math.max(...store.speeds.map(({ value }) => value));
+};
+
 /**
  * Given a list of speed data return the max position
  * @param speeds

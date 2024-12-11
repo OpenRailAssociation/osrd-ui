@@ -23,7 +23,7 @@ export const drawSpeedLimits = ({ ctx, width, height, store }: DrawFunctionParam
   ctx.translate(leftOffset, 0);
 
   const realHeight = height - MARGIN_BOTTOM - MARGIN_TOP;
-  const maxSpeed = maxSpeedValue(store.speeds);
+  const maxSpeed = maxSpeedValue(store);
   const maxPosition = maxPositionValue(store.speeds);
 
   ctx.lineCap = 'round';

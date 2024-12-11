@@ -95,7 +95,7 @@ describe('getGraphOffsets', () => {
 
 describe('maxSpeedValue', () => {
   it('should return the correct maxSpeed', () => {
-    const maxSpeed = maxSpeedValue(store.speeds);
+    const maxSpeed = maxSpeedValue(store);
     expect(maxSpeed).toBe(30);
   });
 });
