@@ -24,6 +24,7 @@ export { default as RadioGroup, RadioGroupProps } from './components/inputs/Radi
 export { default as Select, SelectProps } from './components/Select';
 export { default as TextArea, TextAreaProps } from './components/inputs/TextArea';
 export { default as TimePicker } from './components/inputs/TimePicker';
+export { default as Slider } from './components/inputs/Slider';
 export {
   default as TolerancePicker,
   type TolerancePickerProps,

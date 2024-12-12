@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { ChangeEvent, MouseEvent, InputHTMLAttributes } from 'react';
 
 import cx from 'classnames';
@@ -19,11 +19,16 @@ const Slider = ({
   onChange,
   onChangeCommitted,
   disabled,
+  className,
   ...rest
 }: SliderProps) => {
   const [value, setValue] = useState<number>(
     initialValue !== undefined ? Number(initialValue) : Number(min)
   );
+
+  useEffect(() => {
+    setValue(Number(initialValue));
+  }, [initialValue]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
@@ -38,7 +43,7 @@ const Slider = ({
   };
 
   return (
-    <div className={cx('range-wrapper', { disabled })} style={{ width: `${width}px` }}>
+    <div className={cx('range-wrapper', className, { disabled })} style={{ width: `${width}px` }}>
       <input
         type="range"
         className="range-slider"
