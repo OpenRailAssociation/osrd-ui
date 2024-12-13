@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { EyeClosed, Telescope } from '@osrd-project/ui-icons';
 import Manchette, { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-manchette';
@@ -39,6 +39,9 @@ const ManchetteWithSpaceTimeWrapper = ({
   // Allow us to know which waypoint has been clicked and change its style
   const [activeWaypointId, setActiveWaypointId] = useState<string>();
 
+  const [isClickOnWaypoint, setIsClickOnWaypoint] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
   const menuItems: MenuItem[] = [
     {
       title: 'Action 1',
@@ -59,6 +62,11 @@ const ManchetteWithSpaceTimeWrapper = ({
   ];
 
   const handleWaypointClick = (waypointId: string) => {
+    // Avoid reopening the menu when clicking on another waypoint or on the same one
+    if (isClickOnWaypoint) {
+      setIsClickOnWaypoint(false);
+      return;
+    }
     setActiveWaypointId(waypointId);
   };
 
@@ -68,6 +76,29 @@ const ManchetteWithSpaceTimeWrapper = ({
     manchetteWithSpaceTimeChartRef,
     selectedTrain
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Avoid closing the menu when clicking on another waypoint
+      if (activeWaypointId && (event.target as HTMLElement).closest('.waypoint')) {
+        setIsClickOnWaypoint(true);
+      }
+      // Close the menu if the user clicks outside of it
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setActiveWaypointId(undefined);
+      }
+    };
+
+    if (activeWaypointId) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeWaypointId]);
 
   return (
     // Ref needs to be on the parent on the scrollable element (.manchette) and have a position
@@ -92,7 +123,7 @@ const ManchetteWithSpaceTimeWrapper = ({
             onClick: handleWaypointClick,
           }))}
           waypointMenuData={{
-            menu: <Menu items={menuItems} />,
+            menu: <Menu menuRef={menuRef} items={menuItems} />,
             activeWaypointId,
             manchetteWrapperRef: manchetteWithSpaceTimeCharWrappertRef,
           }}
