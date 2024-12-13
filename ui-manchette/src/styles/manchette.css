@@ -33,6 +33,10 @@
         border-top: solid 1px white;
         height: 100%;
         padding-inline: 12px;
+
+        &.zoom-reset {
+          padding-bottom: 2px;
+        }
       }
 
       button:disabled {
