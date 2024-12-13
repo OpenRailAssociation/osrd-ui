@@ -30,7 +30,7 @@ export const drawText = ({
 }: DrawTextType) => {
   ctx.save();
   ctx.translate(x, y);
-  ctx.rotate((rotateAngle * Math.PI) / 180);
+  ctx.rotate(rotateAngle);
 
   ctx.font = font;
   ctx.textAlign = xPosition;

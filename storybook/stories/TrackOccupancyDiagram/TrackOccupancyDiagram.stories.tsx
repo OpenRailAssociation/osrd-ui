@@ -38,11 +38,13 @@ type TrackOccupancyDiagramProps = {
   yOffset: number;
   spaceScaleType: 'linear' | 'proportional';
   emptyData: boolean;
+  selectedTrainId: string;
 };
 
 const OP_ID = 'story';
 const X_ZOOM_LEVEL = 6;
 const Y_ZOOM_LEVEL = 3;
+const SELECTED_TRAIN_ID = '5';
 
 const TrackOccupancyDiagram = ({
   xZoomLevel,
@@ -212,6 +214,7 @@ const TrackOccupancyDiagram = ({
                   opId={OP_ID}
                   useDraw={useDraw}
                   setCanvasesRoot={setCanvasesRoot}
+                  selectedTrainId={SELECTED_TRAIN_ID}
                 />
               </div>
             </CanvasContext.Provider>
@@ -246,6 +249,7 @@ const meta: Meta<typeof TrackOccupancyDiagram> = {
     yOffset: 0,
     spaceScaleType: 'linear',
     emptyData: false,
+    selectedTrainId: SELECTED_TRAIN_ID,
   },
 
   render: (args) => <TrackOccupancyDiagram {...args} />,
@@ -261,5 +265,6 @@ export const TrackOccupancyDiagramStoryDefault: Story = {
     xOffset: 0,
     xZoomLevel: X_ZOOM_LEVEL,
     yZoomLevel: Y_ZOOM_LEVEL,
+    selectedTrainId: SELECTED_TRAIN_ID,
   },
 };

@@ -27,6 +27,7 @@ export type TrackOccupancyCanvasProps = {
   opId: string;
   useDraw: (layer: LayerType, fn: DrawingFunction) => void;
   setCanvasesRoot: (root: HTMLDivElement | null) => void;
+  selectedTrainId: string;
 };
 
 export type TrackOccupancyManchetteProps = {

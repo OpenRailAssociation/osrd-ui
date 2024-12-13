@@ -2,29 +2,40 @@ import { drawOccupancyZonesTexts } from './drawOccupancyZonesTexts';
 import {
   TRACK_HEIGHT_CONTAINER,
   CANVAS_PADDING,
-  OCCUPANCY_ZONE_START,
+  OCCUPANCY_ZONE_Y_START,
   OCCUPANCY_ZONE_HEIGHT,
+  FONTS,
   COLORS,
 } from '../../consts';
 import type { OccupancyZone, Track } from '../../types';
 
-const { REMAINING_TRAINS_BACKGROUND, WHITE_100 } = COLORS;
+const { SANS } = FONTS;
+const { REMAINING_TRAINS_BACKGROUND, WHITE_100, SELECTION_20 } = COLORS;
 const REMAINING_TRAINS_WIDTH = 70;
 const REMAINING_TRAINS_HEIGHT = 24;
 const REMAINING_TEXT_OFFSET = 12;
 const Y_OFFSET_INCREMENT = 4;
 const MAX_ZONES = 9;
+const X_BACKGROUND_PADDING = 4;
+const X_TROUGHTRAIN_BACKGROUND_PADDING = 8;
+const BACKGROUND_HEIGHT = 40;
+const SELECTED_TRAIN_ID_GRADIANT = 2;
 
 type DrawZone = {
   ctx: CanvasRenderingContext2D;
-  arrivalTime: number;
-  departureTime: number;
+  arrivalTimePixel: number;
+  departureTimePixel: number;
   yPosition: number;
 };
 
-const drawDefaultZone = ({ ctx, arrivalTime, departureTime, yPosition }: DrawZone) => {
+const drawDefaultZone = ({ ctx, arrivalTimePixel, departureTimePixel, yPosition }: DrawZone) => {
   ctx.beginPath();
-  ctx.rect(arrivalTime, yPosition, departureTime! - arrivalTime, OCCUPANCY_ZONE_HEIGHT);
+  ctx.rect(
+    arrivalTimePixel,
+    yPosition,
+    departureTimePixel - arrivalTimePixel,
+    OCCUPANCY_ZONE_HEIGHT
+  );
   ctx.fill();
   ctx.stroke();
 };
@@ -35,39 +46,118 @@ const ARROW_WIDTH = 4.5;
 const ARROW_TOP_Y = 3.5;
 const ARROW_BOTTOM_Y = 6.5;
 
-const drawThroughTrain = ({ ctx, arrivalTime }: Omit<DrawZone, 'departureTime' | 'yPosition'>) => {
+const drawThroughTrain = ({
+  ctx,
+  arrivalTimePixel,
+}: Omit<DrawZone, 'departureTimePixel' | 'yPosition'>) => {
+  // Through trains are materialized by converging arrows like the following ones
+  //  ___
+  //  \_/
+  //  / \
+  //  ‾‾‾
   ctx.beginPath();
-  ctx.moveTo(arrivalTime - ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
-  ctx.lineTo(arrivalTime - ARROW_WIDTH, OCCUPANCY_ZONE_START - ARROW_TOP_Y);
-  ctx.lineTo(arrivalTime + ARROW_WIDTH, OCCUPANCY_ZONE_START - ARROW_TOP_Y);
-  ctx.lineTo(arrivalTime + ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
-  ctx.lineTo(arrivalTime + ARROW_WIDTH, OCCUPANCY_ZONE_START + ARROW_BOTTOM_Y);
-  ctx.lineTo(arrivalTime - ARROW_WIDTH, OCCUPANCY_ZONE_START + ARROW_BOTTOM_Y);
-  ctx.lineTo(arrivalTime - ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
+  // draw the upper part
+  ctx.moveTo(arrivalTimePixel - ARROW_OFFSET_X, OCCUPANCY_ZONE_Y_START + ARROW_OFFSET_Y);
+  ctx.lineTo(arrivalTimePixel - ARROW_WIDTH, OCCUPANCY_ZONE_Y_START - ARROW_TOP_Y);
+  ctx.lineTo(arrivalTimePixel + ARROW_WIDTH, OCCUPANCY_ZONE_Y_START - ARROW_TOP_Y);
+  ctx.lineTo(arrivalTimePixel + ARROW_OFFSET_X, OCCUPANCY_ZONE_Y_START + ARROW_OFFSET_Y);
+  // draw the lower part
+  ctx.lineTo(arrivalTimePixel + ARROW_WIDTH, OCCUPANCY_ZONE_Y_START + ARROW_BOTTOM_Y);
+  ctx.lineTo(arrivalTimePixel - ARROW_WIDTH, OCCUPANCY_ZONE_Y_START + ARROW_BOTTOM_Y);
+  ctx.lineTo(arrivalTimePixel - ARROW_OFFSET_X, OCCUPANCY_ZONE_Y_START + ARROW_OFFSET_Y);
   ctx.fill();
-  ctx.moveTo(arrivalTime - ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
-  ctx.lineTo(arrivalTime + ARROW_OFFSET_X, OCCUPANCY_ZONE_START + ARROW_OFFSET_Y);
+  // draw the white separator in the middle
+  ctx.moveTo(arrivalTimePixel - ARROW_OFFSET_X, OCCUPANCY_ZONE_Y_START + ARROW_OFFSET_Y);
+  ctx.lineTo(arrivalTimePixel + ARROW_OFFSET_X, OCCUPANCY_ZONE_Y_START + ARROW_OFFSET_Y);
   ctx.stroke();
 };
 
 type DrawRemainingTrainsBox = {
   ctx: CanvasRenderingContext2D;
-  text: string;
-  textX: number;
-  textY: number;
+  remainingTrainsNb: number;
+  xPosition: number;
 };
 
-const drawRemainingTrainsBox = ({ ctx, text, textX, textY }: DrawRemainingTrainsBox) => {
+const drawRemainingTrainsBox = ({ ctx, remainingTrainsNb, xPosition }: DrawRemainingTrainsBox) => {
+  const textY = OCCUPANCY_ZONE_Y_START - REMAINING_TEXT_OFFSET;
+
   ctx.fillStyle = REMAINING_TRAINS_BACKGROUND;
   ctx.beginPath();
-  ctx.rect(textX, textY, REMAINING_TRAINS_WIDTH, REMAINING_TRAINS_HEIGHT);
+  ctx.rect(xPosition, textY, REMAINING_TRAINS_WIDTH, REMAINING_TRAINS_HEIGHT);
   ctx.fill();
   ctx.stroke();
   ctx.fillStyle = WHITE_100;
-  ctx.font = '400 12px IBM Plex Sans';
+  ctx.font = SANS;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text, textX + REMAINING_TRAINS_WIDTH / 2, textY + REMAINING_TRAINS_HEIGHT / 2);
+  ctx.fillText(
+    `+${remainingTrainsNb} trains`,
+    xPosition + REMAINING_TRAINS_WIDTH / 2,
+    textY + REMAINING_TRAINS_HEIGHT / 2
+  );
+};
+
+const drawOccupationZone = ({
+  ctx,
+  zone,
+  arrivalTimePixel,
+  departureTimePixel,
+  yPosition,
+  isThroughTrain,
+  selectedTrainId,
+}: {
+  ctx: CanvasRenderingContext2D;
+  zone: OccupancyZone;
+  arrivalTimePixel: number;
+  departureTimePixel: number;
+  yPosition: number;
+  isThroughTrain: boolean;
+  selectedTrainId: string;
+}) => {
+  ctx.fillStyle = zone.color;
+  ctx.strokeStyle = WHITE_100;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.font = '400 10px IBM Plex Mono';
+
+  if (selectedTrainId === zone.id) {
+    const extraWidth = isThroughTrain ? X_TROUGHTRAIN_BACKGROUND_PADDING : X_BACKGROUND_PADDING;
+    const originTextLength = ctx.measureText(zone.originStation || '--').width;
+    const destinationTextLength = ctx.measureText(zone.destinationStation || '--').width;
+
+    ctx.save();
+    ctx.fillStyle = SELECTION_20;
+    ctx.beginPath();
+    ctx.roundRect(
+      arrivalTimePixel - originTextLength - extraWidth,
+      yPosition - BACKGROUND_HEIGHT / 2,
+      departureTimePixel -
+        arrivalTimePixel +
+        originTextLength +
+        destinationTextLength +
+        extraWidth * 2,
+      BACKGROUND_HEIGHT,
+      SELECTED_TRAIN_ID_GRADIANT
+    );
+    ctx.fill();
+    ctx.restore();
+  }
+
+  if (isThroughTrain) {
+    drawThroughTrain({ ctx, arrivalTimePixel });
+  } else {
+    drawDefaultZone({ ctx, arrivalTimePixel, departureTimePixel, yPosition });
+  }
+
+  drawOccupancyZonesTexts({
+    ctx,
+    zone,
+    arrivalTimePixel,
+    departureTimePixel,
+    yPosition,
+    isThroughTrain,
+    selectedTrainId,
+  });
 };
 
 export const drawOccupancyZones = ({
@@ -77,6 +167,7 @@ export const drawOccupancyZones = ({
   tracks,
   occupancyZones,
   getTimePixel,
+  selectedTrainId,
 }: {
   ctx: CanvasRenderingContext2D;
   width: number;
@@ -84,98 +175,116 @@ export const drawOccupancyZones = ({
   tracks: Track[] | undefined;
   occupancyZones: OccupancyZone[] | undefined;
   getTimePixel: (time: number) => number;
+  selectedTrainId: string;
 }) => {
   ctx.clearRect(0, 0, width, height);
 
-  tracks?.forEach((track, index) => {
+  if (!tracks || !occupancyZones || occupancyZones.length === 0) return;
+
+  const sortedOccupancyZones = occupancyZones.sort(
+    (a, b) => a.arrivalTime.getTime() - b.arrivalTime.getTime()
+  );
+
+  tracks.forEach((track, index) => {
     const trackTranslate = index === 0 ? CANVAS_PADDING : TRACK_HEIGHT_CONTAINER;
     ctx.translate(0, trackTranslate);
 
-    const filteredOccupancyZone = occupancyZones?.filter((zone) => zone.trackId === track.id);
-    const sortedOccupancyZone = filteredOccupancyZone?.sort(
-      (a, b) => a.arrivalTime.getTime() - b.arrivalTime.getTime()
-    );
-
-    if (!sortedOccupancyZone) return;
+    const filteredOccupancyZones = sortedOccupancyZones.filter((zone) => zone.trackId === track.id);
 
     let primaryArrivalTimePixel = 0;
     let primaryDepartureTimePixel = 0;
-    let lastDepartureTimePixel = 0;
-    let yPosition = OCCUPANCY_ZONE_START;
+    let lastDepartureTimePixel = primaryDepartureTimePixel;
+    let yPosition = OCCUPANCY_ZONE_Y_START;
     let yOffset = 0;
-    let counter = 0;
+    let zoneCounter = 0;
+    let zoneIndex = 0;
 
-    if (sortedOccupancyZone && sortedOccupancyZone.length > 1) {
-      primaryArrivalTimePixel = getTimePixel(sortedOccupancyZone[0].arrivalTime.getTime());
-      primaryDepartureTimePixel = getTimePixel(sortedOccupancyZone[0].departureTime.getTime());
-      lastDepartureTimePixel = primaryDepartureTimePixel;
-    }
+    while (zoneIndex < filteredOccupancyZones.length) {
+      const zone = filteredOccupancyZones[zoneIndex];
+      const arrivalTimePixel = getTimePixel(zone.arrivalTime.getTime());
+      const departureTimePixel = getTimePixel(zone.departureTime.getTime());
+      const isThroughTrain = arrivalTimePixel === departureTimePixel;
 
-    // use a for of loop to be able to break the loop if there are more than 9 zones
-    for (const [sortedIndex, zone] of sortedOccupancyZone.entries()) {
-      const arrivalTime = getTimePixel(zone.arrivalTime.getTime());
-      const departureTime = getTimePixel(zone.departureTime.getTime());
-      const isThroughTrain = arrivalTime === departureTime;
+      // * if the zone is not overlapping with any previous one, draw it in the center of the track
+      // * and reset the primary values
+      // *
+      // * if the zone is overlapping with the previous one, draw it below or above the previous one
+      // * depending on the overlapping counter
+      // *
+      // * if the zone is overlapping with the previous one and the counter is higher than the max zones
+      // * draw the remaining trains box
+      // *
+      if (arrivalTimePixel > lastDepartureTimePixel) {
+        // reset to initial value if the zone is not overlapping
+        yPosition = OCCUPANCY_ZONE_Y_START;
+        primaryArrivalTimePixel = arrivalTimePixel;
+        primaryDepartureTimePixel = departureTimePixel;
+        lastDepartureTimePixel = departureTimePixel;
+        yOffset = Y_OFFSET_INCREMENT;
+        zoneCounter = 1;
 
-      // reset the overlap check if the zone is not overlapping
-      if (arrivalTime > lastDepartureTimePixel) {
-        yPosition = OCCUPANCY_ZONE_START;
-        primaryArrivalTimePixel = arrivalTime;
-        primaryDepartureTimePixel = departureTime;
-        lastDepartureTimePixel = departureTime;
-        yOffset = 0;
-        counter = 0;
-      }
-
-      // figure out if the zone is overlapping with any previous one
-      // if so and it's an even index, move it to the bottom, if it's an odd index, move it to the top
-      if (arrivalTime >= primaryArrivalTimePixel && arrivalTime < lastDepartureTimePixel) {
-        if (counter % 2 === 0) {
-          yPosition -= yOffset;
-        } else {
-          yPosition += yOffset;
-        }
-        yOffset += Y_OFFSET_INCREMENT;
-        counter += 1;
-      }
-
-      if (departureTime >= lastDepartureTimePixel) lastDepartureTimePixel = departureTime;
-
-      // draw at least 9 zones and zones texts
-      // if there are more than 9 zones, draw a box with the remaining trains
-      if (counter <= MAX_ZONES) {
-        ctx.fillStyle = zone.color;
-        ctx.strokeStyle = WHITE_100;
-        ctx.lineWidth = 1;
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-
-        if (isThroughTrain) {
-          drawThroughTrain({ ctx, arrivalTime });
-        } else {
-          drawDefaultZone({ ctx, arrivalTime, departureTime, yPosition });
-        }
-
-        drawOccupancyZonesTexts({
+        drawOccupationZone({
           ctx,
           zone,
-          arrivalTime,
-          departureTime,
+          arrivalTimePixel,
+          departureTimePixel,
           yPosition,
           isThroughTrain,
+          selectedTrainId,
         });
-      } else if (counter === MAX_ZONES + 1) {
-        const textX =
-          primaryArrivalTimePixel +
-          (lastDepartureTimePixel - primaryArrivalTimePixel) / 2 -
-          REMAINING_TRAINS_WIDTH / 2;
-        const textY = OCCUPANCY_ZONE_START - REMAINING_TEXT_OFFSET;
-        const text = `+${sortedOccupancyZone.length - sortedIndex} trains`;
 
-        drawRemainingTrainsBox({ ctx, text, textX, textY });
+        zoneIndex++;
 
-        break;
+        continue;
       }
+
+      if (zoneCounter < MAX_ZONES) {
+        // if so and it's an even index, move it to the bottom, if it's an odd index, move it to the top
+        if (arrivalTimePixel >= primaryArrivalTimePixel) {
+          if (zoneCounter % 2 === 0) {
+            yPosition -= yOffset;
+          } else {
+            yPosition += yOffset;
+          }
+        }
+
+        // update the last departure time if the current zone is longer
+        if (departureTimePixel >= lastDepartureTimePixel)
+          lastDepartureTimePixel = departureTimePixel;
+
+        drawOccupationZone({
+          ctx,
+          zone,
+          arrivalTimePixel,
+          departureTimePixel,
+          yPosition,
+          isThroughTrain,
+          selectedTrainId,
+        });
+
+        zoneCounter++;
+        yOffset += Y_OFFSET_INCREMENT;
+        zoneIndex++;
+
+        continue;
+      }
+
+      const nextIndex = filteredOccupancyZones.findIndex(
+        (filteredZone, i) =>
+          i > zoneIndex &&
+          getTimePixel(filteredZone.arrivalTime.getTime()) >= lastDepartureTimePixel
+      );
+
+      const remainingTrainsNb = nextIndex - zoneIndex;
+
+      const xPosition =
+        primaryArrivalTimePixel +
+        (lastDepartureTimePixel - primaryArrivalTimePixel) / 2 -
+        REMAINING_TRAINS_WIDTH / 2;
+
+      drawRemainingTrainsBox({ ctx, remainingTrainsNb, xPosition });
+
+      zoneIndex += remainingTrainsNb;
     }
   });
 };
