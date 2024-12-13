@@ -24,10 +24,12 @@ export const drawOccupancyZonesTexts = ({
   zone,
   arrivalTime,
   departureTime,
+  yPosition,
   isThroughTrain,
 }: {
   ctx: CanvasRenderingContext2D;
   zone: {
+    id: string;
     arrivalTrainName: string;
     arrivalTime: Date;
     departureTime: Date;
@@ -36,6 +38,7 @@ export const drawOccupancyZonesTexts = ({
   };
   arrivalTime: number;
   departureTime: number;
+  yPosition: number;
   isThroughTrain: boolean;
 }) => {
   const zoneOccupancyLength = departureTime - arrivalTime - STROKE_WIDTH;
@@ -44,6 +47,7 @@ export const drawOccupancyZonesTexts = ({
     zoneOccupancyLength < BREAKPOINTS[breakpoint];
 
   const textLength = ctx.measureText(zone.originStation!).width;
+
   const { xName, yName } = {
     xName: isBelowBreakpoint('medium')
       ? arrivalTime - textLength + STROKE_WIDTH
@@ -64,7 +68,7 @@ export const drawOccupancyZonesTexts = ({
   drawText({
     ctx,
     text: zone.arrivalTrainName,
-    x: xName,
+    x: isThroughTrain ? xName - 4 : xName,
     y: yName,
     color: GREY_50,
     rotateAngle: -30,
@@ -75,8 +79,8 @@ export const drawOccupancyZonesTexts = ({
   drawText({
     ctx,
     text: zone.arrivalTime.getMinutes().toLocaleString('fr-FR', { minimumIntegerDigits: 2 }),
-    x: arrivalTime,
-    y: OCCUPANCY_ZONE_START + MINUTES_TEXT_OFFSET,
+    x: isThroughTrain ? arrivalTime - 4 : arrivalTime,
+    y: yPosition + MINUTES_TEXT_OFFSET,
     color: GREY_80,
     xPosition: xArrivalPosition,
     yPosition: 'top',
@@ -89,7 +93,7 @@ export const drawOccupancyZonesTexts = ({
       ctx,
       text: zone.departureTime.getMinutes().toLocaleString('fr-FR', { minimumIntegerDigits: 2 }),
       x: departureTime,
-      y: OCCUPANCY_ZONE_START + MINUTES_TEXT_OFFSET,
+      y: yPosition + MINUTES_TEXT_OFFSET,
       color: GREY_80,
       xPosition: xDeparturePosition,
       yPosition: 'top',
@@ -101,8 +105,8 @@ export const drawOccupancyZonesTexts = ({
   drawText({
     ctx,
     text: zone.originStation!,
-    x: arrivalTime,
-    y: OCCUPANCY_ZONE_START - STATION_TEXT_OFFSET,
+    x: isThroughTrain ? arrivalTime - 4 : arrivalTime,
+    y: yPosition - STATION_TEXT_OFFSET,
     color: GREY_60,
     xPosition: 'right',
     yPosition: 'bottom',
@@ -113,8 +117,8 @@ export const drawOccupancyZonesTexts = ({
   drawText({
     ctx,
     text: zone.destinationStation!,
-    x: departureTime,
-    y: OCCUPANCY_ZONE_START - STATION_TEXT_OFFSET,
+    x: isThroughTrain ? departureTime + 4 : departureTime,
+    y: yPosition - STATION_TEXT_OFFSET,
     color: GREY_60,
     xPosition: 'left',
     yPosition: 'bottom',

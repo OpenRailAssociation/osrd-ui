@@ -1,6 +1,6 @@
-export const TRACK_HEIGHT_CONTAINER = 73;
+export const TRACK_HEIGHT_CONTAINER = 100;
 export const CANVAS_PADDING = 10;
-export const OCCUPANCY_ZONE_START = 35;
+export const OCCUPANCY_ZONE_START = TRACK_HEIGHT_CONTAINER / 2 - 1.5;
 export const OCCUPANCY_ZONE_HEIGHT = 3;
 export const MINUTES_TEXT_OFFSET = 6.5;
 export const STATION_TEXT_OFFSET = 5;
@@ -17,6 +17,7 @@ export const COLORS = {
   GREY_80: 'rgb(49, 46, 43)',
   HOUR_BACKGROUND: 'rgba(243, 248, 253, 0.5)',
   RAIL_TICK: 'rgb(33, 112, 185)',
+  REMAINING_TRAINS_BACKGROUND: 'rgba(0, 0, 0, 0.7)',
   WHITE_50: 'rgba(255, 255, 255, 0.5)',
   WHITE_100: 'rgb(255, 255, 255)',
 };
