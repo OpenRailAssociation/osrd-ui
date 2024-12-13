@@ -4,11 +4,11 @@ import { EyeClosed, Telescope } from '@osrd-project/ui-icons';
 import Manchette, { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-manchette';
 import { PathLayer, SpaceTimeChart } from '@osrd-project/ui-spacetimechart';
 import type { Meta } from '@storybook/react';
-import cx from 'classnames';
-
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-manchette/dist/theme.css';
 import '@osrd-project/ui-manchette-with-spacetimechart/dist/theme.css';
+import cx from 'classnames';
+import { createPortal } from 'react-dom';
 
 import Menu, { type MenuItem } from './Menu';
 import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from '../assets/sampleData';
@@ -39,7 +39,6 @@ const ManchetteWithSpaceTimeWrapper = ({
   // Allow us to know which waypoint has been clicked and change its style
   const [activeWaypointId, setActiveWaypointId] = useState<string>();
 
-  const [isClickOnWaypoint, setIsClickOnWaypoint] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const menuItems: MenuItem[] = [
@@ -62,11 +61,6 @@ const ManchetteWithSpaceTimeWrapper = ({
   ];
 
   const handleWaypointClick = (waypointId: string) => {
-    // Avoid reopening the menu when clicking on another waypoint or on the same one
-    if (isClickOnWaypoint) {
-      setIsClickOnWaypoint(false);
-      return;
-    }
     setActiveWaypointId(waypointId);
   };
 
@@ -79,10 +73,6 @@ const ManchetteWithSpaceTimeWrapper = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Avoid closing the menu when clicking on another waypoint
-      if (activeWaypointId && (event.target as HTMLElement).closest('.waypoint')) {
-        setIsClickOnWaypoint(true);
-      }
       // Close the menu if the user clicks outside of it
       if (!menuRef.current?.contains(event.target as Node)) {
         setActiveWaypointId(undefined);
@@ -104,6 +94,20 @@ const ManchetteWithSpaceTimeWrapper = ({
     // Ref needs to be on the parent on the scrollable element (.manchette) and have a position
     // relative so the menu can properly overflow the manchette
     <div ref={manchetteWithSpaceTimeCharWrappertRef} className="manchette-space-time-chart-wrapper">
+      {activeWaypointId &&
+        manchetteWithSpaceTimeCharWrappertRef.current &&
+        createPortal(
+          <div
+            style={{
+              width: '100%',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+            }}
+          />,
+          manchetteWithSpaceTimeCharWrappertRef.current
+        )}
       <div
         className="header bg-ambientB-5 w-full border-b border-grey-30"
         style={{ height: '40px' }}
