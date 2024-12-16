@@ -32,10 +32,7 @@ const RadioGroup = ({
 }: RadioGroupProps) => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>(value);
 
-  const handleOptionChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLLabelElement>,
-    nextOption: RadioButtonProps
-  ) => {
+  const handleOptionChange = (e: ChangeEvent<HTMLInputElement>, nextOption: RadioButtonProps) => {
     if (!readOnly) {
       setSelectedValue(nextOption.value);
       nextOption.onChange?.(e);

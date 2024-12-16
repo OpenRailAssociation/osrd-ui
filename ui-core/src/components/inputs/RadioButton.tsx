@@ -4,10 +4,7 @@ import cx from 'classnames';
 
 import useFocusByTab from '../../hooks/useFocusByTab';
 
-export type RadioButtonProps = Omit<
-  React.InputHTMLAttributes<HTMLInputElement | HTMLLabelElement>,
-  'value'
-> & {
+export type RadioButtonProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value'> & {
   label: string;
   value: string;
   hint?: string;
