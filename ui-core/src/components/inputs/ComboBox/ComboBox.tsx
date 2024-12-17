@@ -24,6 +24,7 @@ export type ComboBoxProps<T> = InputProps & {
   value?: string;
   onSelectSuggestion?: (option: T | undefined) => void;
   disableDefaultFilter?: boolean;
+  onBlur?: () => void;
 };
 
 const ComboBox = <T,>({
@@ -37,6 +38,7 @@ const ComboBox = <T,>({
   small,
   onSelectSuggestion,
   disableDefaultFilter = false,
+  onBlur,
   ...inputProps
 }: ComboBoxProps<T>) => {
   const [filteredSuggestions, setFilteredSuggestions] = useState<T[]>([]);
@@ -238,6 +240,7 @@ const ComboBox = <T,>({
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         onFocus={handleInputFocus}
+        onBlur={onBlur}
         withIcons={icons}
         small={small}
       />
