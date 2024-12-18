@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
+import { X } from '@osrd-project/ui-icons';
+
 import { useModalPosition } from '../hooks/useModalPosition';
 import useOutsideClick from '../hooks/useOutsideClick';
 
@@ -31,6 +33,9 @@ const InputModal = ({ inputRef, isOpen, onClose, children }: ModalProps) => {
         className="modal-content"
         style={{ top: modalPosition.top, left: modalPosition.left }}
       >
+        <button className="close-button" onClick={onClose}>
+          <X size="lg" />
+        </button>
         {children}
       </div>
     </div>

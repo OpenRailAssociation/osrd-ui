@@ -6,6 +6,7 @@ import cx from 'classnames';
 import { type CalendarSlot } from '.';
 import CalendarPicker, { type CalendarPickerPublicProps } from './CalendarPicker';
 import useDatePicker from './useDatePicker';
+import InputModal from '../../Modal';
 import Input, { type InputProps } from '../Input';
 
 type BaseDatePickerProps = {
@@ -69,7 +70,7 @@ export const DatePicker = (props: DatePickerProps) => {
           statusWithMessage={statusWithMessage}
         />
       </div>
-      {showPicker && (
+      <InputModal inputRef={inputRef} isOpen={showPicker} onClose={() => setShowPicker(false)}>
         <div className="calendar-picker-wrapper">
           <CalendarPicker
             {...props.calendarPickerProps}
@@ -80,7 +81,7 @@ export const DatePicker = (props: DatePickerProps) => {
             selectableSlot={selectableSlot}
           />
         </div>
-      )}
+      </InputModal>
     </div>
   );
 };
