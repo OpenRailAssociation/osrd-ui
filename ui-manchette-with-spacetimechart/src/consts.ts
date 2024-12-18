@@ -2,9 +2,11 @@ export const BASE_WAYPOINT_HEIGHT = 32;
 export const INITIAL_WAYPOINT_LIST_HEIGHT = 521;
 export const INITIAL_SPACE_TIME_CHART_HEIGHT = INITIAL_WAYPOINT_LIST_HEIGHT + 40;
 
-export const MIN_ZOOM_X = 1;
-export const MAX_ZOOM_X = 10;
-export const ZOOM_X_DELTA = 0.5;
+export const MIN_ZOOM_MS_PER_PX = 600000;
+export const MAX_ZOOM_MS_PER_PX = 625;
+export const DEFAULT_ZOOM_MS_PER_PX = 7500;
+export const MIN_ZOOM_X = 0;
+export const MAX_ZOOM_X = 100;
 
 export const MIN_ZOOM_Y = 1;
 export const MAX_ZOOM_Y = 10.5;

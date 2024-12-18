@@ -7,14 +7,21 @@ import type {
 } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 
 import usePaths from './usePaths';
-import { MAX_ZOOM_Y, MIN_ZOOM_Y, ZOOM_Y_DELTA, INITIAL_SPACE_TIME_CHART_HEIGHT } from '../consts';
+import {
+  MAX_ZOOM_Y,
+  MIN_ZOOM_Y,
+  ZOOM_Y_DELTA,
+  INITIAL_SPACE_TIME_CHART_HEIGHT,
+  DEFAULT_ZOOM_MS_PER_PX,
+} from '../consts';
 import {
   calcWaypointsToDisplay,
-  computeTimeWindow,
   getWaypointsWithPosition as getOperationalPointWithPosition,
   getScales,
   calcWaypointsHeight,
   zoomX,
+  zoomValueToTimeScale,
+  timeScaleToZoomValue,
 } from '../helpers';
 import { getDiff } from '../utils/point';
 
@@ -35,11 +42,12 @@ const useManchettesWithSpaceTimeChart = (
   projectPathTrainResult: ProjectPathTrainResult[],
   manchetteWithSpaceTimeChartContainer: React.RefObject<HTMLDivElement>,
   selectedTrain?: number,
-  height = 561
+  height = 561,
+  spaceTimeChartRef?: React.RefObject<HTMLDivElement>
 ) => {
   const [isShiftPressed, setIsShiftPressed] = useState(false);
   const [state, setState] = useState<State>({
-    xZoom: 1,
+    xZoom: timeScaleToZoomValue(DEFAULT_ZOOM_MS_PER_PX),
     yZoom: 1,
     xOffset: 0,
     yOffset: 0,
@@ -53,12 +61,6 @@ const useManchettesWithSpaceTimeChart = (
   const { xZoom, yZoom, xOffset, yOffset, panning, scrollPosition, isProportional } = state;
 
   const paths = usePaths(projectPathTrainResult, selectedTrain);
-
-  // Memoize timeWindow to avoid recalculation on each render
-  const timeWindow = useMemo(
-    () => computeTimeWindow(projectPathTrainResult),
-    [projectPathTrainResult]
-  );
 
   const waypointsToDisplay = useMemo(
     () => calcWaypointsToDisplay(waypoints, { height, isProportional, yZoom }),
@@ -130,7 +132,6 @@ const useManchettesWithSpaceTimeChart = (
     [operationalPointsWithPosition, height, isProportional, yZoom]
   );
 
-  // Memoize manchetteProps separately
   const manchetteProps = useMemo(
     () => ({
       waypoints: waypointWithHeight,
@@ -144,21 +145,27 @@ const useManchettesWithSpaceTimeChart = (
     [waypointWithHeight, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional]
   );
 
-  // Memoize spaceTimeChartProps separately
+  const handleXZoom = useCallback(
+    (newXZoom: number, xPosition = (spaceTimeChartRef?.current?.offsetWidth || 0) / 2) => {
+      setState((prev) => ({
+        ...prev,
+        ...zoomX(prev.xZoom, prev.xOffset, newXZoom, xPosition),
+      }));
+    },
+    [spaceTimeChartRef]
+  );
+
   const spaceTimeChartProps = useMemo(
     () => ({
       operationalPoints: operationalPointsWithPosition,
       spaceScales: computedScales,
-      timeScale: timeWindow / xZoom,
+      timeScale: zoomValueToTimeScale(xZoom),
       paths,
       xOffset,
       yOffset: -scrollPosition + 14,
-      onZoom: (payload: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]) => {
+      onZoom: ({ delta, position }: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]) => {
         if (isShiftPressed) {
-          setState((prev) => ({
-            ...prev,
-            ...zoomX(prev.xZoom, prev.xOffset, payload),
-          }));
+          handleXZoom(xZoom + delta, position.x);
         }
       },
       onPan: (payload: {
@@ -195,7 +202,6 @@ const useManchettesWithSpaceTimeChart = (
     [
       operationalPointsWithPosition,
       computedScales,
-      timeWindow,
       xZoom,
       paths,
       xOffset,
@@ -205,6 +211,7 @@ const useManchettesWithSpaceTimeChart = (
       panning,
       yOffset,
       manchetteWithSpaceTimeChartContainer,
+      handleXZoom,
     ]
   );
 
@@ -213,8 +220,10 @@ const useManchettesWithSpaceTimeChart = (
       manchetteProps,
       spaceTimeChartProps,
       handleScroll,
+      handleXZoom,
+      xZoom,
     }),
-    [manchetteProps, spaceTimeChartProps, handleScroll]
+    [manchetteProps, spaceTimeChartProps, handleScroll, handleXZoom, xZoom]
   );
 };
 

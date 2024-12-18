@@ -6,6 +6,7 @@ import cx from 'classnames';
 export type SliderProps = InputHTMLAttributes<HTMLInputElement> & {
   width?: number;
   onChangeCommitted?: (e: MouseEvent<HTMLInputElement>) => void;
+  containerClassName?: string;
 };
 
 // onChange returns an event or number
@@ -19,7 +20,7 @@ const Slider = ({
   onChange,
   onChangeCommitted,
   disabled,
-  className,
+  containerClassName,
   ...rest
 }: SliderProps) => {
   const [value, setValue] = useState<number>(
@@ -43,7 +44,10 @@ const Slider = ({
   };
 
   return (
-    <div className={cx('range-wrapper', className, { disabled })} style={{ width: `${width}px` }}>
+    <div
+      className={cx('range-wrapper', containerClassName, { disabled })}
+      style={{ width: `${width}px` }}
+    >
       <input
         type="range"
         className="range-slider"

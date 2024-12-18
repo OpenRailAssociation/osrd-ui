@@ -3,12 +3,17 @@ import type {
   ProjectPathTrainResult,
   Waypoint,
 } from '@osrd-project/ui-manchette/dist/types';
-import type {
-  OperationalPoint,
-  SpaceTimeChartProps,
-} from '@osrd-project/ui-spacetimechart/dist/lib/types';
+import type { OperationalPoint } from '@osrd-project/ui-spacetimechart/dist/lib/types';
+import { clamp } from 'lodash';
 
-import { BASE_WAYPOINT_HEIGHT, MAX_TIME_WINDOW, MAX_ZOOM_X, MIN_ZOOM_X } from './consts';
+import {
+  BASE_WAYPOINT_HEIGHT,
+  MAX_TIME_WINDOW,
+  MAX_ZOOM_MS_PER_PX,
+  MAX_ZOOM_X,
+  MIN_ZOOM_MS_PER_PX,
+  MIN_ZOOM_X,
+} from './consts';
 import { calcTotalDistance, getHeightWithoutLastWaypoint, msToS } from './utils';
 
 type WaypointsOptions = { isProportional: boolean; yZoom: number; height: number };
@@ -154,17 +159,26 @@ export const getScales = (
   ];
 };
 
+export const zoomValueToTimeScale = (slider: number) =>
+  MIN_ZOOM_MS_PER_PX * Math.pow(MAX_ZOOM_MS_PER_PX / MIN_ZOOM_MS_PER_PX, slider / 100);
+
+export const timeScaleToZoomValue = (timeScale: number) =>
+  (100 * Math.log(timeScale / MIN_ZOOM_MS_PER_PX)) /
+  Math.log(MAX_ZOOM_MS_PER_PX / MIN_ZOOM_MS_PER_PX);
+
 /** Zoom on X axis and center on the mouse position */
 export const zoomX = (
-  currentXZoom: number,
-  currentXOffset: number,
-  { delta, position: { x } }: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]
+  currentZoom: number,
+  currentOffset: number,
+  newZoom: number,
+  position: number
 ) => {
-  const xZoom = Math.min(Math.max(currentXZoom * (1 + delta / 10), MIN_ZOOM_X), MAX_ZOOM_X);
+  const boundedZoom = clamp(newZoom, MIN_ZOOM_X, MAX_ZOOM_X);
+  const oldTimeScale = zoomValueToTimeScale(currentZoom);
+  const newTimeScale = zoomValueToTimeScale(boundedZoom);
+  const newOffset = position - ((position - currentOffset) * oldTimeScale) / newTimeScale;
   return {
-    xZoom,
-    // Adjust zoom level relatively to the input delta value:
-    // These lines are here to center the zoom on the mouse position:
-    xOffset: x - ((x - currentXOffset) / currentXZoom) * xZoom,
+    xZoom: boundedZoom,
+    xOffset: newOffset,
   };
 };

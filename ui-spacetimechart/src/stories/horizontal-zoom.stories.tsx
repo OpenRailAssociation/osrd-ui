@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, Slider } from '@osrd-project/ui-core';
 import type { Meta } from '@storybook/react';
+import { clamp } from 'lodash';
 
 import '@osrd-project/ui-core/dist/theme.css';
 
@@ -52,18 +53,11 @@ const SpaceTimeHorizontalZoomWrapper = ({
     setState((prev) => ({ ...prev, xOffset: offset }));
   }, [offset]);
   const handleZoom = (zoomValue: number, position = DEFAULT_WIDTH / 2) => {
-    if (MIN_ZOOM <= zoomValue && zoomValue <= MAX_ZOOM) {
-      const oldTimeScale = zoomValueToTimeScale(state.zoomValue);
-      const newTimeScale = zoomValueToTimeScale(zoomValue);
-      // by default zooming expands the graph around timeOrigin
-      // changing the offset to timeOriginShift alone keeps the left border in place.
-      // subtracting centerShift keeps the center in place
-      // (xOffset = how many px the timeOrigin is shifted to the right)
-      const timeOriginShift = (state.xOffset * oldTimeScale) / newTimeScale;
-      const centerShift = (position * oldTimeScale - position * newTimeScale) / newTimeScale;
-      const newOffset = timeOriginShift - centerShift;
-      setState((prev) => ({ ...prev, zoomValue, xOffset: newOffset }));
-    }
+    const boundedXZoom = clamp(zoomValue, MIN_ZOOM, MAX_ZOOM);
+    const oldTimeScale = zoomValueToTimeScale(state.zoomValue);
+    const newTimeScale = zoomValueToTimeScale(boundedXZoom);
+    const newOffset = position - ((position - state.xOffset) * oldTimeScale) / newTimeScale;
+    setState((prev) => ({ ...prev, zoomValue: boundedXZoom, xOffset: newOffset }));
   };
   const simpleOperationalPoints = operationalPoints.map(({ id, position }) => ({
     id,
@@ -157,7 +151,7 @@ const SpaceTimeHorizontalZoomWrapper = ({
 };
 
 export default {
-  title: 'SpaceTimeChart/Horiontal Zoom',
+  title: 'SpaceTimeChart/Horizontal Zoom',
   component: SpaceTimeHorizontalZoomWrapper,
 } as Meta<typeof SpaceTimeHorizontalZoomWrapper>;
 
