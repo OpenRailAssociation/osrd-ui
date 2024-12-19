@@ -19,7 +19,7 @@
     cursor: pointer;
   }
 
-  .modal-overlay {
+  .modal-ui-overlay {
     .tolerance-picker-section {
       display: flex;
       gap: 1rem;
@@ -48,7 +48,7 @@
     }
   }
 
-  .modal-content {
+  .modal-ui-content {
     padding: 1.25rem;
   }
 

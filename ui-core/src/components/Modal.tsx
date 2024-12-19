@@ -27,10 +27,10 @@ const InputModal = ({ inputRef, isOpen, onClose, children }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-ui-overlay">
       <div
         ref={modalRef}
-        className="modal-content"
+        className="modal-ui-content"
         style={{ top: modalPosition.top, left: modalPosition.left }}
       >
         <button className="close-button" onClick={onClose}>
