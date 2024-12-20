@@ -1,10 +1,9 @@
 import { describe, it, expect } from 'vitest';
 
-import { BASE_WAYPOINT_HEIGHT, MAX_TIME_WINDOW } from '../consts';
+import { BASE_WAYPOINT_HEIGHT } from '../consts';
 import {
   calcWaypointsToDisplay,
   calcWaypointsHeight,
-  computeTimeWindow,
   getWaypointsWithPosition,
   getScales,
 } from '../helpers';
@@ -86,57 +85,6 @@ describe('calcWaypointsHeight', () => {
     });
     expect(result[0].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
     expect(result[1].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
-  });
-});
-
-// Tests for computeTimeWindow
-describe('computeTimeWindow', () => {
-  const mockTrains = [
-    {
-      departureTime: new Date('2023-01-01T00:00:00Z'),
-      spaceTimeCurves: [
-        {
-          times: [0, 10000],
-          positions: [],
-        },
-      ],
-      name: '',
-      id: 0,
-    },
-    {
-      departureTime: new Date('2023-01-01T01:00:00Z'),
-      spaceTimeCurves: [
-        {
-          times: [0, 20000],
-          positions: [],
-        },
-      ],
-      name: '',
-      id: 0,
-    },
-  ];
-
-  it('should calculate the correct time window', () => {
-    const timeWindow = computeTimeWindow(mockTrains);
-    expect(timeWindow).toBeLessThanOrEqual(MAX_TIME_WINDOW);
-  });
-
-  it('should return MAX_TIME_WINDOW if calculated time is too large', () => {
-    const mockLongTrains = [
-      {
-        departureTime: new Date('2023-01-01T00:00:00Z'),
-        spaceTimeCurves: [
-          {
-            times: [0, 100000000],
-            positions: [],
-          },
-        ],
-        name: '',
-        id: 0,
-      },
-    ];
-    const timeWindow: number = computeTimeWindow(mockLongTrains);
-    expect(timeWindow).toBe(MAX_TIME_WINDOW);
   });
 });
 

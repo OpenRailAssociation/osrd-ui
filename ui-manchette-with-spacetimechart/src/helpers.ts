@@ -1,20 +1,15 @@
-import type {
-  InteractiveWaypoint,
-  ProjectPathTrainResult,
-  Waypoint,
-} from '@osrd-project/ui-manchette/dist/types';
+import type { InteractiveWaypoint, Waypoint } from '@osrd-project/ui-manchette/dist/types';
 import type { OperationalPoint } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 import { clamp } from 'lodash';
 
 import {
   BASE_WAYPOINT_HEIGHT,
-  MAX_TIME_WINDOW,
   MAX_ZOOM_MS_PER_PX,
   MAX_ZOOM_X,
   MIN_ZOOM_MS_PER_PX,
   MIN_ZOOM_X,
 } from './consts';
-import { calcTotalDistance, getHeightWithoutLastWaypoint, msToS } from './utils';
+import { calcTotalDistance, getHeightWithoutLastWaypoint } from './utils';
 
 type WaypointsOptions = { isProportional: boolean; yZoom: number; height: number };
 
@@ -90,28 +85,6 @@ export const calcWaypointsHeight = (
       return { ...waypoint, styles: { height: `${BASE_WAYPOINT_HEIGHT * yZoom}px` } };
     }
   });
-};
-
-export const computeTimeWindow = (trains: ProjectPathTrainResult[]) => {
-  const { minTime, maxTime } = trains.reduce(
-    (times, train) => {
-      if (train.spaceTimeCurves.length === 0) return times;
-
-      const lastCurve = train.spaceTimeCurves.at(-1);
-      if (!lastCurve || lastCurve.times.length < 2) return times;
-
-      const firstPoint = Number(train.departureTime);
-      const lastPoint = Number(train.departureTime) + lastCurve.times.at(-1)!;
-      return {
-        minTime: times.minTime === -1 || times.minTime > firstPoint ? firstPoint : times.minTime,
-        maxTime: times.maxTime === -1 || times.maxTime < lastPoint ? lastPoint : times.maxTime,
-      };
-    },
-    { minTime: -1, maxTime: -1 }
-  );
-
-  const timeWindow = msToS(maxTime - minTime);
-  return timeWindow > MAX_TIME_WINDOW ? MAX_TIME_WINDOW : timeWindow;
 };
 
 export const getWaypointsWithPosition = (waypoints: InteractiveWaypoint[]): OperationalPoint[] =>
