@@ -29,17 +29,17 @@
       0px 1px 0px rgba(235, 235, 234, 1) inset,
       0px -1px 0px rgba(182, 178, 175, 1) inset;
 
-    &.active {
+    &.selected {
       @apply bg-selection-20;
+    }
+
+    &.active {
+      @apply bg-primary-5;
     }
 
     &.small {
       font-size: 0.75rem;
       padding: 0.563rem 0.5rem 0.688rem;
-    }
-
-    &:hover {
-      @apply bg-primary-5;
     }
   }
 }

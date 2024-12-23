@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
 
-import { ComboBox } from '../components/inputs/ComboBox';
+import ComboBox from '../components/inputs/ComboBox';
+import useDefaultComboBox from '../components/inputs/ComboBox/useDefaultComboBox';
 
 type Suggestion = { id: string; label: string };
 
@@ -22,24 +23,39 @@ const suggestions = [
   { id: '12', label: 'Miguel' },
 ] as Suggestion[];
 
-const meta: Meta<typeof ComboBox> = {
-  component: ComboBox,
+const ComboBoxStory = (props: { small?: boolean; disabled?: boolean; readOnly?: boolean }) => {
+  const [value, setValue] = useState<Suggestion>();
+
+  const getSuggestionLabel = (suggestion: Suggestion) => suggestion.label;
+
+  const onSelectSuggestion = (suggestion?: Suggestion) => {
+    setValue(suggestion);
+  };
+
+  const comboBoxDefaultProps = useDefaultComboBox(suggestions, getSuggestionLabel);
+
+  return (
+    <div style={{ maxWidth: '20rem' }}>
+      <ComboBox
+        id="combo-box-custom"
+        value={value}
+        getSuggestionLabel={getSuggestionLabel}
+        onSelectSuggestion={onSelectSuggestion}
+        {...comboBoxDefaultProps}
+        {...props}
+      />
+    </div>
+  );
+};
+
+const meta: Meta<typeof ComboBoxStory> = {
+  component: ComboBoxStory,
   args: {
     small: false,
     disabled: false,
     readOnly: false,
-    onChange: () => {},
-    onSelectSuggestion: () => {},
-    getSuggestionLabel: (option) => (option as Suggestion).label,
-    suggestions: suggestions,
   },
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: '20rem' }}>
-        <Story />
-      </div>
-    ),
-  ],
+  render: (props) => <ComboBoxStory {...props} />,
   title: 'core/ComboBox',
   tags: ['autodocs'],
 };
@@ -51,7 +67,6 @@ export const Default: Story = {
   args: {
     label: 'Your name',
     type: 'text',
-    defaultValue: '',
   },
 };
 
@@ -63,7 +78,7 @@ export const LongText: Story = {
       { id: '1', label: 'Very very very very very very long value 1' },
       { id: '2', label: 'Very very very very very very long value 2' },
     ],
-    value: 'Very very very very very very long value 1',
+    value: { id: '1', label: 'Very very very very very very long value 1' },
   },
 };
 
@@ -71,7 +86,7 @@ export const WithDefaultValue: Story = {
   args: {
     label: 'Your name',
     type: 'text',
-    value: 'Manolo',
+    value: { id: '4', label: 'Manolo' },
   },
 };
 
@@ -116,13 +131,5 @@ export const SmallInput: Story = {
     type: 'text',
     required: true,
     small: true,
-  },
-};
-
-export const DisabledDefaultFilter: Story = {
-  args: {
-    label: 'Name',
-    type: 'text',
-    disableDefaultFilter: true,
   },
 };

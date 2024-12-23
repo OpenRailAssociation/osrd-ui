@@ -1,7 +1,11 @@
 import './styles/main.css';
 
 export { default as Button, ButtonProps } from './components/buttons/Button';
-export { ComboBox, type ComboBoxProps } from './components/inputs/ComboBox';
+export {
+  default as ComboBox,
+  type ComboBoxProps,
+  useDefaultComboBox,
+} from './components/inputs/ComboBox';
 export {
   Checkbox,
   CheckboxList,
