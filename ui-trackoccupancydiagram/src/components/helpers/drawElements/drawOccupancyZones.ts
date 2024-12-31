@@ -100,20 +100,51 @@ const drawRemainingTrainsBox = ({ ctx, remainingTrainsNb, xPosition }: DrawRemai
 const drawOccupationZone = ({
   ctx,
   zone,
+  tracks,
   arrivalTimePixel,
   departureTimePixel,
   yPosition,
   isThroughTrain,
   selectedTrainId,
+  setSelectedTrainId,
+  xMousePosition,
+  yMousePosition,
+  index,
 }: {
   ctx: CanvasRenderingContext2D;
   zone: OccupancyZone;
+  tracks: Track[];
   arrivalTimePixel: number;
   departureTimePixel: number;
   yPosition: number;
   isThroughTrain: boolean;
   selectedTrainId: string;
+  setSelectedTrainId: (id: string) => void;
+  index: number;
+  xMousePosition: number;
+  yMousePosition: number;
 }) => {
+  let currentSelectedTrainId = selectedTrainId;
+
+  const trackN = CANVAS_PADDING + TRACK_HEIGHT_CONTAINER * index + yPosition;
+  const canvasHeight = CANVAS_PADDING * 2 + TRACK_HEIGHT_CONTAINER * tracks.length;
+  const trackPosition = canvasHeight - trackN;
+
+  const arrowOffset = isThroughTrain ? 4 : 0;
+
+  const xCheck =
+    xMousePosition >= arrivalTimePixel - arrowOffset &&
+    xMousePosition <= departureTimePixel + arrowOffset;
+
+  const yCheck =
+    Math.abs(yMousePosition) >= trackPosition - OCCUPANCY_ZONE_HEIGHT - 1 - arrowOffset &&
+    Math.abs(yMousePosition) <= trackPosition + 1 + arrowOffset;
+
+  if (xCheck && yCheck) {
+    setSelectedTrainId(zone.id);
+    currentSelectedTrainId = zone.id;
+  }
+
   ctx.fillStyle = zone.color;
   ctx.strokeStyle = WHITE_100;
   ctx.lineJoin = 'round';
@@ -156,7 +187,7 @@ const drawOccupationZone = ({
     departureTimePixel,
     yPosition,
     isThroughTrain,
-    selectedTrainId,
+    selectedTrainId: currentSelectedTrainId,
   });
 };
 
@@ -168,6 +199,8 @@ export const drawOccupancyZones = ({
   occupancyZones,
   getTimePixel,
   selectedTrainId,
+  setSelectedTrainId,
+  mousePosition,
 }: {
   ctx: CanvasRenderingContext2D;
   width: number;
@@ -176,8 +209,11 @@ export const drawOccupancyZones = ({
   occupancyZones: OccupancyZone[] | undefined;
   getTimePixel: (time: number) => number;
   selectedTrainId: string;
+  setSelectedTrainId: (id: string) => void;
+  mousePosition: { x: number; y: number };
 }) => {
   ctx.clearRect(0, 0, width, height);
+  ctx.save();
 
   if (!tracks || !occupancyZones || occupancyZones.length === 0) return;
 
@@ -189,13 +225,15 @@ export const drawOccupancyZones = ({
     const trackTranslate = index === 0 ? CANVAS_PADDING : TRACK_HEIGHT_CONTAINER;
     ctx.translate(0, trackTranslate);
 
+    const { x: xMousePosition, y: yMousePosition } = mousePosition;
+
     const filteredOccupancyZones = sortedOccupancyZones.filter((zone) => zone.trackId === track.id);
 
     let primaryArrivalTimePixel = 0;
     let primaryDepartureTimePixel = 0;
     let lastDepartureTimePixel = primaryDepartureTimePixel;
     let yPosition = OCCUPANCY_ZONE_Y_START;
-    let yOffset = 0;
+    let yOffset = Y_OFFSET_INCREMENT;
     let zoneCounter = 0;
     let zoneIndex = 0;
 
@@ -226,11 +264,16 @@ export const drawOccupancyZones = ({
         drawOccupationZone({
           ctx,
           zone,
+          tracks,
           arrivalTimePixel,
           departureTimePixel,
           yPosition,
           isThroughTrain,
           selectedTrainId,
+          setSelectedTrainId,
+          index,
+          xMousePosition,
+          yMousePosition,
         });
 
         zoneIndex++;
@@ -255,11 +298,16 @@ export const drawOccupancyZones = ({
         drawOccupationZone({
           ctx,
           zone,
+          tracks,
           arrivalTimePixel,
           departureTimePixel,
           yPosition,
           isThroughTrain,
           selectedTrainId,
+          setSelectedTrainId,
+          index,
+          xMousePosition,
+          yMousePosition,
         });
 
         zoneCounter++;
@@ -287,4 +335,5 @@ export const drawOccupancyZones = ({
       zoneIndex += remainingTrainsNb;
     }
   });
+  ctx.restore();
 };

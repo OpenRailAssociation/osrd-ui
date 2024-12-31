@@ -13,6 +13,8 @@ const TrackOccupancyCanvas = ({
   useDraw,
   setCanvasesRoot,
   selectedTrainId,
+  setSelectedTrainId,
+  mousePosition,
 }: TrackOccupancyCanvasProps) => (
   <div
     id={`track-occupancy-canvas-${opId}`}
@@ -20,7 +22,12 @@ const TrackOccupancyCanvas = ({
     ref={setCanvasesRoot}
   >
     <TracksLayer useDraw={useDraw} />
-    <OccupancyZonesLayer useDraw={useDraw} selectedTrainId={selectedTrainId} />
+    <OccupancyZonesLayer
+      useDraw={useDraw}
+      selectedTrainId={selectedTrainId}
+      setSelectedTrainId={setSelectedTrainId}
+      mousePosition={mousePosition}
+    />
   </div>
 );
 

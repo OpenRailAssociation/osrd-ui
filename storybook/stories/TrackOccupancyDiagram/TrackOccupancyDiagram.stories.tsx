@@ -1,18 +1,24 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { KebabHorizontal } from '../../../ui-icons/src/index';
 import TimeCaptions from '../../../ui-spacetimechart/src/components/TimeCaptions';
 import { useCanvas, useDraw } from '../../../ui-spacetimechart/src/hooks/useCanvas';
+import { useMouseInteractions } from '../../../ui-spacetimechart/src/hooks/useMouseInteractions';
 import { useMouseTracking } from '../../../ui-spacetimechart/src/hooks/useMouseTracking';
 import { useSize } from '../../../ui-spacetimechart/src/hooks/useSize';
 import { DEFAULT_THEME } from '../../../ui-spacetimechart/src/lib/consts';
-import { CanvasContext, SpaceTimeChartContext } from '../../../ui-spacetimechart/src/lib/context';
 import {
-  type SpaceTimeChartContextType,
-  type PickingElement,
-  type SpaceTimeChartTheme,
+  CanvasContext,
+  MouseContext,
+  SpaceTimeChartContext,
+} from '../../../ui-spacetimechart/src/lib/context';
+import type {
+  MouseContextType,
+  SpaceTimeChartContextType,
+  PickingElement,
+  SpaceTimeChartTheme,
 } from '../../../ui-spacetimechart/src/lib/types';
 import { OPERATIONAL_POINTS } from '../../../ui-spacetimechart/src/stories/lib/paths';
 import {
@@ -39,6 +45,7 @@ type TrackOccupancyDiagramProps = {
   spaceScaleType: 'linear' | 'proportional';
   emptyData: boolean;
   selectedTrainId: string;
+  setSelectedTrainId: (id: string) => void;
 };
 
 const OP_ID = 'story';
@@ -53,6 +60,8 @@ const TrackOccupancyDiagram = ({
   yOffset,
   spaceScaleType,
   emptyData,
+  selectedTrainId,
+  setSelectedTrainId,
 }: TrackOccupancyDiagramProps) => {
   const spaceOrigin = 0;
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
@@ -192,11 +201,29 @@ const TrackOccupancyDiagram = ({
   }, [fingerprint]);
 
   const [spaceTicksRoot, setSpaceTicksRoot] = useState<HTMLDivElement | null>(null);
+
   const mouseState = useMouseTracking(root);
   const { position } = mouseState;
   const { canvasContext } = useCanvas(canvasesRoot, contextState, position);
   const { canvasContext: spaceTicksContext } = useCanvas(spaceTicksRoot, contextState, position);
 
+  const mouseContext = useMemo<MouseContextType>(
+    () => ({
+      isHover: false,
+      position: mouseState.position,
+      hoveredItem: null,
+      data: contextState.getData(mouseState.position),
+    }),
+    [mouseState.position, contextState]
+  );
+
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const onClick = () => {
+    setMousePosition(mouseContext.position);
+  };
+
+  useMouseInteractions(canvasesRoot, mouseContext, { onClick }, contextState);
   return (
     <div id="track-occupancy-diagram-base-story" className="bg-ambientB-10">
       <SpaceTimeChartContext.Provider value={contextState}>
@@ -209,14 +236,18 @@ const TrackOccupancyDiagram = ({
               <TrackOccupancyManchette tracks={tracks} />
             </div>
             <CanvasContext.Provider value={canvasContext}>
-              <div className="main-container-canvas">
-                <TrackOccupancyCanvas
-                  opId={OP_ID}
-                  useDraw={useDraw}
-                  setCanvasesRoot={setCanvasesRoot}
-                  selectedTrainId={SELECTED_TRAIN_ID}
-                />
-              </div>
+              <MouseContext.Provider value={mouseContext}>
+                <div className="main-container-canvas">
+                  <TrackOccupancyCanvas
+                    opId={OP_ID}
+                    useDraw={useDraw}
+                    setCanvasesRoot={setCanvasesRoot}
+                    selectedTrainId={selectedTrainId}
+                    setSelectedTrainId={setSelectedTrainId}
+                    mousePosition={mousePosition}
+                  />
+                </div>
+              </MouseContext.Provider>
             </CanvasContext.Provider>
           </div>
         </div>
@@ -232,9 +263,30 @@ const TrackOccupancyDiagram = ({
   );
 };
 
-const meta: Meta<typeof TrackOccupancyDiagram> = {
+const TrackOccupancyDiagramStory = ({ trainId }: { trainId: number }) => {
+  const [selectedTrainId, setSelectedTrainId] = useState('0');
+
+  useEffect(() => {
+    setSelectedTrainId(`${trainId}`);
+  }, [trainId]);
+
+  return (
+    <TrackOccupancyDiagram
+      xZoomLevel={X_ZOOM_LEVEL}
+      yZoomLevel={Y_ZOOM_LEVEL}
+      xOffset={0}
+      yOffset={0}
+      spaceScaleType="linear"
+      emptyData={false}
+      selectedTrainId={selectedTrainId}
+      setSelectedTrainId={setSelectedTrainId}
+    />
+  );
+};
+
+const meta: Meta<typeof TrackOccupancyDiagramStory> = {
   title: 'TrackOccupancyDiagram/Rendering',
-  component: TrackOccupancyDiagram,
+  component: TrackOccupancyDiagramStory,
   decorators: [(Story) => <Story />],
   parameters: {
     layout: 'centered',
@@ -243,28 +295,18 @@ const meta: Meta<typeof TrackOccupancyDiagram> = {
     },
   },
   args: {
-    xZoomLevel: X_ZOOM_LEVEL,
-    yZoomLevel: Y_ZOOM_LEVEL,
-    xOffset: 0,
-    yOffset: 0,
-    spaceScaleType: 'linear',
-    emptyData: false,
-    selectedTrainId: SELECTED_TRAIN_ID,
+    trainId: +SELECTED_TRAIN_ID,
   },
-
-  render: (args) => <TrackOccupancyDiagram {...args} />,
+  render: (args) => <TrackOccupancyDiagramStory {...args} />,
   tags: ['autodocs'],
 };
 
 export default meta;
 
-type Story = StoryObj<typeof TrackOccupancyDiagram>;
+type Story = StoryObj<typeof TrackOccupancyDiagramStory>;
 
 export const TrackOccupancyDiagramStoryDefault: Story = {
   args: {
-    xOffset: 0,
-    xZoomLevel: X_ZOOM_LEVEL,
-    yZoomLevel: Y_ZOOM_LEVEL,
-    selectedTrainId: SELECTED_TRAIN_ID,
+    trainId: 5,
   },
 };

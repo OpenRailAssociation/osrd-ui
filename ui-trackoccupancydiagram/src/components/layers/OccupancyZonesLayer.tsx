@@ -10,9 +10,13 @@ import { drawOccupancyZones } from '../helpers/drawElements/drawOccupancyZones';
 const OccupancyZonesLayer = ({
   useDraw,
   selectedTrainId,
+  setSelectedTrainId,
+  mousePosition,
 }: {
   useDraw: (layer: LayerType, fn: DrawingFunction) => void;
   selectedTrainId: string;
+  setSelectedTrainId: (id: string) => void;
+  mousePosition: { x: number; y: number };
 }) => {
   const drawingFunction = useCallback<DrawingFunction>(
     (ctx, { getTimePixel, tracks, occupancyZones, trackOccupancyWidth, trackOccupancyHeight }) => {
@@ -25,9 +29,11 @@ const OccupancyZonesLayer = ({
           occupancyZones,
           getTimePixel,
           selectedTrainId,
+          setSelectedTrainId,
+          mousePosition,
         });
     },
-    [selectedTrainId]
+    [mousePosition, selectedTrainId, setSelectedTrainId]
   );
 
   useDraw('paths', drawingFunction);

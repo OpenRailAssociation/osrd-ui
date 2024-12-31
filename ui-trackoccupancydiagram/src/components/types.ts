@@ -28,6 +28,8 @@ export type TrackOccupancyCanvasProps = {
   useDraw: (layer: LayerType, fn: DrawingFunction) => void;
   setCanvasesRoot: (root: HTMLDivElement | null) => void;
   selectedTrainId: string;
+  setSelectedTrainId: (id: string) => void;
+  mousePosition: { x: number; y: number };
 };
 
 export type TrackOccupancyManchetteProps = {

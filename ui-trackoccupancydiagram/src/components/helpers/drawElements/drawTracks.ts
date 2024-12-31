@@ -59,6 +59,7 @@ export const drawTracks = ({
   timeScale,
 }: DrawTracksProps) => {
   ctx.clearRect(0, 0, width, height);
+  ctx.save();
 
   const minT = timeOrigin - timeScale * timePixelOffset;
   const maxT = minT + timeScale * width;
@@ -94,4 +95,5 @@ export const drawTracks = ({
       labelMarks,
     });
   });
+  ctx.restore();
 };
