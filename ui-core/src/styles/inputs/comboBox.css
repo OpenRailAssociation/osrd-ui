@@ -39,7 +39,7 @@
     }
 
     &:hover {
-      @apply bg-selection-20;
+      @apply bg-primary-5;
     }
   }
 }
