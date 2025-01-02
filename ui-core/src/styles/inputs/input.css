@@ -43,7 +43,7 @@
     }
 
     .clear-icon {
-      @apply text-primary-20;
+      @apply text-grey-50;
       cursor: pointer;
     }
 

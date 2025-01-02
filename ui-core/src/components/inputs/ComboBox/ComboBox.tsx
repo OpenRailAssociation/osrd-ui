@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react';
 
-import { ChevronDown, X } from '@osrd-project/ui-icons';
+import { ChevronDown, XCircle } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
 import { normalizeString } from './utils';
@@ -88,7 +88,7 @@ const ComboBox = <T,>({
     ...(selectedOption || suggestions.some((suggestion) => getSuggestionLabel(suggestion) === value)
       ? [
           {
-            icon: <X size={small ? 'sm' : 'lg'} />,
+            icon: <XCircle variant="fill" />,
             action: clearInput,
             className: 'clear-icon',
           },
