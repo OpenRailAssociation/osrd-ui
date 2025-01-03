@@ -18,6 +18,7 @@ export type FieldWrapperProps = {
   small?: boolean;
   children?: React.ReactNode;
   className?: string;
+  onCloseStatusMessage?: () => void;
 };
 
 const FieldWrapper = ({
@@ -31,6 +32,7 @@ const FieldWrapper = ({
   small = false,
   className,
   children,
+  onCloseStatusMessage,
 }: FieldWrapperProps) => {
   const statusClassname = statusWithMessage ? { [statusWithMessage.status]: true } : {};
 
@@ -65,8 +67,10 @@ const FieldWrapper = ({
         {/* STATUS MESSAGE */}
         {statusWithMessage && (
           <StatusMessage
+            small={small}
             statusWithMessage={statusWithMessage}
             showIcon={statusIconPosition === 'before-status-message'}
+            onClose={onCloseStatusMessage}
           />
         )}
       </div>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ChevronDown, X } from '@osrd-project/ui-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
 
 import Input from '../components/inputs/Input';
+import { type StatusWithMessage } from '../components/inputs/StatusMessage';
 
 const meta: Meta<typeof Input> = {
   component: Input,
@@ -171,6 +172,80 @@ export const ErrorInput: Story = {
       message: '“Michel Sardou” can’t be used',
     },
   },
+};
+
+export const TooltipErrorInput: Story = {
+  args: {
+    label: 'Name',
+    type: 'text',
+    required: true,
+    value: 'Michel Sardou',
+    statusWithMessage: {
+      tooltip: 'right',
+      status: 'error',
+      message: '“Michel Sardou” can’t be used',
+    },
+  },
+};
+
+export const TooltipInfoInput: Story = {
+  args: {
+    label: 'Name',
+    type: 'text',
+    required: true,
+    value: 'Michel Sardou',
+  },
+  decorators: [
+    function Component(Story, ctx) {
+      const [status, setStatus] = useState<StatusWithMessage | undefined>({
+        tooltip: 'right',
+        status: 'info',
+        message: '“Michel Sardou” can’t be used',
+      });
+      return (
+        <Story
+          args={{
+            ...ctx.args,
+            statusWithMessage: status,
+            onCloseStatusMessage: () => setStatus(undefined),
+          }}
+        />
+      );
+    },
+  ],
+};
+
+export const TwoTooltipErrorInput: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+        <Story
+          args={{
+            label: 'Name',
+            type: 'text',
+            value: 'Michel Sardou',
+            statusWithMessage: {
+              tooltip: 'left',
+              status: 'error',
+              message: 'Michel Sardou can’t be used',
+            },
+          }}
+        />
+        <Story
+          args={{
+            label: 'Name',
+            type: 'text',
+            value: 'Jean-Michel Halleurt',
+            statusWithMessage: {
+              tooltip: 'right',
+              status: 'error',
+              message: 'Jean-Michel Halleurt can’t be used',
+            },
+          }}
+        />
+      </div>
+    ),
+  ],
 };
 
 export const ErrorWithoutMessageInput: Story = {
