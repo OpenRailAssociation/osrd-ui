@@ -15,6 +15,8 @@ import {
   positionToPosX,
   interpolate,
   clamp,
+  filterVisibleElements,
+  type VisibilityFilterOptions,
   getSnappedStop,
 } from '../components/utils';
 import type { LayerData, Store } from '../types/chartTypes';
@@ -358,6 +360,131 @@ describe('clamp', () => {
     [-1, 0, 10, 0],
   ])('should clamp correctly', (value, min, max, expected) => {
     expect(clamp(value, min, max)).toEqual(expected);
+  });
+});
+
+describe('filterVisibleElements', () => {
+  type Element = { id: number; position: number; weight: number | undefined };
+
+  const elements: Element[] = [
+    { id: 1, position: 10, weight: 5 },
+    { id: 2, position: 15, weight: 3 },
+    { id: 3, position: 25, weight: 4 },
+    { id: 4, position: 30, weight: undefined },
+    { id: 5, position: 50, weight: 1 },
+  ];
+
+  const getPosition = (element: Element) => element.position;
+  const getWeight = (element: Element) => element.weight;
+
+  it('should filter visible elements based on minSpace', () => {
+    const options: VisibilityFilterOptions<Element> = {
+      elements,
+      getPosition,
+      getWeight,
+      minSpace: 10,
+    };
+
+    const result = filterVisibleElements(options);
+
+    expect(result).toEqual([
+      { id: 1, position: 10, weight: 5 }, // Highest weight and valid position
+      { id: 3, position: 25, weight: 4 }, // Second highest weight with valid spacing
+      { id: 5, position: 50, weight: 1 }, // Last valid element
+    ]);
+  });
+
+  it('should return all elements if minSpace is 0', () => {
+    const options: VisibilityFilterOptions<Element> = {
+      elements,
+      getPosition,
+      getWeight,
+      minSpace: 0, // No space restriction
+    };
+
+    const result = filterVisibleElements(options);
+
+    // All elements are sorted by position since there is no restriction
+    expect(result).toEqual(elements.sort((a, b) => a.position - b.position));
+  });
+
+  it('should return an empty array if no elements are provided', () => {
+    const options: VisibilityFilterOptions<Element> = {
+      elements: [],
+      getPosition,
+      getWeight,
+      minSpace: 10,
+    };
+
+    const result = filterVisibleElements(options);
+
+    expect(result).toEqual([]);
+  });
+
+  it('should prioritize higher weights when positions overlap', () => {
+    const overlappingElements: Element[] = [
+      { id: 1, position: 10, weight: 5 },
+      { id: 2, position: 12, weight: 6 }, // Overlaps with id: 1
+      { id: 3, position: 25, weight: 4 },
+    ];
+
+    const options: VisibilityFilterOptions<Element> = {
+      elements: overlappingElements,
+      getPosition,
+      getWeight,
+      minSpace: 10,
+    };
+
+    const result = filterVisibleElements(options);
+
+    // id: 2 replaces id: 1 because of higher weight
+    expect(result).toEqual([
+      { id: 2, position: 12, weight: 6 },
+      { id: 3, position: 25, weight: 4 },
+    ]);
+  });
+
+  it('should prioritize elements with higher weights when positions are identical', () => {
+    const elementsWithSamePosition: Element[] = [
+      { id: 1, position: 10, weight: 3 },
+      { id: 2, position: 10, weight: 5 },
+      { id: 3, position: 10, weight: 1 },
+    ];
+
+    const options: VisibilityFilterOptions<Element> = {
+      elements: elementsWithSamePosition,
+      getPosition,
+      getWeight,
+      minSpace: 5,
+    };
+
+    const result = filterVisibleElements(options);
+
+    expect(result).toEqual([
+      { id: 2, position: 10, weight: 5 }, // Highest weight
+    ]);
+  });
+
+  it('should handle elements with equal weights but conflicting positions', () => {
+    const equalWeightElements: Element[] = [
+      { id: 1, position: 10, weight: 5 },
+      { id: 2, position: 12, weight: 5 }, // Same weight, close position
+      { id: 3, position: 30, weight: 5 },
+    ];
+
+    const options: VisibilityFilterOptions<Element> = {
+      elements: equalWeightElements,
+      getPosition,
+      getWeight,
+      minSpace: 10,
+    };
+
+    const result = filterVisibleElements(options);
+
+    expect(result).toEqual([
+      { id: 1, position: 10, weight: 5 },
+      { id: 3, position: 30, weight: 5 },
+    ]);
   });
 });
 

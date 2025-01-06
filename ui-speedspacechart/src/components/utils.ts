@@ -15,7 +15,7 @@ type SlopesValues = {
   maxPosition: number;
 };
 
-type VisibilityFilterOptions<T> = {
+export type VisibilityFilterOptions<T> = {
   elements: T[];
   getPosition: (element: T) => number;
   getWeight: (element: T) => number | undefined;
