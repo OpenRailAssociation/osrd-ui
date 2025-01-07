@@ -119,6 +119,17 @@ const ComboBox = <T,>({
 
   useEffect(() => {
     setFilteredSuggestions(sortedSuggestions);
+
+    const isInputValid = sortedSuggestions.some(
+      (suggestion) =>
+        normalizeString(getSuggestionLabel(suggestion)) === normalizeString(inputValue)
+    );
+
+    if (!isInputValid) {
+      setInputValue('');
+      setSelectedOption(null);
+      onSelectSuggestion?.(undefined);
+    }
   }, [sortedSuggestions]);
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {

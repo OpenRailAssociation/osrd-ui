@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
@@ -124,5 +124,40 @@ export const DisabledDefaultFilter: Story = {
     label: 'Name',
     type: 'text',
     disableDefaultFilter: true,
+  },
+};
+
+export const DynamicSuggestions: Story = {
+  render: (args) => {
+    const [dynamicSuggestions, setDynamicSuggestions] = useState<Suggestion[]>([
+      { id: '1', label: 'Manuel' },
+      { id: '2', label: 'Manolo' },
+      { id: '3', label: 'Maria' },
+      { id: '4', label: 'Miguel' },
+    ]);
+
+    // Simulate a dynamic update to the suggestions list after 5 seconds
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        setDynamicSuggestions([
+          { id: '1', label: 'Consuela' },
+          { id: '2', label: 'Juan' },
+          { id: '3', label: 'Jose' },
+          { id: '4', label: 'Ana' },
+          { id: '5', label: 'Pedro' },
+          { id: '6', label: 'Lucia' },
+          { id: '7', label: 'Carlos' },
+          { id: '8', label: 'Elena' },
+        ]);
+      }, 5000);
+
+      return () => clearTimeout(timeout);
+    }, []);
+
+    return <ComboBox {...args} label="Dynamic Suggestions" suggestions={dynamicSuggestions} />;
+  },
+  args: {
+    label: 'Dynamic Suggestions',
+    type: 'text',
   },
 };
