@@ -15,6 +15,9 @@ updates:
       typescript-eslint:
         patterns:
           - "@typescript-eslint/*"
+      patch:
+        update-types:
+          - "patch"
     commit-message:
       prefix: "dependency:"
     open-pull-requests-limit: 100
