@@ -5,6 +5,7 @@
   .range-slider {
     -webkit-appearance: none;
     appearance: none;
+    background-color: inherit;
     height: 10px;
     width: 100%;
   

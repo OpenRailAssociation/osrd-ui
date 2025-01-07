@@ -20,6 +20,7 @@ const Slider = ({
   onChange,
   onChangeCommitted,
   disabled,
+  className,
   containerClassName,
   ...rest
 }: SliderProps) => {
@@ -50,7 +51,7 @@ const Slider = ({
     >
       <input
         type="range"
-        className="range-slider"
+        className={cx('range-slider', className)}
         id={id}
         value={value}
         min={min}
