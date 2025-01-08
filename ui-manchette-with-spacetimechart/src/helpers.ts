@@ -1,6 +1,5 @@
 import type { InteractiveWaypoint, Waypoint } from '@osrd-project/ui-manchette/dist/types';
 import type { OperationalPoint } from '@osrd-project/ui-spacetimechart/dist/lib/types';
-import { filterVisibleElements } from '@osrd-project/ui-speedspacechart/src/components/utils';
 import { clamp } from 'lodash';
 
 import {
@@ -13,6 +12,39 @@ import {
 import { calcTotalDistance, getHeightWithoutLastWaypoint } from './utils';
 
 type WaypointsOptions = { isProportional: boolean; yZoom: number; height: number };
+
+type VisibilityFilterOptions<T> = {
+  elements: T[];
+  getPosition: (element: T) => number;
+  getWeight: (element: T) => number | undefined;
+  minSpace: number;
+};
+
+export const filterVisibleElements = <T>({
+  elements,
+  getPosition,
+  getWeight,
+  minSpace,
+}: VisibilityFilterOptions<T>): T[] => {
+  const sortedElements = [...elements].sort((a, b) => (getWeight(b) ?? 0) - (getWeight(a) ?? 0));
+  const displayedElements: { element: T; position: number }[] = [];
+
+  for (const element of sortedElements) {
+    const position = getPosition(element);
+
+    const hasSpace = !displayedElements.some(
+      (displayed) => Math.abs(position - displayed.position) < minSpace
+    );
+
+    if (hasSpace) {
+      displayedElements.push({ element, position });
+    }
+  }
+
+  return displayedElements
+    .sort((a, b) => getPosition(a.element) - getPosition(b.element))
+    .map(({ element }) => element);
+};
 
 export const getDisplayedWaypoints = (
   waypoints: Waypoint[],
