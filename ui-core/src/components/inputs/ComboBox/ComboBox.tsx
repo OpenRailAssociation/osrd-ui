@@ -160,7 +160,7 @@ const ComboBox = <T,>({
         }),
       },
     ],
-    [inputValue]
+    [value]
   );
 
   return (
