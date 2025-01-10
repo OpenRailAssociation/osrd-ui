@@ -188,7 +188,7 @@ const ComboBox = <T,>({
               key={`${getSuggestionLabel(suggestion)}-${index}`}
               className={cx('suggestion-item', {
                 active: index === activeSuggestionIndex,
-                selected: value === suggestion,
+                selected: value && getSuggestionLabel(value) === getSuggestionLabel(suggestion),
                 small,
               })}
               onClick={() => selectSuggestion(index)}
