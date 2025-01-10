@@ -31,7 +31,6 @@ type State = {
   xOffset: number;
   yOffset: number;
   panning: { initialOffset: { x: number; y: number } } | null;
-  scrollPosition: number;
   isProportional: boolean;
   waypointsChart: Waypoint[];
   scales: SpaceScale[];
@@ -52,13 +51,12 @@ const useManchettesWithSpaceTimeChart = (
     xOffset: 0,
     yOffset: 0,
     panning: null,
-    scrollPosition: 0,
     isProportional: true,
     waypointsChart: [],
     scales: [],
   });
 
-  const { xZoom, yZoom, xOffset, yOffset, panning, scrollPosition, isProportional } = state;
+  const { xZoom, yZoom, xOffset, yOffset, panning, isProportional } = state;
 
   const paths = usePaths(projectPathTrainResult, selectedTrain);
 
@@ -96,7 +94,7 @@ const useManchettesWithSpaceTimeChart = (
     if (!isShiftPressed && manchetteWithSpaceTimeChartContainer.current) {
       const { scrollTop } = manchetteWithSpaceTimeChartContainer.current;
       if (scrollTop || scrollTop === 0) {
-        setState((prev) => ({ ...prev, scrollPosition: scrollTop, yOffset: scrollTop }));
+        setState((prev) => ({ ...prev, yOffset: scrollTop }));
       }
     }
   }, [isShiftPressed, manchetteWithSpaceTimeChartContainer]);
@@ -162,7 +160,7 @@ const useManchettesWithSpaceTimeChart = (
       timeScale: zoomValueToTimeScale(xZoom),
       paths,
       xOffset,
-      yOffset: -scrollPosition + 14,
+      yOffset: -yOffset + 14,
       onZoom: ({ delta, position }: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]) => {
         if (isShiftPressed) {
           handleXZoom(xZoom + delta, position.x);
@@ -192,7 +190,6 @@ const useManchettesWithSpaceTimeChart = (
               manchetteWithSpaceTimeChartContainer.current.scrollHeight
           ) {
             newState.yOffset = newYPos;
-            newState.scrollPosition = newYPos;
             manchetteWithSpaceTimeChartContainer.current.scrollTop = newYPos;
           }
         }
@@ -205,7 +202,6 @@ const useManchettesWithSpaceTimeChart = (
       xZoom,
       paths,
       xOffset,
-      scrollPosition,
       isShiftPressed,
       state,
       panning,
