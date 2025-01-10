@@ -29,7 +29,10 @@ type State = {
   xZoom: number;
   yZoom: number;
   xOffset: number;
+  /** the current y-scroll of the view. always updates */
   yOffset: number;
+  /** only update after a zoom. used to update back the view scroll value */
+  scrollTo: number | null;
   panning: { initialOffset: { x: number; y: number } } | null;
   isProportional: boolean;
   waypointsChart: Waypoint[];
@@ -50,13 +53,14 @@ const useManchettesWithSpaceTimeChart = (
     yZoom: 1,
     xOffset: 0,
     yOffset: 0,
+    scrollTo: null,
     panning: null,
     isProportional: true,
     waypointsChart: [],
     scales: [],
   });
 
-  const { xZoom, yZoom, xOffset, yOffset, panning, isProportional } = state;
+  const { xZoom, yZoom, xOffset, yOffset, scrollTo, panning, isProportional } = state;
 
   const paths = usePaths(projectPathTrainResult, selectedTrain);
 
@@ -76,15 +80,39 @@ const useManchettesWithSpaceTimeChart = (
 
   const zoomYIn = useCallback(() => {
     if (yZoom < MAX_ZOOM_Y) {
-      setState((prev) => ({ ...prev, yZoom: yZoom + ZOOM_Y_DELTA }));
+      const newYZoom = yZoom + ZOOM_Y_DELTA;
+      const newYOffset = yOffset * (newYZoom / yZoom);
+
+      setState((prev) => ({
+        ...prev,
+        yZoom: newYZoom,
+        yOffset: newYOffset,
+        scrollTo: newYOffset,
+      }));
     }
-  }, [yZoom]);
+  }, [yZoom, yOffset]);
 
   const zoomYOut = useCallback(() => {
     if (yZoom > MIN_ZOOM_Y) {
-      setState((prev) => ({ ...prev, yZoom: yZoom - ZOOM_Y_DELTA }));
+      const newYZoom = yZoom - ZOOM_Y_DELTA;
+      const newYOffset = yOffset * (newYZoom / yZoom);
+      setState((prev) => ({
+        ...prev,
+        yZoom: newYZoom,
+        yOffset: newYOffset,
+        scrollTo: newYOffset,
+      }));
     }
-  }, [yZoom]);
+  }, [yZoom, yOffset]);
+
+  useEffect(() => {
+    if (scrollTo !== null && manchetteWithSpaceTimeChartContainer.current) {
+      manchetteWithSpaceTimeChartContainer.current.scrollTo({
+        top: scrollTo,
+        behavior: 'instant',
+      });
+    }
+  }, [scrollTo, manchetteWithSpaceTimeChartContainer]);
 
   const resetZoom = useCallback(() => {
     setState((prev) => ({ ...prev, yZoom: 1 }));
@@ -139,8 +167,9 @@ const useManchettesWithSpaceTimeChart = (
       toggleMode,
       yZoom,
       isProportional,
+      yOffset,
     }),
-    [waypointWithHeight, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional]
+    [waypointWithHeight, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional, yOffset]
   );
 
   const handleXZoom = useCallback(
@@ -217,9 +246,8 @@ const useManchettesWithSpaceTimeChart = (
       spaceTimeChartProps,
       handleScroll,
       handleXZoom,
-      xZoom,
     }),
-    [manchetteProps, spaceTimeChartProps, handleScroll, handleXZoom, xZoom]
+    [manchetteProps, spaceTimeChartProps, handleScroll, handleXZoom]
   );
 };
 
