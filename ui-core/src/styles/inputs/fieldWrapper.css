@@ -4,7 +4,6 @@
   --status-message-wrapper-tooltip--offset: 4px;
 
   border-radius: 0.5rem;
-  position: relative;
   padding: 0.625rem 0.813rem 1rem 1rem;
 
   &.success:not(:has(.status-message-wrapper-tooltip)) {
@@ -24,6 +23,8 @@
   }
 
   .custom-field {
+    position: relative;
+
     display: flex;
     flex-direction: column;
 

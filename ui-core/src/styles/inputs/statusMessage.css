@@ -37,10 +37,7 @@
   display: flex;
   align-items: center;
   width: 320px;
-  top: calc(
-    100% - var(--input-wrapper-padding) - var(--field-wrapper-padding-bottom) -
-      var(--status-message-wrapper-tooltip--offset)
-  );
+  top: calc(100% - var(--input-wrapper-padding) - var(--status-message-wrapper-tooltip--offset));
   gap: 12px;
   border-radius: 8px;
   box-shadow:
@@ -84,11 +81,11 @@
   }
 
   &.tooltip-left {
-    left: 8px;
+    left: -6px;
   }
 
   &.tooltip-right {
-    right: 8px;
+    right: -2px;
   }
 
   .status-message {

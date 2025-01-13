@@ -8,7 +8,7 @@
 
   .required {
     position: absolute;
-    left: -0.5rem;
+    left: -24px;
     border-radius: 0.031rem;
     @apply text-info-30;
   }
