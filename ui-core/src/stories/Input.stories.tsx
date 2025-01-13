@@ -188,6 +188,20 @@ export const TooltipErrorInput: Story = {
   },
 };
 
+export const TooltipWarningNarrowInput: Story = {
+  args: {
+    label: 'Name',
+    type: 'text',
+    value: 'This is a narrow input',
+    statusWithMessage: {
+      status: 'warning',
+      message:
+        "My wrapper doesn't have any padding. Don't use me with 'required' or 'statusWithMessage' with no tooltip.",
+    },
+    narrow: true,
+  },
+};
+
 export const TooltipInfoInput: Story = {
   args: {
     label: 'Name',

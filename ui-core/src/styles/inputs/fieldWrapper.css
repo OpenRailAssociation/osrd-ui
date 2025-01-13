@@ -22,6 +22,10 @@
     @apply bg-error-5;
   }
 
+  &.narrow {
+    padding: 0;
+  }
+
   .custom-field {
     position: relative;
 

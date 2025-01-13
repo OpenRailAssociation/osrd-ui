@@ -15,6 +15,11 @@ export type FieldWrapperProps = {
   disabled?: boolean;
   statusWithMessage?: StatusWithMessage;
   statusIconPosition?: 'next-to-field' | 'before-status-message';
+  /**
+   * Input without any wrapper padding.
+   * Should not be used with required or statusWithMessage with no tooltip.
+   */
+  narrow?: boolean;
   small?: boolean;
   children?: React.ReactNode;
   className?: string;
@@ -29,15 +34,21 @@ const FieldWrapper = ({
   disabled,
   statusWithMessage,
   statusIconPosition = 'next-to-field',
+  narrow = false,
   small = false,
   className,
   children,
   onCloseStatusMessage,
 }: FieldWrapperProps) => {
   const statusClassname = statusWithMessage ? { [statusWithMessage.status]: true } : {};
+  const defaultTooltip: StatusWithMessage['tooltip'] = narrow ? 'left' : undefined;
+
+  if (narrow && required) {
+    throw new Error('narrow should not be used with required for now. This breaks the input UI.');
+  }
 
   return (
-    <div className={cx('feed-back', statusClassname, className, { small: small })}>
+    <div className={cx('feed-back', statusClassname, className, { small, narrow })}>
       <div className="custom-field">
         {/* LABEL AND HINT */}
         {label && (
@@ -68,7 +79,10 @@ const FieldWrapper = ({
         {statusWithMessage && (
           <StatusMessage
             small={small}
-            statusWithMessage={statusWithMessage}
+            statusWithMessage={{
+              ...statusWithMessage,
+              tooltip: statusWithMessage?.tooltip ?? defaultTooltip,
+            }}
             showIcon={statusIconPosition === 'before-status-message'}
             onClose={onCloseStatusMessage}
           />

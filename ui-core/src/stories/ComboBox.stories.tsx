@@ -67,6 +67,15 @@ export const Default: Story = {
   args: {
     label: 'Your name',
     type: 'text',
+    narrow: false,
+  },
+};
+
+export const Narrow: Story = {
+  args: {
+    label: 'Your name',
+    type: 'text',
+    narrow: true,
   },
 };
 

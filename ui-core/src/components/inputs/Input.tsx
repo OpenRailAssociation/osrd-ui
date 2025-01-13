@@ -66,6 +66,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       disabled = false,
       readOnly = false,
       statusWithMessage,
+      narrow,
       inputFieldWrapperClassname = '',
       small = false,
       withIcons = [],
@@ -87,7 +88,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         disabled={disabled}
         required={required}
         small={small}
-        statusIconPosition={statusWithMessage?.tooltip ? 'before-status-message' : undefined}
+        statusIconPosition={
+          statusWithMessage?.tooltip || narrow ? 'before-status-message' : undefined
+        }
+        narrow={narrow}
         className={cx('input-field-wrapper', inputFieldWrapperClassname)}
         onCloseStatusMessage={onCloseStatusMessage}
       >
