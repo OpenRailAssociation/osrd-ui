@@ -10,14 +10,15 @@ import postcss from 'rollup-plugin-postcss';
 
 const formats = ['esm'];
 const rootDir = path.join(process.cwd(), '..');
+const name = path.basename(process.cwd());
 
 /** @type {import("rollup").RollupOptions} */
-const generateRollupBaseConfig = (projectName) => ({
+const generateRollupBaseConfig = () => ({
   input: 'src/index.ts',
   output: formats.map((format) => ({
     file: `dist/index.${format}.js`,
     format,
-    name: projectName,
+    name,
     sourcemap: true,
   })),
   plugins: [
