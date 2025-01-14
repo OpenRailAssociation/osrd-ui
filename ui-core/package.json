@@ -40,6 +40,7 @@
     "react": ">=18.0"
   },
   "dependencies": {
+    "@osrd-project/ui-icons": "0.0.1-dev",
     "classnames": "^2.5.1",
     "tailwindcss": "^3.4.1"
   },
