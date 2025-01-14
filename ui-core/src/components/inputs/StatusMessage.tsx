@@ -37,7 +37,7 @@ const StatusMessage = ({ statusWithMessage, showIcon, small, onClose }: StatusMe
     >
       {showIcon && <InputStatusIcon status={status} small={small} />}
       <span className={cx('status-message', { [status]: status })}>{message}</span>
-      {status === 'info' && (
+      {status === 'info' && tooltip && (
         <button className="status-close" onClick={onClose}>
           <X size="sm" />
         </button>
