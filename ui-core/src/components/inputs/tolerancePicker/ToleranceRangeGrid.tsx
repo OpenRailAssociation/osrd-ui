@@ -2,7 +2,7 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import { TOLERANCE_RANGES } from './TolerancePicker';
+import { TOLERANCE_RANGES } from './consts';
 
 export type ToleranceRangeGridProps = {
   onSelection: (value: number) => void;
