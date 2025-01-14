@@ -32,22 +32,16 @@ const TolerancePickerStory = (props: TolerancePickerProps) => {
 
 const meta: Meta<typeof TolerancePicker> = {
   component: TolerancePicker,
-  args: {
-    label: 'TolerancePicker',
-    id: 'time-picker',
-  },
-  argTypes: {
-    toleranceValues: {
-      minusTolerance: 'number',
-      plusTolerance: 'number',
-    },
-  },
+  args: { label: 'TolerancePicker', id: 'time-picker' },
+  argTypes: { toleranceValues: { minusTolerance: 'number', plusTolerance: 'number' } },
   title: 'core/TolerancePicker',
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '11em' }}>
-        <Story />
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ maxWidth: '11em' }}>
+          <Story />
+        </div>
       </div>
     ),
   ],
@@ -57,32 +51,23 @@ const meta: Meta<typeof TolerancePicker> = {
 export default meta;
 type Story = StoryObj<typeof TolerancePicker>;
 
-export const Default: Story = {
-  args: {
-    label: 'Tolerance',
-  },
-};
+export const Default: Story = { args: { label: 'Tolerance' } };
 
-export const Narrow: Story = {
-  args: {
-    label: 'Tolerance',
-    narrow: true,
-  },
-};
+export const Narrow: Story = { args: { label: 'Tolerance', narrow: true } };
 
-export const DisabledTolerancePicker: Story = {
-  args: {
-    disabled: true,
-    label: 'Tolerance',
-  },
-};
+export const DisabledTolerancePicker: Story = { args: { disabled: true, label: 'Tolerance' } };
 
 export const WarningTolerancePicker: Story = {
-  args: {
-    toleranceValues: {
-      minusTolerance: 200,
-      plusTolerance: 600,
-    },
-    label: 'Tolerance',
-  },
+  args: { toleranceValues: { minusTolerance: 200, plusTolerance: 600 }, label: 'Tolerance' },
+};
+
+export const ScrollableHeightTolerancePicker: Story = {
+  args: {},
+  decorators: [
+    (Story) => (
+      <div style={{ height: '1200px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
