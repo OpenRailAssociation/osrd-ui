@@ -33,28 +33,10 @@ const TimePickerStory = (props: TimePickerProps) => {
 
 const meta: Meta<typeof TimePicker> = {
   component: TimePicker,
-  args: {
-    disabled: false,
-    readOnly: false,
-    displaySeconds: false,
-  },
+  args: { disabled: false, readOnly: false, displaySeconds: false },
   argTypes: {
-    hours: {
-      control: {
-        type: 'number',
-        min: 0,
-        max: 23,
-        step: 1,
-      },
-    },
-    minutes: {
-      control: {
-        type: 'number',
-        min: 0,
-        max: 59,
-        step: 1,
-      },
-    },
+    hours: { control: { type: 'number', min: 0, max: 23, step: 1 } },
+    minutes: { control: { type: 'number', min: 0, max: 59, step: 1 } },
   },
   title: 'Core/TimePicker',
   tags: ['autodocs'],
@@ -65,23 +47,20 @@ export default meta;
 type Story = StoryObj<typeof TimePicker>;
 
 export const Default: Story = {
-  args: {
-    label: 'Time',
-  },
+  args: { label: 'Time' },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '6.7rem', minHeight: '500px' }}>
-        <Story />
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ maxWidth: '6.7rem', minHeight: '500px' }}>
+          <Story />
+        </div>
       </div>
     ),
   ],
 };
 
 export const Narrow: Story = {
-  args: {
-    label: 'Time',
-    narrow: true,
-  },
+  args: { label: 'Time', narrow: true },
   decorators: [
     (Story) => (
       <div style={{ maxWidth: '6.7rem', minHeight: '500px' }}>
@@ -92,10 +71,7 @@ export const Narrow: Story = {
 };
 
 export const DisabledTimePicker: Story = {
-  args: {
-    disabled: true,
-    label: 'Time',
-  },
+  args: { disabled: true, label: 'Time' },
   decorators: [
     (Story) => (
       <div style={{ maxWidth: '6.7rem', minHeight: '500px' }}>
@@ -106,10 +82,7 @@ export const DisabledTimePicker: Story = {
 };
 
 export const TimePickerWithSeconds: Story = {
-  args: {
-    displaySeconds: true,
-    label: 'Time',
-  },
+  args: { displaySeconds: true, label: 'Time' },
   decorators: [
     (Story) => (
       <div style={{ maxWidth: '8.5rem', minHeight: '500px' }}>
