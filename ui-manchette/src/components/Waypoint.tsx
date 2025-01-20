@@ -3,7 +3,6 @@ import React from 'react';
 import cx from 'classnames';
 
 import { type InteractiveWaypoint } from '../types';
-import '@osrd-project/ui-core/dist/theme.css';
 import { positionMmToKm } from '../utils';
 
 type WaypointProps = {

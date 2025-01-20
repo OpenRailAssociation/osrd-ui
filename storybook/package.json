@@ -19,5 +19,9 @@
     "clean": "rimraf storybook-static",
     "start": "storybook dev -p 6006",
     "build": "storybook build"
+  },
+  "dependencies": {
+    "@osrd-project/ui-core": "0.0.1-dev",
+    "@osrd-project/ui-trackoccupancydiagram": "0.0.1-dev"
   }
 }

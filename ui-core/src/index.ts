@@ -1,5 +1,3 @@
-import './styles/main.css';
-
 export { default as Button, ButtonProps } from './components/buttons/Button';
 export {
   default as ComboBox,

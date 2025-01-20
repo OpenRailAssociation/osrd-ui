@@ -37,6 +37,9 @@ import {
 import occupancyZones from '../samples/TrackOccupancyDiagramSamples/occupancyZones';
 import tracks from '../samples/TrackOccupancyDiagramSamples/tracks';
 
+import '@osrd-project/ui-core/dist/theme.css';
+import '@osrd-project/ui-trackoccupancydiagram/dist/theme.css';
+
 type TrackOccupancyDiagramProps = {
   xZoomLevel: number;
   yZoomLevel: number;
