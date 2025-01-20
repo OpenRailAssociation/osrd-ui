@@ -27,9 +27,8 @@
     }
   },
   "scripts": {
-    "rollup": "rollup -c",
     "clean": "rimraf dist",
-    "build": "npm run rollup",
+    "build": "rollup -c --failAfterWarnings",
     "watch": "rollup -c -w",
     "test": "vitest run --dir src/__tests__",
     "prepublishOnly": "npm run clean && npm run build",
