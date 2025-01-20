@@ -10,8 +10,8 @@
     "url": "https://github.com/osrd-project/osrd-ui/issues"
   },
   "workspaces": [
-    "ui-core",
     "ui-icons",
+    "ui-core",
     "ui-spacetimechart",
     "ui-speedspacechart",
     "ui-warped-map",
