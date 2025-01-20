@@ -50,12 +50,6 @@ const meta: Meta<typeof SpeedSpaceChart> = {
   title: 'SpeedSpaceChart/Rendering',
   component: SpeedSpaceChart,
   decorators: [(Story) => <Story />],
-  parameters: {
-    layout: 'centered',
-    backgrounds: {
-      default: 'dark',
-    },
-  },
   args: {
     width: 1440,
     height: 521.5,

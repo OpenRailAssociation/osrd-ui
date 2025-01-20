@@ -5,7 +5,7 @@ import { mergeConfig } from 'vite';
 /** @type { import('@storybook/html-vite').StorybookConfig } */
 const config: StorybookConfig = {
   stories: [
-    // TODO: remove this when every stories are migrated to `@osrd-project/stroybook/stories/`
+    // TODO: remove this when every stories are migrated to `@osrd-project/storybook/stories/`
     '../../**/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],

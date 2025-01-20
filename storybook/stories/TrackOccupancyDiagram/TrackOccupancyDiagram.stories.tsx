@@ -289,9 +289,14 @@ const meta: Meta<typeof TrackOccupancyDiagramStory> = {
   component: TrackOccupancyDiagramStory,
   decorators: [(Story) => <Story />],
   parameters: {
-    layout: 'centered',
     backgrounds: {
-      default: 'dark',
+      default: 'lightSand',
+      values: [
+        {
+          name: 'lightSand',
+          value: 'rgba(247, 246, 238, var(--tw-bg-opacity, 1))',
+        },
+      ],
     },
   },
   args: {
