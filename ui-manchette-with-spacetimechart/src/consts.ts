@@ -14,3 +14,5 @@ export const ZOOM_Y_DELTA = 0.5;
 
 export const FOOTER_HEIGHT = 40; // height of the manchette footer
 export const WAYPOINT_LINE_HEIGHT = 16;
+
+export const PATH_COLOR_DEFAULT = '#8A714B';

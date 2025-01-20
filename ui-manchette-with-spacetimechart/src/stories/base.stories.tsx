@@ -57,7 +57,7 @@ const ManchetteWithSpaceTimeWrapper = ({
             {...spaceTimeChartProps}
           >
             {spaceTimeChartProps.paths.map((path) => (
-              <PathLayer key={path.id} path={path} color={path.color} />
+              <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
             ))}
           </SpaceTimeChart>
         </div>

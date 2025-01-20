@@ -2,6 +2,9 @@
 import { useMemo } from 'react';
 
 import { type ProjectPathTrainResult } from '@osrd-project/ui-manchette/dist/types';
+import { type PathLevel } from '@osrd-project/ui-spacetimechart';
+
+import { PATH_COLOR_DEFAULT } from '../consts';
 
 const transformCurve = (curve: ProjectPathTrainResult['spaceTimeCurves'][0], departureTime: Date) =>
   curve.positions.map((position, i) => ({
@@ -13,10 +16,17 @@ const usePaths = (projectPathTrainResult: ProjectPathTrainResult[], selectedTrai
   useMemo(
     () =>
       projectPathTrainResult.flatMap((path) =>
-        path.spaceTimeCurves.map((spaceTimeCurve, ind) => ({
+        path.spaceTimeCurves.map<{
+          id: string;
+          label: string;
+          color: string;
+          level: PathLevel;
+          points: { time: number; position: number }[];
+        }>((spaceTimeCurve, ind) => ({
           id: `${path.id}-${ind}`,
           label: path.name,
-          color: selectedTrain && selectedTrain === path.id ? '#201EDE' : '#000000',
+          color: PATH_COLOR_DEFAULT,
+          level: selectedTrain && selectedTrain === path.id ? 1 : 2,
           points: transformCurve(spaceTimeCurve, path.departureTime),
         }))
       ),
