@@ -26,8 +26,15 @@ export const filterVisibleElements = <T>({
   getWeight,
   minSpace,
 }: VisibilityFilterOptions<T>): T[] => {
+  const firstElement = elements.at(0);
+  const lastElement = elements.at(-1);
+  if (!firstElement || !lastElement) return elements;
+
   const sortedElements = [...elements].sort((a, b) => (getWeight(b) ?? 0) - (getWeight(a) ?? 0));
-  const displayedElements: { element: T; position: number }[] = [];
+  const displayedElements: { element: T; position: number }[] = [
+    { element: firstElement, position: getPosition(firstElement) },
+    { element: lastElement, position: getPosition(lastElement) },
+  ];
 
   for (const element of sortedElements) {
     const position = getPosition(element);
