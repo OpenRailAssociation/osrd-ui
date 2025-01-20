@@ -225,19 +225,22 @@ export const PathLayer = ({
       if (firstPointOnScreenIndex === 0) {
         if (next) angle = Math.atan2(next.y - curr.y, next.x - curr.x);
       } else {
-        if (!swapAxis) {
+        const slope = (curr.y - prev.y) / (curr.x - prev.x);
+        const yOnYAxisIntersect = curr.y - curr.x * slope;
+        const xOnXAxisIntersect = curr.x - curr.y / slope;
+        if (yOnYAxisIntersect >= 0) {
           position = {
             x: 0,
-            y: curr.y - (curr.x * (curr.y - prev.y)) / (curr.x - prev.x),
+            y: yOnYAxisIntersect,
           };
         } else {
           position = {
-            y: 0,
-            x: curr.x - (curr.y * (curr.x - prev.x)) / (curr.y - prev.y),
+            x: xOnXAxisIntersect + 10 / slope,
+            y: 10,
           };
         }
 
-        angle = Math.atan2(curr.y - position.y, curr.x - position.x);
+        angle = Math.atan2(curr.y - prev.y, curr.x - prev.x);
       }
 
       // Finally, draw label:
