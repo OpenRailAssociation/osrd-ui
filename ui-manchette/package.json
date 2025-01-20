@@ -36,6 +36,7 @@
     "lint:fix": "eslint src --fix"
   },
   "dependencies": {
+    "@osrd-project/ui-icons": "0.0.1-dev",
     "classnames": "^2.5.1",
     "lodash.isequal": "^4.5.0"
   },
