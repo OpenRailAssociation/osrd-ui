@@ -8,6 +8,7 @@ import {
   type DataPoint,
   DEFAULT_PATH_END,
   type DrawingFunction,
+  type OperationalPoint,
   type PathData,
   type PickingDrawingFunction,
   type Point,
@@ -203,7 +204,8 @@ export const PathLayer = ({
       }: SpaceTimeChartContextType,
       label: string,
       labelColor: string,
-      points: Point[]
+      points: Point[],
+      pathLength: number
     ) => {
       if (!label) return;
 
@@ -250,14 +252,15 @@ export const PathLayer = ({
       ctx.font = `${fontSize}px ${fontFamily}`;
       ctx.textAlign = 'start';
 
-      const dx = 5;
-      const dy = angle >= 0 ? -5 : 15;
       const padding = 2;
       const measure = ctx.measureText(label);
       const w = measure.width + 2 * padding;
       const actualBoundingBoxHeight =
         measure.actualBoundingBoxAscent + measure.actualBoundingBoxDescent;
       const h = actualBoundingBoxHeight + 2 * padding;
+
+      const dx = w < pathLength ? 5 : (pathLength - w) / 2; // Progressively center the label if the path is shorter than the label
+      const dy = angle >= 0 ? -5 : 15;
       ctx.globalAlpha = 0.75;
       ctx.fillStyle = background;
       ctx.fillRect(dx - padding, dy - h + padding, w, h);
@@ -304,6 +307,34 @@ export const PathLayer = ({
     [path]
   );
 
+  const computePathLength = useCallback(
+    (operationalPoints: OperationalPoint[], segments: Point[]) => {
+      let totalLength = 0;
+
+      // Compute length of pauses
+      const stopPositions = new Set(operationalPoints.map((p) => p.position));
+      path.points.forEach(({ position, time }, i, pointsArray) => {
+        if (i > 0) {
+          const { position: prevPosition, time: prevTime } = pointsArray[i - 1];
+          if (prevPosition === position && stopPositions.has(position)) {
+            totalLength += time - prevTime;
+          }
+        }
+      });
+
+      // Compute length of pathSegments
+      segments.forEach(({ x, y }, i, segmentArray) => {
+        if (i > 0) {
+          const { x: prevX, y: prevY } = segmentArray[i - 1];
+          totalLength += Math.sqrt(Math.pow(prevX - x, 2) + Math.pow(prevY - y, 2));
+        }
+      });
+
+      return totalLength;
+    },
+    [path]
+  );
+
   const drawAll = useCallback<DrawingFunction>(
     (ctx, stcContext) => {
       // Draw stops:
@@ -338,9 +369,21 @@ export const PathLayer = ({
       drawExtremities(ctx, stcContext);
 
       // Draw label:
-      if (!stcContext.hidePathsLabels) drawLabel(ctx, stcContext, path.label, color, segments);
+      if (!stcContext.hidePathsLabels) {
+        const pathLength = computePathLength(stcContext.operationalPoints, segments);
+        drawLabel(ctx, stcContext, path.label, color, segments, pathLength);
+      }
     },
-    [color, drawPauses, level, getPathSegments, drawExtremities, drawLabel, path.label]
+    [
+      color,
+      drawPauses,
+      level,
+      getPathSegments,
+      drawExtremities,
+      computePathLength,
+      drawLabel,
+      path.label,
+    ]
   );
   useDraw('paths', drawAll);
 
