@@ -7,13 +7,7 @@ import type {
 } from '@osrd-project/ui-spacetimechart/dist/lib/types';
 
 import usePaths from './usePaths';
-import {
-  MAX_ZOOM_Y,
-  MIN_ZOOM_Y,
-  ZOOM_Y_DELTA,
-  INITIAL_SPACE_TIME_CHART_HEIGHT,
-  DEFAULT_ZOOM_MS_PER_PX,
-} from '../consts';
+import { MAX_ZOOM_Y, MIN_ZOOM_Y, ZOOM_Y_DELTA, DEFAULT_ZOOM_MS_PER_PX } from '../consts';
 import {
   getDisplayedWaypoints,
   getWaypointsWithPosition as getOperationalPointWithPosition,
@@ -215,7 +209,7 @@ const useManchettesWithSpaceTimeChart = (
           if (
             manchetteWithSpaceTimeChartContainer.current &&
             newYPos >= 0 &&
-            newYPos + INITIAL_SPACE_TIME_CHART_HEIGHT <=
+            newYPos + manchetteWithSpaceTimeChartContainer.current.offsetHeight <
               manchetteWithSpaceTimeChartContainer.current.scrollHeight
           ) {
             newState.yOffset = newYPos;
