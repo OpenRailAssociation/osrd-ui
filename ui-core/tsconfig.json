@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
   "include": ["./src/**/*"],
+  "exclude": ["src/stories"],
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
