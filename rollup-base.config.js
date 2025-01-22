@@ -38,6 +38,7 @@ const generateRollupBaseConfig = () => ({
   ],
   external: (id, parent, isResolved) => {
     if (!isResolved) return false;
+    if (id.endsWith('.css')) return false;
     const rel = path.relative(rootDir, id);
     const filenames = rel.split(path.sep);
     return filenames[0] === 'node_modules' || filenames[1] === 'dist';
