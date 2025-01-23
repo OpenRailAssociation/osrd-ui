@@ -37,6 +37,7 @@
     "lint:fix": "eslint src --fix"
   },
   "dependencies": {
+    "@osrd-project/ui-core": "0.0.1-dev",
     "@types/chroma-js": "^3.1.0",
     "chroma-js": "^3.1.1",
     "classnames": "^2.5.1",
