@@ -50,20 +50,22 @@ const Wrapper = ({
     : PATHS;
 
   return (
-    <SpaceTimeChart
-      className="inset-0 absolute"
-      operationalPoints={operationalPoints}
-      spaceOrigin={0}
-      spaceScales={spaceScales}
-      timeOrigin={+new Date('2024/04/02')}
-      timeScale={60000 / xZoomLevel}
-      xOffset={xOffset}
-      yOffset={yOffset}
-    >
-      {paths.map((path) => (
-        <PathLayer key={path.id} path={path} color={path.color} />
-      ))}
-    </SpaceTimeChart>
+    <div className="absolute inset-0">
+      <SpaceTimeChart
+        className="h-full"
+        operationalPoints={operationalPoints}
+        spaceOrigin={0}
+        spaceScales={spaceScales}
+        timeOrigin={+new Date('2024/04/02')}
+        timeScale={60000 / xZoomLevel}
+        xOffset={xOffset}
+        yOffset={yOffset}
+      >
+        {paths.map((path) => (
+          <PathLayer key={path.id} path={path} color={path.color} />
+        ))}
+      </SpaceTimeChart>
+    </div>
   );
 };
 

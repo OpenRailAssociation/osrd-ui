@@ -38,12 +38,9 @@ const Wrapper = ({ spaceScaleType, enableSnapping }: WrapperProps) => {
   });
 
   return (
-    <div className="inset-0">
+    <div className="absolute inset-0">
       <SpaceTimeChart
-        className={cx(
-          'inset-0 absolute overflow-hidden p-0 m-0',
-          state.panTarget && 'cursor-grabbing'
-        )}
+        className={cx('h-full overflow-hidden p-0 m-0', state.panTarget && 'cursor-grabbing')}
         enableSnapping={enableSnapping}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}

@@ -107,9 +107,9 @@ const Wrapper = () => {
   const [cursorTime, setCursorTime] = useState<number>(0);
 
   return (
-    <div className="inset-0">
+    <div className="absolute inset-0">
       <SpaceTimeChart
-        className="inset-0 absolute overflow-hidden p-0 m-0"
+        className="h-full overflow-hidden p-0 m-0"
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({

@@ -5,6 +5,7 @@ import type { Meta } from '@storybook/react';
 import { clamp } from 'lodash';
 
 import '@osrd-project/ui-core/dist/theme.css';
+import '@osrd-project/ui-spacetimechart/dist/theme.css';
 
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import { PathLayer } from '../components/PathLayer';
@@ -80,7 +81,7 @@ const SpaceTimeHorizontalZoomWrapper = ({
       }}
     >
       <SpaceTimeChart
-        className="inset-0 absolute h-full"
+        className="h-full"
         spaceOrigin={0}
         xOffset={state.xOffset}
         yOffset={state.yOffset}

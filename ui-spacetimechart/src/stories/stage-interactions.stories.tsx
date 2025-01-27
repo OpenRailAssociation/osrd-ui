@@ -43,9 +43,9 @@ const Wrapper = ({ xPan, yPan, xZoom, yZoom, spaceScaleType }: WrapperProps) => 
   });
 
   return (
-    <div className="inset-0">
+    <div className="absolute inset-0">
       <SpaceTimeChart
-        className={cx('inset-0 absolute p-0 m-0', state.panning && 'cursor-grabbing')}
+        className={cx('h-full p-0 m-0', state.panning && 'cursor-grabbing')}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({

@@ -47,10 +47,10 @@ const Wrapper = ({ spaceScaleType }: WrapperProps) => {
   });
 
   return (
-    <div className="inset-0">
+    <div className="absolute inset-0">
       <SpaceTimeChart
         className={cx(
-          'inset-0 absolute p-0 m-0',
+          'h-full p-0 m-0',
           state.panTarget && 'cursor-grabbing',
           state.hoveredPathId && 'cursor-pointer'
         )}

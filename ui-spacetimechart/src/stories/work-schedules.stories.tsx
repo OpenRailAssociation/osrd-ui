@@ -77,7 +77,7 @@ const WorkSchedulesWrapper = ({
   return (
     <div className="manchette-space-time-chart-wrapper" style={{ height: `${DEFAULT_HEIGHT}px` }}>
       <SpaceTimeChart
-        className="inset-0 absolute h-full"
+        className="h-full"
         spaceOrigin={0}
         xOffset={state.xOffset}
         yOffset={state.yOffset}
