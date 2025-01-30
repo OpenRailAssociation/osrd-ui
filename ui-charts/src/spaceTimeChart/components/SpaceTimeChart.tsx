@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, memo } from 'react';
 
 import cx from 'classnames';
 
@@ -208,6 +208,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       className={cx('relative space-time-chart', attr.className)}
       style={{ background: fullTheme.background }}
     >
+      SPACE_TIME
       <div ref={setCanvasesRoot} className="absolute inset-0" />
       <SpaceTimeChartContext.Provider value={contextState}>
         <CanvasContext.Provider value={canvasContext}>

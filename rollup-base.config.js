@@ -1,5 +1,5 @@
-import process from 'process';
 import path from 'path';
+import process from 'process';
 
 import eslint from '@rollup/plugin-eslint';
 import nodeResolve from '@rollup/plugin-node-resolve';
@@ -30,7 +30,7 @@ const generateRollupBaseConfig = () => ({
       sourceMap: true,
       plugins: [],
     }),
-    terser(),
+    // terser(),
     process.env.ROLLUP_WATCH &&
       livereload({
         watch: 'dist',

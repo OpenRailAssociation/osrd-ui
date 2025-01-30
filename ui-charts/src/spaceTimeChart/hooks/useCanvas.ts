@@ -114,7 +114,10 @@ export function useCanvas(
    */
   const draw = useCallback(() => {
     drawRendering(stcContextRef.current);
-    drawPicking(stcContextRef.current);
+    // TODO: expensive, 300ms for each frame
+    // can’t we detect the mouse is close to an element with just its euclidian distance from the point?
+    // do we really need super fine interaction (to know that the mouse is over an element with precision down to the pixel?
+    // drawPicking(stcContextRef.current);
 
     if (scheduledRef.current) {
       window.cancelAnimationFrame(scheduledRef.current.frameId);

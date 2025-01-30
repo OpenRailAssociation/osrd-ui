@@ -142,6 +142,7 @@ const SpeedSpaceChart = ({
       }}
       tabIndex={0}
     >
+      SPEED_SPACE
       <div
         className="flex justify-end absolute base-margin-top"
         style={{ width: adjustedWidthRightAxis }}
