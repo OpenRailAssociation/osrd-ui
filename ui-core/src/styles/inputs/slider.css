@@ -223,9 +223,8 @@
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
-          width: 8px;
-          height: 8px;
-          margin-top: -2px;
+          transform: scale(0.8);
+          margin-top: -3px;
           border-radius: 50%;
           background-color: theme('colors.white.100');
           border: 1px solid theme('colors.primary.70');
@@ -236,9 +235,8 @@
         &::-moz-range-thumb {
           -webkit-appearance: none;
           appearance: none;
-          width: 8px;
-          height: 8px;
-          margin-top: -2px;
+          transform: scale(0.8);
+          margin-top: -3px;
           border-radius: 50%;
           background-color: theme('colors.white.100');
           border: 1px solid theme('colors.primary.70');

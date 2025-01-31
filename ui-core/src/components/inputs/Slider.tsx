@@ -44,7 +44,11 @@ const Slider = ({
     }
   };
 
-  const progress = ((value - Number(min)) / (Number(max) - Number(min))) * 100;
+  // margin to keep the colored track aligned with the thumb
+  const visualMargin = 5;
+  const visualMin = Number(min) - visualMargin;
+  const visualMax = Number(max) + visualMargin;
+  const visualProgress = ((value - visualMin) / (visualMax - visualMin)) * 100;
 
   return (
     <div
@@ -65,7 +69,7 @@ const Slider = ({
         disabled={disabled}
         style={
           {
-            '--slider-progress': `${progress}%`,
+            '--slider-progress': `${visualProgress}%`,
           } as React.CSSProperties
         }
         {...rest}
