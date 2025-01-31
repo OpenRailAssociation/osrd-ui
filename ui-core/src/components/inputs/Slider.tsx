@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import type { ChangeEvent, MouseEvent, InputHTMLAttributes } from 'react';
+import type { ChangeEvent, MouseEvent, KeyboardEvent, InputHTMLAttributes } from 'react';
 
 import cx from 'classnames';
 
 export type SliderProps = InputHTMLAttributes<HTMLInputElement> & {
   width?: number;
-  onChangeCommitted?: (e: MouseEvent<HTMLInputElement>) => void;
+  onChangeCommitted?: (e: MouseEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>) => void;
   containerClassName?: string;
 };
 
@@ -38,7 +38,7 @@ const Slider = ({
     onChange?.(e);
   };
 
-  const handleMouseUp = (e: MouseEvent<HTMLInputElement>) => {
+  const handleCommit = (e: MouseEvent<HTMLInputElement> | KeyboardEvent<HTMLInputElement>) => {
     if (onChangeCommitted) {
       onChangeCommitted(e);
     }
@@ -58,7 +58,8 @@ const Slider = ({
         max={max}
         step={step}
         onChange={handleChange}
-        onMouseUp={handleMouseUp}
+        onMouseUp={handleCommit}
+        onKeyUp={handleCommit}
         disabled={disabled}
         {...rest}
       />
