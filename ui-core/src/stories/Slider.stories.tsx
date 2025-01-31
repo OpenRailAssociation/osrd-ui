@@ -7,8 +7,8 @@ import Slider, { type SliderProps } from '../components/inputs/Slider';
 import './stories.css';
 
 const Wrapper = (props: SliderProps) => {
-  const [value, setValue] = useState(0);
-  const [committedValue, setCommittedValue] = useState(0);
+  const [value, setValue] = useState(50);
+  const [committedValue, setCommittedValue] = useState(50);
 
   return (
     <div className="wrapper-container">

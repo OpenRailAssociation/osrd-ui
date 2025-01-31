@@ -44,6 +44,8 @@ const Slider = ({
     }
   };
 
+  const progress = ((value - Number(min)) / (Number(max) - Number(min))) * 100;
+
   return (
     <div
       className={cx('range-wrapper', containerClassName, { disabled })}
@@ -61,6 +63,11 @@ const Slider = ({
         onMouseUp={handleCommit}
         onKeyUp={handleCommit}
         disabled={disabled}
+        style={
+          {
+            '--slider-progress': `${progress}%`,
+          } as React.CSSProperties
+        }
         {...rest}
       />
     </div>

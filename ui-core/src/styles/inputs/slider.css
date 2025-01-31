@@ -2,6 +2,7 @@
   width: 112px;
   height: 10px;
 
+  /* ==== rest state ==== */
   .range-slider {
     -webkit-appearance: none;
     appearance: none;
@@ -20,7 +21,11 @@
       height: 4px;
       border-radius: 2px;
       box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
-      background-color: theme('colors.black.5');
+      background: linear-gradient(
+        to right,
+        theme('colors.black.10') var(--slider-progress),
+        theme('colors.black.5') var(--slider-progress)
+      );
       border-radius: 2px;
       opacity: 1;
     }
@@ -31,7 +36,11 @@
       height: 4px;
       border-radius: 2px;
       box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
-      background-color: theme('colors.black.5');
+      background: linear-gradient(
+        to right,
+        theme('colors.black.10') var(--slider-progress),
+        theme('colors.black.5') var(--slider-progress)
+      );
       border-radius: 2px;
       opacity: 1;
     }
@@ -65,6 +74,7 @@
 
   &:not(.disabled) {
     .range-slider {
+      /* ==== Focus state ==== */
       &:focus-visible {
         outline: none;
   
@@ -72,6 +82,11 @@
           box-sizing: content-box;
           border-radius: 4px;
           background-color: theme('colors.white.75');
+          background: linear-gradient(
+            to right,
+            theme('colors.black.25') var(--slider-progress),
+            theme('colors.white.75') var(--slider-progress)
+          );
           border: 2px solid theme('colors.primary.50');
           box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
           opacity: 1;
@@ -80,7 +95,11 @@
         &::-moz-range-track {
           box-sizing: content-box;
           border-radius: 4px;
-          background-color: theme('colors.white.75');
+          background: linear-gradient(
+            to right,
+            theme('colors.black.25') var(--slider-progress),
+            theme('colors.white.75') var(--slider-progress)
+          );
           border: 2px solid theme('colors.primary.50');
           box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
           opacity: 1;
@@ -113,13 +132,18 @@
         }
       }
   
+      /* ==== Hover state ==== */
       &:hover {
         outline: none;
   
         &::-webkit-slider-runnable-track {
           box-sizing: content-box;
           border: 0;
-          background-color: theme('colors.white.75');
+          background: linear-gradient(
+            to right,
+            theme('colors.black.25') var(--slider-progress),
+            theme('colors.white.75') var(--slider-progress)
+          );
           border-radius: 2px;
           box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
           opacity: 1;
@@ -128,7 +152,11 @@
         &::-moz-range-track {
           box-sizing: content-box;
           border: 0;
-          background-color: theme('colors.white.75');
+          background: linear-gradient(
+            to right,
+            theme('colors.black.25') var(--slider-progress),
+            theme('colors.white.75') var(--slider-progress)
+          );
           border-radius: 2px;
           box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
           opacity: 1;
@@ -162,13 +190,18 @@
         }
       }
   
+      /* ==== Active state ==== */
       &:active {
         outline: none;
     
         &::-webkit-slider-runnable-track {
           box-sizing: content-box;
           border: 0;
-          background-color: theme('colors.white.100');
+          background: linear-gradient(
+            to right,
+            theme('colors.black.50') var(--slider-progress),
+            theme('colors.white.100') var(--slider-progress)
+          );
           border-radius: 2px;
           box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
           opacity: 1;
@@ -177,7 +210,11 @@
         &::-moz-range-track {
           box-sizing: content-box;
           border: 0;
-          background-color: theme('colors.white.100');
+          background: linear-gradient(
+            to right,
+            theme('colors.black.50') var(--slider-progress),
+            theme('colors.white.100') var(--slider-progress)
+          );
           border-radius: 2px;
           box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
           opacity: 1;
