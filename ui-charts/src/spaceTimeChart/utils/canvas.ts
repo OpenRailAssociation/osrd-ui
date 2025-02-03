@@ -1,6 +1,13 @@
 import { clamp, identity } from 'lodash';
 
-import type { Direction, PathEnd, Point, RGBAColor, RGBColor } from '../lib/types';
+import type {
+  SpaceTimeChartContextType,
+  Direction,
+  PathEnd,
+  Point,
+  RGBAColor,
+  RGBColor,
+} from '../lib/types';
 
 /**
  * This function draws a thick lines from "from" to "to" on the given ImageData, with no
@@ -330,4 +337,38 @@ export function getCrispLineCoordinate(
   return (
     Math.round((rawCoordinate - centerOffset) * devicePixelRatio) / devicePixelRatio + centerOffset
   );
+}
+
+export type CanvasRect = {
+  timeStart: Date;
+  timeEnd: Date;
+  spaceStart: number; // mm
+  spaceEnd: number; // mm
+};
+
+export function fillRect(
+  ctx: CanvasRenderingContext2D,
+  rect: CanvasRect,
+  spaceTimeContext: SpaceTimeChartContextType
+) {
+  const { getTimePixel, getSpacePixel, timeAxis } = spaceTimeContext;
+  const { timeStart, timeEnd, spaceStart, spaceEnd } = rect;
+
+  const timeStartPixel = getTimePixel(Number(timeStart));
+  const endTimePixel = getTimePixel(Number(timeEnd));
+  const spaceStartPixel = getSpacePixel(spaceStart);
+  const spaceEndPixel = getSpacePixel(spaceEnd);
+
+  const areaSpaceSize = spaceEndPixel - spaceStartPixel;
+  const areaTimeSize = endTimePixel - timeStartPixel;
+  if (!areaSpaceSize || !areaTimeSize) return {};
+
+  if (timeAxis === 'x') {
+    ctx.translate(timeStartPixel, spaceStartPixel);
+    ctx.fillRect(0, 0, areaTimeSize, areaSpaceSize);
+  } else {
+    ctx.translate(spaceStartPixel, timeStartPixel);
+    ctx.fillRect(0, 0, areaSpaceSize, areaTimeSize);
+  }
+  return { areaTimeSize, areaSpaceSize };
 }
