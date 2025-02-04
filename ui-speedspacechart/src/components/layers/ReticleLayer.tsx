@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import type { TrainDetails, Store } from '../../types/chartTypes';
 import DetailsBox from '../common/DetailsBox';
 import { drawCursor } from '../helpers/drawElements/reticle';
-import { getAdaptiveHeight } from '../utils';
+import { clearCanvas, getAdaptiveHeight } from '../utils';
 
 type ReticleLayerProps = {
   width: number;
@@ -24,6 +24,9 @@ const ReticleLayer = ({ width, height, heightOffset, store }: ReticleLayerProps)
     if (store.cursor.y && store.cursor.y < maxCursorHeight) {
       const detailsBox = drawCursor({ ctx, width, height, store });
       setTrainDetails(detailsBox || null);
+    } else {
+      clearCanvas(ctx, width, height);
+      setTrainDetails(null);
     }
   }, [width, height, store, maxCursorHeight]);
 
