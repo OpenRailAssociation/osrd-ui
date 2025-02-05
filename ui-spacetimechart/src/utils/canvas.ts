@@ -1,4 +1,4 @@
-import { clamp } from 'lodash';
+import { clamp, identity } from 'lodash';
 
 import { type PathEnd, type Point, type RGBAColor, type RGBColor } from '../lib/types';
 
@@ -272,4 +272,41 @@ export function drawPathExtremity(
   } else {
     drawPathStopExtremity(ctx, timePixel, spacePixel, swapAxis);
   }
+}
+
+/**
+ *
+ * @param minT number timestamp
+ * @param maxT number timestamp
+ * @param timeRanges time frames (24h, 12h, 6h, …)
+ * @param gridlinesLevels width of the lines for each time frame
+ * @param formatter function to format de values inside the output object
+ * @returns Record<number, number>
+ * Keys are times in ms
+ * Values are the highest level on each time
+ */
+export function computeVisibleTimeMarkers<T>(
+  minT: number,
+  maxT: number,
+  timeRanges: number[],
+  levels: number[],
+  formatter: (level: number, i: number) => T = identity
+) {
+  const result: Record<number, T> = {};
+  const minTLocalOffset = new Date(minT).getTimezoneOffset() * 60 * 1000;
+
+  timeRanges.forEach((range, i) => {
+    const gridlinesLevel = levels[i];
+
+    if (!gridlinesLevel) return;
+
+    let t = Math.floor((minT - minTLocalOffset) / range) * range + minTLocalOffset;
+    while (t <= maxT) {
+      if (t >= minT) {
+        result[t] = formatter(gridlinesLevel, i);
+      }
+      t += range;
+    }
+  });
+  return result;
 }

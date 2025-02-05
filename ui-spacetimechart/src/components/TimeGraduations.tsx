@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useDraw } from '../hooks/useCanvas';
 import { MINUTE } from '../lib/consts';
 import { type DrawingFunction } from '../lib/types';
+import { computeVisibleTimeMarkers } from '../utils/canvas';
 
 const TimeGraduations = () => {
   const drawingFunction = useCallback<DrawingFunction>(
@@ -37,20 +38,7 @@ const TimeGraduations = () => {
         return false;
       });
 
-      // - Keys are times in ms
-      // - Values are the highest level on each time
-      const gridMarks: Record<number, number> = {};
-      timeRanges.map((range, i) => {
-        const gridlinesLevel = gridlinesLevels[i];
-
-        if (!gridlinesLevel) return;
-
-        let t = Math.floor(minT / range) * range;
-        while (t <= maxT) {
-          gridMarks[t] = gridlinesLevel;
-          t += range;
-        }
-      });
+      const gridMarks = computeVisibleTimeMarkers<number>(minT, maxT, timeRanges, gridlinesLevels);
 
       // Render grid lines:
       for (const t in gridMarks) {

@@ -201,7 +201,7 @@ const Wrapper = ({ swapAxis, spaceScaleType }: WrapperProps) => {
             ? { size: 50 * state.yZoomLevel }
             : { coefficient: 150 / state.yZoomLevel }),
         }))}
-        timeOrigin={+new Date('2024/04/02')}
+        timeOrigin={+new Date('2024-04-02T00:00:00')}
         timeScale={60000 / state.xZoomLevel}
         xOffset={state.xOffset}
         yOffset={state.yOffset}
