@@ -1,5 +1,5 @@
 import type { DrawFunctionParams } from '../../../types/chartTypes';
-import { GREY_50, GREY_80, LIGHT_BLUE, MARGINS } from '../../const';
+import { BLACK, GREY_50, GREY_80, LIGHT_BLUE, MARGINS } from '../../const';
 import {
   clearCanvas,
   positionToPosX,
@@ -73,6 +73,23 @@ export const drawSteps = ({ ctx, width, height, store }: DrawFunctionParams) => 
 
   // Text
   const filteredTextStops = getDisplayedStops(filteredStops, ratioX, width, maxPosition, 25);
+  const prevSteps: (typeof filteredTextStops)[0][] = [];
+  const nextSteps: (typeof filteredTextStops)[0][] = [];
+
+  filteredTextStops.forEach((stop) => {
+    const posX = positionToPosX(stop.position.start, maxPosition, width, ratioX);
+    if (cursor.x && posX < cursor.x + MARGIN_LEFT - leftOffset) {
+      prevSteps.push(stop);
+      if (prevSteps.length > 4) prevSteps.shift();
+    }
+
+    if (cursor.x && posX > cursor.x + MARGIN_LEFT - leftOffset) {
+      if (nextSteps.length < 4) {
+        nextSteps.push(stop);
+      }
+    }
+  });
+
   filteredTextStops.forEach(({ position, value }) => {
     if (snappedStop && position.start === snappedStop.position.start) {
       return;
@@ -87,7 +104,16 @@ export const drawSteps = ({ ctx, width, height, store }: DrawFunctionParams) => 
     ctx.translate(posX, posY);
     ctx.rotate((-40 * Math.PI) / 180); // -40 degrees in radians
 
-    ctx.fillStyle = GREY_80.alpha(0.2).hex();
+    // Check if the current step is within the 4 previous or 4 next steps
+    if (
+      prevSteps.some((step) => step.position.start === position.start) ||
+      nextSteps.some((step) => step.position.start === position.start)
+    ) {
+      ctx.fillStyle = BLACK.hex();
+    } else {
+      ctx.fillStyle = GREY_80.alpha(0.2).hex();
+    }
+
     ctx.font = 'normal 12px IBM Plex Sans';
     ctx.textAlign = 'left';
 
