@@ -210,14 +210,21 @@ export function useCanvas(
 
   // Handle resizing:
   useEffect(() => {
+    const scale = window.devicePixelRatio || 1;
+
     for (const id in canvasesRef.current) {
       const canvas = canvasesRef.current[id];
+      const ctx = contextsRef.current[id];
 
       if (canvas) {
         canvas.style.width = size.width + 'px';
         canvas.style.height = size.height + 'px';
-        canvas.setAttribute('width', size.width + 'px');
-        canvas.setAttribute('height', size.height + 'px');
+        canvas.setAttribute('width', size.width * scale + 'px');
+        canvas.setAttribute('height', size.height * scale + 'px');
+
+        // Reset the transform to identity, then apply the new scale
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(scale, scale);
       }
     }
 
