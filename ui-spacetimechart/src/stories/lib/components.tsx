@@ -83,7 +83,7 @@ const DataLabel = ({
         </>
       ) : (
         <>
-          <div>Time: {new Date(data.time).toLocaleTimeString('en-GB', { timeZone: 'UTC' })}</div>
+          <div>Time: {new Date(data.time).toLocaleTimeString()}</div>
           <div>Distance: {round(data.position).toLocaleString()} m</div>
         </>
       )}
