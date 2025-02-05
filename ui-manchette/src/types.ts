@@ -6,7 +6,14 @@ export type Waypoint = {
   name?: string;
   secondaryCode?: string;
   weight?: number;
+  tracks: Track;
 };
+
+export type Track = {
+  id: string;
+  name: string;
+  line: string;
+}[];
 
 export type InteractiveWaypoint = Waypoint & {
   styles?: CSSProperties;
