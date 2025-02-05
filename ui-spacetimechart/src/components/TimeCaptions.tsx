@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useDraw } from '../hooks/useCanvas';
 import { MINUTE } from '../lib/consts';
 import { type DrawingFunction } from '../lib/types';
+import { computeVisibleTimeMarkers } from '../utils/canvas';
 
 const MINUTES_FORMATTER = (t: number) => `:${new Date(t).getMinutes().toString().padStart(2, '0')}`;
 const HOURS_FORMATTER = (t: number, pixelsPerMinute: number) => {
@@ -71,20 +72,17 @@ const TimeCaptions = () => {
         return false;
       });
 
-      // - Keys are times in ms
-      // - Values are the highest level on each time
-      const labelMarks: Record<number, { level: number; rangeIndex: number }> = {};
-      timeRanges.map((range, i) => {
-        const labelLevel = labelLevels[i];
-
-        if (!labelLevel) return;
-
-        let t = Math.floor(minT / range) * range;
-        while (t <= maxT) {
-          if (labelLevel) labelMarks[t] = { level: labelLevel, rangeIndex: i };
-          t += range;
-        }
+      const labelMarkFormatter = (labelLevel: number, i: number) => ({
+        level: labelLevel,
+        rangeIndex: i,
       });
+      const labelMarks = computeVisibleTimeMarkers(
+        minT,
+        maxT,
+        timeRanges,
+        labelLevels,
+        labelMarkFormatter
+      );
 
       // Render caption background:
       ctx.fillStyle = background;
