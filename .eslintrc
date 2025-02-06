@@ -90,7 +90,13 @@
         "tsx": "never",
       },
     ],
-    "import/no-extraneous-dependencies": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/*.spec.ts", "**/__tests__/**"],
+        "packageDir": [".", ".."]
+      }
+    ],
     "import/no-unresolved": [
       2,
       {
@@ -124,4 +130,12 @@
       "version": "detect",
     },
   },
+  "overrides": [
+    {
+      "files": ["**/stories/**"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
 }
