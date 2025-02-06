@@ -64,6 +64,7 @@
     "react-map-gl": "^7.1.7"
   },
   "peerDependencies": {
-    "react": ">=18.0"
+    "react": ">=18.0",
+    "react-dom": ">=18.0"
   }
 }
