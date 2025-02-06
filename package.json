@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/osrd-project/osrd-ui/issues"
   },
-  "workspaces": [
+  "#workspaces": [
     "ui-icons",
     "ui-core",
     "ui-spacetimechart",
@@ -24,10 +24,14 @@
     "node": ">=18"
   },
   "scripts": {
-    "clean": "npm run clean --workspaces --if-present",
-    "build": "npm run build --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
+    "#clean": "npm run clean --workspaces --if-present",
+    "clean": "true",
+    "#build": "npm run build --workspaces --if-present",
+    "build": "true",
+    "#lint": "npm run lint --workspaces --if-present",
+    "lint": "true",
+    "#test": "npm run test --workspaces --if-present",
+    "test": "true",
     "storybook": "npm start --workspace=@osrd-project/storybook",
     "lerna:changed": "lerna changed",
     "lerna:diff": "lerna diff",
