@@ -10,7 +10,7 @@ const meta: Meta<typeof Manchette> = {
   title: 'Manchette/Manchette',
   tags: ['autodocs'],
   argTypes: {
-    waypoints: {
+    contents: {
       control: {
         type: 'object',
       },
@@ -29,6 +29,6 @@ type Story = StoryObj<typeof Manchette>;
 
 export const Default: Story = {
   args: {
-    waypoints: SAMPLE_WAYPOINTS,
+    contents: SAMPLE_WAYPOINTS,
   },
 };

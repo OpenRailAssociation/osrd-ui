@@ -151,7 +151,7 @@ const useManchettesWithSpaceTimeChart = (
 
   const manchetteProps = useMemo(
     () => ({
-      waypoints: waypointsToDisplay,
+      contents: waypointsToDisplay,
       zoomYIn,
       zoomYOut,
       resetZoom,

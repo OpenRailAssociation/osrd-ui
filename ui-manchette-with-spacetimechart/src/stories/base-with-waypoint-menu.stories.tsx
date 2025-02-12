@@ -122,7 +122,7 @@ const ManchetteWithSpaceTimeWrapper = ({
       >
         <Manchette
           {...manchetteProps}
-          waypoints={manchetteProps.waypoints.map((op) => ({
+          contents={manchetteProps.contents.map((op) => ({
             ...op,
             onClick: handleWaypointClick,
           }))}
