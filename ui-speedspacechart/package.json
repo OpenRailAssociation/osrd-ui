@@ -39,16 +39,18 @@
   "dependencies": {
     "@osrd-project/ui-core": "0.0.1-dev",
     "@osrd-project/ui-icons": "0.0.1-dev",
-    "@types/chroma-js": "^3.1.0",
-    "@types/d3-selection": "^3.0.0",
-    "@types/d3-zoom": "^3.0.0",
     "chroma-js": "^3.1.1",
     "classnames": "^2.5.1",
     "d3-selection": "^3.0.0",
-    "d3-zoom": "^3.0.0",
-    "tailwindcss": "^3.4.1"
+    "d3-zoom": "^3.0.0"
   },
   "peerDependencies": {
     "react": ">=18.0"
+  },
+  "devDependencies": {
+    "@types/chroma-js": "^3.1.0",
+    "@types/d3-selection": "^3.0.0",
+    "@types/d3-zoom": "^3.0.0",
+    "tailwindcss": "^3.4.1"
   }
 }
