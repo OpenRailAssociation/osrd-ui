@@ -8,7 +8,7 @@ import WaypointList from './WaypointList';
 import type { InteractiveWaypoint, WaypointMenuData } from '../types';
 
 export type ManchetteProps = {
-  waypoints: InteractiveWaypoint[];
+  contents: (InteractiveWaypoint | React.ReactNode)[];
   waypointMenuData?: WaypointMenuData;
   zoomYIn: () => void;
   zoomYOut: () => void;
@@ -25,7 +25,7 @@ const Manchette = ({
   zoomYOut,
   resetZoom,
   yZoom = 1,
-  waypoints,
+  contents,
   waypointMenuData,
   isProportional = true,
   toggleMode,
@@ -57,7 +57,7 @@ const Manchette = ({
       )}
       <div className="bg-white-100 border-r border-grey-30" style={{ minHeight: `${height}px` }}>
         <WaypointList
-          waypoints={waypoints}
+          contents={contents}
           activeWaypointId={waypointMenuData?.activeWaypointId}
           activeWaypointRef={activeWaypointRef}
         />
