@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
 import type { Feature, FeatureCollection } from 'geojson';
+import { type StyleSpecification } from 'maplibre-gl';
 import { createPortal } from 'react-dom';
 import ReactMapGL, { Layer, type LayerProps, type MapRef, Source } from 'react-map-gl/maplibre';
 

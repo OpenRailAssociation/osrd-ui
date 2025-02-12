@@ -1,4 +1,4 @@
-import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
+import { type StyleSpecification } from 'maplibre-gl';
 import { type LayerProps } from 'react-map-gl';
 
 import { type SourceDefinition } from '../core/types';
