@@ -240,8 +240,9 @@ const useManchettesWithSpaceTimeChart = (
       spaceTimeChartProps,
       handleScroll,
       handleXZoom,
+      xZoom,
     }),
-    [manchetteProps, spaceTimeChartProps, handleScroll, handleXZoom]
+    [manchetteProps, spaceTimeChartProps, handleScroll, handleXZoom, xZoom]
   );
 };
 
