@@ -155,7 +155,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       theme: fullTheme,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fingerprint]);
+  }, [fingerprint, operationalPoints]);
 
   const mouseState = useMouseTracking(root);
   const { position, down, isHover } = mouseState;
