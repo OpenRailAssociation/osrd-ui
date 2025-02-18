@@ -26,10 +26,8 @@
   },
   "scripts": {
     "svgo": "svgo icons --config svgo.config.cjs",
-    "build-components": "node ./scripts/build.js",
-    "rollup": "rollup -c",
     "clean": "rimraf dist",
-    "build": "npm run build-components && npm run rollup",
+    "build": "node ./scripts/build.js && rollup -c --failAfterWarnings",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "peerDependencies": {

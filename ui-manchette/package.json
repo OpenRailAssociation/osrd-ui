@@ -27,9 +27,8 @@
     }
   },
   "scripts": {
-    "rollup": "rollup -c",
     "clean": "rimraf dist",
-    "build": "npm run rollup",
+    "build": "rollup -c --failAfterWarnings",
     "watch": "rollup -c -w",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "eslint src --max-warnings 0",
