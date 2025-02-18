@@ -45,8 +45,18 @@ export function useCanvas(
   const stcContextRef = useRef(inputStcContext);
   const scheduledRef = useRef<null | { frameId: number }>(null);
 
-  const size = useSize(dom);
   const [hoveredItem, setHoveredItem] = useState<HoveredItem | null>(null);
+
+  const size = useSize(dom);
+  const sizeRef = useRef<typeof size>(size);
+
+  /**
+   * Keep the sizeRef value up to date (to allow rendering functions not being reset anytime size is
+   * updated):
+   */
+  useEffect(() => {
+    sizeRef.current = size;
+  }, [size]);
 
   /**
    * This function renders all picking layers:
@@ -61,7 +71,9 @@ export function useCanvas(
         const set = pickingFunctions.current[layer];
 
         if (ctx) {
-          ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+          const { width, height } = sizeRef.current;
+          ctx.clearRect(0, 0, width, height);
+
           const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
           set.forEach((fn) => fn(imageData, stcContext));
           ctx.putImageData(imageData, 0, 0);
@@ -83,7 +95,8 @@ export function useCanvas(
         const set = drawingFunctions.current[layer];
 
         if (ctx) {
-          ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+          const { width, height } = sizeRef.current;
+          ctx.clearRect(0, 0, width, height);
           set.forEach((fn) => fn(ctx, stcContext));
         }
       });
@@ -92,7 +105,7 @@ export function useCanvas(
   );
 
   /**
-   * This function draws everything that needs to be drawn, and clears the scheduleRed state:
+   * This function draws everything that needs to be drawn, and clears the scheduleRef state:
    */
   const draw = useCallback(() => {
     drawRendering(stcContextRef.current);
