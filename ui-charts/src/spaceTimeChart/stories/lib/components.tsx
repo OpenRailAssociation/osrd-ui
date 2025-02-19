@@ -58,11 +58,15 @@ const DataLabel = ({
   position,
   isDiff,
   marginTop = 0,
+  shiftTextX = 0,
+  shiftTextY = 0,
 }: {
   data: DataPoint;
   position: Point;
   isDiff?: boolean;
   marginTop?: number;
+  shiftTextX?: number;
+  shiftTextY?: number;
 }) => (
   <div
     style={{
@@ -75,7 +79,10 @@ const DataLabel = ({
     }}
   >
     <Cross />
-    <div className="content" style={{ background: WHITE_75 }}>
+    <div
+      className="content"
+      style={{ background: WHITE_75, marginTop: `${shiftTextY}px`, marginLeft: `${shiftTextX}px` }}
+    >
       {isDiff ? (
         <>
           <div>Time difference: {formatTimeLength(new Date(data.time))}</div>
@@ -95,7 +102,7 @@ const DataLabel = ({
  * This component renders a DataLabel under the mouse, using the MouseContext from the SpaceTimeChart:
  */
 export const MouseTracker = ({ reference }: { reference?: DataPoint }) => {
-  const { getPoint } = useContext(SpaceTimeChartContext);
+  const { getPoint, width, height } = useContext(SpaceTimeChartContext);
   const { position, data, isHover } = useContext(MouseContext);
 
   return isHover ? (
@@ -113,7 +120,8 @@ export const MouseTracker = ({ reference }: { reference?: DataPoint }) => {
         }
         position={position}
         isDiff={!!reference}
-        marginTop={30}
+        shiftTextX={position.x > width - 100 ? -100 : 10}
+        shiftTextY={position.y > height - 50 ? -50 : 20}
       />
     </>
   ) : null;
