@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 
 import { isEqual } from 'lodash';
 
+import { useDevicePixelRatio } from './useDevicePixelRatio';
 import { useSize } from './useSize';
 import { CanvasContext } from '../lib/context';
 import {
@@ -57,6 +58,8 @@ export function useCanvas(
   useEffect(() => {
     sizeRef.current = size;
   }, [size]);
+
+  const devicePixelRatio = useDevicePixelRatio();
 
   /**
    * This function renders all picking layers:
@@ -223,8 +226,6 @@ export function useCanvas(
 
   // Handle resizing:
   useEffect(() => {
-    const scale = window.devicePixelRatio || 1;
-
     for (const id in canvasesRef.current) {
       const canvas = canvasesRef.current[id];
       const ctx = contextsRef.current[id];
@@ -232,18 +233,18 @@ export function useCanvas(
       if (canvas) {
         canvas.style.width = size.width + 'px';
         canvas.style.height = size.height + 'px';
-        canvas.setAttribute('width', size.width * scale + 'px');
-        canvas.setAttribute('height', size.height * scale + 'px');
+        canvas.setAttribute('width', size.width * devicePixelRatio + 'px');
+        canvas.setAttribute('height', size.height * devicePixelRatio + 'px');
 
         // Reset the transform to identity, then apply the new scale
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(scale, scale);
+        ctx.scale(devicePixelRatio, devicePixelRatio);
       }
     }
 
     draw();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size]);
+  }, [size, devicePixelRatio]);
 
   // Read picking layer on position change:
   useEffect(() => {
