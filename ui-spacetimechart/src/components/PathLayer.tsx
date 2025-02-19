@@ -14,7 +14,12 @@ import {
   type Point,
   type SpaceTimeChartContextType,
 } from '../lib/types';
-import { drawAliasedDisc, drawAliasedLine, drawPathExtremity } from '../utils/canvas';
+import {
+  drawAliasedDisc,
+  drawAliasedLine,
+  drawPathExtremity,
+  getCrispLineCoordinate,
+} from '../utils/canvas';
 import { indexToColor, hexToRgb } from '../utils/colors';
 import { getSpaceBreakpoints } from '../utils/scales';
 
@@ -170,7 +175,7 @@ export const PathLayer = ({
         if (i) {
           const { position: prevPosition, time: prevTime } = a[i - 1];
           if (prevPosition === position && stopPositions.has(position)) {
-            const spacePixel = getSpacePixel(position);
+            const spacePixel = getCrispLineCoordinate(getSpacePixel(position), ctx.lineWidth);
             ctx.beginPath();
             if (!swapAxis) {
               ctx.moveTo(getTimePixel(prevTime), spacePixel);

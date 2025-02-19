@@ -289,14 +289,14 @@ export function computeVisibleTimeMarkers<T>(
   minT: number,
   maxT: number,
   timeRanges: number[],
-  levels: number[],
+  gridlinesLevels: number[],
   formatter: (level: number, i: number) => T = identity
 ) {
   const result: Record<number, T> = {};
   const minTLocalOffset = new Date(minT).getTimezoneOffset() * 60 * 1000;
 
   timeRanges.forEach((range, i) => {
-    const gridlinesLevel = levels[i];
+    const gridlinesLevel = gridlinesLevels[i];
 
     if (!gridlinesLevel) return;
 
@@ -309,4 +309,25 @@ export function computeVisibleTimeMarkers<T>(
     }
   });
   return result;
+}
+
+/**
+ * To get crisp horizontal or vertical lines on a canvas, we must draw them as thin as possible, in
+ * terms of actual pixels on screen.
+ * The best way for this is:
+ * - To center lines 1, 3, 5... pixels wide in the middle of a pixel
+ * - To center lines 2, 4, 6... pixels wide between two pixels
+ * @param rawCoordinate Any input coordinate to fix
+ * @param lineWidth The width of the line to draw
+ * @param devicePixelRatio
+ */
+export function getCrispLineCoordinate(
+  rawCoordinate: number,
+  lineWidth: number,
+  devicePixelRatio = window.devicePixelRatio || 1
+): number {
+  const centerOffset = lineWidth / 2;
+  return (
+    Math.round((rawCoordinate - centerOffset) * devicePixelRatio) / devicePixelRatio + centerOffset
+  );
 }

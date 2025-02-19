@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useDraw } from '../hooks/useCanvas';
 import { MINUTE } from '../lib/consts';
 import { type DrawingFunction } from '../lib/types';
-import { computeVisibleTimeMarkers } from '../utils/canvas';
+import { computeVisibleTimeMarkers, getCrispLineCoordinate } from '../utils/canvas';
 
 const MINUTES_FORMATTER = (t: number) => `:${new Date(t).getMinutes().toString().padStart(2, '0')}`;
 const HOURS_FORMATTER = (t: number, pixelsPerMinute: number) => {
@@ -98,11 +98,13 @@ const TimeCaptions = () => {
       if (!showTicks) {
         ctx.beginPath();
         if (!swapAxis) {
-          ctx.moveTo(0, spaceAxisSize - CAPTION_SIZE);
-          ctx.lineTo(timeAxisSize, spaceAxisSize - CAPTION_SIZE);
+          const y = getCrispLineCoordinate(spaceAxisSize - CAPTION_SIZE, ctx.lineWidth);
+          ctx.moveTo(0, y);
+          ctx.lineTo(timeAxisSize, y);
         } else {
-          ctx.moveTo(CAPTION_SIZE, 0);
-          ctx.lineTo(CAPTION_SIZE, timeAxisSize);
+          const x = getCrispLineCoordinate(CAPTION_SIZE, ctx.lineWidth);
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, timeAxisSize);
         }
         ctx.stroke();
       }
@@ -118,21 +120,19 @@ const TimeCaptions = () => {
         ctx.textBaseline = 'top';
         ctx.fillStyle = styles.color;
         ctx.font = `${styles.fontWeight || 'normal'} ${styles.font}`;
+        const timePixel = getCrispLineCoordinate(getTimePixel(+t), ctx.lineWidth);
+
         if (!swapAxis) {
           if (showTicks) {
             ctx.strokeStyle = timeCaptionsStyles[1].color;
-            ctx.moveTo(getTimePixel(+t), spaceAxisSize - CAPTION_SIZE);
-            ctx.lineTo(getTimePixel(+t), +t % 180000 === 0 ? 8 : 4);
+            ctx.moveTo(timePixel, spaceAxisSize - CAPTION_SIZE);
+            ctx.lineTo(timePixel, +t % 180000 === 0 ? 8 : 4);
             ctx.stroke();
           }
-          ctx.fillText(
-            text,
-            getTimePixel(+t),
-            spaceAxisSize - CAPTION_SIZE + (styles.topOffset || 0)
-          );
+          ctx.fillText(text, timePixel, spaceAxisSize - CAPTION_SIZE + (styles.topOffset || 0));
         } else {
           ctx.save();
-          ctx.translate(CAPTION_SIZE - (styles.topOffset || 0), getTimePixel(+t));
+          ctx.translate(CAPTION_SIZE - (styles.topOffset || 0), timePixel);
           ctx.rotate(Math.PI / 2);
           ctx.fillText(text, 0, 0);
           ctx.restore();

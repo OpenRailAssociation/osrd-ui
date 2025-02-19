@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useDraw } from '../hooks/useCanvas';
 import { MINUTE } from '../lib/consts';
 import { type DrawingFunction } from '../lib/types';
-import { computeVisibleTimeMarkers } from '../utils/canvas';
+import { computeVisibleTimeMarkers, getCrispLineCoordinate } from '../utils/canvas';
 
 const TimeGraduations = () => {
   const drawingFunction = useCallback<DrawingFunction>(
@@ -53,7 +53,7 @@ const TimeGraduations = () => {
           ctx.lineDashOffset = -spacePixelOffset;
         }
 
-        const timePixel = getTimePixel(+t);
+        const timePixel = getCrispLineCoordinate(getTimePixel(+t), ctx.lineWidth);
         ctx.beginPath();
         if (!swapAxis) {
           ctx.moveTo(timePixel, 0);

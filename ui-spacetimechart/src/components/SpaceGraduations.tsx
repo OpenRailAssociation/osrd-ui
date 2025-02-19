@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 
 import { useDraw } from '../hooks/useCanvas';
 import { type DrawingFunction } from '../lib/types';
+import { getCrispLineCoordinate } from '../utils/canvas';
 
 const SpaceGraduations = () => {
   const drawingFunction = useCallback<DrawingFunction>(
@@ -32,7 +33,7 @@ const SpaceGraduations = () => {
           ctx.lineDashOffset = -timePixelOffset;
         }
 
-        const spacePixel = getSpacePixel(point.position);
+        const spacePixel = getCrispLineCoordinate(getSpacePixel(point.position), ctx.lineWidth);
 
         ctx.beginPath();
         if (!swapAxis) {
