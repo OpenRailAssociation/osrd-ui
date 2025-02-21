@@ -92,62 +92,61 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           statusWithMessage?.tooltip || narrow ? 'before-status-message' : undefined
         }
         narrow={narrow}
-        className={cx('input-field-wrapper', inputFieldWrapperClassname)}
+        className={cx('input-field-wrapper', inputFieldWrapperClassname, {
+          small,
+        })}
         onCloseStatusMessage={onCloseStatusMessage}
       >
+        {leadingContent && (
+          <InputAffix
+            value={leadingContent}
+            type="leading"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        )}
         <div
-          className={cx('input-wrapper', {
-            small,
+          className={cx('input-container', {
             'focused-by-tab': isFocusByTab,
           })}
         >
-          {leadingContent && (
-            <InputAffix
-              value={leadingContent}
-              type="leading"
-              disabled={disabled}
-              readOnly={readOnly}
-            />
-          )}
-          <div className="input-container">
-            <input
-              ref={ref}
-              className={cx('input', {
-                'with-leading-only': leadingContent && !trailingContent,
-                'with-trailing-only': trailingContent && !leadingContent,
-                'with-leading-and-trailing': leadingContent && trailingContent,
-                [`with-icons-${withIcons.length}`]: withIcons.length > 0,
-                [statusWithMessage?.status || '']: !!statusWithMessage,
-              })}
-              id={id}
-              type={type}
-              disabled={disabled}
-              readOnly={readOnly}
-              onKeyUp={handleKeyUp}
-              onBlur={handleBlur}
-              {...rest}
-            />
-            <div
-              className={cx('input-icons', {
-                small,
-              })}
-            >
-              {withIcons.map((iconConfig, index) => (
-                <span key={index} className={iconConfig?.className} onClick={iconConfig.action}>
-                  {iconConfig.icon}
-                </span>
-              ))}
-            </div>
+          <input
+            ref={ref}
+            className={cx('input', {
+              'with-leading-only': leadingContent && !trailingContent,
+              'with-trailing-only': trailingContent && !leadingContent,
+              'with-leading-and-trailing': leadingContent && trailingContent,
+              [`with-icons-${withIcons.length}`]: withIcons.length > 0,
+              [statusWithMessage?.status || '']: !!statusWithMessage,
+            })}
+            id={id}
+            type={type}
+            disabled={disabled}
+            readOnly={readOnly}
+            onKeyUp={handleKeyUp}
+            onBlur={handleBlur}
+            {...rest}
+          />
+          <div
+            className={cx('input-icons', {
+              small,
+            })}
+          >
+            {withIcons.map((iconConfig, index) => (
+              <span key={index} className={iconConfig?.className} onClick={iconConfig.action}>
+                {iconConfig.icon}
+              </span>
+            ))}
           </div>
-          {trailingContent && (
-            <InputAffix
-              value={trailingContent}
-              type="trailing"
-              disabled={disabled}
-              readOnly={readOnly}
-            />
-          )}
         </div>
+        {trailingContent && (
+          <InputAffix
+            value={trailingContent}
+            type="trailing"
+            disabled={disabled}
+            readOnly={readOnly}
+          />
+        )}
       </FieldWrapper>
     );
   }

@@ -1,13 +1,5 @@
-.input-wrapper {
-  display: flex;
-  align-items: center;
+.input-field-wrapper {
   width: 100%;
-  padding: 0.188rem;
-  margin-left: -0.125rem;
-
-  &.focused-by-tab {
-    box-shadow: 0 0 0 0.0625rem rgba(37, 106, 250, 1) inset;
-  }
 
   &:focus-within {
     .leading-content-wrapper,
@@ -25,6 +17,11 @@
     align-items: center;
     position: relative;
     width: 100%;
+
+    &.focused-by-tab {
+      outline: 1px solid theme('colors.primary.50');
+      outline-offset: 3px;
+    }
 
     .input {
       text-overflow: ellipsis;

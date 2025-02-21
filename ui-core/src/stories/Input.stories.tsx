@@ -13,6 +13,7 @@ const meta: Meta<typeof Input> = {
     small: false,
     disabled: false,
     readOnly: false,
+    narrow: false,
   },
   decorators: [
     (Story) => (
