@@ -87,6 +87,8 @@ export type OperationalPoint = {
 
 export type Axis = 'x' | 'y';
 
+export type Direction = 'forward' | 'backward' | 'still';
+
 // DATA TRANSLATION TYPES:
 export type TimeToPixel = (time: number) => number;
 export type SpaceToPixel = (position: number) => number;
