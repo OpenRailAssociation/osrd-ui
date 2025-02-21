@@ -28,6 +28,7 @@ const Select = <T,>({
   statusWithMessage,
   required,
   disabled,
+  narrow,
   readOnly,
   small,
   getOptionLabel,
@@ -58,6 +59,7 @@ const Select = <T,>({
       required={required}
       disabled={disabled}
       small={small}
+      narrow={narrow}
     >
       <select
         id={id}
