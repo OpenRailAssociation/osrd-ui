@@ -129,7 +129,7 @@ describe('getSpaceBreakpoints', () => {
       { to: 90, size: 50 },
       { to: 140, size: 50 },
     ]);
-    expect(getSpaceBreakpoints(5, 135, tree)).toEqual([10, 60, 70, 90]);
+    expect(getSpaceBreakpoints(5, 135, tree)).toEqual([10, 60, 60, 70, 90]);
   });
 });
 
@@ -171,9 +171,17 @@ describe('getNormalizedScaleAtPosition', () => {
       { to: 90, size: 50 },
       { to: 140, size: 50 },
     ]);
+
     expect(pick(getNormalizedScaleAtPosition(60, tree) as NormalizedScale, 'from', 'to')).toEqual({
       from: 10,
       to: 60,
+    });
+
+    expect(
+      pick(getNormalizedScaleAtPosition(60, tree, true) as NormalizedScale, 'from', 'to')
+    ).toEqual({
+      from: 60,
+      to: 70,
     });
   });
 

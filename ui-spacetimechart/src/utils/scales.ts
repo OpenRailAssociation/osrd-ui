@@ -107,17 +107,26 @@ export function spaceScalesToBinaryTree(
  *
  * Also, if the position is lower than the tree's min (tree.from), then the first leaf is returned
  * and if it is higher than the max (tree.to), the last leaf is returned.
+ *
+ * Finally, if pickLast is truthy, then it returns the last leaf node that contains that position
+ * instead of the first one. It is very important when there are flat sections.
  */
 export function getNormalizedScaleAtPosition(
   position: number,
-  tree: NormalizedScaleTree
+  tree: NormalizedScaleTree,
+  pickLast?: boolean
 ): NormalizedScale {
   position = clamp(position, tree.from, tree.to);
 
   let node = tree;
   while ('limit' in node) {
-    if (position <= node.limit) node = node.left;
-    else node = node.right;
+    if (!pickLast) {
+      if (position <= node.limit) node = node.left;
+      else node = node.right;
+    } else {
+      if (position >= node.limit) node = node.right;
+      else node = node.left;
+    }
   }
   return node;
 }
@@ -162,8 +171,12 @@ export function getSpaceToPixel(
   pixelOffset: number,
   binaryTree: NormalizedScaleTree
 ): SpaceToPixel {
-  return (position: number) => {
-    const { from, pixelFrom, coefficient } = getNormalizedScaleAtPosition(position, binaryTree);
+  return (position: number, fromEnd?: boolean) => {
+    const { from, pixelFrom, coefficient } = getNormalizedScaleAtPosition(
+      position,
+      binaryTree,
+      fromEnd
+    );
     return pixelOffset + pixelFrom + (position - from) / coefficient;
   };
 }
@@ -243,11 +256,9 @@ export function getSpaceBreakpoints(from: number, to: number, tree: NormalizedSc
   to = Math.min(to, tree.to);
 
   let fromScale = getNormalizedScaleAtPosition(from, tree) as NormalizedScale;
-  let lastValue = from;
   const res: number[] = [];
   while (fromScale.to < to) {
-    if (fromScale.to !== lastValue) res.push(fromScale.to);
-    lastValue = fromScale.to;
+    res.push(fromScale.to);
     fromScale = fromScale.next as NormalizedScale;
   }
 

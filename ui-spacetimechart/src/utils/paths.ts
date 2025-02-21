@@ -1,4 +1,4 @@
-import type { DataPoint, Direction, PathData } from '../lib/types';
+import type { DataPoint, Direction, PathData, SpaceToPixel } from '../lib/types';
 
 /**
  * This function takes a path, a point index and looks forward in the points order for the first
@@ -28,4 +28,21 @@ export function getPathDirection(
   }
 
   return 'still';
+}
+
+/**
+ * This function takes a SpaceToPixel function and a position, and checks if the function returns
+ * the same pixel for the position, starting from both sides. It then returns one or two pixel
+ * positions accordingly.
+ */
+export function getSpacePixels(
+  getSpacePixel: SpaceToPixel,
+  position: number
+): [number] | [number, number] {
+  const spacePixelFromStart = getSpacePixel(position);
+  const spacePixelFromEnd = getSpacePixel(position, true);
+
+  return spacePixelFromStart === spacePixelFromEnd
+    ? [spacePixelFromStart]
+    : [spacePixelFromStart, spacePixelFromEnd];
 }

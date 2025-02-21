@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useDraw } from '../hooks/useCanvas';
 import { type DrawingFunction } from '../lib/types';
 import { getCrispLineCoordinate } from '../utils/canvas';
+import { getSpacePixels } from '../utils/paths';
 
 const SpaceGraduations = () => {
   const drawingFunction = useCallback<DrawingFunction>(
@@ -33,17 +34,20 @@ const SpaceGraduations = () => {
           ctx.lineDashOffset = -timePixelOffset;
         }
 
-        const spacePixel = getCrispLineCoordinate(getSpacePixel(point.position), ctx.lineWidth);
+        // Detect flat steps, and draw two graduations if any (one on each side of the step):
+        getSpacePixels(getSpacePixel, point.position).forEach((rawPixel) => {
+          const spacePixel = getCrispLineCoordinate(rawPixel, ctx.lineWidth);
 
-        ctx.beginPath();
-        if (!swapAxis) {
-          ctx.moveTo(0, spacePixel);
-          ctx.lineTo(axisSize, spacePixel);
-        } else {
-          ctx.moveTo(spacePixel, 0);
-          ctx.lineTo(spacePixel, axisSize);
-        }
-        ctx.stroke();
+          ctx.beginPath();
+          if (!swapAxis) {
+            ctx.moveTo(0, spacePixel);
+            ctx.lineTo(axisSize, spacePixel);
+          } else {
+            ctx.moveTo(spacePixel, 0);
+            ctx.lineTo(spacePixel, axisSize);
+          }
+          ctx.stroke();
+        });
       });
 
       ctx.setLineDash([]);

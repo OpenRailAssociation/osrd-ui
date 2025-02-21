@@ -21,7 +21,7 @@ import {
   getCrispLineCoordinate,
 } from '../utils/canvas';
 import { indexToColor, hexToRgb } from '../utils/colors';
-import { getPathDirection } from '../utils/paths';
+import { getPathDirection, getSpacePixels } from '../utils/paths';
 import { getSpaceBreakpoints } from '../utils/scales';
 
 const DEFAULT_PICKING_TOLERANCE = 5;
@@ -102,14 +102,27 @@ export const PathLayer = ({
         } else {
           const { position: prevPosition, time: prevTime } = a[i - 1];
           const spaceBreakPoints = getSpaceBreakpoints(prevPosition, position, spaceScaleTree);
-          spaceBreakPoints.forEach((breakPosition) => {
+          let previousBreakPosition = -Infinity;
+          spaceBreakPoints.forEach((breakPosition, index) => {
+            const nextBreakPosition = spaceBreakPoints[index + 1] ?? Infinity;
+            const isBeforeFlatStep = previousBreakPosition === breakPosition;
+            const isAfterFlatStep = breakPosition === nextBreakPosition;
+
+            const readSpacePixelFromEnd = isBeforeFlatStep
+              ? getPathDirection(path, i, true) === 'forward'
+              : isAfterFlatStep
+                ? getPathDirection(path, i - 1) === 'backward'
+                : false;
+
             const breakTime =
               prevTime +
               ((breakPosition - prevPosition) / (position - prevPosition)) * (time - prevTime);
+
             res.push({
               [timeAxis]: getTimePixel(breakTime),
-              [spaceAxis]: getSpacePixel(breakPosition),
+              [spaceAxis]: getSpacePixel(breakPosition, readSpacePixelFromEnd),
             } as Point);
+            previousBreakPosition = breakPosition;
           });
           res.push({
             [timeAxis]: getTimePixel(time),
@@ -156,16 +169,19 @@ export const PathLayer = ({
         if (i) {
           const { position: prevPosition, time: prevTime } = a[i - 1];
           if (prevPosition === position && stopPositions.has(position)) {
-            const spacePixel = getCrispLineCoordinate(getSpacePixel(position), ctx.lineWidth);
-            ctx.beginPath();
-            if (!swapAxis) {
-              ctx.moveTo(getTimePixel(prevTime), spacePixel);
-              ctx.lineTo(getTimePixel(time), spacePixel);
-            } else {
-              ctx.moveTo(spacePixel, getTimePixel(prevTime));
-              ctx.lineTo(spacePixel, getTimePixel(time));
-            }
-            ctx.stroke();
+            // Detect flat steps, and draw two graduations if any (one on each side of the step):
+            getSpacePixels(getSpacePixel, position).forEach((rawPixel) => {
+              const spacePixel = getCrispLineCoordinate(rawPixel, ctx.lineWidth);
+              ctx.beginPath();
+              if (!swapAxis) {
+                ctx.moveTo(getTimePixel(prevTime), spacePixel);
+                ctx.lineTo(getTimePixel(time), spacePixel);
+              } else {
+                ctx.moveTo(spacePixel, getTimePixel(prevTime));
+                ctx.lineTo(spacePixel, getTimePixel(time));
+              }
+              ctx.stroke();
+            });
           }
         }
       });
