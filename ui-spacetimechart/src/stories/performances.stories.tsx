@@ -68,7 +68,7 @@ const Wrapper = ({
         isOmnibus ? (isReversed ? reversedAllOP : allOP) : isReversed ? reversedMainOP : mainOP,
         5 * MINUTE,
         (30 + trainTypeIndex * 5) * MINUTE,
-        speed * (isReversed ? -1 : 1),
+        speed,
         pathsPerTrain,
         DATE_OFFSET,
         {

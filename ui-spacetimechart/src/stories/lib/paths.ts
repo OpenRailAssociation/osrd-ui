@@ -1,4 +1,6 @@
-import { type OperationalPoint, type PathData } from '../../lib/types';
+import { keyBy } from 'lodash';
+
+import type { OperationalPoint, PathData } from '../../lib/types';
 
 const KM = 1000;
 const MIN = 60 * 1000;
@@ -13,6 +15,7 @@ export function getPaths<T extends object>(
   t0: number,
   additionalAttributes: T
 ): (PathData & T)[] {
+  speed = Math.abs(speed);
   const res: (PathData & T)[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -35,7 +38,7 @@ export function getPaths<T extends object>(
         const previousPoint = points[index - 1];
         // Travel:
         const travelDistance = point.position - previousPoint.position;
-        const travelTime = travelDistance / speed;
+        const travelTime = Math.abs(travelDistance) / speed;
         p += travelDistance;
         t += travelTime;
         path.points.push({
@@ -96,10 +99,25 @@ export const OPERATIONAL_POINTS: OperationalPoint[] = [
     importanceLevel: 1,
   },
 ];
+export const OPERATIONAL_POINTS_DICT = keyBy(OPERATIONAL_POINTS, 'id');
 
 const REVERSED_POINTS = OPERATIONAL_POINTS.slice(0).reverse();
 const EXTREME_POINTS = [OPERATIONAL_POINTS[0], OPERATIONAL_POINTS[2], OPERATIONAL_POINTS[5]];
 const REVERSED_EXTREME_POINTS = EXTREME_POINTS.slice(0).reverse();
+const BACK_AND_FORTH_POINTS = [
+  OPERATIONAL_POINTS_DICT['city-b'],
+  OPERATIONAL_POINTS_DICT['city-d'],
+  OPERATIONAL_POINTS_DICT['city-e'],
+  OPERATIONAL_POINTS_DICT['city-d'],
+  OPERATIONAL_POINTS_DICT['city-b'],
+];
+const REVERSED_BACK_AND_FORTH_POINTS = [
+  OPERATIONAL_POINTS_DICT['city-e'],
+  OPERATIONAL_POINTS_DICT['city-d'],
+  OPERATIONAL_POINTS_DICT['city-b'],
+  OPERATIONAL_POINTS_DICT['city-d'],
+  OPERATIONAL_POINTS_DICT['city-e'],
+];
 
 export const START_DATE = new Date('2024/04/02');
 
@@ -120,7 +138,7 @@ export const PATHS: (PathData & { color: string })[] = [
     REVERSED_POINTS,
     3 * MIN,
     35 * MIN,
-    -(80 * KM) / (60 * MIN),
+    (80 * KM) / (60 * MIN),
     4,
     +START_DATE,
     { color: '#FF8E3D' }
@@ -137,9 +155,31 @@ export const PATHS: (PathData & { color: string })[] = [
     REVERSED_EXTREME_POINTS,
     5 * MIN,
     45 * MIN,
-    -(140 * KM) / (60 * MIN),
+    (140 * KM) / (60 * MIN),
     3,
     +START_DATE,
     { color: '#66C0F1', fromEnd: 'out', toEnd: 'out' }
+  ),
+
+  // Back and forth trains:
+  ...getPaths(
+    'back-and-forth',
+    BACK_AND_FORTH_POINTS,
+    10 * MIN,
+    30 * MIN,
+    (80 * KM) / (60 * MIN),
+    2,
+    +START_DATE + 15 * MIN,
+    { color: '#286109', toEnd: 'out' }
+  ),
+  ...getPaths(
+    'back-and-forth-reversed',
+    REVERSED_BACK_AND_FORTH_POINTS,
+    12 * MIN,
+    30 * MIN,
+    (80 * KM) / (60 * MIN),
+    2,
+    +START_DATE + 3 * MIN,
+    { color: '#64cc2b', toEnd: 'out' }
   ),
 ];
