@@ -121,6 +121,8 @@ const REVERSED_BACK_AND_FORTH_POINTS = [
 
 export const START_DATE = new Date('2024/04/02');
 
+// TODO:
+// Store and share the hardcoded colors with other stories that use the GET as well
 export const PATHS: (PathData & { color: string })[] = [
   // Omnibuses:
   ...getPaths(

@@ -200,6 +200,7 @@ export function useCanvas(
       if (!canvases[layerId]) {
         const canvas = document.createElement('CANVAS') as HTMLCanvasElement;
         const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+        canvas.classList.add(`layer-${type}-${layer}`);
         canvas.style.position = 'absolute';
         canvas.style.inset = '0';
         dom.appendChild(canvas);

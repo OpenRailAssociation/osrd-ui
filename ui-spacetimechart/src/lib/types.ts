@@ -91,7 +91,7 @@ export type Direction = 'forward' | 'backward' | 'still';
 
 // DATA TRANSLATION TYPES:
 export type TimeToPixel = (time: number) => number;
-export type SpaceToPixel = (position: number) => number;
+export type SpaceToPixel = (position: number, fromEnd?: boolean) => number;
 export type PixelToTime = (x: number) => number;
 export type PixelToSpace = (y: number) => number;
 export type PointToData = (point: Point) => DataPoint;
@@ -100,7 +100,7 @@ export type DataToPoint = (data: DataPoint) => Point;
 // CANVAS SPECIFIC TYPES:
 export const PICKING_LAYERS = ['paths'] as const;
 export type PickingLayerType = (typeof PICKING_LAYERS)[number];
-export const LAYERS = ['background', 'graduations', 'paths', 'captions', 'overlay'] as const;
+export const LAYERS = ['background', 'graduations', 'paths', 'overlay', 'captions'] as const;
 export type LayerType = (typeof LAYERS)[number];
 
 // PICKING SPECIFIC TYPES:
