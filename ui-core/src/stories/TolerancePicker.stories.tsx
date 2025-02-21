@@ -63,6 +63,13 @@ export const Default: Story = {
   },
 };
 
+export const Narrow: Story = {
+  args: {
+    label: 'Tolerance',
+    narrow: true,
+  },
+};
+
 export const DisabledTolerancePicker: Story = {
   args: {
     disabled: true,
