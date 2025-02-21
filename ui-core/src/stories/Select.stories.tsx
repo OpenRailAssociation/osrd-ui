@@ -52,6 +52,14 @@ export const Default: StoryType = {
   },
 };
 
+export const Narrow: StoryType = {
+  args: {
+    id: 'Narrow',
+    value: undefined,
+    narrow: true,
+  },
+};
+
 export const LongText: StoryType = {
   args: {
     id: 'LongText',
