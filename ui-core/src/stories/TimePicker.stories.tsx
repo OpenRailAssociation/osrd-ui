@@ -77,6 +77,20 @@ export const Default: Story = {
   ],
 };
 
+export const Narrow: Story = {
+  args: {
+    label: 'Time',
+    narrow: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '6.7rem', minHeight: '500px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 export const DisabledTimePicker: Story = {
   args: {
     disabled: true,

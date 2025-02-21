@@ -98,6 +98,19 @@ export const Single: Story = {
   },
 };
 
+export const Narrow: Story = {
+  args: {
+    isRangeMode: false,
+    value: now,
+    inputProps: {
+      id: 'date-picker-narrow',
+      label: 'Select a date',
+      narrow: true,
+      inputFieldWrapperClassname: 'date-picker-input-wrapper',
+    },
+  },
+};
+
 export const Range: Story = {
   args: {
     isRangeMode: true,
