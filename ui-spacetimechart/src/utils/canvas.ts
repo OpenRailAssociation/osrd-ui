@@ -1,6 +1,6 @@
 import { clamp, identity } from 'lodash';
 
-import { type PathEnd, type Point, type RGBAColor, type RGBColor } from '../lib/types';
+import type { Direction, PathEnd, Point, RGBAColor, RGBColor } from '../lib/types';
 
 /**
  * This function draws a thick lines from "from" to "to" on the given ImageData, with no
@@ -228,10 +228,10 @@ export function drawPathOutExtremity(
   spacePixel: number,
   swapAxis: boolean,
   extremityType: 'from' | 'to',
-  pathDirection: 'up' | 'down'
+  pathDirection: Direction
 ): void {
   let horizontalSign = extremityType === 'from' ? -1 : 1;
-  let verticalSign = (pathDirection === 'down' ? -1 : 1) * horizontalSign;
+  let verticalSign = (pathDirection === 'backward' ? -1 : 1) * horizontalSign;
   let controlX = timePixel + 4 * horizontalSign;
   let controlY = spacePixel + (OUT_END_SIZE - 2) * verticalSign;
   let x = timePixel;
@@ -264,7 +264,7 @@ export function drawPathExtremity(
   spacePixel: number,
   swapAxis: boolean,
   extremityType: 'from' | 'to',
-  pathDirection: 'up' | 'down',
+  pathDirection: Direction,
   pathEnd: PathEnd
 ): void {
   if (pathEnd === 'out') {

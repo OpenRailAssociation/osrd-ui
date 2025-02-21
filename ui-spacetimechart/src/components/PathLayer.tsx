@@ -21,27 +21,8 @@ import {
   getCrispLineCoordinate,
 } from '../utils/canvas';
 import { indexToColor, hexToRgb } from '../utils/colors';
+import { getPathDirection } from '../utils/paths';
 import { getSpaceBreakpoints } from '../utils/scales';
-
-function getDirection({ points }: PathData, reverse?: boolean): 'up' | 'down' {
-  if (points.length < 2) return 'down';
-
-  if (!reverse) {
-    for (let i = 1, l = Math.min(3, points.length); i < l; i++) {
-      const diff = points[i].position - points[i - 1].position;
-      if (diff > 0) return 'up';
-      if (diff < 0) return 'down';
-    }
-  } else {
-    for (let i = points.length - 2, l = Math.max(points.length - 4, points.length); i > l; i--) {
-      const diff = points[i].position - points[i + 1].position;
-      if (diff > 0) return 'up';
-      if (diff < 0) return 'down';
-    }
-  }
-
-  return 'down';
-}
 
 const DEFAULT_PICKING_TOLERANCE = 5;
 const PAUSE_THICKNESS = 7;
@@ -284,7 +265,6 @@ export const PathLayer = ({
     (ctx, { getTimePixel, getSpacePixel, swapAxis }) => {
       if (!path.points.length) return;
 
-      const pathDirection = getDirection(path);
       const from = path.points[0];
       const fromEnd = path.fromEnd || DEFAULT_PATH_END;
       const to = last(path.points) as DataPoint;
@@ -296,7 +276,7 @@ export const PathLayer = ({
         getSpacePixel(from.position),
         swapAxis,
         'from',
-        pathDirection,
+        getPathDirection(path, 0),
         fromEnd
       );
       drawPathExtremity(
@@ -305,7 +285,7 @@ export const PathLayer = ({
         getSpacePixel(to.position),
         swapAxis,
         'to',
-        pathDirection,
+        getPathDirection(path, path.points.length - 1, true),
         toEnd
       );
     },
