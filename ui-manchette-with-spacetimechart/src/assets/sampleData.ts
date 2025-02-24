@@ -1,5 +1,4 @@
-/* eslint-disable import/no-unresolved */
-import { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-manchette/dist/types';
+import { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-manchette';
 
 export const SAMPLE_WAYPOINTS: Waypoint[] = [
   {

@@ -1,7 +1,6 @@
-/* eslint-disable import/no-unresolved */
 import { useMemo } from 'react';
 
-import { type ProjectPathTrainResult } from '@osrd-project/ui-manchette/dist/types';
+import { type ProjectPathTrainResult } from '@osrd-project/ui-manchette';
 import { type PathLevel } from '@osrd-project/ui-spacetimechart';
 
 import { PATH_COLOR_DEFAULT } from '../consts';
