@@ -7,10 +7,74 @@ import {
   MAX_ZOOM_X,
   MIN_ZOOM_MS_PER_PX,
   MIN_ZOOM_X,
+  MAX_ZOOM_Y,
+  MIN_ZOOM_Y,
+  MAX_ZOOM_MANCHETTE_HEIGHT_MILLIMETER,
 } from '../consts';
 import type { InteractiveWaypoint, Waypoint } from '../types';
 
-type WaypointsOptions = { isProportional: boolean; yZoom: number; height: number };
+export const zoomValueToTimeScale = (slider: number) =>
+  MIN_ZOOM_MS_PER_PX * Math.pow(MAX_ZOOM_MS_PER_PX / MIN_ZOOM_MS_PER_PX, slider / 100);
+
+export const timeScaleToZoomValue = (timeScale: number) =>
+  (100 * Math.log(timeScale / MIN_ZOOM_MS_PER_PX)) /
+  Math.log(MAX_ZOOM_MS_PER_PX / MIN_ZOOM_MS_PER_PX);
+
+/**
+ * min zoom is computed with manchette px height between first and last waypoint.
+ * max zoom just the canvas drawing height (without the x-axis scale section)
+ */
+export const getExtremaScales = (
+  drawingHeightWithoutTopPadding: number,
+  drawingHeightWithoutBothPadding: number,
+  pathLengthMillimeter: number
+) => ({
+  minZoomMillimeterPerPx: pathLengthMillimeter / drawingHeightWithoutBothPadding,
+  maxZoomMillimeterPerPx: MAX_ZOOM_MANCHETTE_HEIGHT_MILLIMETER / drawingHeightWithoutTopPadding,
+});
+
+export const zoomValueToSpaceScale = (
+  minZoomMillimeterPerPx: number,
+  maxZoomMillimeterPerPx: number,
+  slider: number
+) =>
+  minZoomMillimeterPerPx *
+  Math.pow(
+    maxZoomMillimeterPerPx / minZoomMillimeterPerPx,
+    (slider - MIN_ZOOM_Y) / (MAX_ZOOM_Y - MIN_ZOOM_Y)
+  );
+
+export const spaceScaleToZoomValue = (
+  minZoomMillimeterPerPx: number,
+  maxZoomMillimeterPerPx: number,
+  spaceScale: number
+) =>
+  ((MAX_ZOOM_Y - MIN_ZOOM_Y) * Math.log(spaceScale / minZoomMillimeterPerPx)) /
+    Math.log(maxZoomMillimeterPerPx / minZoomMillimeterPerPx) +
+  MIN_ZOOM_Y;
+
+/** Zoom on X axis and center on the mouse position */
+export const zoomX = (
+  currentZoom: number,
+  currentOffset: number,
+  newZoom: number,
+  position: number
+) => {
+  const boundedZoom = clamp(newZoom, MIN_ZOOM_X, MAX_ZOOM_X);
+  const oldTimeScale = zoomValueToTimeScale(currentZoom);
+  const newTimeScale = zoomValueToTimeScale(boundedZoom);
+  const newOffset = position - ((position - currentOffset) * oldTimeScale) / newTimeScale;
+  return {
+    xZoom: boundedZoom,
+    xOffset: newOffset,
+  };
+};
+
+type WaypointsOptions = {
+  isProportional: boolean;
+  yZoom: number;
+  height: number;
+};
 
 export const filterVisibleElements = (
   elements: Waypoint[],
@@ -43,20 +107,23 @@ export const filterVisibleElements = (
 
 export const computeWaypointsToDisplay = (
   waypoints: Waypoint[],
-  { height, isProportional, yZoom }: WaypointsOptions
+  { height, isProportional, yZoom }: WaypointsOptions,
+  minZoomMillimeterPerPx: number,
+  maxZoomMillimeterPerPx: number
 ): InteractiveWaypoint[] => {
   if (waypoints.length < 2) return [];
 
   const totalDistance = calcTotalDistance(waypoints);
-  const heightWithoutFinalWaypoint = getHeightWithoutLastWaypoint(height);
+  const manchetteHeight = getHeightWithoutLastWaypoint(height);
 
   // display all waypoints in linear mode
   if (!isProportional) {
     return waypoints.map((waypoint, index) => {
       const nextWaypoint = waypoints.at(index + 1);
+      const waypointHeight = BASE_WAYPOINT_HEIGHT * (nextWaypoint ? yZoom : 1);
       return {
         ...waypoint,
-        styles: { height: `${BASE_WAYPOINT_HEIGHT * (nextWaypoint ? yZoom : 1)}px` },
+        styles: { height: `${waypointHeight}px` },
       };
     });
   }
@@ -67,30 +134,36 @@ export const computeWaypointsToDisplay = (
   const filteredWaypoints = filterVisibleElements(
     waypoints,
     totalDistance,
-    heightWithoutFinalWaypoint,
+    manchetteHeight,
     minSpace
   );
 
+  const spaceScale = zoomValueToSpaceScale(minZoomMillimeterPerPx, maxZoomMillimeterPerPx, yZoom);
+
   return filteredWaypoints.map((waypoint, index) => {
     const nextWaypoint = filteredWaypoints.at(index + 1);
+    const waypointHeight = !nextWaypoint
+      ? BASE_WAYPOINT_HEIGHT
+      : (nextWaypoint.position - waypoint.position) / spaceScale;
     return {
       ...waypoint,
       styles: {
-        height: !nextWaypoint
-          ? `${BASE_WAYPOINT_HEIGHT}px`
-          : `${
-              ((nextWaypoint.position - waypoint.position) / totalDistance) *
-              heightWithoutFinalWaypoint *
-              yZoom
-            }px`,
+        height: `${Math.round(waypointHeight)}px`,
       },
     };
   });
 };
 
+/**
+ * 2 modes for space scales
+ * km (isProportional): { coefficient: gives a scale in meter/pixel }
+ * linear: { size: height in pixel  } (each point distributed evenly along the height of manchette.)
+ */
 export const getScales = (
   waypoints: Waypoint[],
-  { height, isProportional, yZoom }: WaypointsOptions
+  { isProportional, yZoom }: WaypointsOptions,
+  minZoomMillimeterPerPx: number,
+  maxZoomMillimeterPerPx: number
 ) => {
   if (waypoints.length < 2) return [];
 
@@ -109,11 +182,8 @@ export const getScales = (
   const from = waypoints.at(0)!.position;
   const to = waypoints.at(-1)!.position;
 
-  const totalDistance = calcTotalDistance(waypoints);
-  const heightWithoutFinalWaypoint = getHeightWithoutLastWaypoint(height);
-
   const scaleCoeff = isProportional
-    ? { coefficient: totalDistance / heightWithoutFinalWaypoint / yZoom }
+    ? { coefficient: zoomValueToSpaceScale(minZoomMillimeterPerPx, maxZoomMillimeterPerPx, yZoom) }
     : { size: BASE_WAYPOINT_HEIGHT * (waypoints.length - 1) * yZoom };
 
   return [
@@ -123,28 +193,4 @@ export const getScales = (
       ...scaleCoeff,
     },
   ];
-};
-
-export const zoomValueToTimeScale = (slider: number) =>
-  MIN_ZOOM_MS_PER_PX * Math.pow(MAX_ZOOM_MS_PER_PX / MIN_ZOOM_MS_PER_PX, slider / 100);
-
-export const timeScaleToZoomValue = (timeScale: number) =>
-  (100 * Math.log(timeScale / MIN_ZOOM_MS_PER_PX)) /
-  Math.log(MAX_ZOOM_MS_PER_PX / MIN_ZOOM_MS_PER_PX);
-
-/** Zoom on X axis and center on the mouse position */
-export const zoomX = (
-  currentZoom: number,
-  currentOffset: number,
-  newZoom: number,
-  position: number
-) => {
-  const boundedZoom = clamp(newZoom, MIN_ZOOM_X, MAX_ZOOM_X);
-  const oldTimeScale = zoomValueToTimeScale(currentZoom);
-  const newTimeScale = zoomValueToTimeScale(boundedZoom);
-  const newOffset = position - ((position - currentOffset) * oldTimeScale) / newTimeScale;
-  return {
-    xZoom: boundedZoom,
-    xOffset: newOffset,
-  };
 };

@@ -20,3 +20,6 @@ export * from './components/OccupancyBlockLayer';
 export * from './components/WorkScheduleLayer';
 export * from './components/PatternRect';
 export * from './components/Quadrilateral';
+export * from './components/ZoomRect';
+export * from './components/TimeCaptions';
+export * from './stories/lib/components';
