@@ -7,7 +7,7 @@ import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from './consts';
 import WaypointList from './WaypointList';
 import type { InteractiveWaypoint, WaypointMenuData } from '../types';
 
-type ManchetteProps = {
+export type ManchetteProps = {
   waypoints: InteractiveWaypoint[];
   waypointMenuData?: WaypointMenuData;
   zoomYIn: () => void;
