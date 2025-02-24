@@ -3,24 +3,24 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { KebabHorizontal } from '../../../ui-icons/src/index';
-import TimeCaptions from '../../../ui-spacetimechart/src/components/TimeCaptions';
-import { useCanvas, useDraw } from '../../../ui-spacetimechart/src/hooks/useCanvas';
-import { useMouseInteractions } from '../../../ui-spacetimechart/src/hooks/useMouseInteractions';
-import { useMouseTracking } from '../../../ui-spacetimechart/src/hooks/useMouseTracking';
-import { useSize } from '../../../ui-spacetimechart/src/hooks/useSize';
-import { DEFAULT_THEME } from '../../../ui-spacetimechart/src/lib/consts';
+import TimeCaptions from '../../../ui-charts/src/spaceTimeChart/components/TimeCaptions';
+import { useCanvas, useDraw } from '../../../ui-charts/src/spaceTimeChart/hooks/useCanvas';
+import { useMouseInteractions } from '../../../ui-charts/src/spaceTimeChart/hooks/useMouseInteractions';
+import { useMouseTracking } from '../../../ui-charts/src/spaceTimeChart/hooks/useMouseTracking';
+import { useSize } from '../../../ui-charts/src/spaceTimeChart/hooks/useSize';
+import { DEFAULT_THEME } from '../../../ui-charts/src/spaceTimeChart/lib/consts';
 import {
   CanvasContext,
   MouseContext,
   SpaceTimeChartContext,
-} from '../../../ui-spacetimechart/src/lib/context';
+} from '../../../ui-charts/src/spaceTimeChart/lib/context';
 import type {
   MouseContextType,
   SpaceTimeChartContextType,
   PickingElement,
   SpaceTimeChartTheme,
-} from '../../../ui-spacetimechart/src/lib/types';
-import { OPERATIONAL_POINTS } from '../../../ui-spacetimechart/src/stories/lib/paths';
+} from '../../../ui-charts/src/spaceTimeChart/lib/types';
+import { OPERATIONAL_POINTS } from '../../../ui-charts/src/spaceTimeChart/stories/lib/paths';
 import {
   getTimeToPixel,
   getSpaceToPixel,
@@ -29,11 +29,11 @@ import {
   getPixelToSpace,
   getPointToData,
   spaceScalesToBinaryTree,
-} from '../../../ui-spacetimechart/src/utils/scales';
+} from '../../../ui-charts/src/spaceTimeChart/utils/scales';
 import {
   TrackOccupancyManchette,
   TrackOccupancyCanvas,
-} from '../../../ui-trackoccupancydiagram/src/index';
+} from '../../../ui-charts/src/trackOccupancyDiagram/index';
 import occupancyZones from '../samples/TrackOccupancyDiagramSamples/occupancyZones';
 import tracks from '../samples/TrackOccupancyDiagramSamples/tracks';
 

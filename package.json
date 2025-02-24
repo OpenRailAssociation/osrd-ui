@@ -12,12 +12,8 @@
   "workspaces": [
     "ui-icons",
     "ui-core",
-    "ui-spacetimechart",
-    "ui-speedspacechart",
+    "ui-charts",
     "ui-warped-map",
-    "ui-manchette",
-    "ui-manchette-with-spacetimechart",
-    "ui-trackoccupancydiagram",
     "storybook"
   ],
   "engines": {
