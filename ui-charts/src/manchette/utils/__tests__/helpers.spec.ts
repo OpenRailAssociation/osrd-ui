@@ -1,70 +1,122 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, test, expect } from 'vitest';
 
-import { BASE_WAYPOINT_HEIGHT } from '../../consts';
-import { computeWaypointsToDisplay, getScales } from '../helpers';
+import { BASE_WAYPOINT_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from '../../consts';
+import {
+  computeWaypointsToDisplay,
+  getScales,
+  getExtremaScales,
+  spaceScaleToZoomValue,
+  zoomValueToSpaceScale,
+} from '../helpers';
 
 // Assuming these types from your code
 
 // Mock data for the tests
 const mockedWaypoints = [
   { position: 0, id: 'waypoint-1' },
-  { position: 10, id: 'waypoint-2' },
-  { position: 20, id: 'waypoint-3' },
+  { position: 100_000_000, id: 'waypoint-2' },
+  { position: 200_000_000, id: 'waypoint-3' },
 ];
 
 describe('computeWaypointsToDisplay', () => {
+  const minZoomMillimeterPerPx = 500_000;
+  const maxZoomMillimeterPerPx = 1_000;
   it('should ensure that a empty array is returned when there is only 1 waypoint', () => {
-    const result = computeWaypointsToDisplay([mockedWaypoints[0]], {
-      height: 500,
-      isProportional: true,
-      yZoom: 1,
-    });
+    const result = computeWaypointsToDisplay(
+      [mockedWaypoints[0]],
+      {
+        height: 500,
+        isProportional: true,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
     expect(result.length).toBe(0);
   });
 
   it('should display all points for non-proportional display', () => {
-    const result = computeWaypointsToDisplay(mockedWaypoints, {
-      height: 100,
-      isProportional: false,
-      yZoom: 1,
-    });
+    const result = computeWaypointsToDisplay(
+      mockedWaypoints,
+      {
+        height: 100,
+        isProportional: false,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
     expect(result).toHaveLength(mockedWaypoints.length);
     expect(result[0].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
     expect(result[1].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
   });
 
   it('should correctly filter waypoints', () => {
-    const result = computeWaypointsToDisplay(mockedWaypoints, {
-      height: 100,
-      isProportional: true,
-      yZoom: 1,
-    });
+    const result = computeWaypointsToDisplay(
+      mockedWaypoints,
+      {
+        height: 100,
+        isProportional: true,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
     expect(result).toHaveLength(2);
   });
 
-  it('should return correct heights for proportional display', () => {
-    const result = computeWaypointsToDisplay(mockedWaypoints, {
-      height: 500,
-      isProportional: true,
-      yZoom: 2,
-    });
+  it('should return correct heights for proportional display, zoom 1', () => {
+    const result = computeWaypointsToDisplay(
+      mockedWaypoints,
+      {
+        height: 500,
+        isProportional: true,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
     expect(result).toHaveLength(mockedWaypoints.length);
-    expect(result[0].styles?.height).toBe(`428px`);
-    expect(result[1].styles?.height).toBe(`428px`);
+    expect(result[0].styles?.height).toBe(`200px`);
+    expect(result[1].styles?.height).toBe(`200px`);
+    expect(result[2].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
+  });
+
+  it('should return correct heights for proportional display, zoom 2', () => {
+    const result = computeWaypointsToDisplay(
+      mockedWaypoints,
+      {
+        height: 500,
+        isProportional: true,
+        yZoom: 2,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
+    expect(result).toHaveLength(mockedWaypoints.length);
+    expect(result[0].styles?.height).toBe(`385px`);
+    expect(result[1].styles?.height).toBe(`385px`);
     expect(result[2].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
   });
 
   it('should ensure the last point is always displayed', () => {
-    const result = computeWaypointsToDisplay(mockedWaypoints, {
-      height: 100,
-      isProportional: true,
-      yZoom: 1,
-    });
+    const result = computeWaypointsToDisplay(
+      mockedWaypoints,
+      {
+        height: 100,
+        isProportional: true,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
     expect(result.some((waypoint) => waypoint.id === 'waypoint-3')).toBe(true);
   });
 });
 
 describe('getScales', () => {
+  const minZoomMillimeterPerPx = 500_000;
+  const maxZoomMillimeterPerPx = 1_000;
   const mockOpsWithPosition = mockedWaypoints.map((waypoint) => ({
     id: waypoint.id,
     label: waypoint.id,
@@ -74,34 +126,82 @@ describe('getScales', () => {
 
   it('Should ensure that a empty array is return when there is only 1 waypoint', () => {
     const ops = [mockOpsWithPosition[0]];
-    const result = getScales(ops, {
-      height: 500,
-      isProportional: true,
-      yZoom: 1,
-    });
+    const result = getScales(
+      ops,
+      {
+        height: 500,
+        isProportional: true,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
     expect(result).toHaveLength(0);
   });
 
   it('should return correct scale coefficients for proportional display', () => {
-    const result = getScales(mockOpsWithPosition, {
-      height: 500,
-      isProportional: true,
-      yZoom: 1,
-    });
-    expect(result).toHaveLength(1);
-    expect(result[0]).toHaveProperty('coefficient');
+    const result = getScales(
+      mockOpsWithPosition,
+      {
+        height: 500,
+        isProportional: true,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
+    expect(result).toEqual([{ from: 0, to: 200000000, coefficient: 500000 }]);
     expect(result[0].size).not.toBeDefined();
   });
 
   it('should return correct size for non-proportional display', () => {
-    const result = getScales(mockOpsWithPosition, {
-      height: 500,
-      isProportional: false,
-      yZoom: 1,
-    });
+    const result = getScales(
+      mockOpsWithPosition,
+      {
+        height: 500,
+        isProportional: false,
+        yZoom: 1,
+      },
+      minZoomMillimeterPerPx,
+      maxZoomMillimeterPerPx
+    );
 
-    expect(result).toHaveLength(2);
-    expect(result[0].size).toBeDefined();
+    expect(result).toEqual([
+      { from: 0, to: 100000000, size: 32 },
+      { from: 100000000, to: 200000000, size: 32 },
+    ]);
     expect(result[0]).not.toHaveProperty('coefficient');
+  });
+});
+
+describe('space scale functions', () => {
+  const pathLength = 168056000; // mm
+  const drawingHeightWithoutTopPadding = 505;
+  const drawingHeightWithoutBothPadding = 489;
+
+  const { minZoomMillimeterPerPx, maxZoomMillimeterPerPx } = getExtremaScales(
+    drawingHeightWithoutTopPadding,
+    drawingHeightWithoutBothPadding,
+    pathLength
+  );
+  expect(minZoomMillimeterPerPx).toBeCloseTo(343672.801);
+  expect(maxZoomMillimeterPerPx).toBeCloseTo(990.1);
+
+  test('zoomValueToSpaceScale', () => {
+    expect(
+      zoomValueToSpaceScale(minZoomMillimeterPerPx, maxZoomMillimeterPerPx, MIN_ZOOM_Y)
+    ).toBeCloseTo(343672.801);
+    expect(
+      zoomValueToSpaceScale(minZoomMillimeterPerPx, maxZoomMillimeterPerPx, MAX_ZOOM_Y)
+    ).toBeCloseTo(990.1);
+  });
+
+  test('spaceScaleToZoomValue', () => {
+    expect(
+      spaceScaleToZoomValue(minZoomMillimeterPerPx, maxZoomMillimeterPerPx, 343672.801)
+    ).toBeCloseTo(MIN_ZOOM_Y);
+    expect(
+      spaceScaleToZoomValue(minZoomMillimeterPerPx, maxZoomMillimeterPerPx, 990.1)
+    ).toBeCloseTo(MAX_ZOOM_Y);
   });
 });

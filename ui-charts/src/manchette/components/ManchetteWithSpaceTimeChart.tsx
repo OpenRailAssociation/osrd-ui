@@ -35,14 +35,15 @@ const ManchetteWithSpaceTimeChart = ({
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
   const spaceTimeChartRef = useRef<HTMLDivElement>(null);
 
-  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart(
+  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart({
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
     selectedTrain,
     height,
-    spaceTimeChartRef
-  );
+    spaceTimeChartRef,
+    defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
+  });
 
   return (
     <div className="manchette-space-time-chart-wrapper">
@@ -66,8 +67,6 @@ const ManchetteWithSpaceTimeChart = ({
         >
           <SpaceTimeChart
             className="inset-0 absolute h-full"
-            spaceOrigin={0}
-            timeOrigin={Math.min(...projectPathTrainResult.map((p) => +p.departureTime))}
             {...spaceTimeChartProps}
             {...additionalSpaceTimeChartProps}
           >

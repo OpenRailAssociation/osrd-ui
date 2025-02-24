@@ -68,12 +68,13 @@ const ManchetteWithSpaceTimeWrapper = ({
     setActiveWaypointId(waypointId);
   };
 
-  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart(
+  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart({
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
-    selectedTrain
-  );
+    selectedTrain,
+    defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -142,8 +143,6 @@ const ManchetteWithSpaceTimeWrapper = ({
         >
           <SpaceTimeChart
             className="inset-0 absolute h-full"
-            spaceOrigin={0}
-            timeOrigin={Math.min(...projectPathTrainResult.map((p) => +p.departureTime))}
             {...spaceTimeChartProps}
             onPan={activeWaypointId ? undefined : spaceTimeChartProps.onPan}
           >
