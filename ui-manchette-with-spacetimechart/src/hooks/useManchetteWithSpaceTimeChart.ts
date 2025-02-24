@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { ProjectPathTrainResult, Waypoint } from '@osrd-project/ui-manchette/dist/types';
-import type {
-  SpaceScale,
-  SpaceTimeChartProps,
-} from '@osrd-project/ui-spacetimechart/dist/lib/types';
+import type { ProjectPathTrainResult, Waypoint } from '@osrd-project/ui-manchette';
+import type { SpaceScale, SpaceTimeChartProps } from '@osrd-project/ui-spacetimechart';
 
 import usePaths from './usePaths';
 import { MAX_ZOOM_Y, MIN_ZOOM_Y, ZOOM_Y_DELTA, DEFAULT_ZOOM_MS_PER_PX } from '../consts';
