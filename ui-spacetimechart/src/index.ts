@@ -1,6 +1,15 @@
 import './styles/main.css';
 
-export type { HoveredItem, SpaceTimeChartProps } from './lib/types';
+export type {
+  HoveredItem,
+  SpaceTimeChartProps,
+  SpaceScale,
+  OperationalPoint,
+  SpaceTimeChartTheme,
+  Point,
+  DataPoint,
+  SpaceTimeChartContextType,
+} from './lib/types';
 
 export * from './components/SpaceTimeChart';
 export * from './components/PathLayer';
