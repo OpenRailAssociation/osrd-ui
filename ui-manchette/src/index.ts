@@ -3,4 +3,9 @@ import './styles/main.css';
 import './components/consts';
 
 export { default, type ManchetteProps } from './components/Manchette';
-export type { WaypointMenuData, Waypoint, ProjectPathTrainResult } from './types';
+export type {
+  WaypointMenuData,
+  Waypoint,
+  ProjectPathTrainResult,
+  InteractiveWaypoint,
+} from './types';
