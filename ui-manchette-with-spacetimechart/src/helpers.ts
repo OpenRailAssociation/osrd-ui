@@ -1,4 +1,4 @@
-import type { InteractiveWaypoint, Waypoint } from '@osrd-project/ui-manchette/dist/types';
+import type { InteractiveWaypoint, Waypoint } from '@osrd-project/ui-manchette';
 import { clamp } from 'lodash';
 
 import {
