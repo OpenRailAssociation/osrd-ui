@@ -451,7 +451,7 @@ export const PathLayer = ({
   useDraw('paths', drawAll);
 
   const drawPicking = useCallback<PickingDrawingFunction>(
-    (imageData, stcContext) => {
+    (imageData, stcContext, scalingRatio) => {
       const { registerPickingElement } = stcContext;
 
       // Draw segments:
@@ -472,7 +472,8 @@ export const PathLayer = ({
             point,
             lineColor,
             STYLES[level].width + pickingTolerance,
-            true
+            true,
+            scalingRatio
           );
         }
       });
@@ -491,7 +492,8 @@ export const PathLayer = ({
           point,
           (STYLES[level].width + pickingTolerance) * 2,
           lineColor,
-          false
+          false,
+          scalingRatio
         );
       });
     },

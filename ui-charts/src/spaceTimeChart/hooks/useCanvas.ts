@@ -18,6 +18,7 @@ import {
   type Point,
   type SpaceTimeChartContextType,
 } from '../lib/types';
+import { getPickingScalingRatio } from '../utils/canvas';
 import { colorToIndex, rgbToHex } from '../utils/colors';
 import getPNGBlob from '../utils/png';
 
@@ -78,7 +79,8 @@ export function useCanvas(
           ctx.clearRect(0, 0, width, height);
 
           const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-          set.forEach((fn) => fn(imageData, stcContext));
+          const pickingScalingRatio = getPickingScalingRatio();
+          set.forEach((fn) => fn(imageData, stcContext, pickingScalingRatio));
           ctx.putImageData(imageData, 0, 0);
         }
       });
@@ -227,19 +229,26 @@ export function useCanvas(
 
   // Handle resizing:
   useEffect(() => {
+    const pickingScalingRatio = getPickingScalingRatio();
+
     for (const id in canvasesRef.current) {
       const canvas = canvasesRef.current[id];
       const ctx = contextsRef.current[id];
+      const isPicking = id.split('-')[0] === PICKING;
 
       if (canvas) {
+        const ratio = isPicking ? pickingScalingRatio : devicePixelRatio;
+
         canvas.style.width = size.width + 'px';
         canvas.style.height = size.height + 'px';
-        canvas.setAttribute('width', size.width * devicePixelRatio + 'px');
-        canvas.setAttribute('height', size.height * devicePixelRatio + 'px');
+        canvas.setAttribute('width', size.width * ratio + 'px');
+        canvas.setAttribute('height', size.height * ratio + 'px');
 
-        // Reset the transform to identity, then apply the new scale
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(devicePixelRatio, devicePixelRatio);
+        if (!isPicking) {
+          // Reset the transform to identity, then apply the new scale
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+          ctx.scale(devicePixelRatio, devicePixelRatio);
+        }
       }
     }
 
@@ -250,10 +259,17 @@ export function useCanvas(
   // Read picking layer on position change:
   useEffect(() => {
     let newHoveredItem: HoveredItem | null = null;
+    const pickingScalingRatio = getPickingScalingRatio();
+
     PICKING_LAYERS.some((layer) => {
       const ctx = contextsRef.current[`${PICKING}-${layer}`];
       if (ctx && position) {
-        const [r, g, b, a] = ctx.getImageData(position.x, position.y, 1, 1).data;
+        const [r, g, b, a] = ctx.getImageData(
+          Math.round(position.x * pickingScalingRatio),
+          Math.round(position.y * pickingScalingRatio),
+          1,
+          1
+        ).data;
         if (a === 255) {
           const color = rgbToHex(r, g, b);
           const index = colorToIndex(color);

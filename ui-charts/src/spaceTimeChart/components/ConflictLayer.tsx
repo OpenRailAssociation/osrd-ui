@@ -61,7 +61,7 @@ export const ConflictLayer = ({ conflicts }: ConflictLayerProps) => {
   useDraw('paths', drawConflictLayer);
 
   const drawPicking = useCallback<PickingDrawingFunction>(
-    (imageData, { registerPickingElement, getTimePixel, getSpacePixel }) => {
+    (imageData, { registerPickingElement, getTimePixel, getSpacePixel }, scalingRatio) => {
       for (const [conflictIndex, conflict] of conflicts.entries()) {
         const x = getTimePixel(conflict.timeStart);
         const y = getSpacePixel(conflict.spaceStart);
@@ -78,7 +78,8 @@ export const ConflictLayer = ({ conflicts }: ConflictLayerProps) => {
           { x: x - border, y: y - border },
           width + 2 * border,
           height + 2 * border,
-          color
+          color,
+          scalingRatio
         );
       }
     },

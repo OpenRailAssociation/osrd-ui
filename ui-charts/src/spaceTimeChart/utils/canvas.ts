@@ -10,26 +10,60 @@ import type {
 } from '../lib/types';
 
 /**
+ * This function returns the picking layers scaling ratio. We basically take the min of the screen
+ * pixels and the "HTML pixels", and divide it by two.
+ *
+ * This allows having a smaller picking stage to fill (so it's faster), while keeping a "good enough
+ * precision".
+ */
+export function getPickingScalingRatio(): number {
+  const PICKING_DOWNSCALING_RATIO = 0.5;
+  const dpr = window.devicePixelRatio || 1;
+
+  // When devicePixelRatio is over 1 (like for Retina displays), we downscale based on the "HTML
+  // pixels":
+  if (dpr > 1) return PICKING_DOWNSCALING_RATIO;
+
+  // When devicePixelRatio is under or equal to 1 (like when the user zooms out for instance), we
+  // downscale based on the actual "screen pixels" (to avoid having a too large scene to fill):
+  return PICKING_DOWNSCALING_RATIO * dpr;
+}
+
+/**
  * This function draws a thick lines from "from" to "to" on the given ImageData, with no
  * antialiasing. This is very useful to handle picking, since it is not possible to disable
  * antialiasing with the native JavaScript canvas APIs.
  */
 export function drawAliasedLine(
   imageData: ImageData,
-  from: Point,
-  to: Point,
+  { x: fromX, y: fromY }: Point,
+  { x: toX, y: toY }: Point,
   [r, g, b]: RGBColor | RGBAColor,
   thickness: number,
   drawOnBottom: boolean,
-  number: number = Math.ceil(thickness / 2)
+  scalingRatio = 1
 ): void {
-  if (from.x > to.x)
-    return drawAliasedLine(imageData, to, from, [r, g, b], thickness, drawOnBottom);
+  if (fromX > toX)
+    return drawAliasedLine(
+      imageData,
+      { x: toX, y: toY },
+      { x: fromX, y: fromY },
+      [r, g, b],
+      thickness,
+      drawOnBottom,
+      scalingRatio
+    );
+
+  fromX = Math.round(fromX * scalingRatio);
+  fromY = Math.round(fromY * scalingRatio);
+  toX = Math.round(toX * scalingRatio);
+  toY = Math.round(toY * scalingRatio);
+  thickness = Math.round(thickness * scalingRatio);
 
   const width = imageData.width;
   const height = imageData.height;
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
+  const dx = toX - fromX;
+  const dy = toY - fromY;
   const len = Math.sqrt(dx * dx + dy * dy);
 
   // Calculate perpendicular vector
@@ -37,26 +71,26 @@ export function drawAliasedLine(
   const normY = dx / len;
 
   // Calculate the four corners of the rectangle
-  const halfThickness = number;
+  const halfThickness = Math.ceil(thickness / 2);
 
   const corner1 = {
-    x: from.x + (+normX - dx / len) * halfThickness,
-    y: from.y + (+normY - dy / len) * halfThickness,
+    x: fromX + (+normX - dx / len) * halfThickness,
+    y: fromY + (+normY - dy / len) * halfThickness,
   };
   const corner2 = {
-    x: from.x + (-normX - dx / len) * halfThickness,
-    y: from.y + (-normY - dy / len) * halfThickness,
+    x: fromX + (-normX - dx / len) * halfThickness,
+    y: fromY + (-normY - dy / len) * halfThickness,
   };
   const corner3 = {
-    x: to.x + (-normX + dx / len) * halfThickness,
-    y: to.y + (-normY + dy / len) * halfThickness,
+    x: toX + (-normX + dx / len) * halfThickness,
+    y: toY + (-normY + dy / len) * halfThickness,
   };
   const corner4 = {
-    x: to.x + (+normX + dx / len) * halfThickness,
-    y: to.y + (+normY + dy / len) * halfThickness,
+    x: toX + (+normX + dx / len) * halfThickness,
+    y: toY + (+normY + dy / len) * halfThickness,
   };
 
-  const ascending = from.y < to.y;
+  const ascending = fromY < toY;
   const top = ascending ? corner4 : corner1;
   const left = ascending ? corner1 : corner2;
   const right = ascending ? corner3 : corner4;
@@ -146,11 +180,12 @@ export function drawAliasedDisc(
   { x: centerX, y: centerY }: Point,
   radius: number,
   [r, g, b]: RGBColor | RGBAColor,
-  drawOnBottom: boolean
+  drawOnBottom: boolean,
+  scalingRatio: number = 1
 ): void {
-  centerX = Math.round(centerX);
-  centerY = Math.round(centerY);
-  radius = Math.ceil(radius);
+  centerX = Math.round(centerX * scalingRatio);
+  centerY = Math.round(centerY * scalingRatio);
+  radius = Math.ceil(radius * scalingRatio);
 
   const { width, height } = imageData;
 
@@ -183,8 +218,14 @@ export function drawAliasedRect(
   { x, y }: Point,
   width: number,
   height: number,
-  [r, g, b]: RGBColor | RGBAColor
+  [r, g, b]: RGBColor | RGBAColor,
+  scalingRatio = 1
 ) {
+  x = Math.round(x * scalingRatio);
+  y = Math.round(y * scalingRatio);
+  width = Math.round(width * scalingRatio);
+  height = Math.round(height * scalingRatio);
+
   const xMin = clamp(x, 0, imageData.width);
   const yMin = clamp(y, 0, imageData.height);
   const xMax = clamp(x + width, 0, imageData.width);

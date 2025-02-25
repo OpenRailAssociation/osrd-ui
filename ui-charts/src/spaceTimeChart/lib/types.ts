@@ -111,7 +111,8 @@ export type DrawingFunction = (
 
 export type PickingDrawingFunction = (
   imageData: ImageData,
-  stcContext: SpaceTimeChartContextType
+  stcContext: SpaceTimeChartContextType,
+  scalingRatio: number
 ) => void;
 
 export type DrawingFunctionHandler = (
