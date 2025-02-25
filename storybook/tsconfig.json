@@ -1,6 +1,6 @@
 {
   "extends": "../tsconfig.base.json",
-  "include": [".storybook/*.tsx", "stories/**/*"],
+  "include": [".storybook/**/*", "stories/**/*"],
   "compilerOptions": {
     "rootDir": "../",
     "outDir": "./dist",
