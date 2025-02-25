@@ -63,6 +63,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
   const fingerprint = useMemo(
     () =>
       JSON.stringify({
+        operationalPoints,
         width,
         height,
         spaceOrigin,
@@ -77,6 +78,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
         showTicks,
       }),
     [
+      operationalPoints,
       width,
       height,
       spaceOrigin,
