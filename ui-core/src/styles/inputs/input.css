@@ -215,8 +215,6 @@
   }
 
   &.small {
-    height: 2.125rem;
-
     .leading-content-wrapper {
       height: 1.75rem;
       border-radius: 0.188rem 0 0 0.188rem;
