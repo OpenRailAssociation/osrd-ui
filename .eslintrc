@@ -124,6 +124,9 @@
     "react/static-property-placement": 0,
     // disable vitest/prefer-to-be because it does not authorize toEqual for the floats
     "vitest/prefer-to-be": "off",
+    "no-restricted-imports": ["error", {
+      "patterns": ["@osrd-project/*/src/*", "*/ui-*/src/*"],
+    }],
   },
   "settings": {
     "react": {
