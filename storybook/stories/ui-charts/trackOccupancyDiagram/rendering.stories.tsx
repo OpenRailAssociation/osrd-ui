@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import occupancyZones from './assets/occupancyZones';
 import tracks from './assets/tracks';
-import TimeCaptions from '../../../../ui-charts/src/spaceTimeChart/components/TimeCaptions';
+import { TimeCaptions } from '../../../../ui-charts/src/spaceTimeChart/components/TimeCaptions';
 import { useCanvas, useDraw } from '../../../../ui-charts/src/spaceTimeChart/hooks/useCanvas';
 import { useMouseInteractions } from '../../../../ui-charts/src/spaceTimeChart/hooks/useMouseInteractions';
 import { useMouseTracking } from '../../../../ui-charts/src/spaceTimeChart/hooks/useMouseTracking';

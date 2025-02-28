@@ -46,6 +46,7 @@ type WrapperProps = {
   enableSnapping: boolean;
   hideGrid: boolean;
   hidePathsLabels: boolean;
+  hideDates: boolean;
   swapAxis: boolean;
   spaceScaleType: 'linear' | 'proportional';
 };
@@ -59,6 +60,7 @@ const Wrapper = ({
   enableSnapping,
   hideGrid,
   hidePathsLabels,
+  hideDates,
   swapAxis,
   spaceScaleType,
 }: WrapperProps) => {
@@ -83,6 +85,7 @@ const Wrapper = ({
         enableSnapping={enableSnapping}
         hideGrid={hideGrid}
         hidePathsLabels={hidePathsLabels}
+        hideDates={hideDates}
         swapAxis={swapAxis}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
@@ -177,6 +180,11 @@ export default {
       defaultValue: false,
       control: { type: 'boolean' },
     },
+    hideDates: {
+      name: 'Hide dates?',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
     swapAxis: {
       name: 'Swap time and space axis?',
       defaultValue: false,
@@ -197,6 +205,7 @@ export const DefaultArgs = {
     enableSnapping: true,
     hideGrid: false,
     hidePathsLabels: false,
+    hideDates: false,
     swapAxis: false,
     spaceScaleType: 'linear',
   },
