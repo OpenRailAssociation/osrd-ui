@@ -1,13 +1,13 @@
 import React, { type PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
-import { type StyleSpecification } from '@maplibre/maplibre-gl-style-spec';
 import { featureCollection } from '@turf/helpers';
 import type { Feature, FeatureCollection, LineString } from 'geojson';
 import { omit } from 'lodash';
+import { type StyleSpecification } from 'maplibre-gl';
 import ReactMapGL, {
   Layer,
   type LayerProps,
-  type LineLayer,
+  type LineLayerSpecification,
   type MapRef,
   Source,
 } from 'react-map-gl/maplibre';
@@ -21,7 +21,7 @@ type TransformedDataMapProps = {
   sources: SourceDefinition[];
   transformedData: Record<string, FeatureCollection>;
   path?: Feature<LineString>;
-  pathLayer?: Omit<LineLayer, 'source-layer'>;
+  pathLayer?: Omit<LineLayerSpecification, 'source-layer'>;
   log?: boolean;
 };
 

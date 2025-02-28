@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { featureCollection } from '@turf/helpers';
 import type { Feature, LineString } from 'geojson';
-import { Layer, type LineLayer, Source } from 'react-map-gl/maplibre';
+import { Layer, type LineLayerSpecification, Source } from 'react-map-gl/maplibre';
 
 import { OSM_BASE_MAP_STYLE, OSM_SOURCE } from './helpers';
 import BaseMap from '../components/BaseMap';
@@ -14,7 +14,7 @@ import { useAsyncMemo } from '../core/useAsyncMemo';
 
 const SOURCES: SourceDefinition[] = [OSM_SOURCE];
 
-const PATH_LAYER: Omit<LineLayer, 'source-layer'> = {
+const PATH_LAYER: Omit<LineLayerSpecification, 'source-layer'> = {
   id: 'path-layer',
   source: 'path',
   type: 'line',
