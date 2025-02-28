@@ -4,10 +4,10 @@ import {
   PathLayer,
   SpaceTimeChart,
   ZoomRect,
-  CAPTION_SIZE,
   type Point,
   type PathData,
   type OperationalPoint,
+  DEFAULT_THEME,
 } from '@osrd-project/ui-charts';
 import { Button, Slider } from '@osrd-project/ui-core';
 import type { Meta } from '@storybook/react';
@@ -210,9 +210,10 @@ const RectangleZoomWrapper = ({
       const timeRange = Math.abs(Number(timeEnd) - Number(timeStart)); // width of rect in ms
       const spaceRange = Math.abs(spaceEnd - spaceStart); // height of rect in meter
       const chosenTimeScale = !swapAxes ? timeRange / DEFAULT_WIDTH : timeRange / DEFAULT_HEIGHT;
+      const captionSize = DEFAULT_THEME.dateCaptionsSize + DEFAULT_THEME.timeCaptionsSize;
       const chosenSpaceScale = !swapAxes
-        ? spaceRange / (DEFAULT_HEIGHT - CAPTION_SIZE)
-        : spaceRange / (DEFAULT_WIDTH - CAPTION_SIZE);
+        ? spaceRange / (DEFAULT_HEIGHT - captionSize)
+        : spaceRange / (DEFAULT_WIDTH - captionSize);
       handleRectangleZoom({
         scales: { chosenTimeScale, chosenSpaceScale },
         overrideState: { rect: null },

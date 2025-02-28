@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import cx from 'classnames';
 
 import SpaceGraduations from './SpaceGraduations';
-import TimeCaptions from './TimeCaptions';
+import { TimeCaptions } from './TimeCaptions';
 import TimeGraduations from './TimeGraduations';
 import { useCanvas } from '../hooks/useCanvas';
 import { useMouseInteractions } from '../hooks/useMouseInteractions';
@@ -45,6 +45,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
     hideGrid,
     hidePathsLabels,
     showTicks,
+    hideDates,
     theme,
     /* eslint-disable @typescript-eslint/no-unused-vars */
     onPan,
@@ -76,6 +77,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
         hideGrid,
         hidePathsLabels,
         showTicks,
+        hideDates,
       }),
     [
       operationalPoints,
@@ -91,6 +93,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       hideGrid,
       hidePathsLabels,
       showTicks,
+      hideDates,
     ]
   );
 
@@ -154,7 +157,11 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       hideGrid: !!hideGrid,
       hidePathsLabels: !!hidePathsLabels,
       showTicks: !!showTicks,
+      hideDates: !!hideDates,
       theme: fullTheme,
+      captionSize: hideDates
+        ? fullTheme.timeCaptionsSize
+        : fullTheme.dateCaptionsSize + fullTheme.timeCaptionsSize,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fingerprint]);
