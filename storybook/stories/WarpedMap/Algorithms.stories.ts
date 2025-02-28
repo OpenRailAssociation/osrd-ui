@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import Algorithms from './Algorithms';
 import { PATH_LONG, PATH_NAMES } from './helpers';
-import { DEFAULT_WARPING_OPTIONS } from '../core/getWarping';
+import { DEFAULT_WARPING_OPTIONS } from '@osrd-project/ui-warped-map';
 
 const meta: Meta<typeof Algorithms> = {
   component: Algorithms,
