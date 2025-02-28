@@ -16,6 +16,7 @@ import {
 } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
+import '@osrd-project/ui-core/dist/theme.css';
 
 const DEFAULT_COLOR_1 = '#FF511A';
 const DEFAULT_COLOR_2 = '#FF8B61';

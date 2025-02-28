@@ -9,12 +9,14 @@ import {
   type OperationalPoint,
   type WorkSchedule,
 } from '@osrd-project/ui-charts';
-import '@osrd-project/ui-core/dist/theme.css';
 import type { Meta } from '@storybook/react';
 
 import upward from './assets/images/ScheduledMaintenanceUp.svg';
 import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
 import { getDiff } from './helpers/utils';
+
+import '@osrd-project/ui-core/dist/theme.css';
+import '@osrd-project/ui-charts/dist/theme.css';
 
 const SAMPLE_WORK_SCHEDULES: WorkSchedule[] = [
   {

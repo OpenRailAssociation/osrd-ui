@@ -25,6 +25,7 @@ import {
 } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
+import '@osrd-project/ui-core/dist/theme.css';
 
 const MONO_TRACK_SPACES = [
   { from: 6 * KILOMETER, to: 24 * KILOMETER },

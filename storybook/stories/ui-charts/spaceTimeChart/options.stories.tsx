@@ -17,6 +17,9 @@ import {
   getDiff,
 } from './helpers/utils';
 
+import '@osrd-project/ui-core/dist/theme.css';
+import '@osrd-project/ui-charts/dist/theme.css';
+
 const ScreenshotButton = () => {
   const { captureCanvases } = useContext(CanvasContext);
 
