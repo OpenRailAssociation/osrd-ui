@@ -22,12 +22,5 @@ const config: StorybookConfig = {
   },
   staticDirs: ['../public'],
   logLevel: 'debug',
-  async viteFinal(config) {
-    return mergeConfig(config, {
-      resolve: {
-        preserveSymlinks: true,
-      },
-    });
-  },
 };
 export default config;
