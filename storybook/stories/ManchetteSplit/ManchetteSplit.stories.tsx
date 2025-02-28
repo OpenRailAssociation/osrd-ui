@@ -4,8 +4,9 @@ import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-manchette/dist/theme.css';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Manchette from '../../../ui-manchette/src/components/Manchette';
+import Manchette from '@osrd-project/ui-manchette';
 import { SAMPLE_WAYPOINTS } from '../../../ui-manchette/src/stories/assets/sampleData';
+
 const meta: Meta<typeof Manchette> = {
   component: Manchette,
   title: 'Manchette/ManchetteSplit',
