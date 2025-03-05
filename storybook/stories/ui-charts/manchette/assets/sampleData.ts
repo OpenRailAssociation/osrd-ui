@@ -1,6 +1,6 @@
 import { type Waypoint } from '@osrd-project/ui-charts';
 
-const WAYPOINTS_DATA: Waypoint[] = [
+export const SAMPLE_WAYPOINTS: Waypoint[] = [
   {
     id: 'South_West_station',
     name: 'South_West_station',
@@ -30,5 +30,3 @@ const WAYPOINTS_DATA: Waypoint[] = [
     weight: 100,
   },
 ];
-
-export default WAYPOINTS_DATA;

@@ -1,4 +1,4 @@
-import { type ProjectPathTrainResult, type Waypoint } from '../../Manchette';
+import { type ProjectPathTrainResult, type Waypoint } from '@osrd-project/ui-charts';
 
 export const SAMPLE_WAYPOINTS: Waypoint[] = [
   {

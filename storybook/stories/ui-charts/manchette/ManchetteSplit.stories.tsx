@@ -5,7 +5,7 @@ import { Manchette } from '@osrd-project/ui-charts';
 import '@osrd-project/ui-core/dist/theme.css';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import WAYPOINTS_DATA from './sampleData';
+import { SAMPLE_WAYPOINTS } from './assets/sampleData';
 
 const meta: Meta<typeof Manchette> = {
   component: Manchette,
@@ -26,12 +26,12 @@ const customDiv = (
 export const Default: Story = {
   args: {
     contents: [
-      WAYPOINTS_DATA[0],
+      SAMPLE_WAYPOINTS[0],
       customDiv,
-      WAYPOINTS_DATA[1],
-      WAYPOINTS_DATA[2],
+      SAMPLE_WAYPOINTS[1],
+      SAMPLE_WAYPOINTS[2],
       customDiv,
-      WAYPOINTS_DATA[3],
+      SAMPLE_WAYPOINTS[3],
       customDiv,
     ],
   },

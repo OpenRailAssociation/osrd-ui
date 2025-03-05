@@ -1,10 +1,9 @@
+import { ManchetteWithSpaceTimeChart } from '@osrd-project/ui-charts';
+import '@osrd-project/ui-charts/dist/theme.css';
+import '@osrd-project/ui-core/dist/theme.css';
 import type { Meta } from '@storybook/react';
 
-import '@osrd-project/ui-core/dist/theme.css';
-import '@osrd-project/ui-charts/dist/theme.css';
-
-import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from '../assets/sampleData';
-import ManchetteWithSpaceTimeChart from '../components/ManchetteWithSpaceTimeChart';
+import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from './assets/sampleData';
 
 const meta: Meta<typeof ManchetteWithSpaceTimeChart> = {
   title: 'Manchette with SpaceTimeChart/simple',
