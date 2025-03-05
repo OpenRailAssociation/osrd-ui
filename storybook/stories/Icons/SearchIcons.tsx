@@ -1,8 +1,8 @@
 import React, { FC, useCallback, useMemo, useState, useRef } from 'react';
 import { ErrorBoundary } from './ErrorBoundary';
 import { Input } from '@osrd-project/ui-core';
-import * as Icons from '../index';
-import type { UiIcon } from '../index';
+import * as Icons from '@osrd-project/ui-icons';
+import type { UiIcon } from '@osrd-project/ui-icons';
 
 const ICONS: Array<{ name: string; icon: UiIcon }> = Object.keys(Icons).map((name) => ({
   name,
