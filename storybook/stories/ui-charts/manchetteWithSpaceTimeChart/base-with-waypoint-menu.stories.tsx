@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import {
+  PathLayer,
+  SpaceTimeChart,
+  Manchette,
+  type ProjectPathTrainResult,
+  type Waypoint,
+  useManchetteWithSpaceTimeChart,
+} from '@osrd-project/ui-charts';
 import { EyeClosed, Telescope } from '@osrd-project/ui-icons';
 import type { Meta } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
@@ -7,11 +15,8 @@ import '@osrd-project/ui-charts/dist/theme.css';
 import cx from 'classnames';
 import { createPortal } from 'react-dom';
 
+import { SAMPLE_PATHS_DATA, SAMPLE_WAYPOINTS } from './assets/sampleData';
 import Menu, { type MenuItem } from './Menu';
-import { PathLayer, SpaceTimeChart } from '../../../spaceTimeChart';
-import Manchette, { type ProjectPathTrainResult, type Waypoint } from '../../Manchette';
-import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from '../assets/sampleData';
-import useManchettesWithSpaceTimeChart from '../hooks/useManchetteWithSpaceTimeChart';
 
 type ManchetteWithSpaceTimeWrapperProps = {
   waypoints: Waypoint[];
@@ -63,7 +68,7 @@ const ManchetteWithSpaceTimeWrapper = ({
     setActiveWaypointId(waypointId);
   };
 
-  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchettesWithSpaceTimeChart(
+  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart(
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,

@@ -1,14 +1,18 @@
 import React, { useRef } from 'react';
 
-import type { Meta } from '@storybook/react';
-
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
+import {
+  PathLayer,
+  SpaceTimeChart,
+  Manchette,
+  useManchetteWithSpaceTimeChart,
+  type ProjectPathTrainResult,
+  type Waypoint,
+} from '@osrd-project/ui-charts';
+import type { Meta } from '@storybook/react';
 
-import { PathLayer, SpaceTimeChart } from '../../../spaceTimeChart';
-import Manchette, { type ProjectPathTrainResult, type Waypoint } from '../../Manchette';
-import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from '../assets/sampleData';
-import useManchettesWithSpaceTimeChart from '../hooks/useManchetteWithSpaceTimeChart';
+import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from './assets/sampleData';
 
 type ManchetteWithSpaceTimeWrapperProps = {
   waypoints: Waypoint[];
@@ -25,7 +29,7 @@ const ManchetteWithSpaceTimeWrapper = ({
 }: ManchetteWithSpaceTimeWrapperProps) => {
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
 
-  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchettesWithSpaceTimeChart(
+  const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart(
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
