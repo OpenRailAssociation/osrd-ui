@@ -36,6 +36,8 @@ const CLOSED_DOORS = [
   },
 ];
 
+const DEFAULT_PATH_LEVEL = 2;
+
 type MonoTrackSpaceProps = {
   from: number;
   to: number;
@@ -257,7 +259,13 @@ const Wrapper = ({ swapAxis, spaceScaleType }: WrapperProps) => {
         }}
       >
         {PATHS.map((path) => (
-          <PathLayer key={path.id} path={path} color={path.color} />
+          <PathLayer
+            key={path.id}
+            path={path}
+            color={path.color}
+            border={path.border}
+            level={path.level || DEFAULT_PATH_LEVEL}
+          />
         ))}
         {MONO_TRACK_SPACES.map(({ from, to }, i) => (
           <MonoTrackSpace key={i} from={from} to={to} />

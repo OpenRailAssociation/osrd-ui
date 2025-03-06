@@ -53,6 +53,7 @@ type PathStyle = {
   opacity?: number;
   lineCap?: CanvasLineCap;
 };
+
 export type PathLevel = 1 | 2 | 3 | 4;
 const STYLES: Record<PathLevel, PathStyle> = {
   1: {
@@ -84,6 +85,12 @@ export type PathLayerProps = {
   color: string;
   pickingTolerance?: number;
   level?: PathLevel;
+  border?: {
+    offset: number;
+    color: string;
+    width?: number;
+    backgroundColor?: string;
+  };
 };
 
 /**
@@ -97,6 +104,7 @@ export const PathLayer = ({
   color,
   level = DEFAULT_LEVEL,
   pickingTolerance = DEFAULT_PICKING_TOLERANCE,
+  border,
 }: PathLayerProps) => {
   /**
    * This function returns the list of points to join to draw the path. It will be both used to
@@ -354,8 +362,43 @@ export const PathLayer = ({
     [path]
   );
 
+  const drawBorder = useCallback<DrawingFunction>(
+    (ctx, stcContext) => {
+      if (!border) return;
+      const borderWidth = border.width || 1;
+      const mainPathStyle = STYLES[level];
+      const totalPathWidth = border.offset * 2 + mainPathStyle.width;
+      const backgroundColor = border.backgroundColor || '#fff';
+      const segments = getPathSegments(stcContext);
+      ctx.save();
+      ctx.beginPath();
+      const drawSegments = (lineWidth: number, borderColor = border.color) => {
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+        segments.forEach(({ x, y }, i) => {
+          if (x === segments[i - 1]?.x && y === segments[i - 1]?.y) return;
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        });
+        ctx.stroke();
+      };
+
+      drawSegments(totalPathWidth + borderWidth * 2);
+      drawSegments(totalPathWidth, backgroundColor);
+
+      ctx.restore();
+    },
+    [border, getPathSegments, level]
+  );
+
   const drawAll = useCallback<DrawingFunction>(
     (ctx, stcContext) => {
+      drawBorder(ctx, stcContext);
+
       // Draw stops:
       ctx.strokeStyle = color;
       ctx.lineWidth = PAUSE_THICKNESS;
@@ -401,6 +444,7 @@ export const PathLayer = ({
       drawExtremities,
       computePathLength,
       drawLabel,
+      drawBorder,
       path.label,
     ]
   );

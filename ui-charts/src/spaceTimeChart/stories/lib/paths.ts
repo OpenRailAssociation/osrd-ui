@@ -1,5 +1,6 @@
 import { keyBy } from 'lodash';
 
+import { type PathLevel } from '../../components/PathLayer';
 import type { OperationalPoint, PathData } from '../../lib/types';
 
 const KM = 1000;
@@ -123,7 +124,52 @@ export const START_DATE = new Date('2024/04/02');
 
 // TODO:
 // Store and share the hardcoded colors with other stories that use the GET as well
-export const PATHS: (PathData & { color: string })[] = [
+export const PATHS: (PathData & {
+  color: string;
+  border?: {
+    offset: number;
+    level: PathLevel;
+    color: string;
+    backgroundColor?: string;
+  };
+  level?: PathLevel;
+})[] = [
+  // Paced Train
+  ...getPaths(
+    'Paced',
+    OPERATIONAL_POINTS,
+    3 * MIN,
+    60 * MIN,
+    (80 * KM) / (60 * MIN),
+    2,
+    +START_DATE + 10 * MIN,
+    {
+      color: '#B2539E',
+      border: {
+        offset: 3.5,
+        color: '#B2539E',
+        backgroundColor: '#FAE6F6',
+      },
+    }
+  ),
+  ...getPaths(
+    'Selected Paced',
+    OPERATIONAL_POINTS,
+    3 * MIN,
+    60 * MIN,
+    (80 * KM) / (60 * MIN),
+    1,
+    +START_DATE + 40 * MIN,
+    {
+      color: '#B2539E',
+      level: 1,
+      border: {
+        offset: 4,
+        color: 'transparent',
+        backgroundColor: '#FAE6F6',
+      },
+    }
+  ),
   // Omnibuses:
   ...getPaths(
     'omnibus',

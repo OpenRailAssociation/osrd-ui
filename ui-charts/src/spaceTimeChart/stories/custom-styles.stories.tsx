@@ -195,7 +195,13 @@ const Wrapper = ({ color1, color2, color3, spaceScaleType }: WrapperProps) => {
         }}
       >
         {PATHS.map((path) => (
-          <PathLayer key={path.id} path={path} color={path.color} />
+          <PathLayer
+            key={path.id}
+            path={path}
+            color={path.color}
+            border={path.border}
+            level={path.level || 2}
+          />
         ))}
       </SpaceTimeChart>
     </div>

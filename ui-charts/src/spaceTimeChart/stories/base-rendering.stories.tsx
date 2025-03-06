@@ -62,7 +62,13 @@ const Wrapper = ({
         yOffset={yOffset}
       >
         {paths.map((path) => (
-          <PathLayer key={path.id} path={path} color={path.color} />
+          <PathLayer
+            key={path.id}
+            path={path}
+            color={path.color}
+            border={path.border}
+            level={path.level || 2}
+          />
         ))}
       </SpaceTimeChart>
     </div>
