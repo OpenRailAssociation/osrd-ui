@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
-import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from './consts';
+import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from '../consts';
 import WaypointList from './WaypointList';
 import type { InteractiveWaypoint, WaypointMenuData } from '../types';
 

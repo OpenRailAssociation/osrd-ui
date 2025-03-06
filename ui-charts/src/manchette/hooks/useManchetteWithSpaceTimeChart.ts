@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import usePaths from './usePaths';
-import type { SpaceScale, SpaceTimeChartProps } from '../../../spaceTimeChart';
-import type { ProjectPathTrainResult, Waypoint } from '../../Manchette';
+import type { SpaceScale, SpaceTimeChartProps } from '../../spaceTimeChart';
 import { MAX_ZOOM_Y, MIN_ZOOM_Y, ZOOM_Y_DELTA, DEFAULT_ZOOM_MS_PER_PX } from '../consts';
+import type { ProjectPathTrainResult, Waypoint } from '../types';
+import { getDistance } from '../utils';
 import {
   computeWaypointsToDisplay,
   getScales,
   zoomX,
   zoomValueToTimeScale,
   timeScaleToZoomValue,
-} from '../helpers';
-import { getDiff } from '../utils/point';
+} from '../utils/helpers';
 
 type State = {
   xZoom: number;
@@ -190,7 +190,7 @@ const useManchettesWithSpaceTimeChart = (
         position: { x: number; y: number };
         isPanning: boolean;
       }) => {
-        const diff = getDiff(payload.initialPosition, payload.position);
+        const diff = getDistance(payload.initialPosition, payload.position);
         const newState = { ...state };
 
         if (!payload.isPanning) {
