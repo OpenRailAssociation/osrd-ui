@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { BASE_WAYPOINT_HEIGHT } from '../consts';
+import { BASE_WAYPOINT_HEIGHT } from '../../consts';
 import { computeWaypointsToDisplay, getScales } from '../helpers';
 
 // Assuming these types from your code

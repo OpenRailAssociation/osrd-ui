@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import { type PathLevel } from '../../../spaceTimeChart';
-import { type ProjectPathTrainResult } from '../../Manchette';
+import { type PathLevel } from '../../spaceTimeChart';
 import { PATH_COLOR_DEFAULT } from '../consts';
+import { type ProjectPathTrainResult } from '../types';
 
 const transformCurve = (curve: ProjectPathTrainResult['spaceTimeCurves'][0], departureTime: Date) =>
   curve.positions.map((position, i) => ({

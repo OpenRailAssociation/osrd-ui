@@ -1,14 +1,14 @@
 import { clamp } from 'lodash';
 
+import { calcTotalDistance, getHeightWithoutLastWaypoint } from '.';
 import {
   BASE_WAYPOINT_HEIGHT,
   MAX_ZOOM_MS_PER_PX,
   MAX_ZOOM_X,
   MIN_ZOOM_MS_PER_PX,
   MIN_ZOOM_X,
-} from './consts';
-import { calcTotalDistance, getHeightWithoutLastWaypoint } from './utils';
-import type { InteractiveWaypoint, Waypoint } from '../Manchette';
+} from '../consts';
+import type { InteractiveWaypoint, Waypoint } from '../types';
 
 type WaypointsOptions = { isProportional: boolean; yZoom: number; height: number };
 
