@@ -4,6 +4,7 @@ import { useDraw } from '../hooks/useCanvas';
 import { type DrawingFunction } from '../lib/types';
 import { getCrispLineCoordinate } from '../utils/canvas';
 import { getSpacePixels } from '../utils/paths';
+import { isInteractiveWaypoint, isOp } from './PathLayer';
 
 const SpaceGraduations = () => {
   const drawingFunction = useCallback<DrawingFunction>(
@@ -12,7 +13,7 @@ const SpaceGraduations = () => {
       {
         timePixelOffset,
         getSpacePixel,
-        operationalPoints,
+        contents,
         swapAxis,
         width,
         height,
@@ -20,6 +21,9 @@ const SpaceGraduations = () => {
       }
     ) => {
       const axisSize = !swapAxis ? width : height;
+
+      const waypoints = contents.filter(isInteractiveWaypoint);
+      const operationalPoints = waypoints.filter(isOp);
 
       // Draw operational point lines:
       operationalPoints.forEach((point) => {

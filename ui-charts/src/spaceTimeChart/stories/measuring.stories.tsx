@@ -42,7 +42,7 @@ const Wrapper = ({ spaceScaleType, enableSnapping }: WrapperProps) => {
       <SpaceTimeChart
         className={cx('h-full overflow-hidden p-0 m-0', state.panTarget && 'cursor-grabbing')}
         enableSnapping={enableSnapping}
-        operationalPoints={OPERATIONAL_POINTS}
+        contents={OPERATIONAL_POINTS}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
           from: point.position,

@@ -23,7 +23,7 @@ const MAX_ZOOM_MS_PER_PX = 625;
 const DEFAULT_ZOOM_MS_PER_PX = 7500;
 type SpaceTimeHorizontalZoomWrapperProps = {
   offset: number;
-  operationalPoints: OperationalPoint[];
+  contents: (InteractiveWaypoint | React.ReactNode)[];
   paths: (PathData & { color: string })[];
 };
 
@@ -86,7 +86,7 @@ const SpaceTimeHorizontalZoomWrapper = ({
         xOffset={state.xOffset}
         yOffset={state.yOffset}
         timeOrigin={+new Date('2024/04/02')}
-        operationalPoints={simpleOperationalPoints}
+        contents={simpleOperationalPoints}
         timeScale={zoomValueToTimeScale(state.zoomValue)}
         spaceScales={spaceScale}
         onZoom={({ delta, position: { x } }) => {

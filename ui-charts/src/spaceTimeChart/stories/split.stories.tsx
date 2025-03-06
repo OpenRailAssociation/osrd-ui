@@ -114,7 +114,7 @@ const SplitSpaceTimeChartWrapper = ({
         xOffset={state.xOffset}
         yOffset={state.yOffset}
         timeOrigin={+new Date('2024/04/02')}
-        operationalPoints={OPERATIONAL_POINTS}
+        contents={OPERATIONAL_POINTS}
         timeScale={100000 / state.xZoomLevel}
         spaceScales={spaceScales}
         onPan={({ initialPosition, position, isPanning }) => {

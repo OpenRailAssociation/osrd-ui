@@ -41,6 +41,11 @@ export const filterVisibleElements = (
   return displayedElements.sort((a, b) => a.position - b.position);
 };
 
+export const isInteractiveWaypoint = (
+  item: InteractiveWaypoint | React.ReactNode
+): item is InteractiveWaypoint =>
+  item != null && typeof item === 'object' && 'id' in item && 'position' in item;
+
 export const computeWaypointsToDisplay = (
   waypoints: Waypoint[],
   { height, isProportional, yZoom }: WaypointsOptions

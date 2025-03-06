@@ -110,7 +110,7 @@ const Wrapper = () => {
     <div className="absolute inset-0">
       <SpaceTimeChart
         className="h-full overflow-hidden p-0 m-0"
-        operationalPoints={OPERATIONAL_POINTS}
+        contents={OPERATIONAL_POINTS}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
           from: point.position,

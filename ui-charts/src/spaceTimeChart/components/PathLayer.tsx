@@ -8,11 +8,12 @@ import {
   type DataPoint,
   DEFAULT_PATH_END,
   type DrawingFunction,
-  type OperationalPoint,
   type PathData,
   type PickingDrawingFunction,
   type Point,
   type SpaceTimeChartContextType,
+  InteractiveWaypoint,
+  OperationalPoint,
 } from '../lib/types';
 import {
   drawAliasedDisc,
@@ -67,6 +68,20 @@ export type PathLayerProps = {
   pickingTolerance?: number;
   level?: PathLevel;
 };
+
+export const isInteractiveWaypoint = (
+  item: InteractiveWaypoint | React.ReactNode
+): item is InteractiveWaypoint | OperationalPoint =>
+  item != null && typeof item === 'object' && 'id' in item && 'position' in item;
+
+export const isOp = (
+  item: InteractiveWaypoint | React.ReactNode | OperationalPoint
+): item is OperationalPoint =>
+  item != null &&
+  typeof item === 'object' &&
+  'id' in item &&
+  'position' in item &&
+  'importanceLevel' in item;
 
 /**
  * This component handles drawing a Path inside a SpaceTimeChart. It renders:
@@ -134,6 +149,7 @@ export const PathLayer = ({
     },
     [path]
   );
+
   /**
    * This function returns the list of important points, where the mouse can snap.
    */
@@ -143,10 +159,11 @@ export const PathLayer = ({
       getSpacePixel,
       timeAxis,
       spaceAxis,
-      operationalPoints,
+      contents,
     }: SpaceTimeChartContextType): Point[] => {
       const res: Point[] = [];
-      const stopPositions = new Set(operationalPoints.map((p) => p.position));
+      const waypoints = contents.filter(isInteractiveWaypoint);
+      const stopPositions = new Set(waypoints.map((p) => p.position));
       path.points.forEach(({ position, time }) => {
         if (stopPositions.has(position))
           res.push({
@@ -163,8 +180,9 @@ export const PathLayer = ({
    * This function draws the stops of the path on the operational points.
    */
   const drawPauses = useCallback<DrawingFunction>(
-    (ctx, { getTimePixel, getSpacePixel, operationalPoints, swapAxis }) => {
-      const stopPositions = new Set(operationalPoints.map((p) => p.position));
+    (ctx, { getTimePixel, getSpacePixel, contents, swapAxis }) => {
+      const waypoints = contents.filter(isInteractiveWaypoint);
+      const stopPositions = new Set(waypoints.map((p) => p.position));
       path.points.forEach(({ position, time }, i, a) => {
         if (i) {
           const { position: prevPosition, time: prevTime } = a[i - 1];
@@ -309,11 +327,12 @@ export const PathLayer = ({
   );
 
   const computePathLength = useCallback(
-    (operationalPoints: OperationalPoint[], segments: Point[]) => {
+    (contents: (InteractiveWaypoint | React.ReactNode)[], segments: Point[]) => {
       let totalLength = 0;
+      const waypoints = contents.filter(isInteractiveWaypoint);
 
       // Compute length of pauses
-      const stopPositions = new Set(operationalPoints.map((p) => p.position));
+      const stopPositions = new Set(waypoints.map((p) => p.position));
       path.points.forEach(({ position, time }, i, pointsArray) => {
         if (i > 0) {
           const { position: prevPosition, time: prevTime } = pointsArray[i - 1];
@@ -371,7 +390,7 @@ export const PathLayer = ({
 
       // Draw label:
       if (!stcContext.hidePathsLabels) {
-        const pathLength = computePathLength(stcContext.operationalPoints, segments);
+        const pathLength = computePathLength(stcContext.contents, segments);
         drawLabel(ctx, stcContext, path.label, color, segments, pathLength);
       }
     },

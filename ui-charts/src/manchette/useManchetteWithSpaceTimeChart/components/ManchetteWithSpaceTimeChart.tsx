@@ -1,15 +1,21 @@
 import React, { useRef } from 'react';
 
-import { PathLayer, SpaceTimeChart, type SpaceTimeChartProps } from '../../../spaceTimeChart';
+import {
+  PathLayer,
+  SpaceTimeChart,
+  isInteractiveWaypoint,
+  type SpaceTimeChartProps,
+} from '../../../spaceTimeChart';
 import Manchette, {
   type ProjectPathTrainResult,
   type Waypoint,
   type ManchetteProps,
+  type InteractiveWaypoint,
 } from '../../Manchette';
 import useManchetteWithSpaceTimeChart from '../hooks/useManchetteWithSpaceTimeChart';
 
 export type ManchetteWithSpaceTimeChartProps = {
-  waypoints: Waypoint[];
+  contents: (InteractiveWaypoint | React.ReactNode)[];
   projectPathTrainResult: ProjectPathTrainResult[];
   selectedTrain?: number;
   height?: number;
@@ -26,7 +32,7 @@ export type ManchetteWithSpaceTimeChartProps = {
  * and space time chart, the useManchetteWithSpaceTimeChart() hook can be used.
  */
 const ManchetteWithSpaceTimeChart = ({
-  waypoints,
+  contents,
   projectPathTrainResult,
   selectedTrain,
   height = 561,
@@ -39,7 +45,7 @@ const ManchetteWithSpaceTimeChart = ({
   const spaceTimeChartRef = useRef<HTMLDivElement>(null);
 
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart(
-    waypoints,
+    contents,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
     selectedTrain,
@@ -74,9 +80,13 @@ const ManchetteWithSpaceTimeChart = ({
             {...spaceTimeChartProps}
             {...additionalSpaceTimeChartProps}
           >
-            {spaceTimeChartProps.paths.map((path) => (
-              <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
-            ))}
+            {spaceTimeChartProps.paths.map((path, index) =>
+              path.id ? (
+                <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
+              ) : (
+                <div key={index}>{'coucou'}</div>
+              )
+            )}
             {children}
           </SpaceTimeChart>
         </div>

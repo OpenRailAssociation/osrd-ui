@@ -53,7 +53,7 @@ const Wrapper = ({
     <div className="absolute inset-0">
       <SpaceTimeChart
         className="h-full"
-        operationalPoints={operationalPoints}
+        contents={operationalPoints}
         spaceOrigin={0}
         spaceScales={spaceScales}
         timeOrigin={+new Date('2024/04/02')}

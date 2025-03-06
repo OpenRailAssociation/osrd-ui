@@ -51,7 +51,7 @@ const Wrapper = ({ color1, color2, color3, spaceScaleType }: WrapperProps) => {
     <div className="absolute inset-0">
       <SpaceTimeChart
         className={cx('h-full p-0 m-0', state.panning && 'cursor-grabbing')}
-        operationalPoints={OPERATIONAL_POINTS}
+        contents={OPERATIONAL_POINTS}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
           from: point.position,

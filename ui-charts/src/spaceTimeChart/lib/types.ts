@@ -1,4 +1,4 @@
-import { type HTMLProps, type ReactNode } from 'react';
+import { CSSProperties, type HTMLProps, type ReactNode } from 'react';
 
 import type { Track, OccupancyZone } from '../../trackOccupancyDiagram/components/types';
 
@@ -168,11 +168,24 @@ export type SpaceTimeChartTheme = {
   timeGraduationsStyles: Record<number, LineStyle>;
 };
 
+export type Waypoint = {
+  id: string;
+  position: number; // in mm
+  name?: string;
+  secondaryCode?: string;
+  weight?: number;
+};
+
+export type InteractiveWaypoint = Waypoint & {
+  styles?: CSSProperties;
+  onClick?: (waypointId: string) => void;
+};
+
 // CORE COMPONENT MAIN TYPES:
 export type SpaceTimeChartProps = {
   children?: ReactNode[];
 
-  operationalPoints: OperationalPoint[];
+  contents: (InteractiveWaypoint | React.ReactNode)[];
 
   // The space origin (i.e. the space value for the most top point)
   spaceOrigin: number;
@@ -270,7 +283,7 @@ export type SpaceTimeChartContextType = {
   getData: PointToData;
 
   // Useful data:
-  operationalPoints: OperationalPoint[];
+  contents: (InteractiveWaypoint | React.ReactNode)[];
   tracks?: Track[];
   occupancyZones?: OccupancyZone[];
 

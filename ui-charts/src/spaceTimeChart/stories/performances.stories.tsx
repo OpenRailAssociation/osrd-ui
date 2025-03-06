@@ -97,7 +97,7 @@ const Wrapper = ({
     <div className="absolute inset-0">
       <SpaceTimeChart
         className={cx('h-full p-0 m-0', state.panning && 'cursor-grabbing')}
-        operationalPoints={operationalPoints}
+        contents={operationalPoints}
         spaceOrigin={0}
         spaceScales={operationalPoints.slice(0, -1).map((point, i) => ({
           from: point.position,

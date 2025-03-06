@@ -83,7 +83,7 @@ const Wrapper = ({
         hideGrid={hideGrid}
         hidePathsLabels={hidePathsLabels}
         swapAxis={swapAxis}
-        operationalPoints={OPERATIONAL_POINTS}
+        contents={OPERATIONAL_POINTS}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
           from: point.position,

@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 
 import usePaths from './usePaths';
 import type { SpaceScale, SpaceTimeChartProps } from '../../../spaceTimeChart';
-import type { ProjectPathTrainResult, Waypoint } from '../../Manchette';
+import type { ProjectPathTrainResult, Waypoint, InteractiveWaypoint } from '../../Manchette';
 import { MAX_ZOOM_Y, MIN_ZOOM_Y, ZOOM_Y_DELTA, DEFAULT_ZOOM_MS_PER_PX } from '../consts';
 import {
   computeWaypointsToDisplay,
@@ -10,6 +11,7 @@ import {
   zoomX,
   zoomValueToTimeScale,
   timeScaleToZoomValue,
+  isInteractiveWaypoint,
 } from '../helpers';
 import { getDiff } from '../utils/point';
 
@@ -27,8 +29,17 @@ type State = {
   scales: SpaceScale[];
 };
 
+type SimplifiedWaypoint = {
+  id: string;
+  label: string;
+  position: number;
+  importanceLevel: number;
+};
+
+type SimplifiedWaypoints = (SimplifiedWaypoint | React.ReactNode)[];
+
 const useManchettesWithSpaceTimeChart = (
-  waypoints: Waypoint[],
+  contents: (InteractiveWaypoint | React.ReactNode)[],
   projectPathTrainResult: ProjectPathTrainResult[],
   manchetteWithSpaceTimeChartContainer: React.RefObject<HTMLDivElement>,
   selectedTrain?: number,
@@ -47,6 +58,7 @@ const useManchettesWithSpaceTimeChart = (
     waypointsChart: [],
     scales: [],
   });
+  const waypoints = useMemo(() => contents.filter(isInteractiveWaypoint), [contents]);
 
   const { xZoom, yZoom, xOffset, yOffset, scrollTo, panning, isProportional } = state;
 
@@ -148,9 +160,19 @@ const useManchettesWithSpaceTimeChart = (
     [simplifiedWaypoints, height, isProportional, yZoom]
   );
 
+  const contentsToDisplay = useMemo(
+    () =>
+      contents.map((content) =>
+        isInteractiveWaypoint(content)
+          ? waypointsToDisplay.find((wp) => wp.id === content.id) || content
+          : content
+      ),
+    [contents, waypointsToDisplay]
+  );
+
   const manchetteProps = useMemo(
     () => ({
-      contents: waypointsToDisplay,
+      contents: contentsToDisplay,
       zoomYIn,
       zoomYOut,
       resetZoom,
@@ -159,7 +181,7 @@ const useManchettesWithSpaceTimeChart = (
       isProportional,
       yOffset,
     }),
-    [waypointsToDisplay, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional, yOffset]
+    [contentsToDisplay, zoomYIn, zoomYOut, resetZoom, toggleMode, yZoom, isProportional, yOffset]
   );
 
   const handleXZoom = useCallback(
@@ -174,7 +196,7 @@ const useManchettesWithSpaceTimeChart = (
 
   const spaceTimeChartProps = useMemo(
     () => ({
-      operationalPoints: simplifiedWaypoints,
+      contents: simplifiedWaypoints,
       spaceScales: computedScales,
       timeScale: zoomValueToTimeScale(xZoom),
       paths,

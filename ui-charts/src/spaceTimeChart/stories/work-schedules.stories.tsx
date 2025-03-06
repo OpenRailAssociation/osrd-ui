@@ -9,7 +9,12 @@ import upward from '../assets/images/ScheduledMaintenanceUp.svg';
 import { PathLayer } from '../components/PathLayer';
 import { SpaceTimeChart } from '../components/SpaceTimeChart';
 import { WorkScheduleLayer } from '../components/WorkScheduleLayer';
-import { type Point, type PathData, type OperationalPoint } from '../lib/types';
+import {
+  type Point,
+  type PathData,
+  type OperationalPoint,
+  InteractiveWaypoint,
+} from '../lib/types';
 import { type WorkSchedule } from '../types';
 import { getDiff } from '../utils/vectors';
 
@@ -43,13 +48,13 @@ const SAMPLE_WORK_SCHEDULES: WorkSchedule[] = [
 const DEFAULT_HEIGHT = 550;
 
 type WorkSchedulesWrapperProps = {
-  operationalPoints: OperationalPoint[];
+  contents: (InteractiveWaypoint | React.ReactNode)[];
   paths: (PathData & { color: string })[];
   workSchedules: WorkSchedule[];
 };
 
 const WorkSchedulesWrapper = ({
-  operationalPoints = [],
+  contents = [],
   paths = [],
   workSchedules,
 }: WorkSchedulesWrapperProps) => {
@@ -62,11 +67,22 @@ const WorkSchedulesWrapper = ({
     yOffset: 0,
     panning: null,
   });
-  const simpleOperationalPoints = operationalPoints.map(({ id, position }) => ({
-    id,
-    label: id,
-    position,
-  }));
+
+  const isInteractiveWaypoint = (
+    item: InteractiveWaypoint | React.ReactNode
+  ): item is InteractiveWaypoint =>
+    item != null && typeof item === 'object' && 'id' in item && 'position' in item;
+
+  const simpleContents = contents.map((point) =>
+    isInteractiveWaypoint(point)
+      ? {
+          id: point.id,
+          label: point.id,
+          position: point.position,
+        }
+      : point
+  );
+
   const spaceScale = [
     {
       from: 0,
@@ -82,7 +98,7 @@ const WorkSchedulesWrapper = ({
         xOffset={state.xOffset}
         yOffset={state.yOffset}
         timeOrigin={+new Date('2024/04/02')}
-        operationalPoints={simpleOperationalPoints}
+        contents={simpleContents}
         timeScale={10000}
         spaceScales={spaceScale}
         onPan={({ initialPosition, position, isPanning }) => {

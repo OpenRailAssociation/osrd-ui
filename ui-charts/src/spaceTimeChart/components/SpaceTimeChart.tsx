@@ -31,7 +31,7 @@ import { snapPosition } from '../utils/snapping';
 
 export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
   const {
-    operationalPoints,
+    contents,
     spaceOrigin,
     spaceScales,
     timeOrigin,
@@ -63,7 +63,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
   const fingerprint = useMemo(
     () =>
       JSON.stringify({
-        operationalPoints,
+        contents,
         width,
         height,
         spaceOrigin,
@@ -78,7 +78,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
         showTicks,
       }),
     [
-      operationalPoints,
+      contents,
       width,
       height,
       spaceOrigin,
@@ -140,7 +140,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       pickingElements,
       resetPickingElements,
       registerPickingElement,
-      operationalPoints,
+      contents,
       spaceOrigin,
       spaceScaleTree,
       timeOrigin,

@@ -191,7 +191,7 @@ const Wrapper = ({ swapAxis, spaceScaleType }: WrapperProps) => {
     <div className="absolute inset-0">
       <SpaceTimeChart
         className={cx('h-full p-0 m-0', state.panning && 'cursor-grabbing')}
-        operationalPoints={OPERATIONAL_POINTS}
+        contents={OPERATIONAL_POINTS}
         swapAxis={swapAxis}
         spaceOrigin={0}
         spaceScales={OPERATIONAL_POINTS.slice(0, -1).map((point, i) => ({
