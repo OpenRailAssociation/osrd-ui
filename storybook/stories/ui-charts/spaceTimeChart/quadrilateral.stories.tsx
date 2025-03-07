@@ -1,10 +1,16 @@
 import React from 'react';
 
+import {
+  SpaceTimeChart,
+  PathLayer,
+  Quadrilateral,
+  type QuadrilateralProps,
+} from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 
-import { SpaceTimeChart, PathLayer } from '..';
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
+import { HOUR } from './helpers/consts';
+import { OPERATIONAL_POINTS, PATHS, START_DATE } from './helpers/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
 
@@ -17,6 +23,19 @@ type WrapperProps = {
   emptyData: boolean;
 };
 
+const QuadrilateralMock: QuadrilateralProps = {
+  vertices: [
+    { time: START_DATE.getTime() + HOUR, position: 3000 },
+    { time: START_DATE.getTime() + HOUR * 3, position: 3000 },
+    { time: START_DATE.getTime() + HOUR * 2, position: 11000 },
+    { time: START_DATE.getTime(), position: 11000 },
+  ],
+  style: {
+    backgroundColor: 'lightblue',
+    borderColor: 'red',
+    borderWidth: 1,
+  },
+};
 /**
  * This story aims at showcasing how to render a SpaceTimeChart.
  */
@@ -56,7 +75,7 @@ const Wrapper = ({
         operationalPoints={operationalPoints}
         spaceOrigin={0}
         spaceScales={spaceScales}
-        timeOrigin={+new Date('2024/04/02')}
+        timeOrigin={+START_DATE}
         timeScale={60000 / xZoomLevel}
         xOffset={xOffset}
         yOffset={yOffset}
@@ -70,13 +89,14 @@ const Wrapper = ({
             level={path.level || 2}
           />
         ))}
+        <Quadrilateral vertices={QuadrilateralMock.vertices} style={QuadrilateralMock.style} />
       </SpaceTimeChart>
     </div>
   );
 };
 
 export default {
-  title: 'SpaceTimeChart/Rendering',
+  title: 'SpaceTimeChart/Quadrilateral',
   component: Wrapper,
   argTypes: {
     xZoomLevel: {

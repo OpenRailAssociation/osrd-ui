@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
 
+import {
+  MouseContext,
+  SpaceTimeChartContext,
+  type DataPoint,
+  type Point,
+} from '@osrd-project/ui-charts';
 import { round } from 'lodash';
 
+import { WHITE_75 } from './consts';
 import { formatTimeLength } from './utils';
-import { WHITE_75 } from '../../lib/consts';
-import { MouseContext, SpaceTimeChartContext } from '../../lib/context';
-import { type DataPoint, type Point } from '../../lib/types';
 
 /**
  * This component draws a dashed line from p1 to p2, using SVG:

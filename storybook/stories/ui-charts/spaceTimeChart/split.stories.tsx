@@ -2,17 +2,19 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import '@osrd-project/ui-core/dist/theme.css';
 
+import {
+  PathLayer,
+  SpaceTimeChart,
+  useDraw,
+  type DrawingFunction,
+  type Point,
+} from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 import { clamp, keyBy } from 'lodash';
 
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { PathLayer } from '../components/PathLayer';
-import { SpaceTimeChart } from '../components/SpaceTimeChart';
-import type { DrawingFunction, Point } from '../lib/types';
-import { getDiff } from '../utils/vectors';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
-import { useDraw } from '../hooks/useCanvas';
-import { AMBIANT_A10 } from '../lib/consts';
+import { AMBIANT_A10 } from './helpers/consts';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom, getDiff } from './helpers/utils';
 
 const COEFFICIENT = 300;
 

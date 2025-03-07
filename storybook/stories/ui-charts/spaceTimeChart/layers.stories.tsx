@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import type { Meta, StoryObj } from '@storybook/react';
-
 import {
   type Conflict,
   ConflictLayer,
@@ -10,17 +8,19 @@ import {
   SpaceTimeChart,
   PathLayer,
   isConflictPickingElement,
-} from '..';
-import { OPERATIONAL_POINTS, PATHS, START_DATE } from './lib/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
+  type Point,
+} from '@osrd-project/ui-charts';
+import type { Meta, StoryObj } from '@storybook/react';
+
 import {
   KILOMETER,
   MINUTE,
   OCCUPANCY_FREE,
   OCCUPANCY_SEMAPHORE,
   OCCUPANCY_WARNING,
-} from '../lib/consts';
-import type { Point } from '../lib/types';
+} from './helpers/consts';
+import { OPERATIONAL_POINTS, PATHS, START_DATE } from './helpers/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
 

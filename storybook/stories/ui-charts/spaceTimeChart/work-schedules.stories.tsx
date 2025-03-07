@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 
+import {
+  SpaceTimeChart,
+  PathLayer,
+  WorkScheduleLayer,
+  type Point,
+  type PathData,
+  type OperationalPoint,
+  type WorkSchedule,
+} from '@osrd-project/ui-charts';
 import '@osrd-project/ui-core/dist/theme.css';
-
 import type { Meta } from '@storybook/react';
 
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import upward from '../assets/images/ScheduledMaintenanceUp.svg';
-import { PathLayer } from '../components/PathLayer';
-import { SpaceTimeChart } from '../components/SpaceTimeChart';
-import { WorkScheduleLayer } from '../components/WorkScheduleLayer';
-import { type Point, type PathData, type OperationalPoint } from '../lib/types';
-import { type WorkSchedule } from '../types';
-import { getDiff } from '../utils/vectors';
+import upward from './assets/images/ScheduledMaintenanceUp.svg';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { getDiff } from './helpers/utils';
 
 const SAMPLE_WORK_SCHEDULES: WorkSchedule[] = [
   {

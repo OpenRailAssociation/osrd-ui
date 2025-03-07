@@ -8,7 +8,6 @@ import {
   type ProjectPathTrainResult,
   type Waypoint,
   ZoomRect,
-  MouseTracker,
 } from '@osrd-project/ui-charts';
 import { Slider } from '@osrd-project/ui-core';
 import { ZoomIn } from '@osrd-project/ui-icons';
@@ -16,10 +15,10 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 
 import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from './assets/sampleData';
+import { MouseTracker } from '../spaceTimeChart/helpers/components';
 
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
-import '../../../styles/ManchetteWithSpaceTimeChart/rectangle-zoom.css';
 
 type ManchetteWithSpaceTimeWrapperProps = {
   waypoints: Waypoint[];

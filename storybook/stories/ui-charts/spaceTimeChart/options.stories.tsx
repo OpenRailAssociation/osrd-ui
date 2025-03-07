@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 
+import { CanvasContext, SpaceTimeChart, PathLayer, type Point } from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import FileSaver from 'file-saver';
 
-import { SpaceTimeChart, PathLayer } from '..';
-import { MouseTracker } from './lib/components';
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
+import { MouseTracker } from './helpers/components';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
 import {
   MAX_X_ZOOM,
   MAX_Y_ZOOM,
@@ -14,10 +14,8 @@ import {
   MIN_Y_ZOOM,
   X_ZOOM_LEVEL,
   Y_ZOOM_LEVEL,
-} from './lib/utils';
-import { CanvasContext } from '../lib/context';
-import { type Point } from '../lib/types';
-import { getDiff } from '../utils/vectors';
+  getDiff,
+} from './helpers/utils';
 
 const ScreenshotButton = () => {
   const { captureCanvases } = useContext(CanvasContext);
