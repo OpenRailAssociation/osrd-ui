@@ -29,12 +29,18 @@ const DEFAULT_PICKING_TOLERANCE = 5;
 const PAUSE_THICKNESS = 7;
 const PAUSE_OPACITY = 0.2;
 
+export type PointPickingElement = PickingElement & { type: 'point'; pathId: string; point: Point };
+
 export type SegmentPickingElement = PickingElement & {
   type: 'segment';
   pathId: string;
   from: Point;
   to: Point;
 };
+
+export function isPointPickingElement(element: PickingElement): element is PointPickingElement {
+  return element.type === 'point';
+}
 
 export function isSegmentPickingElement(element: PickingElement): element is SegmentPickingElement {
   return element.type === 'segment';
@@ -429,11 +435,12 @@ export const PathLayer = ({
 
       // Draw snap points:
       getSnapPoints(stcContext).forEach((point) => {
-        const index = registerPickingElement({
+        const pickingElement: PointPickingElement = {
           type: 'point',
           pathId: path.id,
           point,
-        });
+        };
+        const index = registerPickingElement(pickingElement);
         const lineColor = hexToRgb(indexToColor(index));
         drawAliasedDisc(
           imageData,
