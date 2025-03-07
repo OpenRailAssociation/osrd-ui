@@ -179,7 +179,7 @@ const TrackOccupancyDiagram = ({
       pickingElements,
       resetPickingElements,
       registerPickingElement,
-      operationalPoints,
+      contents: operationalPoints,
       tracks,
       occupancyZones,
       spaceOrigin,

@@ -162,7 +162,7 @@ export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
     id: 1,
     name: 'Train 1',
     departureTime: new Date('2024-10-23T09:00:00Z'),
-    spaceTimeCurves: [
+    points: [
       {
         positions: [
           0, 973, 3888, 8737, 24205, 47311, 96148, 138058, 214779, 307916, 417225, 587701, 785672,
@@ -192,7 +192,7 @@ export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
     id: 2,
     name: 'Train 2',
     departureTime: new Date('2024-10-23T09:15:00Z'),
-    spaceTimeCurves: [
+    points: [
       {
         positions: [
           0, 973, 3888, 8737, 24205, 47311, 96148, 138058, 214779, 307916, 417225, 587701, 785672,
@@ -222,7 +222,7 @@ export const SAMPLE_PATHS_DATA: ProjectPathTrainResult[] = [
     id: 3,
     name: 'Train 3',
     departureTime: new Date('2024-10-23T09:30:00Z'),
-    spaceTimeCurves: [
+    points: [
       {
         positions: [
           0, 973, 3888, 8737, 24205, 47311, 96148, 138058, 214779, 307916, 417225, 587701, 785672,

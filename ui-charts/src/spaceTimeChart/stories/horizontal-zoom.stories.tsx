@@ -8,10 +8,11 @@ import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
 
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { PathLayer } from '../components/PathLayer';
+import { PathLayer, isInteractiveWaypoint } from '../components/PathLayer';
 import { SpaceTimeChart } from '../components/SpaceTimeChart';
 import { type Point, type PathData, type OperationalPoint } from '../lib/types';
 import { getDiff } from '../utils/vectors';
+import { InteractiveWaypoint } from '../../manchette/Manchette/types';
 
 const DEFAULT_WIDTH = 1200;
 const DEFAULT_HEIGHT = 550;
@@ -36,7 +37,7 @@ const timeScaleToZoomValue = (timeScale: number) =>
 
 const SpaceTimeHorizontalZoomWrapper = ({
   offset,
-  operationalPoints = [],
+  contents = [],
   paths = [],
 }: SpaceTimeHorizontalZoomWrapperProps) => {
   const [state, setState] = useState<{
@@ -60,11 +61,13 @@ const SpaceTimeHorizontalZoomWrapper = ({
     const newOffset = position - ((position - state.xOffset) * oldTimeScale) / newTimeScale;
     setState((prev) => ({ ...prev, zoomValue: boundedXZoom, xOffset: newOffset }));
   };
-  const simpleOperationalPoints = operationalPoints.map(({ id, position }) => ({
-    id,
-    label: id,
-    position,
-  }));
+  const simpleOperationalPoints = contents
+    .filter(isInteractiveWaypoint)
+    .map(({ id, position }) => ({
+      id,
+      label: id,
+      position,
+    }));
   const spaceScale = [
     {
       from: 0,

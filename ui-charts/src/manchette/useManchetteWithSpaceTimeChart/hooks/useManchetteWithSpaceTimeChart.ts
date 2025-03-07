@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-
 import usePaths from './usePaths';
 import type { SpaceScale, SpaceTimeChartProps } from '../../../spaceTimeChart';
 import type { ProjectPathTrainResult, Waypoint, InteractiveWaypoint } from '../../Manchette';
@@ -28,15 +27,6 @@ type State = {
   waypointsChart: Waypoint[];
   scales: SpaceScale[];
 };
-
-type SimplifiedWaypoint = {
-  id: string;
-  label: string;
-  position: number;
-  importanceLevel: number;
-};
-
-type SimplifiedWaypoints = (SimplifiedWaypoint | React.ReactNode)[];
 
 const useManchettesWithSpaceTimeChart = (
   contents: (InteractiveWaypoint | React.ReactNode)[],

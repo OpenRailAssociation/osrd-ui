@@ -22,7 +22,7 @@ export type WaypointMenuData = {
 export type ProjectPathTrainResult = {
   id: number;
   name: string;
-  spaceTimeCurves: {
+  points: {
     positions: number[]; // in mm
     times: number[]; // in seconds since the departure of the train
   }[];

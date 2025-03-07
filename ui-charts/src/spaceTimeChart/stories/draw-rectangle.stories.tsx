@@ -119,7 +119,7 @@ const DrawRectangleWrapper = ({
         xOffset={state.xOffset}
         yOffset={state.yOffset}
         timeOrigin={timeOrigin}
-        operationalPoints={simpleOperationalPoints}
+        contents={simpleOperationalPoints}
         timeScale={timeScale}
         spaceScales={spaceScale}
         onZoom={({ delta, position: { x } }) => {
