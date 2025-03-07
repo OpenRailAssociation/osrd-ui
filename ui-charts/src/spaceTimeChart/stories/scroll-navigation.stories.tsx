@@ -4,7 +4,7 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import { keyBy } from 'lodash';
 
-import { SpaceTimeChart, PathLayer } from '..';
+import { SpaceTimeChart, PathLayer, isPointPickingElement, isSegmentPickingElement } from '..';
 import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
 import { type Point } from '../lib/types';
@@ -79,7 +79,10 @@ const Wrapper = ({ spaceScaleType }: WrapperProps) => {
           }));
         }}
         onHoveredChildUpdate={({ item }) => {
-          const hoveredPathId = item && 'pathId' in item.element ? item.element.pathId : null;
+          const hoveredPathId =
+            item && (isPointPickingElement(item.element) || isSegmentPickingElement(item.element))
+              ? item.element.pathId
+              : null;
           setState((s) => ({ ...s, hoveredPathId }));
         }}
         onPan={({ initialPosition, position, isPanning }) => {

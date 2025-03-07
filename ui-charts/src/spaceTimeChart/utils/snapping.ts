@@ -1,4 +1,4 @@
-import { isSegmentPickingElement } from '../components/PathLayer';
+import { isPointPickingElement, isSegmentPickingElement } from '../components/PathLayer';
 import { type HoveredItem, type Point } from '../lib/types';
 
 /**
@@ -49,7 +49,7 @@ export function getClosestPointOnSegment(
 export function snapPosition(mousePosition: Point, hoveredItem: HoveredItem | null) {
   if (!mousePosition || !hoveredItem) return mousePosition;
 
-  if (hoveredItem.element.type === 'point') {
+  if (isPointPickingElement(hoveredItem.element)) {
     return hoveredItem.element.point;
   } else if (isSegmentPickingElement(hoveredItem.element)) {
     return getClosestPointOnSegment(
