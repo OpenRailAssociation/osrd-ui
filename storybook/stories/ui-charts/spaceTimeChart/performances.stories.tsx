@@ -1,15 +1,18 @@
 import React, { useMemo, useState } from 'react';
 
+import {
+  SpaceTimeChart,
+  PathLayer,
+  type OperationalPoint,
+  type Point,
+} from '@osrd-project/ui-charts';
 import { type Meta } from '@storybook/react';
 import cx from 'classnames';
 import { random, range } from 'lodash';
 
-import { SpaceTimeChart, PathLayer } from '..';
-import { getPaths, type PATHS } from './lib/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
-import { KILOMETER, MINUTE } from '../lib/consts';
-import { type OperationalPoint, type Point } from '../lib/types';
-import { getDiff } from '../utils/vectors';
+import { KILOMETER, MINUTE } from './helpers/consts';
+import { getPaths, type PATHS } from './helpers/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom, getDiff } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
 

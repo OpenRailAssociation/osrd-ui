@@ -1,20 +1,24 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import {
+  PathLayer,
+  SpaceTimeChart,
+  ZoomRect,
+  CAPTION_SIZE,
+  type Point,
+  type PathData,
+  type OperationalPoint,
+} from '@osrd-project/ui-charts';
 import { Button, Slider } from '@osrd-project/ui-core';
 import type { Meta } from '@storybook/react';
 import { clamp } from 'lodash';
 
 import '@osrd-project/ui-core/dist/theme.css';
-import '../styles/stories/rectangle-zoom.css';
+import '@osrd-project/ui-charts/dist/theme.css';
 
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { PathLayer } from '../components/PathLayer';
-import { SpaceTimeChart } from '../components/SpaceTimeChart';
-import { CAPTION_SIZE } from '../components/TimeCaptions';
-import { ZoomRect } from '../components/ZoomRect';
-import { type Point, type PathData, type OperationalPoint } from '../lib/types';
-import { getDiff } from '../utils/vectors';
-import { MouseTracker } from './lib/components';
+import { MouseTracker } from './helpers/components';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { getDiff } from './helpers/utils';
 
 const DEFAULT_WIDTH = 1000;
 const DEFAULT_HEIGHT = 500;

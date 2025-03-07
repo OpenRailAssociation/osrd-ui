@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 
+import {
+  SpaceTimeChart,
+  PathLayer,
+  isPointPickingElement,
+  isSegmentPickingElement,
+  getSpaceAtTime,
+  isPathOnScreen,
+  type Point,
+} from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import { keyBy } from 'lodash';
 
-import { SpaceTimeChart, PathLayer, isPointPickingElement, isSegmentPickingElement } from '..';
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom } from './lib/utils';
-import { type Point } from '../lib/types';
-import { isPathOnScreen } from '../utils/geometry';
-import { getSpaceAtTime } from '../utils/scales';
-import { getDiff } from '../utils/vectors';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL, zoom, getDiff } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
 

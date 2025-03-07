@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 
+import {
+  Tooltip,
+  SpaceTimeChart,
+  PathLayer,
+  type Point,
+  type PickingElement,
+} from '@osrd-project/ui-charts';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Tooltip, SpaceTimeChart, PathLayer } from '..';
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
-import type { Point, PickingElement } from '../lib/types';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
 
