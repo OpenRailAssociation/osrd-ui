@@ -389,27 +389,19 @@ export type CanvasRect = {
 
 export function fillRect(
   ctx: CanvasRenderingContext2D,
-  rect: CanvasRect,
-  spaceTimeContext: SpaceTimeChartContextType
+  { timeStart, timeEnd, spaceStart, spaceEnd }: CanvasRect,
+  { getPoint }: SpaceTimeChartContextType
 ) {
-  const { getTimePixel, getSpacePixel, timeAxis } = spaceTimeContext;
-  const { timeStart, timeEnd, spaceStart, spaceEnd } = rect;
+  const startPoint = getPoint({ time: Number(timeStart), position: spaceStart });
+  const endPoint = getPoint({ time: Number(timeEnd), position: spaceEnd });
 
-  const timeStartPixel = getTimePixel(Number(timeStart));
-  const endTimePixel = getTimePixel(Number(timeEnd));
-  const spaceStartPixel = getSpacePixel(spaceStart);
-  const spaceEndPixel = getSpacePixel(spaceEnd);
+  const width = endPoint.x - startPoint.x;
+  const height = endPoint.y - startPoint.y;
 
-  const areaSpaceSize = spaceEndPixel - spaceStartPixel;
-  const areaTimeSize = endTimePixel - timeStartPixel;
-  if (!areaSpaceSize || !areaTimeSize) return {};
-
-  if (timeAxis === 'x') {
-    ctx.translate(timeStartPixel, spaceStartPixel);
-    ctx.fillRect(0, 0, areaTimeSize, areaSpaceSize);
-  } else {
-    ctx.translate(spaceStartPixel, timeStartPixel);
-    ctx.fillRect(0, 0, areaSpaceSize, areaTimeSize);
+  if (width !== 0 && height !== 0) {
+    ctx.translate(startPoint.x, startPoint.y);
+    ctx.fillRect(0, 0, width, height);
   }
-  return { areaTimeSize, areaSpaceSize };
+
+  return { width, height };
 }

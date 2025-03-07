@@ -27,11 +27,8 @@ export const ZoomRect = (rect: CanvasRect) => {
     (ctx, context) => {
       ctx.save();
       ctx.fillStyle = '#0000000D'; /* black5 */
-      const { areaTimeSize, areaSpaceSize } = fillRect(ctx, rect, context);
-      if (areaTimeSize && areaSpaceSize) {
-        const width = context.timeAxis === 'x' ? areaTimeSize : areaSpaceSize;
-        const height = context.timeAxis === 'x' ? areaSpaceSize : areaTimeSize;
-
+      const { width, height } = fillRect(ctx, rect, context);
+      if (width && height) {
         ctx.lineWidth = LINE_WIDTH;
 
         for (let i = 0; Math.abs(i) < Math.abs(width); i += SPACING * Math.sign(width)) {
