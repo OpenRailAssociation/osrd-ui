@@ -9,6 +9,7 @@ import {
   OccupancyBlockLayer,
   SpaceTimeChart,
   PathLayer,
+  isConflictPickingElement,
 } from '..';
 import { OPERATIONAL_POINTS, PATHS, START_DATE } from './lib/paths';
 import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
@@ -123,7 +124,7 @@ const Wrapper = () => {
         yOffset={0}
         onHoveredChildUpdate={({ item }) => {
           let conflict = null;
-          if (item?.element?.type === 'conflict') {
+          if (item && isConflictPickingElement(item.element)) {
             conflict = CONFLICTS[item.element.conflictIndex];
           }
           setHoveredConflict(conflict);

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useDraw, usePicking } from '../hooks/useCanvas';
-import { type DrawingFunction, type PickingDrawingFunction } from '../lib/types';
+import type { DrawingFunction, PickingDrawingFunction, PickingElement } from '../lib/types';
 import { drawAliasedRect } from '../utils/canvas';
 import { indexToColor, hexToRgb } from '../utils/colors';
 
@@ -11,6 +11,17 @@ export type Conflict = {
   spaceStart: number;
   spaceEnd: number;
 };
+
+export type ConflictPickingElement = PickingElement & {
+  type: 'conflict';
+  conflictIndex: number;
+};
+
+export function isConflictPickingElement(
+  element: PickingElement
+): element is ConflictPickingElement {
+  return element.type === 'conflict';
+}
 
 export type ConflictLayerProps = {
   conflicts: Conflict[];
@@ -58,7 +69,8 @@ export const ConflictLayer = ({ conflicts }: ConflictLayerProps) => {
         const height = getSpacePixel(conflict.spaceEnd) - y;
         const border = BORDERS[0].size;
 
-        const index = registerPickingElement({ type: 'conflict', conflictIndex });
+        const pickingElement: ConflictPickingElement = { type: 'conflict', conflictIndex };
+        const index = registerPickingElement(pickingElement);
         const color = hexToRgb(indexToColor(index));
 
         drawAliasedRect(
