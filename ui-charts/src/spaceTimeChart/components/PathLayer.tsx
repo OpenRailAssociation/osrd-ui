@@ -11,6 +11,7 @@ import {
   type OperationalPoint,
   type PathData,
   type PickingDrawingFunction,
+  type PickingElement,
   type Point,
   type SpaceTimeChartContextType,
 } from '../lib/types';
@@ -27,6 +28,17 @@ import { getSpaceBreakpoints } from '../utils/scales';
 const DEFAULT_PICKING_TOLERANCE = 5;
 const PAUSE_THICKNESS = 7;
 const PAUSE_OPACITY = 0.2;
+
+export type SegmentPickingElement = PickingElement & {
+  type: 'segment';
+  pathId: string;
+  from: Point;
+  to: Point;
+};
+
+export function isSegmentPickingElement(element: PickingElement): element is SegmentPickingElement {
+  return element.type === 'segment';
+}
 
 type PathStyle = {
   width: number;
@@ -396,12 +408,13 @@ export const PathLayer = ({
       getPathSegments(stcContext).forEach((point, i, a) => {
         if (i) {
           const previousPoint = a[i - 1];
-          const index = registerPickingElement({
+          const pickingElement: SegmentPickingElement = {
             type: 'segment',
             pathId: path.id,
             from: previousPoint,
             to: point,
-          });
+          };
+          const index = registerPickingElement(pickingElement);
           const lineColor = hexToRgb(indexToColor(index));
           drawAliasedLine(
             imageData,
