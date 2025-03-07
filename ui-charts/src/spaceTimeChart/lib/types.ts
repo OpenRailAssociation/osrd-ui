@@ -103,7 +103,7 @@ export type LayerType = (typeof LAYERS)[number];
 // PICKING SPECIFIC TYPES:
 export type PickingElement =
   | { type: 'point'; pathId: string; point: Point }
-  | { type: 'segment'; pathId: string; from: Point; to: Point }
+  | { type: 'segment' }
   | { type: 'conflict' };
 export type HoveredItem = { layer: PickingLayerType; element: PickingElement };
 
