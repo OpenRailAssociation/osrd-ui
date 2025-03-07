@@ -101,10 +101,7 @@ export const LAYERS = ['background', 'graduations', 'paths', 'overlay', 'caption
 export type LayerType = (typeof LAYERS)[number];
 
 // PICKING SPECIFIC TYPES:
-export type PickingElement =
-  | { type: 'point' }
-  | { type: 'segment' }
-  | { type: 'conflict' };
+export type PickingElement = { type: string };
 export type HoveredItem = { layer: PickingLayerType; element: PickingElement };
 
 export type DrawingFunction = (
