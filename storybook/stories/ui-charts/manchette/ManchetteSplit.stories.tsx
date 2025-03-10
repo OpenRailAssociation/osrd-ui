@@ -17,11 +17,7 @@ const meta: Meta<typeof Manchette> = {
 export default meta;
 type Story = StoryObj<typeof Manchette>;
 
-const customDiv = (
-  <div style={{ height: 'auto', minHeight: 24, backgroundColor: 'rgba(152, 192, 245, 1)' }}>
-    Hello World
-  </div>
-);
+const customDiv = <div style={{ height: '100px', backgroundColor: '#EFF3F5' }} />;
 
 export const Default: Story = {
   args: {
