@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Tooltip } from './Tooltip';
 import type { Point } from '../lib/types';
 
 export type ConflictTooltipProps = {
@@ -29,7 +30,7 @@ export const ConflictTooltip = ({
   type,
   trains,
 }: ConflictTooltipProps) => (
-  <div className="spacetimechart-tooltip" style={{ left: position.x, top: position.y }}>
+  <Tooltip position={position}>
     <div className="time">{new Date(time).toLocaleTimeString()}</div>
     <div className="position-range">
       <div className="start-position">{formatDistance(spaceStart)}</div>
@@ -40,5 +41,5 @@ export const ConflictTooltip = ({
       <div>{Math.round((timeEnd - timeStart) / 1000)}s</div>
     </div>
     <div className="trains">{trains.join(', ')}</div>
-  </div>
+  </Tooltip>
 );
