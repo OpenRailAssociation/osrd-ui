@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import {
-  PathLayer,
   SpaceTimeChart,
   Manchette,
   type ProjectPathTrainResult,
   type Waypoint,
   useManchetteWithSpaceTimeChart,
+  isInteractiveWaypoint,
+  PathLayer,
+  usePaths,
 } from '@osrd-project/ui-charts';
 import { EyeClosed, Telescope } from '@osrd-project/ui-icons';
 import type { Meta } from '@storybook/react';
@@ -68,9 +70,9 @@ const ManchetteWithSpaceTimeWrapper = ({
     setActiveWaypointId(waypointId);
   };
 
+  const paths = usePaths(projectPathTrainResult);
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart({
     waypoints,
-    projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
   });
@@ -94,7 +96,7 @@ const ManchetteWithSpaceTimeWrapper = ({
     };
   }, [activeWaypointId]);
 
-  const selectedPath = spaceTimeChartProps.paths[selectedTrain].id;
+  const selectedPath = paths[selectedTrain].id;
 
   return (
     // Ref needs to be on the parent on the scrollable element (.manchette) and have a position
@@ -128,26 +130,27 @@ const ManchetteWithSpaceTimeWrapper = ({
       >
         <Manchette
           {...manchetteProps}
-          contents={manchetteProps.contents.map((op) => ({
-            ...op,
-            onClick: handleWaypointClick,
-          }))}
+          contents={manchetteProps.contents.map((op) =>
+            isInteractiveWaypoint(op)
+              ? {
+                  ...op,
+                  onClick: handleWaypointClick,
+                }
+              : op
+          )}
           waypointMenuData={{
             menu: <Menu menuRef={menuRef} items={menuItems} />,
             activeWaypointId,
             manchetteWrapperRef: manchetteWithSpaceTimeCharWrappertRef,
           }}
         />
-        <div
-          className="space-time-chart-container w-full sticky"
-          style={{ bottom: 0, left: 0, top: 2, height: `${DEFAULT_HEIGHT - 6}px` }}
-        >
+        <div className="space-time-chart-container w-full sticky">
           <SpaceTimeChart
             className="inset-0 absolute h-full"
             {...spaceTimeChartProps}
             onPan={activeWaypointId ? undefined : spaceTimeChartProps.onPan}
           >
-            {spaceTimeChartProps.paths.map((path) => (
+            {paths.map((path) => (
               <PathLayer
                 key={path.id}
                 path={path}
@@ -163,7 +166,7 @@ const ManchetteWithSpaceTimeWrapper = ({
 };
 
 const meta: Meta<typeof ManchetteWithSpaceTimeWrapper> = {
-  title: 'Manchette with SpaceTimeChart/rendering',
+  title: 'Manchette with SpaceTimeChart/Waypoints menus',
   component: ManchetteWithSpaceTimeWrapper,
 };
 

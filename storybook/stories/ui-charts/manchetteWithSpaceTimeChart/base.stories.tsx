@@ -3,12 +3,13 @@ import React, { useRef } from 'react';
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
 import {
-  PathLayer,
   SpaceTimeChart,
   Manchette,
   useManchetteWithSpaceTimeChart,
   type ProjectPathTrainResult,
   type Waypoint,
+  PathLayer,
+  usePaths,
 } from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 
@@ -29,14 +30,14 @@ const ManchetteWithSpaceTimeWrapper = ({
 }: ManchetteWithSpaceTimeWrapperProps) => {
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
 
+  const paths = usePaths(projectPathTrainResult);
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart({
     waypoints,
-    projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
   });
 
-  const selectedPath = spaceTimeChartProps.paths[selectedTrain].id;
+  const selectedPath = paths[selectedTrain].id;
 
   return (
     <div className="manchette-space-time-chart-wrapper">
@@ -51,12 +52,9 @@ const ManchetteWithSpaceTimeWrapper = ({
         onScroll={handleScroll}
       >
         <Manchette {...manchetteProps} />
-        <div
-          className="space-time-chart-container w-full sticky"
-          style={{ bottom: 0, left: 0, top: 2, height: `${DEFAULT_HEIGHT - 6}px` }}
-        >
+        <div className="space-time-chart-container w-full sticky">
           <SpaceTimeChart className="inset-0 absolute h-full" {...spaceTimeChartProps}>
-            {spaceTimeChartProps.paths.map((path) => (
+            {paths.map((path) => (
               <PathLayer
                 key={path.id}
                 path={path}
@@ -72,7 +70,7 @@ const ManchetteWithSpaceTimeWrapper = ({
 };
 
 const meta: Meta<typeof ManchetteWithSpaceTimeWrapper> = {
-  title: 'Manchette with SpaceTimeChart/rendering',
+  title: 'Manchette with SpaceTimeChart/Hook API',
   component: ManchetteWithSpaceTimeWrapper,
 };
 

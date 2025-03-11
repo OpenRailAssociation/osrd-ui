@@ -3,11 +3,15 @@ import './styles/main.css';
 import './consts';
 
 export { default as Manchette, type ManchetteProps } from './components/Manchette';
-export { default as ManchetteWithSpaceTimeChart } from './components/ManchetteWithSpaceTimeChart';
+export {
+  default as ManchetteWithSpaceTimeChart,
+  type ManchetteWithSpaceTimeChartProps,
+} from './components/ManchetteWithSpaceTimeChart';
 
 export { DEFAULT_ZOOM_MS_PER_PX } from './consts';
 
 export { default as useManchetteWithSpaceTimeChart } from './hooks/useManchetteWithSpaceTimeChart';
+export { default as usePaths } from './hooks/usePaths';
 
 export type {
   WaypointMenuData,
@@ -16,4 +20,5 @@ export type {
   InteractiveWaypoint,
 } from './types';
 
-export { timeScaleToZoomValue } from './utils/helpers';
+export { positionMmToKm } from './utils';
+export { timeScaleToZoomValue, isInteractiveWaypoint } from './utils/helpers';

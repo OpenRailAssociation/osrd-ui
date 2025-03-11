@@ -2,7 +2,10 @@ import React, { useRef } from 'react';
 
 import Manchette, { type ManchetteProps } from './Manchette';
 import { PathLayer, SpaceTimeChart, type SpaceTimeChartProps } from '../../spaceTimeChart';
-import useManchetteWithSpaceTimeChart from '../hooks/useManchetteWithSpaceTimeChart';
+import useManchetteWithSpaceTimeChart, {
+  type SplitPoint,
+} from '../hooks/useManchetteWithSpaceTimeChart';
+import usePaths from '../hooks/usePaths';
 import { type ProjectPathTrainResult, type Waypoint } from '../types';
 
 export type ManchetteWithSpaceTimeChartProps = {
@@ -13,6 +16,7 @@ export type ManchetteWithSpaceTimeChartProps = {
   header?: React.ReactNode;
   manchetteProps?: ManchetteProps;
   spaceTimeChartProps?: SpaceTimeChartProps;
+  splitPoints?: SplitPoint[];
 };
 
 /**
@@ -29,16 +33,18 @@ const ManchetteWithSpaceTimeChart = ({
   header,
   manchetteProps: additionalManchetteProps,
   spaceTimeChartProps: additionalSpaceTimeChartProps,
+  splitPoints,
 }: ManchetteWithSpaceTimeChartProps) => {
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
   const spaceTimeChartRef = useRef<HTMLDivElement>(null);
 
+  const paths = usePaths(projectPathTrainResult);
   const { manchetteProps, spaceTimeChartProps, handleScroll } = useManchetteWithSpaceTimeChart({
     waypoints,
-    projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
     height,
     spaceTimeChartRef,
+    splitPoints,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
   });
 
@@ -57,17 +63,13 @@ const ManchetteWithSpaceTimeChart = ({
         onScroll={handleScroll}
       >
         <Manchette {...manchetteProps} {...additionalManchetteProps} />
-        <div
-          className="space-time-chart-container w-full sticky"
-          ref={spaceTimeChartRef}
-          style={{ bottom: 0, left: 0, top: 2, height: `${height - 6}px` }}
-        >
+        <div className="space-time-chart-container w-full sticky" ref={spaceTimeChartRef}>
           <SpaceTimeChart
             className="inset-0 absolute h-full"
             {...spaceTimeChartProps}
             {...additionalSpaceTimeChartProps}
           >
-            {spaceTimeChartProps.paths.map((path) => (
+            {paths.map((path) => (
               <PathLayer key={path.id} path={path} color={path.color} />
             ))}
             {children}

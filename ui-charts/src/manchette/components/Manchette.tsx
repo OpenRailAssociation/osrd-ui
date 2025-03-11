@@ -1,11 +1,12 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { Fragment, useLayoutEffect, useRef, useState } from 'react';
 
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
 import { INITIAL_OP_LIST_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from '../consts';
-import WaypointList from './WaypointList';
 import type { InteractiveWaypoint, WaypointMenuData } from '../types';
+import Waypoint from './Waypoint';
+import { isInteractiveWaypoint } from '../utils/helpers';
 
 export type ManchetteProps = {
   contents: (InteractiveWaypoint | React.ReactNode)[];
@@ -55,13 +56,35 @@ const Manchette = ({
           {waypointMenuData.menu}
         </div>
       )}
-      <div className="bg-white-100 border-r border-grey-30" style={{ minHeight: `${height}px` }}>
-        <WaypointList
-          contents={contents}
-          activeWaypointId={waypointMenuData?.activeWaypointId}
-          activeWaypointRef={activeWaypointRef}
-        />
-        {children}
+      <div
+        className="bg-white-100 border-r border-grey-30 relative"
+        style={{ minHeight: `${height}px` }}
+      >
+        <div className="waypoints-list">
+          {contents.map((content, index) =>
+            isInteractiveWaypoint(content) ? (
+              <div
+                key={index}
+                className="waypoint-wrapper flex justify-start"
+                style={content.styles}
+              >
+                <Waypoint
+                  waypoint={content}
+                  nameRef={
+                    waypointMenuData?.activeWaypointId === content.id
+                      ? activeWaypointRef
+                      : undefined
+                  }
+                  isActive={waypointMenuData?.activeWaypointId === content.id}
+                  isMenuActive={!!waypointMenuData?.activeWaypointId}
+                />
+              </div>
+            ) : (
+              <Fragment key={index}>{content}</Fragment>
+            )
+          )}
+          {children}
+        </div>
       </div>
       <div className="manchette-actions">
         <div className="zoom-buttons">
