@@ -6,7 +6,7 @@ import type { Meta } from '@storybook/react';
 import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from './assets/sampleData';
 
 const meta: Meta<typeof ManchetteWithSpaceTimeChart> = {
-  title: 'Manchette with SpaceTimeChart/simple',
+  title: 'Manchette with SpaceTimeChart/Component API',
   component: ManchetteWithSpaceTimeChart,
 };
 

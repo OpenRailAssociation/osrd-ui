@@ -55,6 +55,22 @@
       line-height: 14px;
     }
   }
+
+  .waypoints-list {
+    width: 349px;
+    border-bottom-left-radius: 0.25rem;
+    padding-inline: 0.5rem 1.625rem;
+
+    @apply bg-white-100;
+
+    .waypoint-wrapper:last-child {
+      .waypoint {
+        &::after {
+          bottom: 16px;
+        }
+      }
+    }
+  }
 }
 
 .manchette-space-time-chart-wrapper {
@@ -77,8 +93,6 @@
   }
 
   .space-time-chart-container {
-    height: 561px;
-    width: 100%;
-    bottom: 0;
+    inset: 0;
   }
 }

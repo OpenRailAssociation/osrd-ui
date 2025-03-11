@@ -41,6 +41,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
     swapAxis,
     onHoveredChildUpdate,
     children,
+    additionalChildren,
     enableSnapping,
     hideGrid,
     hidePathsLabels,
@@ -219,6 +220,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
               </>
             )}
             {children}
+            {additionalChildren}
           </MouseContext.Provider>
         </CanvasContext.Provider>
       </SpaceTimeChartContext.Provider>
