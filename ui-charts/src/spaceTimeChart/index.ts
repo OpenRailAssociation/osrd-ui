@@ -19,3 +19,4 @@ export * from './components/Tooltip';
 export * from './components/OccupancyBlockLayer';
 export * from './components/WorkScheduleLayer';
 export * from './components/PatternRect';
+export * from './components/Quadrilateral';
