@@ -45,7 +45,7 @@ export default App;
 | `electrifications`   | `LayerData<ElectrificationValues>[]`              | Array with electrification values.                                        |
 | `slopes`             | `LayerData<number>[]`                             | Array with numerical values representing slopes.                          |
 | `trainLength`        | `number`                                          | The train length in meters.                                               |
-| `electricalProfiles` | `LayerData<ElectricalPofilelValues>[]` (optional) | Optional array with electrical profile values.                            |
+| `electricalProfiles` | `LayerData<ElectricalProfileValues>[]` (optional) | Optional array with electrical profile values.                            |
 | `powerRestrictions`  | `LayerData<PowerRestrictionValues>[]` (optional)  | Optional array with power restriction values.                             |
 | `speedLimitTags`     | `LayerData<SpeedLimitTagValues>[]` (optional)     | Optional array with speed limit tag values.                               |
 | `mrsp`               | `ValuesAlongPath<SpeedLimit>[]` (optional)        | Optional struct with most restricted speed profile values along the path. |
@@ -65,7 +65,7 @@ Specific types for LayerData values:
   - `powerRestriction`: string
   - `handled`: boolean
 
-- `ElectricalPofilelValues`
+- `ElectricalProfileValues`
 
   - `electricalProfile`: string
   - `color?`: string (optional)
