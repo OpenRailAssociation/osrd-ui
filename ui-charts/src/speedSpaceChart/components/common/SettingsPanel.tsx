@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Checkbox } from '@osrd-project/ui-core';
 import { X } from '@osrd-project/ui-icons';
 
-import type { Store } from '../../types/chartTypes';
+import type { Store } from '../../types';
 import { DETAILS_BOX_SELECTION, LAYERS_SELECTION } from '../const';
 import type { SpeedSpaceChartProps } from '../SpeedSpaceChart';
 import { isLayerActive, getAdaptiveHeight } from '../utils';

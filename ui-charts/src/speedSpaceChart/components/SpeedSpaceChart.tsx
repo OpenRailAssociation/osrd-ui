@@ -19,7 +19,7 @@ import {
   TickLayerYRight,
 } from './layers/index';
 import { getAdaptiveHeight, getGraphOffsets, getLinearLayerMarginTop } from './utils';
-import type { Data, Store } from '../types/chartTypes';
+import type { Data, Store } from '../types';
 
 export type SpeedSpaceChartProps = {
   width: number;

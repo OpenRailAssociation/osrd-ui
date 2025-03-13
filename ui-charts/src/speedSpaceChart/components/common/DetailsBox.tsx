@@ -2,7 +2,7 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import type { Store } from '../../types/chartTypes';
+import type { Store } from '../../types';
 import { MARGINS } from '../const';
 
 const DETAILBOX_MARGIN = 6;

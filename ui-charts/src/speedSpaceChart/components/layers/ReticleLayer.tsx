@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { TrainDetails, Store } from '../../types/chartTypes';
+import type { TrainDetails, Store } from '../../types';
 import DetailsBox from '../common/DetailsBox';
 import { drawCursor } from '../helpers/drawElements/reticle';
 import { clearCanvas, getAdaptiveHeight } from '../utils';

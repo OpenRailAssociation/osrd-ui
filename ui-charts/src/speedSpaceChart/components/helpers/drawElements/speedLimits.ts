@@ -1,4 +1,4 @@
-import type { DrawFunctionParams } from '../../../types/chartTypes';
+import type { DrawFunctionParams } from '../../../types';
 import { ERROR_30, ERROR_60, MARGINS, WARNING_30 } from '../../const';
 import {
   clearCanvas,

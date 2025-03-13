@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { Store, tooltipInfos } from '../../types/chartTypes';
+import type { Store, tooltipInfos } from '../../types';
 import Tooltip from '../common/Tooltip';
 import { LINEAR_LAYERS_HEIGHTS } from '../const';
 import { drawSpeedLimitTags, computeTooltip } from '../helpers/drawElements/speedLimitTags';

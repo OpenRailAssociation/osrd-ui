@@ -19,7 +19,7 @@ import {
   type VisibilityFilterOptions,
   getSnappedStop,
 } from '../components/utils';
-import type { LayerData, Store } from '../types/chartTypes';
+import type { LayerData, Store } from '../types';
 
 const speeds: LayerData<number>[] = [
   { value: 10, position: { start: 200 } },

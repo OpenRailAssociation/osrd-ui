@@ -3,7 +3,7 @@ import React from 'react';
 import { Iterations, Dash, Plus, KebabHorizontal } from '@osrd-project/ui-icons';
 import cx from 'classnames';
 
-import type { Store } from '../../types/chartTypes';
+import type { Store } from '../../types';
 
 type InteractionButtonsProps = {
   reset: () => void;

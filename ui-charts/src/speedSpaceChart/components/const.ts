@@ -1,6 +1,6 @@
 import chroma from 'chroma-js';
 
-import { type ColorDictionary, type Store } from '../types/chartTypes';
+import { type ColorDictionary, type Store } from '../types';
 
 export const SLOPE_FILL_COLOR = '#CFDDCE';
 

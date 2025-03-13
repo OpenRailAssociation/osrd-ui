@@ -1,4 +1,4 @@
-import type { DrawFunctionParams } from '../../../types/chartTypes';
+import type { DrawFunctionParams } from '../../../types';
 import {
   LINEAR_LAYERS_BACKGROUND_COLOR,
   LINEAR_LAYERS_HEIGHTS,
