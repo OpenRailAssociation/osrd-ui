@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
-import type { Meta, StoryObj } from '@storybook/react';
-
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
-import { translations as defaultTranslation } from './assets/const';
+import { SpeedSpaceChart, type SpeedSpaceChartProps } from '@osrd-project/ui-charts';
+import type { Meta, StoryObj } from '@storybook/react';
+
 import { pathPropertiesPmpLm } from './assets/path_properties_PMP_LM';
 import { powerRestrictionsPmpLm } from './assets/power_restrictions_PMP_LM';
 import { simulationPmpLm } from './assets/simulation_PMP_LM';
 import { speedLimitTags } from './assets/speed_limit_tags_PMP_LM';
+import { defaultTranslations } from './consts';
 import { formatData } from './utils';
-import SpeedSpaceChart, { type SpeedSpaceChartProps } from '../components/SpeedSpaceChart';
 
 const defaultData = formatData(
   simulationPmpLm,
@@ -56,7 +56,7 @@ const meta: Meta<typeof SpeedSpaceChart> = {
     backgroundColor: 'rgb(247, 246, 238)',
     data: defaultData,
     setHeight: () => {},
-    translations: defaultTranslation,
+    translations: defaultTranslations,
   },
 
   render: (args) => <SpeedSpaceChartStory {...args} />,
@@ -74,6 +74,6 @@ export const SpeedSpaceChartDefault: Story = {
     backgroundColor: 'rgb(247, 246, 238)',
     data: defaultData,
     setHeight: () => {},
-    translations: defaultTranslation,
+    translations: defaultTranslations,
   },
 };

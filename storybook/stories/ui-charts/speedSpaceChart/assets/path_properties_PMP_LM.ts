@@ -1,4 +1,4 @@
-import type { PathProperties } from '../../types/simulationTypes';
+import type { PathProperties } from '../types';
 
 export const pathPropertiesPmpLm: PathProperties = {
   slopes: {

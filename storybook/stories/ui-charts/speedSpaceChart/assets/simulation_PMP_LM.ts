@@ -1,4 +1,4 @@
-import type { Simulation } from '../../types/simulationTypes';
+import type { Simulation } from '../types';
 
 export const simulationPmpLm: Simulation = {
   mrsp: {

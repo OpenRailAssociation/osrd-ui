@@ -1,8 +1,9 @@
-import { electricalProfilesDesignValues } from './assets/const';
+import type { SpeedSpaceChartData } from '@osrd-project/ui-charts';
+
 import type { PowerRestriction } from './assets/power_restrictions_PMP_LM';
 import type { SpeedLimitTags } from './assets/speed_limit_tags_PMP_LM';
-import type { Data } from '../types/chartTypes';
-import type { PathProperties, Simulation } from '../types/simulationTypes';
+import { electricalProfilesDesignValues } from './consts';
+import type { PathProperties, Simulation } from './types';
 
 const convertMsToKmh = (value: number) => value * 3.6;
 
@@ -98,7 +99,7 @@ const getProfileValue = (
 
 const formatElectricalProfiles = (
   simulation: Simulation,
-  electrifications: Data['electrifications']
+  electrifications: SpeedSpaceChartData['electrifications']
 ) =>
   simulation.electrical_profiles.values.map(({ electrical_profile_type, profile }, index) => {
     const electrification = electrifications.find(
@@ -148,7 +149,7 @@ export const formatData = (
   pathProperties: PathProperties,
   powerRestrictionsData: PowerRestriction[],
   speedLimitTagsData: SpeedLimitTags
-): Data => {
+): SpeedSpaceChartData => {
   const speeds = formatSpeed(simulation.base);
   const ecoSpeeds = formatEcoSpeeds(simulation.final_output);
   const mrsp = formatMrsp(simulation.mrsp);

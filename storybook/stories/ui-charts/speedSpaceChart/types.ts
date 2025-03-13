@@ -1,4 +1,4 @@
-import { type electricalProfilesDesignValues } from '../stories/assets/const';
+import { type electricalProfilesDesignValues } from './consts';
 
 export type Simulation = {
   base: {
