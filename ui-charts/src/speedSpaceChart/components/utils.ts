@@ -6,7 +6,7 @@ import {
   MARGINS,
   type LAYERS_SELECTION,
 } from './const';
-import type { LayerData, OperationalPoints, Store } from '../types/chartTypes';
+import type { LayerData, OperationalPoints, Store } from '../types';
 
 type SlopesValues = {
   minGradient: number;

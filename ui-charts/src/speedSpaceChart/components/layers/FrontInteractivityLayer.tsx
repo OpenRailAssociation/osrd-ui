@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Store } from '../../types/chartTypes';
+import type { Store } from '../../types';
 import { drawFrame } from '../helpers/frontFrame';
 import { useCanvas } from '../hooks';
 

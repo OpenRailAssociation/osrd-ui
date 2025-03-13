@@ -1,4 +1,4 @@
-import type { DrawFunctionParams } from '../../../types/chartTypes';
+import type { DrawFunctionParams } from '../../../types';
 import { BLACK, GREY_50, GREY_80, LIGHT_BLUE, MARGINS } from '../../const';
 import {
   clearCanvas,

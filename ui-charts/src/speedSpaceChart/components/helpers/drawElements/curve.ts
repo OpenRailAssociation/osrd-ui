@@ -1,6 +1,6 @@
 import chroma from 'chroma-js';
 
-import type { DrawFunctionParams, LayerData } from '../../../types/chartTypes';
+import type { DrawFunctionParams, LayerData } from '../../../types';
 import { MARGINS } from '../../const';
 import { clearCanvas, maxPositionValue, maxSpeedValue } from '../../utils';
 

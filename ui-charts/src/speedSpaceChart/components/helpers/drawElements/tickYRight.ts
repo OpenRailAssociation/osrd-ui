@@ -1,4 +1,4 @@
-import type { DrawFunctionParams } from '../../../types/chartTypes';
+import type { DrawFunctionParams } from '../../../types';
 import { MARGINS, TICK_TITLE_MARGINS, RIGHT_TICK_HEIGHT_OFFSET } from '../../const';
 import { clearCanvas, slopesValues } from '../../utils';
 

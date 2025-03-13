@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Store } from '../../types/chartTypes';
+import type { Store } from '../../types';
 import { drawAxisY } from '../helpers/drawElements/axisY';
 import { useCanvas } from '../hooks';
 

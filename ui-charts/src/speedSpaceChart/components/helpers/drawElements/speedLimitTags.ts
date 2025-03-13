@@ -2,7 +2,7 @@ import type {
   DrawFunctionParams,
   SpeedLimitTagsLayerDrawFunctionParams,
   tooltipInfos,
-} from '../../../types/chartTypes';
+} from '../../../types';
 import {
   COLOR_DICTIONARY,
   LINEAR_LAYER_SEPARATOR_HEIGHT,

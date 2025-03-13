@@ -1,4 +1,4 @@
-import type { DrawFunctionParams, LayerData } from '../../../types/chartTypes';
+import type { DrawFunctionParams, LayerData } from '../../../types';
 import { WHITE, BLACK, MARGINS } from '../../const';
 import {
   clearCanvas,

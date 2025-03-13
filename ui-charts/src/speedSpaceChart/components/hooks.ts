@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import type { DrawFunctionParams, Store } from '../types/chartTypes';
+import type { DrawFunctionParams, Store } from '../types';
 
 type DrawFunction = (params: DrawFunctionParams) => void;
 

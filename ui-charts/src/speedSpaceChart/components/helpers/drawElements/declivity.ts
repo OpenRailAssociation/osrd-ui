@@ -1,4 +1,4 @@
-import type { DrawFunctionParams } from '../../../types/chartTypes';
+import type { DrawFunctionParams } from '../../../types';
 import { MARGINS, SLOPE_FILL_COLOR } from '../../const';
 import { clearCanvas, maxPositionValue, slopesValues } from '../../utils';
 
