@@ -1,4 +1,4 @@
-export const translations = {
+export const defaultTranslations = {
   detailsBoxDisplay: {
     reticleInfos: 'Reticle infos',
     energySource: 'Energy Source',
