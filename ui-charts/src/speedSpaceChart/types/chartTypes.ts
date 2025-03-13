@@ -1,21 +1,21 @@
-export type ElectricalPofilelValues = {
+type ElectricalProfileValues = {
   electricalProfile: string;
   color?: string;
   heightLevel?: number;
   handled?: boolean;
 };
 
-export type PowerRestrictionValues = {
+type PowerRestrictionValues = {
   powerRestriction: string;
   handled: boolean;
 };
 
-export type SpeedLimitTagValues = {
+type SpeedLimitTagValues = {
   tag: string;
   color: string;
 };
 
-export type ElectrificationValues = {
+type ElectrificationValues = {
   type: 'electrification' | 'neutral_section' | 'non_electrified';
   voltage?: '1500V' | '25000V';
   lowerPantograph?: boolean;
@@ -35,7 +35,7 @@ export type OperationalPoints = {
   weight?: number;
 };
 
-export type ValuesAlongPath<T> = {
+type ValuesAlongPath<T> = {
   // The n boundaries of the values along the path.
   // Ignore first and last values which are 0 and the total length of the path.
   boundaries: number[];
@@ -44,7 +44,7 @@ export type ValuesAlongPath<T> = {
   values: T[];
 };
 
-export type SpeedLimit = {
+type SpeedLimit = {
   // The speed limit in km/h.
   speed: number;
   // Is the speed limit temporary or permanent.
@@ -58,7 +58,7 @@ export type Data = {
   electrifications: LayerData<ElectrificationValues>[];
   slopes: LayerData<number>[];
   mrsp?: ValuesAlongPath<SpeedLimit>;
-  electricalProfiles?: LayerData<ElectricalPofilelValues>[];
+  electricalProfiles?: LayerData<ElectricalProfileValues>[];
   powerRestrictions?: LayerData<PowerRestrictionValues>[];
   speedLimitTags?: LayerData<SpeedLimitTagValues>[];
   // The length of the train in meters.
