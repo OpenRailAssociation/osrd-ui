@@ -11,3 +11,4 @@ storybook-static
 # IDE
 .vscode/
 
+.nx/cache
