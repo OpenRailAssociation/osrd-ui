@@ -4,10 +4,6 @@ import OccupancyZonesLayer from './layers/OccupancyZonesLayer';
 import TracksLayer from './layers/TracksLayer';
 import { type TrackOccupancyCanvasProps } from './types';
 
-new FontFace('IBM Plex Mono', 'url(/assets/IBMPlexMono-Regular.ttf)').load().then((result) => {
-  document.fonts.add(result);
-});
-
 const TrackOccupancyCanvas = ({
   opId,
   useDraw,
