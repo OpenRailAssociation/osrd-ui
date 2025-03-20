@@ -19,6 +19,7 @@ import { MouseTracker } from '../spaceTimeChart/helpers/components';
 
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
+import './styles/rectangle-zoom.css';
 
 type ManchetteWithSpaceTimeWrapperProps = {
   waypoints: Waypoint[];
