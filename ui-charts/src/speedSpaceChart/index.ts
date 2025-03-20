@@ -5,4 +5,11 @@ export {
   default as SpeedSpaceChart,
   type SpeedSpaceChartProps,
 } from './components/SpeedSpaceChart';
-export type { Data as SpeedSpaceChartData } from './types';
+export type {
+  LayerData,
+  PowerRestrictionValues,
+  ElectricalProfileValues,
+  ElectrificationValues,
+  SpeedLimitTagValues,
+  Data as SpeedSpaceChartData,
+} from './types';
