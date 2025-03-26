@@ -387,6 +387,10 @@ export type CanvasRect = {
   spaceEnd: number; // mm
 };
 
+/**
+ * You most likely need to wrap this function call with ctx.save ctx.restore
+ * as it modifies ctx current transformation matrix
+ */
 export function fillRect(
   ctx: CanvasRenderingContext2D,
   rect: CanvasRect,
