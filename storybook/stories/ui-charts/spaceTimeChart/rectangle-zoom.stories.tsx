@@ -8,6 +8,7 @@ import {
   type PathData,
   type OperationalPoint,
   DEFAULT_THEME,
+  SpaceScale,
 } from '@osrd-project/ui-charts';
 import { Button, Slider } from '@osrd-project/ui-core';
 import type { Meta } from '@storybook/react';
@@ -93,9 +94,8 @@ const RectangleZoomWrapper = ({
 
   const timeOrigin = +new Date('2024-04-02T00:00:00');
   const timeScale = zoomValueToTimeScale(state.timeZoomValue);
-  const spaceScale = [
+  const spaceScale: SpaceScale[] = [
     {
-      from: -100000,
       to: 100000,
       coefficient: zoomValueToSpaceScale(state.spaceZoomValue), // meter/px
     },
