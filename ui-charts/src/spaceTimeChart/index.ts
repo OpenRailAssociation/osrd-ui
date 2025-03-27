@@ -33,3 +33,4 @@ export type {
 
 export { isPathOnScreen } from './utils/geometry';
 export { getSpaceAtTime } from './utils/scales';
+export { getCrispLineCoordinate } from './utils/canvas';

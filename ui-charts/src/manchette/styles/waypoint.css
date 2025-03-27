@@ -5,6 +5,7 @@
   padding-block: 3px 5px;
   width: 315px;
   position: relative;
+
   &-separator {
     position: relative;
     opacity: 0.6;
@@ -19,7 +20,6 @@
       bottom: 11px;
       left: 0;
       width: 100%;
-      height: 0.5px;
       @apply bg-grey-40;
     }
   }
@@ -92,8 +92,22 @@
     bottom: 16px;
     right: -1.625rem;
     width: 1.625rem;
-    height: 0.5px;
     opacity: 0.6;
     @apply bg-grey-40;
+  }
+
+  /**
+   * Handle lines thickness, so that they are 0.5px wide only when DPR is at least 2 (since Firefox, particularly,
+   * doesn't render subpixel wide lines):
+   */
+
+  &-separator::after,
+  &::after {
+    height: 0.5px;
+    margin-bottom: -0.25px;
+
+    @media (max-resolution: 2x) {
+      height: 1px;
+    }
   }
 }

@@ -2,7 +2,11 @@ import React, { type ReactNode, useCallback, useEffect, useMemo, useState } from
 
 import { sortBy, clamp } from 'lodash';
 
-import { type SpaceScale, type SpaceTimeChartProps } from '../../spaceTimeChart';
+import {
+  getCrispLineCoordinate,
+  type SpaceScale,
+  type SpaceTimeChartProps,
+} from '../../spaceTimeChart';
 import { getSpaceToPixel, spaceScalesToBinaryTree } from '../../spaceTimeChart/utils/scales';
 import type { ManchetteProps } from '../components/Manchette';
 import {
@@ -465,6 +469,11 @@ const useManchetteWithSpaceTimeChart = ({
     // Sort all contents by position:
     const allSortedContents = sortBy(allContents, 'position');
 
+    // In practice, waypoint lines are 0.5px wide only when devicePixelRatio is at least 2 (as it's
+    // implemented at the end of waypoint.css). But to get the proper alignment, we always consider
+    // it to be 0.5px wide here, because they always have this thickness SpaceTimeChart side:
+    const waypointLinesThickness = 0.5;
+
     // Iterate over all contents, to set each split section's style, and correct waypoints styles
     // accordingly:
     const finalContents: (InteractiveWaypoint | ReactNode)[] = [];
@@ -475,7 +484,7 @@ const useManchetteWithSpaceTimeChart = ({
             ...content.waypoint,
             styles: {
               position: 'absolute',
-              top: `${getSpacePixel(content.position)}px`,
+              top: `${getCrispLineCoordinate(getSpacePixel(content.position), waypointLinesThickness)}px`,
               height: `${BASE_WAYPOINT_HEIGHT}px`,
             },
           });
