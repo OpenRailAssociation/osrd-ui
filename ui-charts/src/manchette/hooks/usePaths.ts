@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { type PathLevel } from '../../spaceTimeChart';
 import { PATH_COLOR_DEFAULT } from '../consts';
 import { type ProjectPathTrainResult } from '../types';
 
@@ -10,25 +9,23 @@ const transformCurve = (curve: ProjectPathTrainResult['spaceTimeCurves'][0], dep
     position,
   }));
 
-const usePaths = (projectPathTrainResult: ProjectPathTrainResult[], selectedTrain?: number) =>
+const usePaths = (projectPathTrainResult: ProjectPathTrainResult[]) =>
   useMemo(
     () =>
       projectPathTrainResult.flatMap((path) =>
         path.spaceTimeCurves.map<{
           id: string;
           label: string;
-          color: string;
-          level: PathLevel;
           points: { time: number; position: number }[];
-        }>((spaceTimeCurve, ind) => ({
-          id: `${path.id}-${ind}`,
+          color: string;
+        }>((spaceTimeCurve) => ({
+          id: path.id,
           label: path.name,
           color: PATH_COLOR_DEFAULT,
-          level: selectedTrain && selectedTrain === path.id ? 1 : 2,
           points: transformCurve(spaceTimeCurve, path.departureTime),
         }))
       ),
-    [projectPathTrainResult, selectedTrain]
+    [projectPathTrainResult]
   );
 
 export default usePaths;
