@@ -186,19 +186,26 @@ const useManchetteWithSpaceTimeChart = ({
 
         let newYZoom = yZoom;
         let newYOffset = yOffset;
+
         if (chosenSpaceScale) {
           const newSpaceScale = clamp(
             chosenSpaceScale,
             maxZoomMillimeterPerPx,
             minZoomMillimeterPerPx
           );
-          newYZoom = spaceScaleToZoomValue(
-            minZoomMillimeterPerPx,
-            maxZoomMillimeterPerPx,
-            newSpaceScale
-          );
-          const topRectSide = Math.min(prev.rect.spaceStart, prev.rect.spaceEnd);
-          newYOffset = Math.abs(spaceOrigin - topRectSide) / newSpaceScale;
+          // we don’t need to handle this case and compute an offset
+          // this condition happens when we draw a rectangle
+          // larger than the entire chart (minus padding)
+          // that would atually zoom OUT if it wasn’t clamped.
+          if (newSpaceScale !== minZoomMillimeterPerPx) {
+            newYZoom = spaceScaleToZoomValue(
+              minZoomMillimeterPerPx,
+              maxZoomMillimeterPerPx,
+              newSpaceScale
+            );
+            const topRectSide = Math.min(prev.rect.spaceStart, prev.rect.spaceEnd);
+            newYOffset = Math.abs(spaceOrigin - topRectSide) / newSpaceScale;
+          }
         }
 
         return {
