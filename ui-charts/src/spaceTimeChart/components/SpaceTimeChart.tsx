@@ -115,7 +115,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
     const getSpacePixel = getSpaceToPixel(spacePixelOffset, spaceScaleTree);
     const getPoint = getDataToPoint(getTimePixel, getSpacePixel, timeAxis, spaceAxis);
     const getTime = getPixelToTime(timeOrigin, timePixelOffset, timeScale);
-    const getSpace = getPixelToSpace(spaceOrigin, spacePixelOffset, spaceScaleTree);
+    const getSpace = getPixelToSpace(spacePixelOffset, spaceScaleTree);
     const getData = getPointToData(getTime, getSpace, timeAxis, spaceAxis);
 
     const pickingElements: PickingElement[] = [];
