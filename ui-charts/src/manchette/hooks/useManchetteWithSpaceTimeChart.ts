@@ -62,7 +62,6 @@ const useManchetteWithSpaceTimeChart = ({
   waypoints,
   projectPathTrainResult,
   manchetteWithSpaceTimeChartRef,
-  selectedTrain,
   height = 561,
   spaceTimeChartRef,
   defaultTimeOrigin = 0,
@@ -71,7 +70,6 @@ const useManchetteWithSpaceTimeChart = ({
   waypoints: Waypoint[];
   projectPathTrainResult: ProjectPathTrainResult[];
   manchetteWithSpaceTimeChartRef: React.RefObject<HTMLDivElement>;
-  selectedTrain?: number;
   height?: number;
   spaceTimeChartRef?: React.RefObject<HTMLDivElement>;
   defaultTimeOrigin?: number;
@@ -115,7 +113,7 @@ const useManchetteWithSpaceTimeChart = ({
     setState((prev) => ({ ...prev, timeOrigin: newTimeOrigin }));
   }, []);
 
-  const paths = usePaths(projectPathTrainResult, selectedTrain);
+  const paths = usePaths(projectPathTrainResult);
   const canvasDrawingHeight = height - FOOTER_HEIGHT; // 521
   const drawingHeightWithoutTopPadding = canvasDrawingHeight - BASE_WAYPOINT_HEIGHT / 2; // 505
   const drawingHeightWithoutBothPadding = canvasDrawingHeight - BASE_WAYPOINT_HEIGHT; // 489

@@ -50,12 +50,11 @@ const ManchetteWithSpaceTimeWrapper = ({
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
-    selectedTrain,
     height: DEFAULT_HEIGHT,
     spaceTimeChartRef,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
   });
-
+  const selectedPath = spaceTimeChartProps.paths[selectedTrain].id;
   return (
     <div className="manchette-space-time-chart-wrapper">
       <div
@@ -90,7 +89,12 @@ const ManchetteWithSpaceTimeWrapper = ({
             {...spaceTimeChartProps}
           >
             {spaceTimeChartProps.paths.map((path) => (
-              <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
+              <PathLayer
+                key={path.id}
+                path={path}
+                color={path.color}
+                level={path.id === selectedPath ? 1 : 2}
+              />
             ))}
             {spaceTimeChartProps.rect && <ZoomRect {...spaceTimeChartProps.rect} />}
             <MouseTracker />
