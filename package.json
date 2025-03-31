@@ -32,6 +32,8 @@
   },
   "type": "module",
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.14.0",
     "@rollup/plugin-eslint": "^9.0.5",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
@@ -39,17 +41,15 @@
     "@types/lodash": "^4.17.13",
     "@types/react": "^18.2.40",
     "@types/react-dom": "^18.2.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.24.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-storybook": "^0.11.0",
+    "globals": "^15.11.0",
     "lerna": "^8.1.2",
     "postcss": "^8.4.38",
     "postcss-assets": "^6.0.0",
@@ -63,6 +63,7 @@
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-postcss": "^4.0.2",
     "typescript": "^5.4.2",
+    "typescript-eslint": "^8.13.0",
     "vitest": "^3.0.2"
   }
 }
