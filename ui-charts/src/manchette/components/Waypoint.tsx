@@ -19,7 +19,7 @@ const Waypoint = ({
   isMenuActive,
 }: WaypointProps) => (
   <div
-    className={cx('flex waypoint items-baseline', {
+    className={cx('waypoint flex items-baseline', {
       'waypoint-active': isActive,
       'menu-active': isMenuActive,
     })}
@@ -34,7 +34,7 @@ const Waypoint = ({
       {name}
     </div>
     <div className="waypoint-separator"></div>
-    <div className="waypoint-ch font-mono justify-self-end">{secondaryCode}</div>
+    <div className="waypoint-ch justify-self-end font-mono">{secondaryCode}</div>
     <div className="waypoint-separator"></div>
 
     <div className="waypoint-type"></div>

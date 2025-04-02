@@ -57,7 +57,7 @@ const Manchette = ({
         </div>
       )}
       <div
-        className="bg-white-100 border-r border-grey-30 relative"
+        className="bg-white-100 border-grey-30 relative border-r"
         style={{ minHeight: `${height}px` }}
       >
         <div className="waypoints-list">
@@ -110,7 +110,7 @@ const Manchette = ({
             Fit
           </button>
         </div>
-        <div className="flex items-center ml-auto text-sans font-semibold">
+        <div className="text-sans ml-auto flex items-center font-semibold">
           <button
             disabled={!!waypointMenuData?.activeWaypointId}
             className="toggle-mode"

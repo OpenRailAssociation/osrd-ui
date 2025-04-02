@@ -42,7 +42,7 @@ const ManchetteWithSpaceTimeWrapper = ({
   return (
     <div className="manchette-space-time-chart-wrapper">
       <div
-        className="header bg-ambientB-5 w-full border-b border-grey-30"
+        className="header bg-ambientB-5 border-grey-30 w-full border-b"
         style={{ height: '40px' }}
       ></div>
       <div
@@ -52,8 +52,8 @@ const ManchetteWithSpaceTimeWrapper = ({
         onScroll={handleScroll}
       >
         <Manchette {...manchetteProps} />
-        <div className="space-time-chart-container w-full sticky">
-          <SpaceTimeChart className="inset-0 absolute h-full" {...spaceTimeChartProps}>
+        <div className="space-time-chart-container sticky w-full">
+          <SpaceTimeChart className="absolute inset-0 h-full" {...spaceTimeChartProps}>
             {paths.map((path) => (
               <PathLayer
                 key={path.id}

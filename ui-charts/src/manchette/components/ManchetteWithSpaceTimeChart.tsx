@@ -51,7 +51,7 @@ const ManchetteWithSpaceTimeChart = ({
   return (
     <div className="manchette-space-time-chart-wrapper">
       <div
-        className="header bg-ambientB-5 w-full border-b border-grey-30"
+        className="header bg-ambientB-5 border-grey-30 w-full border-b"
         style={{ height: '40px' }}
       >
         {header}
@@ -63,9 +63,9 @@ const ManchetteWithSpaceTimeChart = ({
         onScroll={handleScroll}
       >
         <Manchette {...manchetteProps} {...additionalManchetteProps} />
-        <div className="space-time-chart-container w-full sticky" ref={spaceTimeChartRef}>
+        <div className="space-time-chart-container sticky w-full" ref={spaceTimeChartRef}>
           <SpaceTimeChart
-            className="inset-0 absolute h-full"
+            className="absolute inset-0 h-full"
             {...spaceTimeChartProps}
             {...additionalSpaceTimeChartProps}
           >
