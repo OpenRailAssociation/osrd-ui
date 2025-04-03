@@ -77,8 +77,8 @@ export type PathData = {
 
 export type OperationalPoint = {
   id: string;
-  label: string;
   position: number;
+  label?: string;
   importanceLevel?: number; // Lower is better. If null, the point won't be displayed.
 };
 
@@ -176,7 +176,10 @@ export type SpaceTimeChartTheme = {
 
 // CORE COMPONENT MAIN TYPES:
 export type SpaceTimeChartProps = {
-  children?: ReactNode[];
+  children?: ReactNode | ReactNode[];
+
+  // This allows giving the SpaceTimeChart two different set of children
+  additionalChildren?: ReactNode | ReactNode[];
 
   operationalPoints: OperationalPoint[];
 

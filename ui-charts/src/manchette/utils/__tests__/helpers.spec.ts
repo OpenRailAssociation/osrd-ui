@@ -1,8 +1,8 @@
 import { describe, it, test, expect } from 'vitest';
 
-import { BASE_WAYPOINT_HEIGHT, MAX_ZOOM_Y, MIN_ZOOM_Y } from '../../consts';
+import { MAX_ZOOM_Y, MIN_ZOOM_Y } from '../../consts';
 import {
-  computeWaypointsToDisplay,
+  selectWaypointsToDisplay,
   getScales,
   getExtremaScales,
   spaceScaleToZoomValue,
@@ -18,98 +18,58 @@ const mockedWaypoints = [
   { position: 200_000_000, id: 'waypoint-3' },
 ];
 
-describe('computeWaypointsToDisplay', () => {
-  const minZoomMillimeterPerPx = 500_000;
-  const maxZoomMillimeterPerPx = 1_000;
+describe('selectWaypointsToDisplay', () => {
   it('should ensure that a empty array is returned when there is only 1 waypoint', () => {
-    const result = computeWaypointsToDisplay(
-      [mockedWaypoints[0]],
-      {
-        height: 500,
-        isProportional: true,
-        yZoom: 1,
-      },
-      minZoomMillimeterPerPx,
-      maxZoomMillimeterPerPx
-    );
+    const result = selectWaypointsToDisplay([mockedWaypoints[0]], {
+      height: 500,
+      isProportional: true,
+      yZoom: 1,
+    });
     expect(result.length).toBe(0);
   });
 
   it('should display all points for non-proportional display', () => {
-    const result = computeWaypointsToDisplay(
-      mockedWaypoints,
-      {
-        height: 100,
-        isProportional: false,
-        yZoom: 1,
-      },
-      minZoomMillimeterPerPx,
-      maxZoomMillimeterPerPx
-    );
+    const result = selectWaypointsToDisplay(mockedWaypoints, {
+      height: 100,
+      isProportional: false,
+      yZoom: 1,
+    });
     expect(result).toHaveLength(mockedWaypoints.length);
-    expect(result[0].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
-    expect(result[1].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
   });
 
   it('should correctly filter waypoints', () => {
-    const result = computeWaypointsToDisplay(
-      mockedWaypoints,
-      {
-        height: 100,
-        isProportional: true,
-        yZoom: 1,
-      },
-      minZoomMillimeterPerPx,
-      maxZoomMillimeterPerPx
-    );
+    const result = selectWaypointsToDisplay(mockedWaypoints, {
+      height: 100,
+      isProportional: true,
+      yZoom: 1,
+    });
     expect(result).toHaveLength(2);
   });
 
   it('should return correct heights for proportional display, zoom 1', () => {
-    const result = computeWaypointsToDisplay(
-      mockedWaypoints,
-      {
-        height: 500,
-        isProportional: true,
-        yZoom: 1,
-      },
-      minZoomMillimeterPerPx,
-      maxZoomMillimeterPerPx
-    );
+    const result = selectWaypointsToDisplay(mockedWaypoints, {
+      height: 500,
+      isProportional: true,
+      yZoom: 1,
+    });
     expect(result).toHaveLength(mockedWaypoints.length);
-    expect(result[0].styles?.height).toBe(`200px`);
-    expect(result[1].styles?.height).toBe(`200px`);
-    expect(result[2].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
   });
 
   it('should return correct heights for proportional display, zoom 2', () => {
-    const result = computeWaypointsToDisplay(
-      mockedWaypoints,
-      {
-        height: 500,
-        isProportional: true,
-        yZoom: 2,
-      },
-      minZoomMillimeterPerPx,
-      maxZoomMillimeterPerPx
-    );
+    const result = selectWaypointsToDisplay(mockedWaypoints, {
+      height: 500,
+      isProportional: true,
+      yZoom: 2,
+    });
     expect(result).toHaveLength(mockedWaypoints.length);
-    expect(result[0].styles?.height).toBe(`385px`);
-    expect(result[1].styles?.height).toBe(`385px`);
-    expect(result[2].styles?.height).toBe(`${BASE_WAYPOINT_HEIGHT}px`);
   });
 
   it('should ensure the last point is always displayed', () => {
-    const result = computeWaypointsToDisplay(
-      mockedWaypoints,
-      {
-        height: 100,
-        isProportional: true,
-        yZoom: 1,
-      },
-      minZoomMillimeterPerPx,
-      maxZoomMillimeterPerPx
-    );
+    const result = selectWaypointsToDisplay(mockedWaypoints, {
+      height: 100,
+      isProportional: true,
+      yZoom: 1,
+    });
     expect(result.some((waypoint) => waypoint.id === 'waypoint-3')).toBe(true);
   });
 });
