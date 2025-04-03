@@ -3,4 +3,7 @@ import osrdUiPreset from '../tailwind-preset.js';
 export default {
   presets: [osrdUiPreset],
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  corePlugins: {
+    preflight: false,
+  },
 };

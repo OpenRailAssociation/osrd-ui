@@ -1,7 +1,5 @@
+import type { OperationalPoint, PathData, PathLevel } from '@osrd-project/ui-charts';
 import { keyBy } from 'lodash';
-
-import { type PathLevel } from '../../components/PathLayer';
-import type { OperationalPoint, PathData } from '../../lib/types';
 
 const KM = 1000;
 const MIN = 60 * 1000;

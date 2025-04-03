@@ -8,7 +8,6 @@ import { type ProjectPathTrainResult, type Waypoint } from '../types';
 export type ManchetteWithSpaceTimeChartProps = {
   waypoints: Waypoint[];
   projectPathTrainResult: ProjectPathTrainResult[];
-  selectedTrain?: number;
   height?: number;
   children?: React.ReactNode;
   header?: React.ReactNode;
@@ -25,7 +24,6 @@ export type ManchetteWithSpaceTimeChartProps = {
 const ManchetteWithSpaceTimeChart = ({
   waypoints,
   projectPathTrainResult,
-  selectedTrain,
   height = 561,
   children,
   header,
@@ -39,7 +37,6 @@ const ManchetteWithSpaceTimeChart = ({
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
-    selectedTrain,
     height,
     spaceTimeChartRef,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
@@ -71,7 +68,7 @@ const ManchetteWithSpaceTimeChart = ({
             {...additionalSpaceTimeChartProps}
           >
             {spaceTimeChartProps.paths.map((path) => (
-              <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
+              <PathLayer key={path.id} path={path} color={path.color} />
             ))}
             {children}
           </SpaceTimeChart>

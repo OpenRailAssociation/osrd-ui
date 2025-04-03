@@ -72,7 +72,6 @@ const ManchetteWithSpaceTimeWrapper = ({
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
-    selectedTrain,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
   });
 
@@ -94,6 +93,8 @@ const ManchetteWithSpaceTimeWrapper = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [activeWaypointId]);
+
+  const selectedPath = spaceTimeChartProps.paths[selectedTrain].id;
 
   return (
     // Ref needs to be on the parent on the scrollable element (.manchette) and have a position
@@ -147,7 +148,12 @@ const ManchetteWithSpaceTimeWrapper = ({
             onPan={activeWaypointId ? undefined : spaceTimeChartProps.onPan}
           >
             {spaceTimeChartProps.paths.map((path) => (
-              <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
+              <PathLayer
+                key={path.id}
+                path={path}
+                color={path.color}
+                level={path.id === selectedPath ? 1 : 2}
+              />
             ))}
           </SpaceTimeChart>
         </div>

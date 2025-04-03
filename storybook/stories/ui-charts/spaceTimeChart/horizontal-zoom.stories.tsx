@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+import {
+  PathLayer,
+  SpaceTimeChart,
+  type Point,
+  type PathData,
+  type OperationalPoint,
+} from '@osrd-project/ui-charts';
 import { Button, Slider } from '@osrd-project/ui-core';
 import type { Meta } from '@storybook/react';
 import { clamp } from 'lodash';
@@ -7,11 +14,8 @@ import { clamp } from 'lodash';
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
 
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { PathLayer } from '../components/PathLayer';
-import { SpaceTimeChart } from '../components/SpaceTimeChart';
-import { type Point, type PathData, type OperationalPoint } from '../lib/types';
-import { getDiff } from '../utils/vectors';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { getDiff } from './helpers/utils';
 
 const DEFAULT_WIDTH = 1200;
 const DEFAULT_HEIGHT = 550;

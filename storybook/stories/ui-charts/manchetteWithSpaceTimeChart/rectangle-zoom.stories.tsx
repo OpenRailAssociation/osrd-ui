@@ -8,7 +8,6 @@ import {
   type ProjectPathTrainResult,
   type Waypoint,
   ZoomRect,
-  MouseTracker,
 } from '@osrd-project/ui-charts';
 import { Slider } from '@osrd-project/ui-core';
 import { ZoomIn } from '@osrd-project/ui-icons';
@@ -16,10 +15,11 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 
 import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from './assets/sampleData';
+import { MouseTracker } from '../spaceTimeChart/helpers/components';
 
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
-import '../../../styles/ManchetteWithSpaceTimeChart/rectangle-zoom.css';
+import './styles/rectangle-zoom.css';
 
 type ManchetteWithSpaceTimeWrapperProps = {
   waypoints: Waypoint[];
@@ -50,12 +50,11 @@ const ManchetteWithSpaceTimeWrapper = ({
     waypoints,
     projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
-    selectedTrain,
     height: DEFAULT_HEIGHT,
     spaceTimeChartRef,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
   });
-
+  const selectedPath = spaceTimeChartProps.paths[selectedTrain].id;
   return (
     <div className="manchette-space-time-chart-wrapper">
       <div
@@ -90,7 +89,12 @@ const ManchetteWithSpaceTimeWrapper = ({
             {...spaceTimeChartProps}
           >
             {spaceTimeChartProps.paths.map((path) => (
-              <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
+              <PathLayer
+                key={path.id}
+                path={path}
+                color={path.color}
+                level={path.id === selectedPath ? 1 : 2}
+              />
             ))}
             {spaceTimeChartProps.rect && <ZoomRect {...spaceTimeChartProps.rect} />}
             <MouseTracker />
