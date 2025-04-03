@@ -1,3 +1,5 @@
+import { type ReactNode } from 'react';
+
 import { clamp } from 'lodash';
 
 import { calcTotalDistance, getHeightWithoutLastWaypoint } from '.';
@@ -105,53 +107,22 @@ export const filterVisibleElements = (
   return displayedElements.sort((a, b) => a.position - b.position);
 };
 
-export const computeWaypointsToDisplay = (
+export const selectWaypointsToDisplay = (
   waypoints: Waypoint[],
-  { height, isProportional, yZoom }: WaypointsOptions,
-  minZoomMillimeterPerPx: number,
-  maxZoomMillimeterPerPx: number
-): InteractiveWaypoint[] => {
+  { height, isProportional, yZoom }: WaypointsOptions
+): Waypoint[] => {
   if (waypoints.length < 2) return [];
+
+  // display all waypoints in linear mode
+  if (!isProportional) return waypoints;
 
   const totalDistance = calcTotalDistance(waypoints);
   const manchetteHeight = getHeightWithoutLastWaypoint(height);
 
-  // display all waypoints in linear mode
-  if (!isProportional) {
-    return waypoints.map((waypoint, index) => {
-      const nextWaypoint = waypoints.at(index + 1);
-      const waypointHeight = BASE_WAYPOINT_HEIGHT * (nextWaypoint ? yZoom : 1);
-      return {
-        ...waypoint,
-        styles: { height: `${waypointHeight}px` },
-      };
-    });
-  }
-
   // in proportional mode, hide some waypoints to avoid collisions
   const minSpace = BASE_WAYPOINT_HEIGHT / yZoom;
 
-  const filteredWaypoints = filterVisibleElements(
-    waypoints,
-    totalDistance,
-    manchetteHeight,
-    minSpace
-  );
-
-  const spaceScale = zoomValueToSpaceScale(minZoomMillimeterPerPx, maxZoomMillimeterPerPx, yZoom);
-
-  return filteredWaypoints.map((waypoint, index) => {
-    const nextWaypoint = filteredWaypoints.at(index + 1);
-    const waypointHeight = !nextWaypoint
-      ? BASE_WAYPOINT_HEIGHT
-      : (nextWaypoint.position - waypoint.position) / spaceScale;
-    return {
-      ...waypoint,
-      styles: {
-        height: `${Math.round(waypointHeight)}px`,
-      },
-    };
-  });
+  return filterVisibleElements(waypoints, totalDistance, manchetteHeight, minSpace);
 };
 
 /**
@@ -194,3 +165,8 @@ export const getScales = (
     },
   ];
 };
+
+export const isInteractiveWaypoint = (
+  item: InteractiveWaypoint | ReactNode
+): item is InteractiveWaypoint =>
+  item != null && typeof item === 'object' && 'id' in item && 'position' in item;

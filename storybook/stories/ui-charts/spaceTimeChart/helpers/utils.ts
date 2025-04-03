@@ -1,4 +1,4 @@
-import { type SpaceTimeChartProps } from '../../lib/types';
+import type { SpaceTimeChartProps, Point } from '@osrd-project/ui-charts';
 
 const EXTREME_ZOOM = 200;
 export const MIN_X_ZOOM = 1 / EXTREME_ZOOM;
@@ -64,4 +64,11 @@ export function formatTimeLength(date: Date): string {
   }
 
   return result.trim();
+}
+
+export function getDiff(a: Point, b: Point): Point {
+  return {
+    x: b.x - a.x,
+    y: b.y - a.y,
+  };
 }

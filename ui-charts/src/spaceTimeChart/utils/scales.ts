@@ -182,7 +182,6 @@ export function getSpaceToPixel(
 }
 
 export function getPixelToSpace(
-  spaceOrigin: number,
   pixelOffset: number,
   binaryTree: NormalizedScaleTree
 ): PixelToSpace {
@@ -191,7 +190,7 @@ export function getPixelToSpace(
       spacePixel - pixelOffset,
       binaryTree
     );
-    return spaceOrigin + from + (spacePixel - pixelOffset - pixelFrom) * coefficient;
+    return from + (spacePixel - pixelOffset - pixelFrom) * coefficient;
   };
 }
 

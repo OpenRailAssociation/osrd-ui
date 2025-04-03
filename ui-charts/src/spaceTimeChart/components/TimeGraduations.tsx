@@ -38,12 +38,11 @@ const TimeGraduations = () => {
         return false;
       });
 
-      const gridMarks = computeVisibleTimeMarkers<number>(minT, maxT, timeRanges, gridlinesLevels);
+      const gridMarks = computeVisibleTimeMarkers(minT, maxT, timeRanges, gridlinesLevels);
 
       // Render grid lines:
-      for (const t in gridMarks) {
-        const gridlinesLevel = gridMarks[t];
-        const styles = timeGraduationsStyles[gridlinesLevel];
+      gridMarks.forEach(({ time, level }) => {
+        const styles = timeGraduationsStyles[level];
 
         ctx.strokeStyle = styles.color;
         ctx.lineWidth = styles.width;
@@ -53,7 +52,7 @@ const TimeGraduations = () => {
           ctx.lineDashOffset = -spacePixelOffset;
         }
 
-        const timePixel = getCrispLineCoordinate(getTimePixel(+t), ctx.lineWidth);
+        const timePixel = getCrispLineCoordinate(getTimePixel(time), ctx.lineWidth);
         ctx.beginPath();
         if (!swapAxis) {
           ctx.moveTo(timePixel, 0);
@@ -63,7 +62,7 @@ const TimeGraduations = () => {
           ctx.lineTo(spaceAxisSize, timePixel);
         }
         ctx.stroke();
-      }
+      });
 
       ctx.setLineDash([]);
       ctx.lineDashOffset = 0;

@@ -16,29 +16,29 @@ describe('displayElementsBasedOnZoom', () => {
     ];
     const gridlinesLevels = [0, 0, 0, 0, 6, 5, 4, 3, 3, 2, 1];
     const result = computeVisibleTimeMarkers(minT, maxT, timeRanges, gridlinesLevels);
-    expect(result).toEqual({
-      '1712008800000': 1,
-      '1712009700000': 6,
-      '1712010600000': 5,
-      '1712011500000': 6,
-      '1712012400000': 4,
-      '1712013300000': 6,
-      '1712014200000': 5,
-      '1712015100000': 6,
-      '1712016000000': 4,
-      '1712016900000': 6,
-      '1712017800000': 5,
-      '1712018700000': 6,
-      '1712019600000': 3,
-      '1712020500000': 6,
-      '1712021400000': 5,
-      '1712022300000': 6,
-      '1712023200000': 4,
-      '1712024100000': 6,
-      '1712025000000': 5,
-    });
-    const times = Object.keys(result).map((t) =>
-      new Date(Number(t)).toLocaleTimeString('fr-FR', { timeZone: 'Europe/Paris' })
+    expect(result).toEqual([
+      { level: 1, time: 1712008800000 },
+      { level: 6, time: 1712009700000 },
+      { level: 5, time: 1712010600000 },
+      { level: 6, time: 1712011500000 },
+      { level: 4, time: 1712012400000 },
+      { level: 6, time: 1712013300000 },
+      { level: 5, time: 1712014200000 },
+      { level: 6, time: 1712015100000 },
+      { level: 4, time: 1712016000000 },
+      { level: 6, time: 1712016900000 },
+      { level: 5, time: 1712017800000 },
+      { level: 6, time: 1712018700000 },
+      { level: 3, time: 1712019600000 },
+      { level: 6, time: 1712020500000 },
+      { level: 5, time: 1712021400000 },
+      { level: 6, time: 1712022300000 },
+      { level: 4, time: 1712023200000 },
+      { level: 6, time: 1712024100000 },
+      { level: 5, time: 1712025000000 },
+    ]);
+    const times = result.map(({ time }) =>
+      new Date(time).toLocaleTimeString('fr-FR', { timeZone: 'Europe/Paris' })
     );
 
     expect(times).toEqual([
@@ -72,23 +72,23 @@ describe('displayElementsBasedOnZoom', () => {
     ];
     const gridlinesLevels = [0, 0, 0, 0, 0, 0, 4, 3, 3, 2, 1];
     const result = computeVisibleTimeMarkers(minT, maxT, timeRanges, gridlinesLevels);
-    expect(result).toEqual({
-      '1712023200000': 1,
-      '1712026800000': 4,
-      '1712030400000': 4,
-      '1712034000000': 3,
-      '1712037600000': 4,
-      '1712041200000': 4,
-      '1712044800000': 3,
-      '1712048400000': 4,
-      '1712052000000': 4,
-      '1712055600000': 3,
-      '1712059200000': 4,
-      '1712062800000': 4,
-      '1712066400000': 2,
-    });
-    const times = Object.keys(result).map((t) =>
-      new Date(Number(t)).toLocaleTimeString('fr-FR', { timeZone: 'America/Noronha' })
+    expect(result).toEqual([
+      { level: 1, time: 1712023200000 },
+      { level: 4, time: 1712026800000 },
+      { level: 4, time: 1712030400000 },
+      { level: 3, time: 1712034000000 },
+      { level: 4, time: 1712037600000 },
+      { level: 4, time: 1712041200000 },
+      { level: 3, time: 1712044800000 },
+      { level: 4, time: 1712048400000 },
+      { level: 4, time: 1712052000000 },
+      { level: 3, time: 1712055600000 },
+      { level: 4, time: 1712059200000 },
+      { level: 4, time: 1712062800000 },
+      { level: 2, time: 1712066400000 },
+    ]);
+    const times = result.map(({ time }) =>
+      new Date(time).toLocaleTimeString('fr-FR', { timeZone: 'America/Noronha' })
     );
     expect(times).toEqual([
       '00:00:00',

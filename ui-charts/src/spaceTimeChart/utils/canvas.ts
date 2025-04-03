@@ -1,4 +1,4 @@
-import { clamp, identity } from 'lodash';
+import { clamp } from 'lodash';
 
 import type {
   SpaceTimeChartContextType,
@@ -323,24 +323,22 @@ export function drawPathExtremity(
 }
 
 /**
- *
  * @param minT number timestamp
  * @param maxT number timestamp
  * @param timeRanges time frames (24h, 12h, 6h, …)
  * @param gridlinesLevels width of the lines for each time frame
  * @param formatter function to format de values inside the output object
- * @returns Record<number, number>
  * Keys are times in ms
  * Values are the highest level on each time
  */
-export function computeVisibleTimeMarkers<T>(
+export function computeVisibleTimeMarkers<T extends object = { level: number }>(
   minT: number,
   maxT: number,
   timeRanges: number[],
   gridlinesLevels: number[],
-  formatter: (level: number, i: number) => T = identity
-) {
-  const result: Record<number, T> = {};
+  formatter: (level: number, i: number) => T = (level: number) => ({ level }) as T
+): (T & { time: number })[] {
+  const result: Record<number, T & { time: number }> = {};
   const minTLocalOffset = new Date(minT).getTimezoneOffset() * 60 * 1000;
 
   timeRanges.forEach((range, i) => {
@@ -351,12 +349,12 @@ export function computeVisibleTimeMarkers<T>(
     let t = Math.floor((minT - minTLocalOffset) / range) * range + minTLocalOffset;
     while (t <= maxT) {
       if (t >= minT) {
-        result[t] = formatter(gridlinesLevel, i);
+        result[t] = { ...formatter(gridlinesLevel, i), time: t };
       }
       t += range;
     }
   });
-  return result;
+  return Object.values(result);
 }
 
 /**
@@ -387,29 +385,25 @@ export type CanvasRect = {
   spaceEnd: number; // mm
 };
 
+/**
+ * You most likely need to wrap this function call with ctx.save ctx.restore
+ * as it modifies ctx current transformation matrix
+ */
 export function fillRect(
   ctx: CanvasRenderingContext2D,
-  rect: CanvasRect,
-  spaceTimeContext: SpaceTimeChartContextType
+  { timeStart, timeEnd, spaceStart, spaceEnd }: CanvasRect,
+  { getPoint }: SpaceTimeChartContextType
 ) {
-  const { getTimePixel, getSpacePixel, timeAxis } = spaceTimeContext;
-  const { timeStart, timeEnd, spaceStart, spaceEnd } = rect;
+  const startPoint = getPoint({ time: Number(timeStart), position: spaceStart });
+  const endPoint = getPoint({ time: Number(timeEnd), position: spaceEnd });
 
-  const timeStartPixel = getTimePixel(Number(timeStart));
-  const endTimePixel = getTimePixel(Number(timeEnd));
-  const spaceStartPixel = getSpacePixel(spaceStart);
-  const spaceEndPixel = getSpacePixel(spaceEnd);
+  const width = endPoint.x - startPoint.x;
+  const height = endPoint.y - startPoint.y;
 
-  const areaSpaceSize = spaceEndPixel - spaceStartPixel;
-  const areaTimeSize = endTimePixel - timeStartPixel;
-  if (!areaSpaceSize || !areaTimeSize) return {};
-
-  if (timeAxis === 'x') {
-    ctx.translate(timeStartPixel, spaceStartPixel);
-    ctx.fillRect(0, 0, areaTimeSize, areaSpaceSize);
-  } else {
-    ctx.translate(spaceStartPixel, timeStartPixel);
-    ctx.fillRect(0, 0, areaSpaceSize, areaTimeSize);
+  if (width !== 0 && height !== 0) {
+    ctx.translate(startPoint.x, startPoint.y);
+    ctx.fillRect(0, 0, width, height);
   }
-  return { areaTimeSize, areaSpaceSize };
+
+  return { width, height };
 }
