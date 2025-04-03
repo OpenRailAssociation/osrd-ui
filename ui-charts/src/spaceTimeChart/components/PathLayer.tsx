@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 
 import { inRange, last } from 'lodash';
 
-import { CAPTION_SIZE } from './TimeCaptions';
 import { useDraw, usePicking } from '../hooks/useCanvas';
 import {
   type DataPoint,
@@ -225,6 +224,7 @@ export const PathLayer = ({
         width,
         height,
         swapAxis,
+        captionSize,
         theme: {
           background,
           pathsStyles: { fontSize, fontFamily },
@@ -239,8 +239,8 @@ export const PathLayer = ({
 
       const firstPointOnScreenIndex = points.findIndex(({ x, y }) =>
         !swapAxis
-          ? inRange(x, 0, width) && inRange(y, 0, height - CAPTION_SIZE)
-          : inRange(x, CAPTION_SIZE, width) && inRange(y, 0, height)
+          ? inRange(x, 0, width) && inRange(y, 0, height - captionSize)
+          : inRange(x, captionSize, width) && inRange(y, 0, height)
       );
 
       if (firstPointOnScreenIndex < 0) return;
@@ -255,12 +255,13 @@ export const PathLayer = ({
       if (firstPointOnScreenIndex === 0) {
         if (next) angle = Math.atan2(next.y - curr.y, next.x - curr.x);
       } else {
+        const minX = swapAxis ? captionSize : 0;
         const slope = (curr.y - prev.y) / (curr.x - prev.x);
-        const yOnYAxisIntersect = curr.y - curr.x * slope;
-        const xOnXAxisIntersect = curr.x - curr.y / slope;
+        const yOnYAxisIntersect = curr.y - (curr.x - minX) * slope;
+        const xOnXAxisIntersect = curr.x - minX - curr.y / slope;
         if (yOnYAxisIntersect >= 0) {
           position = {
-            x: 0,
+            x: minX,
             y: yOnYAxisIntersect,
           };
         } else {

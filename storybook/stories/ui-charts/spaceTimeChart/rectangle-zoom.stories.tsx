@@ -1,20 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import {
+  PathLayer,
+  SpaceTimeChart,
+  ZoomRect,
+  type Point,
+  type PathData,
+  type OperationalPoint,
+  DEFAULT_THEME,
+  SpaceScale,
+} from '@osrd-project/ui-charts';
 import { Button, Slider } from '@osrd-project/ui-core';
 import type { Meta } from '@storybook/react';
 import { clamp } from 'lodash';
 
 import '@osrd-project/ui-core/dist/theme.css';
-import '../styles/stories/rectangle-zoom.css';
+import '@osrd-project/ui-charts/dist/theme.css';
+import './styles/rectangle-zoom.css';
 
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { PathLayer } from '../components/PathLayer';
-import { SpaceTimeChart } from '../components/SpaceTimeChart';
-import { CAPTION_SIZE } from '../components/TimeCaptions';
-import { ZoomRect } from '../components/ZoomRect';
-import { type Point, type PathData, type OperationalPoint } from '../lib/types';
-import { getDiff } from '../utils/vectors';
-import { MouseTracker } from './lib/components';
+import { MouseTracker } from './helpers/components';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { getDiff } from './helpers/utils';
 
 const DEFAULT_WIDTH = 1000;
 const DEFAULT_HEIGHT = 500;
@@ -88,9 +94,8 @@ const RectangleZoomWrapper = ({
 
   const timeOrigin = +new Date('2024-04-02T00:00:00');
   const timeScale = zoomValueToTimeScale(state.timeZoomValue);
-  const spaceScale = [
+  const spaceScale: SpaceScale[] = [
     {
-      from: -100000,
       to: 100000,
       coefficient: zoomValueToSpaceScale(state.spaceZoomValue), // meter/px
     },
@@ -205,9 +210,10 @@ const RectangleZoomWrapper = ({
       const timeRange = Math.abs(Number(timeEnd) - Number(timeStart)); // width of rect in ms
       const spaceRange = Math.abs(spaceEnd - spaceStart); // height of rect in meter
       const chosenTimeScale = !swapAxes ? timeRange / DEFAULT_WIDTH : timeRange / DEFAULT_HEIGHT;
+      const captionSize = DEFAULT_THEME.dateCaptionsSize + DEFAULT_THEME.timeCaptionsSize;
       const chosenSpaceScale = !swapAxes
-        ? spaceRange / (DEFAULT_HEIGHT - CAPTION_SIZE)
-        : spaceRange / (DEFAULT_WIDTH - CAPTION_SIZE);
+        ? spaceRange / (DEFAULT_HEIGHT - captionSize)
+        : spaceRange / (DEFAULT_WIDTH - captionSize);
       handleRectangleZoom({
         scales: { chosenTimeScale, chosenSpaceScale },
         overrideState: { rect: null },

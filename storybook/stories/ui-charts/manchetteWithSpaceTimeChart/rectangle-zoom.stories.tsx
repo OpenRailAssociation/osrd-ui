@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 
 import {
-  PathLayer,
   SpaceTimeChart,
   Manchette,
   useManchetteWithSpaceTimeChart,
   type ProjectPathTrainResult,
   type Waypoint,
   ZoomRect,
-  MouseTracker,
+  PathLayer,
+  usePaths,
 } from '@osrd-project/ui-charts';
 import { Slider } from '@osrd-project/ui-core';
 import { ZoomIn } from '@osrd-project/ui-icons';
@@ -16,10 +16,11 @@ import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 
 import { SAMPLE_WAYPOINTS, SAMPLE_PATHS_DATA } from './assets/sampleData';
+import { MouseTracker } from '../spaceTimeChart/helpers/components';
 
 import '@osrd-project/ui-core/dist/theme.css';
 import '@osrd-project/ui-charts/dist/theme.css';
-import '../../../styles/ManchetteWithSpaceTimeChart/rectangle-zoom.css';
+import './styles/rectangle-zoom.css';
 
 type ManchetteWithSpaceTimeWrapperProps = {
   waypoints: Waypoint[];
@@ -36,9 +37,11 @@ const ManchetteWithSpaceTimeWrapper = ({
 }: ManchetteWithSpaceTimeWrapperProps) => {
   const manchetteWithSpaceTimeChartRef = useRef<HTMLDivElement>(null);
   const spaceTimeChartRef = useRef<HTMLDivElement>(null);
+  const paths = usePaths(projectPathTrainResult);
   const {
     manchetteProps,
     spaceTimeChartProps,
+    rect,
     handleScroll,
     toggleZoomMode,
     zoomMode,
@@ -48,14 +51,12 @@ const ManchetteWithSpaceTimeWrapper = ({
     spaceScale,
   } = useManchetteWithSpaceTimeChart({
     waypoints,
-    projectPathTrainResult,
     manchetteWithSpaceTimeChartRef,
-    selectedTrain,
     height: DEFAULT_HEIGHT,
     spaceTimeChartRef,
     defaultTimeOrigin: Math.min(...projectPathTrainResult.map((p) => +p.departureTime)),
   });
-
+  const selectedPath = paths[selectedTrain].id;
   return (
     <div className="manchette-space-time-chart-wrapper">
       <div
@@ -69,11 +70,7 @@ const ManchetteWithSpaceTimeWrapper = ({
         onScroll={handleScroll}
       >
         <Manchette {...manchetteProps} />
-        <div
-          className="space-time-chart-container w-full sticky"
-          ref={spaceTimeChartRef}
-          style={{ bottom: 0, left: 0, top: 2, height: `${DEFAULT_HEIGHT - 6}px` }}
-        >
+        <div className="space-time-chart-container w-full sticky" ref={spaceTimeChartRef}>
           <div className="toolbar">
             <button
               type="button"
@@ -89,10 +86,15 @@ const ManchetteWithSpaceTimeWrapper = ({
             })}
             {...spaceTimeChartProps}
           >
-            {spaceTimeChartProps.paths.map((path) => (
-              <PathLayer key={path.id} path={path} color={path.color} level={path.level} />
+            {paths.map((path) => (
+              <PathLayer
+                key={path.id}
+                path={path}
+                color={path.color}
+                level={path.id === selectedPath ? 1 : 2}
+              />
             ))}
-            {spaceTimeChartProps.rect && <ZoomRect {...spaceTimeChartProps.rect} />}
+            {rect && <ZoomRect {...rect} />}
             <MouseTracker />
           </SpaceTimeChart>
         </div>

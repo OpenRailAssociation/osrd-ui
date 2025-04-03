@@ -20,7 +20,7 @@ export type WaypointMenuData = {
 };
 
 export type ProjectPathTrainResult = {
-  id: number;
+  id: string;
   name: string;
   spaceTimeCurves: {
     positions: number[]; // in mm

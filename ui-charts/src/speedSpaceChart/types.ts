@@ -1,21 +1,21 @@
-type ElectricalProfileValues = {
+export type ElectricalProfileValues = {
   electricalProfile: string;
   color?: string;
   heightLevel?: number;
   handled?: boolean;
 };
 
-type PowerRestrictionValues = {
+export type PowerRestrictionValues = {
   powerRestriction: string;
   handled: boolean;
 };
 
-type SpeedLimitTagValues = {
+export type SpeedLimitTagValues = {
   tag: string;
   color: string;
 };
 
-type ElectrificationValues = {
+export type ElectrificationValues = {
   type: 'electrification' | 'neutral_section' | 'non_electrified';
   voltage?: '1500V' | '25000V';
   lowerPantograph?: boolean;

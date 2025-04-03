@@ -12,7 +12,6 @@ import { useModalPosition } from '../../../hooks/useModalPosition';
 import useOutsideClick from '../../../hooks/useOutsideClick';
 import type { StatusWithMessage } from '../StatusMessage';
 
-const MODAL_HORIZONTAL_OFFSET = -24;
 const MODAL_VERTICAL_OFFSET = 3;
 
 // Regex for "xx/xx/xx"
@@ -40,8 +39,7 @@ export default function useDatePicker(datePickerProps: DatePickerProps) {
   const { calculatePosition, modalPosition } = useModalPosition(
     inputRef,
     calendarPickerRef,
-    MODAL_VERTICAL_OFFSET,
-    MODAL_HORIZONTAL_OFFSET
+    MODAL_VERTICAL_OFFSET
   );
 
   const handleInputClick = () => {

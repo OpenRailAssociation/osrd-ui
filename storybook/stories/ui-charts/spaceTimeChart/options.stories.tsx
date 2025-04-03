@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 
+import { CanvasContext, SpaceTimeChart, PathLayer, type Point } from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 import FileSaver from 'file-saver';
 
-import { SpaceTimeChart, PathLayer } from '..';
-import { MouseTracker } from './lib/components';
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
+import { MouseTracker } from './helpers/components';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
 import {
   MAX_X_ZOOM,
   MAX_Y_ZOOM,
@@ -14,10 +14,11 @@ import {
   MIN_Y_ZOOM,
   X_ZOOM_LEVEL,
   Y_ZOOM_LEVEL,
-} from './lib/utils';
-import { CanvasContext } from '../lib/context';
-import { type Point } from '../lib/types';
-import { getDiff } from '../utils/vectors';
+  getDiff,
+} from './helpers/utils';
+
+import '@osrd-project/ui-core/dist/theme.css';
+import '@osrd-project/ui-charts/dist/theme.css';
 
 const ScreenshotButton = () => {
   const { captureCanvases } = useContext(CanvasContext);
@@ -45,6 +46,7 @@ type WrapperProps = {
   enableSnapping: boolean;
   hideGrid: boolean;
   hidePathsLabels: boolean;
+  hideDates: boolean;
   swapAxis: boolean;
   spaceScaleType: 'linear' | 'proportional';
 };
@@ -58,6 +60,7 @@ const Wrapper = ({
   enableSnapping,
   hideGrid,
   hidePathsLabels,
+  hideDates,
   swapAxis,
   spaceScaleType,
 }: WrapperProps) => {
@@ -82,6 +85,7 @@ const Wrapper = ({
         enableSnapping={enableSnapping}
         hideGrid={hideGrid}
         hidePathsLabels={hidePathsLabels}
+        hideDates={hideDates}
         swapAxis={swapAxis}
         operationalPoints={OPERATIONAL_POINTS}
         spaceOrigin={0}
@@ -176,6 +180,11 @@ export default {
       defaultValue: false,
       control: { type: 'boolean' },
     },
+    hideDates: {
+      name: 'Hide dates?',
+      defaultValue: false,
+      control: { type: 'boolean' },
+    },
     swapAxis: {
       name: 'Swap time and space axis?',
       defaultValue: false,
@@ -196,6 +205,7 @@ export const DefaultArgs = {
     enableSnapping: true,
     hideGrid: false,
     hidePathsLabels: false,
+    hideDates: false,
     swapAxis: false,
     spaceScaleType: 'linear',
   },

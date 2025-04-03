@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
+import { PathLayer, SpaceTimeChart, type Point } from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 import cx from 'classnames';
 
-import { PathLayer, SpaceTimeChart } from '..';
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
 import {
   MAX_X_ZOOM,
   MAX_Y_ZOOM,
@@ -12,11 +12,11 @@ import {
   MIN_Y_ZOOM,
   X_ZOOM_LEVEL,
   Y_ZOOM_LEVEL,
-} from './lib/utils';
-import { type Point } from '../lib/types';
-import { getDiff } from '../utils/vectors';
+  getDiff,
+} from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
+import '@osrd-project/ui-core/dist/theme.css';
 
 const DEFAULT_COLOR_1 = '#FF511A';
 const DEFAULT_COLOR_2 = '#FF8B61';

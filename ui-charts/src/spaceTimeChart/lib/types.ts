@@ -77,8 +77,8 @@ export type PathData = {
 
 export type OperationalPoint = {
   id: string;
-  label: string;
   position: number;
+  label?: string;
   importanceLevel?: number; // Lower is better. If null, the point won't be displayed.
 };
 
@@ -139,12 +139,26 @@ export type MouseContextType = MouseState & {
   hoveredItem: HoveredItem | null;
 };
 
-export type LineStyle = { width: number; color: string; opacity?: number; dashArray?: number[] };
+export type LineStyle = {
+  width: number;
+  color: string;
+  opacity?: number;
+  dashArray?: number[];
+};
+
+export type CaptionStyle = {
+  color: string;
+  font: string;
+  fontWeight?: string;
+  fontSize?: string;
+  topOffset?: number;
+  textAlign?: CanvasTextAlign;
+};
 
 // STYLES:
 export type SpaceTimeChartTheme = {
   background: string;
-  breakpoints: number[];
+  breakpoints: number[]; // in pixels/minute
   timeRanges: number[];
   pathsStyles: {
     fontSize: number;
@@ -152,23 +166,20 @@ export type SpaceTimeChartTheme = {
   };
   spaceGraduationsStyles: Record<number, LineStyle>;
   timeCaptionsPriorities: number[][];
-  timeCaptionsStyles: Record<
-    number,
-    {
-      color: string;
-      font: string;
-      fontWeight?: string;
-      fontSize?: string;
-      topOffset?: number;
-    }
-  >;
+  timeCaptionsStyles: Record<number, CaptionStyle>;
+  timeCaptionsSize: number;
   timeGraduationsPriorities: number[][];
   timeGraduationsStyles: Record<number, LineStyle>;
+  dateCaptionsStyle: CaptionStyle;
+  dateCaptionsSize: number;
 };
 
 // CORE COMPONENT MAIN TYPES:
 export type SpaceTimeChartProps = {
-  children?: ReactNode[];
+  children?: ReactNode | ReactNode[];
+
+  // This allows giving the SpaceTimeChart two different set of children
+  additionalChildren?: ReactNode | ReactNode[];
 
   operationalPoints: OperationalPoint[];
 
@@ -195,6 +206,7 @@ export type SpaceTimeChartProps = {
   // Additional options to show/hide context information:
   hideGrid?: boolean;
   hidePathsLabels?: boolean;
+  hideDates?: boolean;
   showTicks?: boolean;
 
   // Custom styles:
@@ -274,10 +286,12 @@ export type SpaceTimeChartContextType = {
 
   // Full theme:
   theme: SpaceTimeChartTheme;
+  captionSize: number;
 
   // Other options:
   enableSnapping: boolean;
   hideGrid: boolean;
   hidePathsLabels: boolean;
+  hideDates: boolean;
   showTicks: boolean;
 };

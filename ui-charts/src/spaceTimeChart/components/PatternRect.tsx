@@ -16,8 +16,10 @@ export const PatternRect = ({ imageElement, ...rect }: PatternRectProps) => {
     (ctx, context) => {
       const pattern = ctx.createPattern(imageElement, 'repeat');
       if (pattern) {
+        ctx.save();
         ctx.fillStyle = pattern;
         fillRect(ctx, rect, context);
+        ctx.restore();
       }
     },
     [imageElement, rect]

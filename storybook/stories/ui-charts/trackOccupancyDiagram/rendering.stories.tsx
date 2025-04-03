@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { KebabHorizontal } from '../../../../ui-icons/src/index';
-import TimeCaptions from '../../../../ui-charts/src/spaceTimeChart/components/TimeCaptions';
+import occupancyZones from './assets/occupancyZones';
+import tracks from './assets/tracks';
+import { TimeCaptions } from '../../../../ui-charts/src/spaceTimeChart/components/TimeCaptions';
 import { useCanvas, useDraw } from '../../../../ui-charts/src/spaceTimeChart/hooks/useCanvas';
 import { useMouseInteractions } from '../../../../ui-charts/src/spaceTimeChart/hooks/useMouseInteractions';
 import { useMouseTracking } from '../../../../ui-charts/src/spaceTimeChart/hooks/useMouseTracking';
@@ -20,7 +21,6 @@ import type {
   PickingElement,
   SpaceTimeChartTheme,
 } from '../../../../ui-charts/src/spaceTimeChart/lib/types';
-import { OPERATIONAL_POINTS } from '../../../../ui-charts/src/spaceTimeChart/stories/lib/paths';
 import {
   getTimeToPixel,
   getSpaceToPixel,
@@ -34,8 +34,8 @@ import {
   TrackOccupancyManchette,
   TrackOccupancyCanvas,
 } from '../../../../ui-charts/src/trackOccupancyDiagram/index';
-import occupancyZones from './assets/occupancyZones';
-import tracks from './assets/tracks';
+import { KebabHorizontal } from '../../../../ui-icons/src/index';
+import { OPERATIONAL_POINTS } from '../spaceTimeChart/helpers/paths';
 
 type TrackOccupancyDiagramProps = {
   xZoomLevel: number;
@@ -152,7 +152,7 @@ const TrackOccupancyDiagram = ({
     const getSpacePixel = getSpaceToPixel(spacePixelOffset, spaceScaleTree);
     const getPoint = getDataToPoint(getTimePixel, getSpacePixel, timeAxis, spaceAxis);
     const getTime = getPixelToTime(timeOrigin, timePixelOffset, timeScale);
-    const getSpace = getPixelToSpace(spaceOrigin, spacePixelOffset, spaceScaleTree);
+    const getSpace = getPixelToSpace(spacePixelOffset, spaceScaleTree);
     const getData = getPointToData(getTime, getSpace, timeAxis, spaceAxis);
 
     const pickingElements: PickingElement[] = [];

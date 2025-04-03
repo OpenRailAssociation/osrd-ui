@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { SpaceTimeChart, PathLayer } from '@osrd-project/ui-charts';
 import type { Meta } from '@storybook/react';
 
-import { SpaceTimeChart, PathLayer } from '..';
-import { OPERATIONAL_POINTS, PATHS } from './lib/paths';
-import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './lib/utils';
+import { OPERATIONAL_POINTS, PATHS } from './helpers/paths';
+import { X_ZOOM_LEVEL, Y_ZOOM_LEVEL } from './helpers/utils';
 
 import '@osrd-project/ui-charts/dist/theme.css';
+import '@osrd-project/ui-core/dist/theme.css';
 
 type WrapperProps = {
   xZoomLevel: number;
