@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
-import '@osrd-project/ui-core/dist/theme.css';
 
-import ComboBox from '../components/inputs/ComboBox';
-import useDefaultComboBox from '../components/inputs/ComboBox/useDefaultComboBox';
+import { ComboBox, useDefaultComboBox } from '@osrd-project/ui-core';
+import '@osrd-project/ui-core/dist/theme.css';
 
 type Suggestion = { id: string; label: string };
 

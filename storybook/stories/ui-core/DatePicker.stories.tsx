@@ -8,10 +8,9 @@ import {
   type RangeDatePickerProps,
   type SingleDatePickerProps,
   type CalendarSlot,
-} from '../components/inputs/datePicker';
+} from '@osrd-project/ui-core';
 import '@osrd-project/ui-core/dist/theme.css';
 import './stories.css';
-import { formatDateString } from '../components/inputs/datePicker/utils';
 
 const now = new Date();
 const endSelectableDate = new Date(now);
@@ -46,7 +45,7 @@ const DatePickerStory = (props: DatePickerProps) => {
           value={value as SingleDatePickerProps['value']}
           onDateChange={onDayChange}
           errorMessages={{
-            invalidDate: `Please select a valid date between ${formatDateString(selectableSlot.start)} and ${formatDateString(selectableSlot.end)}`,
+            invalidDate: `Please select a valid date between ${selectableSlot.start.toLocaleDateString()} and ${selectableSlot.end.toLocaleDateString()}`,
             invalidInput: 'Please enter a valid date dd/mm/yy',
           }}
         />

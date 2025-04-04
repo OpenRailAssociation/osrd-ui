@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import Slider, { type SliderProps } from '../components/inputs/Slider';
+import { Slider, type SliderProps } from '@osrd-project/ui-core';
 
 import './stories.css';
 

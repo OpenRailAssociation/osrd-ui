@@ -1,15 +1,15 @@
 import React from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
+
+import { TokenInput } from '@osrd-project/ui-core';
 import '@osrd-project/ui-core/dist/theme.css';
 
-import PasswordInput from '../components/inputs/PasswordInput';
-
-const meta: Meta<typeof PasswordInput> = {
-  component: PasswordInput,
+const meta: Meta<typeof TokenInput> = {
+  component: TokenInput,
   args: {
-    label: 'Password',
-    hint: 'You can uses spaces',
+    label: 'Favorite colors',
+    tokens: ['Yellow', 'Orange', 'Red', 'Black'],
   },
   decorators: [
     (Story) => (
@@ -18,12 +18,12 @@ const meta: Meta<typeof PasswordInput> = {
       </div>
     ),
   ],
-  title: 'Core/PasswordInput',
+  title: 'Core/TokenInput',
   tags: ['autodocs'],
 };
 
 export default meta;
-type Story = StoryObj<typeof PasswordInput>;
+type Story = StoryObj<typeof TokenInput>;
 
 export const Default: Story = {
   args: {},

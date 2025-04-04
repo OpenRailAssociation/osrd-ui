@@ -2,8 +2,7 @@ import React from 'react';
 
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import TextArea from '../components/inputs/TextArea';
-
+import { TextArea } from '@osrd-project/ui-core';
 import '@osrd-project/ui-core/dist/theme.css';
 
 const meta: Meta<typeof TextArea> = {

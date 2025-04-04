@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import TolerancePicker, {
+import {
+  TolerancePicker,
   type TolerancePickerProps,
   type ToleranceValues,
-} from '../components/inputs/tolerancePicker/TolerancePicker';
-
+} from '@osrd-project/ui-core';
 import '@osrd-project/ui-core/dist/theme.css';
 
 const TolerancePickerStory = (props: TolerancePickerProps) => {
