@@ -132,13 +132,5 @@
     "react": {
       "version": "detect",
     },
-  },
-  "overrides": [
-    {
-      "files": ["**/stories/**"],
-      "rules": {
-        "import/no-extraneous-dependencies": "off"
-      }
-    }
-  ]
+  }
 }
