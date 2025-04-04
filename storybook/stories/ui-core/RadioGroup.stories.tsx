@@ -2,10 +2,8 @@ import React from 'react';
 
 import { type StoryObj, type Meta } from '@storybook/react';
 
+import { RadioGroup, type RadioButtonProps } from '@osrd-project/ui-core';
 import '@osrd-project/ui-core/dist/theme.css';
-
-import { type RadioButtonProps } from '../components/inputs/RadioButton';
-import RadioGroup from '../components/inputs/RadioGroup';
 
 const buildFruitsOptions: (prefixId: string) => RadioButtonProps[] = (prefixId) => [
   {

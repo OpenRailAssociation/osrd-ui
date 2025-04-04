@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import '@osrd-project/ui-core/dist/theme.css';
-import CheckboxesTree, {
+import {
+  CheckboxesTree,
   type CheckboxesTreeProps,
-} from '../components/inputs/Checkbox/CheckboxTree';
-import { type CheckboxTreeItem } from '../components/inputs/Checkbox/type';
+  type CheckboxTreeItem,
+} from '@osrd-project/ui-core';
+import '@osrd-project/ui-core/dist/theme.css';
 
 const CheckboxesTreeStory = (props: CheckboxesTreeProps) => {
   const [items, setItems] = useState<CheckboxTreeItem[]>(props.items);

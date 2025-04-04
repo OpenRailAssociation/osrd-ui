@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { type Meta, type StoryObj } from '@storybook/react';
 
-import TimePicker, { type TimePickerProps } from '../components/inputs/TimePicker';
-
+import { TimePicker, type TimePickerProps } from '@osrd-project/ui-core';
 import '@osrd-project/ui-core/dist/theme.css';
 
 const TimePickerStory = (props: TimePickerProps) => {

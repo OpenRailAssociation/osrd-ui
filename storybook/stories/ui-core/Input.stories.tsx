@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 
+import { Input, type StatusWithMessage } from '@osrd-project/ui-core';
 import { ChevronDown, X } from '@osrd-project/ui-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
-
-import Input from '../components/inputs/Input';
-import { type StatusWithMessage } from '../components/inputs/StatusMessage';
 
 const meta: Meta<typeof Input> = {
   component: Input,

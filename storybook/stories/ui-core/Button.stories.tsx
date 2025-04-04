@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { Button } from '@osrd-project/ui-core';
 import { Archive, Bookmark, Cloud, Clock } from '@osrd-project/ui-icons';
 import type { Meta, StoryObj } from '@storybook/react';
 import '@osrd-project/ui-core/dist/theme.css';
-
-import Button from '../components/buttons/Button';
 
 const icons = { archive: <Archive />, bookmark: <Bookmark />, cloud: <Cloud />, clock: <Clock /> };
 

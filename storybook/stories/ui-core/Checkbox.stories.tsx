@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { Checkbox } from '@osrd-project/ui-core';
 import '@osrd-project/ui-core/dist/theme.css';
-import Checkbox from '../components/inputs/Checkbox/Checkbox';
 
 const meta: Meta<typeof Checkbox> = {
   component: Checkbox,
