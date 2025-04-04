@@ -1,3 +1,5 @@
+@reference '../main.css';
+
 .custom-checkbox {
   display: block;
   position: relative;

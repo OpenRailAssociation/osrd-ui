@@ -9,7 +9,7 @@
     background-color: inherit;
     height: 10px;
     width: 100%;
-  
+
     /* can’t have different vendor’s prefixes in the same comma separated selector 
       or the browser will ignore it as it doesn’t recognise part of it
       &::-webkit-slider-runnable-track, &::-moz-range-track need to be split
@@ -20,31 +20,31 @@
       appearance: none;
       height: 4px;
       border-radius: 2px;
-      box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
+      box-shadow: 0 0 0 0.5px var(--colors-black-25) inset;
       background: linear-gradient(
         to right,
-        theme('colors.black.10') var(--slider-progress),
-        theme('colors.black.5') var(--slider-progress)
+        var(--colors-black-10) var(--slider-progress),
+        var(--colors-black-5) var(--slider-progress)
       );
       border-radius: 2px;
       opacity: 1;
     }
-    
+
     &::-moz-range-track {
       -webkit-appearance: none;
       appearance: none;
       height: 4px;
       border-radius: 2px;
-      box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
+      box-shadow: 0 0 0 0.5px var(--colors-black-25) inset;
       background: linear-gradient(
         to right,
-        theme('colors.black.10') var(--slider-progress),
-        theme('colors.black.5') var(--slider-progress)
+        var(--colors-black-10) var(--slider-progress),
+        var(--colors-black-5) var(--slider-progress)
       );
       border-radius: 2px;
       opacity: 1;
     }
-    
+
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -52,12 +52,12 @@
       height: 10px;
       margin-top: -3px;
       border-radius: 50%;
-      border: 0.5px solid theme('colors.grey.70');
-      box-shadow: 0 1px 3px theme('colors.black.10');
-      background-color: theme('colors.white.100');
+      border: 0.5px solid var(--colors-grey-70);
+      box-shadow: 0 1px 3px var(--colors-black-10);
+      background-color: var(--colors-white-100);
       opacity: 1;
     }
-    
+
     &::-moz-range-thumb {
       -webkit-appearance: none;
       appearance: none;
@@ -65,9 +65,9 @@
       height: 10px;
       margin-top: -3px;
       border-radius: 50%;
-      border: 0.5px solid theme('colors.grey.70');
-      box-shadow: 0 1px 3px theme('colors.black.10');
-      background-color: theme('colors.white.100');
+      border: 0.5px solid var(--colors-grey-70);
+      box-shadow: 0 1px 3px var(--colors-black-10);
+      background-color: var(--colors-white-100);
       opacity: 1;
     }
   }
@@ -77,34 +77,34 @@
       /* ==== Focus state ==== */
       &:focus-visible {
         outline: none;
-  
+
         &::-webkit-slider-runnable-track {
           box-sizing: content-box;
           border-radius: 4px;
-          background-color: theme('colors.white.75');
+          background-color: var(--colors-white-75);
           background: linear-gradient(
             to right,
-            theme('colors.black.25') var(--slider-progress),
-            theme('colors.white.75') var(--slider-progress)
+            var(--colors-black-25) var(--slider-progress),
+            var(--colors-white-75) var(--slider-progress)
           );
-          border: 2px solid theme('colors.primary.50');
-          box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
+          border: 2px solid var(--colors-primary-50);
+          box-shadow: 0 0 0 0.5px var(--colors-black-25) inset;
           opacity: 1;
         }
-  
+
         &::-moz-range-track {
           box-sizing: content-box;
           border-radius: 4px;
           background: linear-gradient(
             to right,
-            theme('colors.black.25') var(--slider-progress),
-            theme('colors.white.75') var(--slider-progress)
+            var(--colors-black-25) var(--slider-progress),
+            var(--colors-white-75) var(--slider-progress)
           );
-          border: 2px solid theme('colors.primary.50');
-          box-shadow: 0 0 0 0.5px theme('colors.black.25') inset;
+          border: 2px solid var(--colors-primary-50);
+          box-shadow: 0 0 0 0.5px var(--colors-black-25) inset;
           opacity: 1;
         }
-  
+
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
@@ -112,12 +112,12 @@
           height: 10px;
           margin-top: -3px;
           border-radius: 50%;
-          background-color: theme('colors.white.100');
-          border: 1px solid theme('colors.grey.90');
-          box-shadow: 0 1px 3px theme('colors.black.10');
+          background-color: var(--colors-white-100);
+          border: 1px solid var(--colors-grey-90);
+          box-shadow: 0 1px 3px var(--colors-black-10);
           opacity: 1;
         }
-        
+
         &::-moz-range-thumb {
           -webkit-appearance: none;
           appearance: none;
@@ -125,44 +125,43 @@
           height: 10px;
           margin-top: -3px;
           border-radius: 50%;
-          background-color: theme('colors.white.100');
-          border: 1px solid theme('colors.grey.90');
-          box-shadow: 0 1px 3px theme('colors.black.10');
+          background-color: var(--colors-white-100);
+          border: 1px solid var(--colors-grey-90);
+          box-shadow: 0 1px 3px var(--colors-black-10);
           opacity: 1;
         }
       }
-  
+
       /* ==== Hover state ==== */
       &:hover {
         outline: none;
-  
+
         &::-webkit-slider-runnable-track {
           box-sizing: content-box;
           border: 0;
           background: linear-gradient(
             to right,
-            theme('colors.black.25') var(--slider-progress),
-            theme('colors.white.75') var(--slider-progress)
+            var(--colors-black-25) var(--slider-progress),
+            var(--colors-white-75) var(--slider-progress)
           );
           border-radius: 2px;
-          box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
+          box-shadow: 0 0 0 0.5px var(--colors-black-75) inset;
           opacity: 1;
         }
-  
+
         &::-moz-range-track {
           box-sizing: content-box;
           border: 0;
           background: linear-gradient(
             to right,
-            theme('colors.black.25') var(--slider-progress),
-            theme('colors.white.75') var(--slider-progress)
+            var(--colors-black-25) var(--slider-progress),
+            var(--colors-white-75) var(--slider-progress)
           );
           border-radius: 2px;
-          box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
+          box-shadow: 0 0 0 0.5px var(--colors-black-75) inset;
           opacity: 1;
-  
         }
-  
+
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
@@ -170,12 +169,12 @@
           height: 10px;
           margin-top: -3px;
           border-radius: 50%;
-          background-color: theme('colors.white.100');
-          border: 1px solid theme('colors.primary.60');
-          box-shadow: 0 1px 3px theme('colors.black.25');
+          background-color: var(--colors-white-100);
+          border: 1px solid var(--colors-primary-60);
+          box-shadow: 0 1px 3px var(--colors-black-25);
           opacity: 1;
         }
-        
+
         &::-moz-range-thumb {
           -webkit-appearance: none;
           appearance: none;
@@ -183,64 +182,64 @@
           height: 10px;
           margin-top: -3px;
           border-radius: 50%;
-          background-color: theme('colors.white.100');
-          border: 1px solid theme('colors.primary.60');
-          box-shadow: 0 1px 3px theme('colors.black.25');
+          background-color: var(--colors-white-100);
+          border: 1px solid var(--colors-primary-60);
+          box-shadow: 0 1px 3px var(--colors-black-25);
           opacity: 1;
         }
       }
-  
+
       /* ==== Active state ==== */
       &:active {
         outline: none;
-    
+
         &::-webkit-slider-runnable-track {
           box-sizing: content-box;
           border: 0;
           background: linear-gradient(
             to right,
-            theme('colors.black.50') var(--slider-progress),
-            theme('colors.white.100') var(--slider-progress)
+            var(--colors-black-50) var(--slider-progress),
+            var(--colors-white-100) var(--slider-progress)
           );
           border-radius: 2px;
-          box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
+          box-shadow: 0 0 0 0.5px var(--colors-black-75) inset;
           opacity: 1;
         }
-    
+
         &::-moz-range-track {
           box-sizing: content-box;
           border: 0;
           background: linear-gradient(
             to right,
-            theme('colors.black.50') var(--slider-progress),
-            theme('colors.white.100') var(--slider-progress)
+            var(--colors-black-50) var(--slider-progress),
+            var(--colors-white-100) var(--slider-progress)
           );
           border-radius: 2px;
-          box-shadow: 0 0 0 0.5px theme('colors.black.75') inset;
+          box-shadow: 0 0 0 0.5px var(--colors-black-75) inset;
           opacity: 1;
         }
-    
+
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
           transform: scale(0.8);
           margin-top: -3px;
           border-radius: 50%;
-          background-color: theme('colors.white.100');
-          border: 1px solid theme('colors.primary.70');
-          box-shadow: 0 0.5px 1px theme('colors.black.25');
+          background-color: var(--colors-white-100);
+          border: 1px solid var(--colors-primary-70);
+          box-shadow: 0 0.5px 1px var(--colors-black-25);
           opacity: 1;
         }
-        
+
         &::-moz-range-thumb {
           -webkit-appearance: none;
           appearance: none;
           transform: scale(0.8);
           margin-top: -3px;
           border-radius: 50%;
-          background-color: theme('colors.white.100');
-          border: 1px solid theme('colors.primary.70');
-          box-shadow: 0 0.5px 1px theme('colors.black.25');
+          background-color: var(--colors-white-100);
+          border: 1px solid var(--colors-primary-70);
+          box-shadow: 0 0.5px 1px var(--colors-black-25);
           opacity: 1;
         }
       }
