@@ -3,9 +3,6 @@ import { mergeConfig } from 'vite';
 
 const config: StorybookConfig = {
   stories: [
-    // TODO: remove this when every stories are migrated to `@osrd-project/storybook/stories/`
-    '../../ui-*/src/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../../ui-charts/src/**/stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   addons: [
