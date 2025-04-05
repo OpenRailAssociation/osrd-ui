@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, memo } from 'react';
 
 import { useDraw } from '../hooks/useCanvas';
 import { type DrawingFunction } from '../lib/types';

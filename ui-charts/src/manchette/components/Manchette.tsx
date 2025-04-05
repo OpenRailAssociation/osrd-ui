@@ -1,4 +1,4 @@
-import React, { Fragment, useLayoutEffect, useRef, useState } from 'react';
+import React, { Fragment, memo, useLayoutEffect, useRef, useState } from 'react';
 
 import { ZoomIn, ZoomOut } from '@osrd-project/ui-icons';
 import cx from 'classnames';
@@ -51,6 +51,7 @@ const Manchette = ({
 
   return (
     <div className="manchette-container">
+      MANCHETTE NO MEMO
       {waypointMenuData?.menu && waypointMenuData.activeWaypointId && (
         <div className="menu-wrapper" style={{ top: menuPosition }}>
           {waypointMenuData.menu}

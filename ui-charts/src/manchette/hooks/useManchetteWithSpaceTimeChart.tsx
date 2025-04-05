@@ -512,6 +512,100 @@ const useManchetteWithSpaceTimeChart = ({
     };
   }, [spaceOrigin, spaceScales, splitPoints, waypointsWithoutSplitPoints]);
 
+  const handleZoom = useCallback(
+    ({ delta, position }: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]) => {
+      if (isShiftPressed) {
+        handleXZoom(xZoom + delta, position.x);
+      }
+    },
+    [handleXZoom, isShiftPressed, xZoom]
+  );
+
+  const handlePan = useCallback(
+    (payload: Parameters<NonNullable<SpaceTimeChartProps['onPan']>>[0]) => {
+      const {
+        initialData,
+        data,
+        initialPosition,
+        position,
+        isPanning,
+        context: { width, getData },
+      } = payload;
+      const diff = getDistance(initialPosition, position);
+      setState((prev) => {
+        if (!isPanning) {
+          return {
+            ...prev,
+            panning: null,
+            zoomMode: false,
+          };
+        }
+
+        if (zoomMode) {
+          const minPoint = getData({ x: 0, y: 0 });
+          const maxPoint = getData({ x: width, y: canvasDrawingHeight });
+          const timeStart = clamp(initialData.time, minPoint.time, maxPoint.time);
+          const timeEnd = clamp(data.time, minPoint.time, maxPoint.time);
+          const spaceStart = clamp(initialData.position, minPoint.position, maxPoint.position);
+          const spaceEnd = clamp(data.position, minPoint.position, maxPoint.position);
+          const newRect: State['rect'] = {
+            timeStart: new Date(timeStart),
+            timeEnd: new Date(timeEnd),
+            spaceStart,
+            spaceEnd,
+          };
+
+          let newPixelRect: State['pixelRect'] = null;
+          if (!isProportional) {
+            const xStart = clamp(initialPosition.x, 0, width);
+            const xEnd = clamp(position.x, 0, width);
+            const yStart = clamp(initialPosition.y, 0, canvasDrawingHeight);
+            const yEnd = clamp(position.y, 0, canvasDrawingHeight);
+            newPixelRect = { xStart, xEnd, yStart, yEnd };
+          }
+
+          return {
+            ...prev,
+            rect: newRect,
+            pixelRect: newPixelRect,
+          };
+        }
+
+        if (!panning) {
+          return {
+            ...prev,
+            panning: { initialOffset: { x: xOffset, y: yOffset } },
+          };
+        }
+
+        const newState = { ...prev };
+        const { initialOffset } = panning;
+        newState.xOffset = initialOffset.x + diff.x;
+
+        const newYPos = initialOffset.y - diff.y;
+        if (
+          manchetteWithSpaceTimeChartRef.current &&
+          newYPos >= 0 &&
+          newYPos + manchetteWithSpaceTimeChartRef.current.offsetHeight <
+            manchetteWithSpaceTimeChartRef.current.scrollHeight
+        ) {
+          newState.yOffset = newYPos;
+          manchetteWithSpaceTimeChartRef.current.scrollTop = newYPos;
+        }
+        return newState;
+      });
+    },
+    [
+      canvasDrawingHeight,
+      isProportional,
+      manchetteWithSpaceTimeChartRef,
+      panning,
+      xOffset,
+      yOffset,
+      zoomMode,
+    ]
+  );
+
   return useMemo<{
     manchetteProps: ManchetteProps;
     spaceTimeChartProps: SpaceTimeChartProps;
@@ -549,87 +643,8 @@ const useManchetteWithSpaceTimeChart = ({
         timeOrigin,
         spaceOrigin,
         spaceScales,
-        onZoom: ({
-          delta,
-          position,
-        }: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]) => {
-          if (isShiftPressed) {
-            handleXZoom(xZoom + delta, position.x);
-          }
-        },
-        onPan: (payload: Parameters<NonNullable<SpaceTimeChartProps['onPan']>>[0]) => {
-          const {
-            initialData,
-            data,
-            initialPosition,
-            position,
-            isPanning,
-            context: { width, getData },
-          } = payload;
-          const diff = getDistance(initialPosition, position);
-          setState((prev) => {
-            if (!isPanning) {
-              return {
-                ...prev,
-                panning: null,
-                zoomMode: false,
-              };
-            }
-
-            if (zoomMode) {
-              const minPoint = getData({ x: 0, y: 0 });
-              const maxPoint = getData({ x: width, y: canvasDrawingHeight });
-              const timeStart = clamp(initialData.time, minPoint.time, maxPoint.time);
-              const timeEnd = clamp(data.time, minPoint.time, maxPoint.time);
-              const spaceStart = clamp(initialData.position, minPoint.position, maxPoint.position);
-              const spaceEnd = clamp(data.position, minPoint.position, maxPoint.position);
-              const newRect: State['rect'] = {
-                timeStart: new Date(timeStart),
-                timeEnd: new Date(timeEnd),
-                spaceStart,
-                spaceEnd,
-              };
-
-              let newPixelRect: State['pixelRect'] = null;
-              if (!isProportional) {
-                const xStart = clamp(initialPosition.x, 0, width);
-                const xEnd = clamp(position.x, 0, width);
-                const yStart = clamp(initialPosition.y, 0, canvasDrawingHeight);
-                const yEnd = clamp(position.y, 0, canvasDrawingHeight);
-                newPixelRect = { xStart, xEnd, yStart, yEnd };
-              }
-
-              return {
-                ...prev,
-                rect: newRect,
-                pixelRect: newPixelRect,
-              };
-            }
-
-            if (!panning) {
-              return {
-                ...prev,
-                panning: { initialOffset: { x: xOffset, y: yOffset } },
-              };
-            }
-
-            const newState = { ...prev };
-            const { initialOffset } = panning;
-            newState.xOffset = initialOffset.x + diff.x;
-
-            const newYPos = initialOffset.y - diff.y;
-            if (
-              manchetteWithSpaceTimeChartRef.current &&
-              newYPos >= 0 &&
-              newYPos + manchetteWithSpaceTimeChartRef.current.offsetHeight <
-                manchetteWithSpaceTimeChartRef.current.scrollHeight
-            ) {
-              newState.yOffset = newYPos;
-              manchetteWithSpaceTimeChartRef.current.scrollTop = newYPos;
-            }
-            return newState;
-          });
-        },
+        onZoom: handleZoom,
+        onPan: handlePan,
       },
       handleScroll,
       handleXZoom,
