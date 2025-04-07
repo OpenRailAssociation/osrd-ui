@@ -76,6 +76,7 @@ const OCCUPANCY_BLOCKS = [
     spaceStart: 10 * KILOMETER,
     spaceEnd: 14 * KILOMETER,
     color: OCCUPANCY_WARNING,
+    blinking: true,
   },
   {
     timeStart: +START_DATE + 44 * MINUTE,
