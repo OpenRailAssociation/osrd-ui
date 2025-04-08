@@ -3,7 +3,7 @@ module.exports = function generateBasePostcssConfig() {
     plugins: {
       '@tailwindcss/postcss': {},
       'postcss-assets': {},
-      'postcss-nesting': {},
+      'postcss-nested': {},
       'postcss-preset-env': {
         features: { 'nesting-rules': false },
       },
