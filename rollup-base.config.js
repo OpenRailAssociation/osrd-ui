@@ -3,7 +3,6 @@ import path from 'path';
 
 import eslint from '@rollup/plugin-eslint';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import livereload from 'rollup-plugin-livereload';
 import postcss from 'rollup-plugin-postcss';
@@ -30,7 +29,6 @@ const generateRollupBaseConfig = () => ({
       sourceMap: true,
       plugins: [],
     }),
-    terser(),
     process.env.ROLLUP_WATCH &&
       livereload({
         watch: 'dist',
