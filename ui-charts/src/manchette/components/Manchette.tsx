@@ -50,7 +50,7 @@ const Manchette = ({
   }, [waypointMenuData]);
 
   return (
-    <div className="manchette-container">
+    <div className="ui-manchette-container">
       {waypointMenuData?.menu && waypointMenuData.activeWaypointId && (
         <div className="menu-wrapper" style={{ top: menuPosition }}>
           {waypointMenuData.menu}

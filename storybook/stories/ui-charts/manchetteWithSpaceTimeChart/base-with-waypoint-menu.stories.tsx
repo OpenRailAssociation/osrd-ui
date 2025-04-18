@@ -101,7 +101,7 @@ const ManchetteWithSpaceTimeWrapper = ({
   return (
     // Ref needs to be on the parent on the scrollable element (.manchette) and have a position
     // relative so the menu can properly overflow the manchette
-    <div ref={manchetteWithSpaceTimeCharWrappertRef} className="manchette-space-time-chart-wrapper">
+    <div ref={manchetteWithSpaceTimeCharWrappertRef} className="ui-manchette-space-time-chart-wrapper">
       {activeWaypointId &&
         manchetteWithSpaceTimeCharWrappertRef.current &&
         createPortal(
