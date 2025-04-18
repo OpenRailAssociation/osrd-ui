@@ -434,7 +434,10 @@ const useManchetteWithSpaceTimeChart = ({
   const { manchetteContents, manchetteHeight } = useMemo(() => {
     const spaceScaleTree = spaceScalesToBinaryTree(spaceOrigin, spaceScales);
     const getSpacePixel = getSpaceToPixel(0, spaceScaleTree);
-    const totalManchetteHeight = getSpacePixel(spaceScales.at(-1)!.to, true) + BASE_WAYPOINT_HEIGHT;
+    const totalManchetteHeight = Math.max(
+      getSpacePixel(spaceScales.at(-1)!.to, true) + BASE_WAYPOINT_HEIGHT,
+      height - FOOTER_HEIGHT
+    );
 
     if (!splitPoints)
       return {
@@ -510,7 +513,7 @@ const useManchetteWithSpaceTimeChart = ({
       manchetteHeight: totalManchetteHeight,
       manchetteContents: finalContents,
     };
-  }, [spaceOrigin, spaceScales, splitPoints, waypointsWithoutSplitPoints]);
+  }, [spaceOrigin, spaceScales, splitPoints, waypointsWithoutSplitPoints, height]);
 
   return useMemo<{
     manchetteProps: ManchetteProps;
