@@ -28,8 +28,8 @@ const StatusMessage = ({ statusWithMessage, showIcon, small, onClose }: StatusMe
   return (
     <div
       className={cx({
-        'status-message-wrapper': !tooltip,
-        'status-message-wrapper-tooltip': tooltip,
+        'ui-status-message-wrapper': !tooltip,
+        'ui-status-message-wrapper-tooltip': tooltip,
         'tooltip-left': tooltip === 'left',
         'tooltip-right': tooltip === 'right',
         [status]: status,

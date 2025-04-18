@@ -92,7 +92,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           statusWithMessage?.tooltip || narrow ? 'before-status-message' : undefined
         }
         narrow={narrow}
-        className={cx('input-field-wrapper', inputFieldWrapperClassname)}
+        className={cx('ui-input-field-wrapper', inputFieldWrapperClassname)}
         onCloseStatusMessage={onCloseStatusMessage}
       >
         {leadingContent && (

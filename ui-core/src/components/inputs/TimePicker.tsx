@@ -132,7 +132,7 @@ const TimePicker = ({
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
   return (
-    <div className="time-picker">
+    <div className="ui-time-picker">
       <Input
         {...otherProps}
         className={cx('input', 'time-input', otherProps.className)}

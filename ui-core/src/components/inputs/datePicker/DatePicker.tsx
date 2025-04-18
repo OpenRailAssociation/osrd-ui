@@ -50,7 +50,7 @@ export const DatePicker = (props: DatePickerProps) => {
   const { selectableSlot } = props;
 
   return (
-    <div className="date-picker">
+    <div className="ui-date-picker">
       <div>
         <Input
           {...otherInputProps}

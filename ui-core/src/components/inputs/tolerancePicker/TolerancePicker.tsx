@@ -56,7 +56,7 @@ const TolerancePicker = ({
   }, [minusTolerance, plusTolerance]);
 
   return (
-    <div className="tolerance-picker">
+    <div className="ui-tolerance-picker">
       <div>
         <Input
           {...inputProps}
