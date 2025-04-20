@@ -23,7 +23,7 @@
     @apply text-grey-80;
   }
 
-  option:first-child {
+  option.placeholder-option {
     @apply text-grey-50;
   }
 

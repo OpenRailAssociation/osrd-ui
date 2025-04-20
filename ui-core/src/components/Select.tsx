@@ -74,7 +74,12 @@ const Select = <T,>({
         onChange={handleOnChange}
         {...props}
       >
-        {placeholder && <option value={PLACEHOLDER_VALUE}>{`– ${placeholder} –`}</option>}
+        {placeholder && (
+          <option
+            value={PLACEHOLDER_VALUE}
+            className="placeholder-option"
+          >{`– ${placeholder} –`}</option>
+        )}
         {options.map((option) => (
           <option key={getOptionValue(option)} value={getOptionValue(option)}>
             {getOptionLabel(option)}
