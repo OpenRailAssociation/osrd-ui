@@ -296,14 +296,21 @@ const useManchetteWithSpaceTimeChart = ({
     setState((prev) => ({ ...prev, yZoom: 1 }));
   }, []);
 
-  const handleScroll = useCallback(() => {
-    if (!isShiftPressed && manchetteWithSpaceTimeChartRef.current) {
-      const { scrollTop } = manchetteWithSpaceTimeChartRef.current;
-      if (scrollTop || scrollTop === 0) {
-        setState((prev) => ({ ...prev, yOffset: scrollTop }));
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      if (rect) {
+        e.preventDefault();
+        return;
       }
-    }
-  }, [isShiftPressed, manchetteWithSpaceTimeChartRef]);
+      if (!isShiftPressed && manchetteWithSpaceTimeChartRef.current) {
+        const { scrollTop } = manchetteWithSpaceTimeChartRef.current;
+        if (scrollTop || scrollTop === 0) {
+          setState((prev) => ({ ...prev, yOffset: scrollTop }));
+        }
+      }
+    },
+    [isShiftPressed, manchetteWithSpaceTimeChartRef, rect]
+  );
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Shift') {
@@ -527,7 +534,7 @@ const useManchetteWithSpaceTimeChart = ({
   return useMemo<{
     manchetteProps: ManchetteProps;
     spaceTimeChartProps: SpaceTimeChartProps;
-    handleScroll: () => void;
+    handleScroll: (e: React.UIEvent<HTMLDivElement>) => void;
     handleXZoom: (newXZoom: number, xPosition?: number) => void;
     xZoom: number;
     toggleZoomMode: () => void;
@@ -565,7 +572,7 @@ const useManchetteWithSpaceTimeChart = ({
           delta,
           position,
         }: Parameters<NonNullable<SpaceTimeChartProps['onZoom']>>[0]) => {
-          if (isShiftPressed) {
+          if (isShiftPressed && !rect) {
             handleXZoom(xZoom + delta, position.x);
           }
         },
