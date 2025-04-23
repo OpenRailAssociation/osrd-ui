@@ -241,8 +241,8 @@ export function useCanvas(
 
         canvas.style.width = size.width + 'px';
         canvas.style.height = size.height + 'px';
-        canvas.setAttribute('width', size.width * ratio + 'px');
-        canvas.setAttribute('height', size.height * ratio + 'px');
+        canvas.setAttribute('width', Math.max(1, size.width * ratio) + 'px');
+        canvas.setAttribute('height', Math.max(1, size.height * ratio) + 'px');
 
         if (!isPicking) {
           // Reset the transform to identity, then apply the new scale
