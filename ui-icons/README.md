@@ -10,10 +10,7 @@ Based upon https://octicons.github.com our icons set provide slick & clear picto
 ## To add a new Icon
 
 1. import svg in `icons` folder
-2. in osrd-ui/ui-icons:
-
-- launch `npm run svgo` to optimize svg size.
-- launch `npm run build-components`
+2. in osrd-ui/ui-icons: launch `npm run svgo` to optimize svg size.
 
 ### To see the new Icon
 
