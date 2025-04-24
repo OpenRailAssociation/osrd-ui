@@ -1,0 +1,3 @@
+import{R as a}from"./index-DQDNmYQF.js";import{P as c}from"./index.esm-sJxuVDX9.js";/* empty css              */const p={component:c,args:{label:"Password",hint:"You can uses spaces"},decorators:[o=>a.createElement("div",{style:{maxWidth:"20rem"}},a.createElement(o,null))],title:"Core/PasswordInput",tags:["autodocs"]},e={args:{}};var r,s,t;e.parameters={...e.parameters,docs:{...(r=e.parameters)==null?void 0:r.docs,source:{originalSource:`{
+  args: {}
+}`,...(t=(s=e.parameters)==null?void 0:s.docs)==null?void 0:t.source}}};const l=["Default"];export{e as Default,l as __namedExportsOrder,p as default};

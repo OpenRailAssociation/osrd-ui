@@ -1,0 +1,3 @@
+import{R as r}from"./index-DQDNmYQF.js";import{k as n}from"./index.esm-sJxuVDX9.js";/* empty css              */const p={component:n,args:{label:"Favorite colors",tokens:["Yellow","Orange","Red","Black"]},decorators:[s=>r.createElement("div",{style:{maxWidth:"20rem"}},r.createElement(s,null))],title:"Core/TokenInput",tags:["autodocs"]},e={args:{}};var t,a,o;e.parameters={...e.parameters,docs:{...(t=e.parameters)==null?void 0:t.docs,source:{originalSource:`{
+  args: {}
+}`,...(o=(a=e.parameters)==null?void 0:a.docs)==null?void 0:o.source}}};const d=["Default"];export{e as Default,d as __namedExportsOrder,p as default};
