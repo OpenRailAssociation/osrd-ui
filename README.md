@@ -2,6 +2,9 @@
 
 Icons, fonts, colors, components and all user interface items for OSRD project.
 
+> [!WARNING]
+> This project has been migrated to the [main OSRD repository](https://github.com/OpenRailAssociation/osrd/tree/dev/front/ui).
+
 A [live storybook](https://openrailassociation.github.io/osrd-ui/) showcases all components.
 
 ## Development
