@@ -27,7 +27,12 @@
     line-height: 1.063rem;
     border-radius: 0.313rem;
   }
+
   &.primary {
+    &:focus {
+      outline: 2px solid theme('colors.primary.50');
+      outline-offset: 2px;
+    }
     &:hover:not([disabled]) {
       background: linear-gradient(#1844ef, #201ede);
       color: #fff;
@@ -61,6 +66,10 @@
     }
   }
   &.cancel {
+    &:focus {
+      outline: 2px solid theme('colors.primary.50');
+      outline-offset: 2px;
+    }
     border: 0.063rem solid rgba(121, 118, 113, 1);
     box-shadow:
       0px 0.156rem 0px rgba(255, 255, 255, 1) inset,
@@ -81,6 +90,10 @@
     }
   }
   &.quiet {
+    &:focus {
+      outline: 2px solid theme('colors.primary.50');
+      outline-offset: 2px;
+    }
     @apply bg-grey-10;
     background: #ebebea;
     border: 0.031rem solid transparent;
@@ -107,8 +120,11 @@
     }
   }
   &.destructive {
+    &:focus {
+      outline: 2px solid theme('colors.primary.50');
+      outline-offset: 2px;
+    }
     @apply text-error-60;
-    padding: 0.469rem 0.782rem 0.657rem 0.782rem;
     text-shadow: none;
     background: #fff;
     border: 0.125rem solid white;
