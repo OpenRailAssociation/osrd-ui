@@ -20,6 +20,7 @@ import {
 } from '../lib/types';
 import {
   getDataToPoint,
+  getFlatSteps,
   getPixelToSpace,
   getPixelToTime,
   getPointToData,
@@ -43,6 +44,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
     children,
     additionalChildren,
     enableSnapping,
+    hideTimeCaptions,
     hideGrid,
     hidePathsLabels,
     showTicks,
@@ -75,6 +77,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
         xOffset,
         yOffset,
         swapAxis,
+        hideTimeCaptions,
         hideGrid,
         hidePathsLabels,
         showTicks,
@@ -91,6 +94,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       xOffset,
       yOffset,
       swapAxis,
+      hideTimeCaptions,
       hideGrid,
       hidePathsLabels,
       showTicks,
@@ -100,6 +104,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
 
   const contextState: SpaceTimeChartContextType = useMemo(() => {
     const spaceScaleTree = spaceScalesToBinaryTree(spaceOrigin, spaceScales);
+    const flatSteps = getFlatSteps(spaceScales);
     const timeAxis = !swapAxis ? 'x' : 'y';
     const spaceAxis = !swapAxis ? 'y' : 'x';
 
@@ -147,6 +152,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       operationalPoints,
       spaceOrigin,
       spaceScaleTree,
+      flatSteps,
       timeOrigin,
       timeScale,
       timePixelOffset,
@@ -155,6 +161,7 @@ export const SpaceTimeChart = (props: SpaceTimeChartProps) => {
       spaceAxis,
       swapAxis: !!swapAxis,
       enableSnapping: !!enableSnapping,
+      hideTimeCaptions: !!hideTimeCaptions,
       hideGrid: !!hideGrid,
       hidePathsLabels: !!hidePathsLabels,
       showTicks: !!showTicks,

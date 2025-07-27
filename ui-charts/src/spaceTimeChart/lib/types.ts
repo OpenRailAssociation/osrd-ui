@@ -1,7 +1,5 @@
 import { type HTMLProps, type ReactNode } from 'react';
 
-import type { Track, OccupancyZone } from '../../trackOccupancyDiagram/components/types';
-
 // GLOBAL UTILITY TYPES:
 export type Point = {
   x: number;
@@ -95,7 +93,7 @@ export type PointToData = (point: Point) => DataPoint;
 export type DataToPoint = (data: DataPoint) => Point;
 
 // CANVAS SPECIFIC TYPES:
-export const PICKING_LAYERS = ['paths'] as const;
+export const PICKING_LAYERS = ['paths', 'overlay'] as const;
 export type PickingLayerType = (typeof PICKING_LAYERS)[number];
 export const LAYERS = ['background', 'graduations', 'paths', 'overlay', 'captions'] as const;
 export type LayerType = (typeof LAYERS)[number];
@@ -204,6 +202,7 @@ export type SpaceTimeChartProps = {
   enableSnapping?: boolean;
 
   // Additional options to show/hide context information:
+  hideTimeCaptions?: boolean;
   hideGrid?: boolean;
   hidePathsLabels?: boolean;
   hideDates?: boolean;
@@ -247,8 +246,6 @@ export type SpaceTimeChartProps = {
 export type SpaceTimeChartContextType = {
   width: number;
   height: number;
-  trackOccupancyWidth?: number;
-  trackOccupancyHeight?: number;
 
   // Axis-swapping related data:
   timeAxis: Axis;
@@ -270,6 +267,7 @@ export type SpaceTimeChartContextType = {
   timeScale: number;
   spaceOrigin: number;
   spaceScaleTree: NormalizedScaleTree;
+  flatSteps: Set<number>;
 
   // Translation helpers:
   getTimePixel: TimeToPixel;
@@ -281,8 +279,6 @@ export type SpaceTimeChartContextType = {
 
   // Useful data:
   operationalPoints: OperationalPoint[];
-  tracks?: Track[];
-  occupancyZones?: OccupancyZone[];
 
   // Full theme:
   theme: SpaceTimeChartTheme;
@@ -290,6 +286,7 @@ export type SpaceTimeChartContextType = {
 
   // Other options:
   enableSnapping: boolean;
+  hideTimeCaptions: boolean;
   hideGrid: boolean;
   hidePathsLabels: boolean;
   hideDates: boolean;

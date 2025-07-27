@@ -102,6 +102,22 @@ export function spaceScalesToBinaryTree(
 }
 
 /**
+ * This function takes a sequence of SpaceScales, identifies the flat steps (i.e. the scales that do
+ * not increase the position), and returns them in a set.
+ */
+export function getFlatSteps(spaceScales: SpaceScale[]): Set<number> {
+  const flatSteps: number[] = [];
+
+  for (let i = 1; i < spaceScales.length; i++) {
+    const { to: previous } = spaceScales[i - 1];
+    const { to: current } = spaceScales[i];
+    if (previous === current) flatSteps.push(current);
+  }
+
+  return new Set(flatSteps);
+}
+
+/**
  * This function takes a NormalizedScaleTree and a position, and returns the leaf node from the
  * tree that contains that position.
  *
@@ -172,11 +188,16 @@ export function getSpaceToPixel(
   binaryTree: NormalizedScaleTree
 ): SpaceToPixel {
   return (position: number, fromEnd?: boolean) => {
-    const { from, pixelFrom, coefficient } = getNormalizedScaleAtPosition(
+    const { from, pixelFrom, pixelTo, coefficient } = getNormalizedScaleAtPosition(
       position,
       binaryTree,
       fromEnd
     );
+    // Rare case where coefficient is 0:
+    // (occurs when there is just a flat step, for instance)
+    if (!coefficient) return pixelOffset + (fromEnd ? pixelTo : pixelFrom);
+
+    // Normal case: We simply interpolate
     return pixelOffset + pixelFrom + (position - from) / coefficient;
   };
 }
